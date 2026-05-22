@@ -7,14 +7,15 @@ on:
     branches:
       - main
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
-        env:
-          FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -32,9 +33,12 @@ jobs:
           cache: npm
 
       - name: Install Node dependencies
-        run: npm install
+        run: npm ci
 
-      - name: Build
+      - name: Create .env for build
+        run: cp .env.example .env
+
+      - name: Build frontend assets
         run: npm run build
 
       - name: Deploy via FTP
@@ -45,3 +49,19 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./
           server-dir: /sites/dondusang.loannjuillerat.ch/
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            .env
+
+      - name: Run migrations via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          script: |
+            cd /sites/dondusang.loannjuillerat.ch
+            php artisan migrate --force
+            php artisan optimize
