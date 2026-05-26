@@ -27,7 +27,7 @@ jobs:
         run: npm run build
 
       - name: Copy build via SCP
-        uses: appleboy/scp-action@v1
+        uses: appleboy/scp-action@v1.0.0
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
@@ -36,7 +36,7 @@ jobs:
           target: /home/clients/55e169f47915a898f04c35eb6533338a/sites/dondusang.loannjuillerat.ch/
 
       - name: Deploy via SSH
-        uses: appleboy/ssh-action@v1
+        uses: appleboy/ssh-action@v1.2.4
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
