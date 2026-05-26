@@ -33,7 +33,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           password: ${{ secrets.SSH_PASSWORD }}
           source: ./public/build/
-          target: /home/clients/55e169f47915a898f04c35eb6533338a/sites/dondusang.loannjuillerat.ch/public/
+          target: /home/clients/55e169f47915a898f04c35eb6533338a/sites/dondusang.loannjuillerat.ch/
 
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1
