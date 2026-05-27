@@ -8,22 +8,22 @@ class Collecte extends Model
 {
     protected $fillable = [
         'entreprise_id',
+        'admin_id',
+        'coordinateur_id',
         'date_debut',
         'date_fin',
         'sur_site',
         'lien_rdv_externe',
         'active',
+        'statut',
         'nb_inscrits_estime',
         'nb_dons_realises',
         'nb_nouveaux_donneurs',
-        'validated_by',
-        'validated_at',
     ];
 
     protected $casts = [
         'date_debut' => 'date',
         'date_fin' => 'date',
-        'validated_at' => 'datetime',
         'sur_site' => 'boolean',
         'active' => 'boolean',
     ];
@@ -33,14 +33,19 @@ class Collecte extends Model
         return $this->belongsTo(Entreprise::class);
     }
 
+    public function admin()
+    {
+        return $this->belongsTo(Admin::class);
+    }
+
+    public function coordinateur()
+    {
+        return $this->belongsTo(Coordinateur::class);
+    }
+
     public function quizResults()
     {
         return $this->hasMany(QuizResult::class);
-    }
-
-    public function validateur()
-    {
-        return $this->belongsTo(User::class, 'validated_by');
     }
 
     public function estActive()
@@ -50,6 +55,6 @@ class Collecte extends Model
 
     public function estValidee()
     {
-        return $this->validated_by !== null;
+        return $this->statut === 'validee';
     }
 }
