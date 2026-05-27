@@ -32,14 +32,14 @@ class User extends Authenticatable
         ];
     }
 
+    public function admin()
+    {
+        return $this->hasOne(Admin::class);
+    }
+
     public function coordinateur()
     {
         return $this->hasOne(Coordinateur::class);
-    }
-
-    public function collectesValidees()
-    {
-        return $this->hasMany(Collecte::class, 'validated_by');
     }
 
     public function isAdmin()
