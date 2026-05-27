@@ -22,4 +22,9 @@ class Coordinateur extends Model
     {
         return $this->belongsTo(Entreprise::class);
     }
+
+    public function collectes()
+    {
+        return $this->hasMany(Collecte::class);
+    }
 }
