@@ -15,7 +15,6 @@
         <a href="#faq">FAQ</a>
         <a href="#contact">Contact</a>
       </nav>
-      <a class="button outline" :href="reserveLink">Participer</a>
     </header>
 
     <section class="hero" :style="heroStyle">
@@ -25,7 +24,6 @@
         <h1>{{ entreprise.nom }} x HUG</h1>
         <p class="hero-text">Participez à la collecte organisée dans vos locaux du {{ entreprise.ville || 'site partenaire' }}.</p>
         <div class="hero-actions">
-          <a class="button primary" :href="reserveLink">S'inscrire</a>
           <button class="button secondary" @click="startQuiz">Faire le quiz</button>
         </div>
       </div>
@@ -33,11 +31,11 @@
 
     <section class="info-panel">
       <div class="info-card">
-        <span class="icon">📍</span>
+        <span class="icon-dot red"></span>
         <p>{{ collecte.surSite ? 'Sur site entreprise' : 'Centre de transfusion' }}</p>
       </div>
       <div class="info-card">
-        <span class="icon">📅</span>
+        <span class="icon-dot red"></span>
         <p>{{ dateRange }}</p>
       </div>
     </section>
@@ -48,6 +46,7 @@
         <p class="stats-value">{{ collecte.nb_inscrits_estime ?? 0 }}</p>
         <p class="stats-text">collègues ont déjà passé le test !</p>
         <button class="button primary" @click="startQuiz">Participer dès maintenant</button>
+        <ReservationCTA v-if="collecte" :collecte="collecte" />
       </div>
     </section>
 
@@ -78,7 +77,7 @@
           <p class="eyebrow">{{ entreprise.nom }} s'engage</p>
           <h2>Engagement collectif autour du don du sang</h2>
           <p>Rejoignez les équipes de {{ entreprise.nom }} et aidez à soutenir les patients grâce à un geste solidaire.</p>
-          <a class="button primary" :href="reserveLink">S'inscrire à la collecte</a>
+          <ReservationCTA v-if="collecte" :collecte="collecte" />
         </div>
         <div class="engagement-visual"></div>
       </div>
@@ -98,69 +97,41 @@
 
 <script setup>
 import { computed } from 'vue'
+import ReservationCTA from '../components/ReservationCTA.vue'
 
 const props = defineProps({
-  entreprise: {
-    type: Object,
-    required: true,
-  },
-  collecte: {
-    type: Object,
-    required: true,
-  },
+  entreprise: { type: Object, required: true },
+  collecte: { type: Object, required: true },
 })
 
-const emit = defineEmits(['startQuiz', 'reserve'])
+const emit = defineEmits(['startQuiz'])
 
 const brandColor = computed(() => props.entreprise.couleur_primaire || '#0f766e')
 
-const heroImage = computed(() => {
-  return props.entreprise.image || props.collecte.hero_image || null
-})
+const heroImage = computed(() => props.entreprise.image || props.collecte.hero_image || null)
 
 const heroStyle = computed(() => {
   if (!heroImage.value) {
-    return {
-      backgroundImage: "linear-gradient(180deg, rgba(15,118,110,0.85), rgba(15,118,110,0.85)), url('/images/hero-default.jpg')",
-    }
+    return { backgroundImage: "linear-gradient(180deg, rgba(15,118,110,0.85), rgba(15,118,110,0.85)), url('/images/hero-default.jpg')" }
   }
-
-  return {
-    backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.35)), url('${heroImage.value}')`,
-  }
+  return { backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.35)), url('${heroImage.value}')` }
 })
 
 const dateRange = computed(() => {
-  if (!props.collecte?.date_debut) {
-    return 'Dates à définir'
-  }
-
-  const start = new Date(props.collecte.date_debut).toLocaleDateString('fr-FR', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-  })
-
+  if (!props.collecte?.date_debut) return 'Dates à définir'
+  const start = new Date(props.collecte.date_debut).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' })
   const end = props.collecte.date_fin
-    ? new Date(props.collecte.date_fin).toLocaleDateString('fr-FR', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
-      })
+    ? new Date(props.collecte.date_fin).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' })
     : start
-
   return start === end ? start : `${start} - ${end}`
 })
 
-const reserveLink = computed(() => props.collecte.lien_rdv_externe || '#')
-
 const startQuiz = () => emit('startQuiz')
-const reserve = () => emit('reserve')
 </script>
 
 <style scoped>
 .entreprise-page {
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
   color: #0f172a;
   background: #f8fafc;
 }
@@ -178,80 +149,25 @@ const reserve = () => emit('reserve')
   z-index: 20;
 }
 
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
+.brand { display: flex; align-items: center; gap: 1rem; }
 
-.hug-logo,
-.footer-logo {
+.hug-logo, .footer-logo {
   font-weight: 700;
   font-size: 1.1rem;
   color: var(--brand-color);
 }
 
-.company-logo {
-  display: flex;
-  align-items: center;
-  min-width: 140px;
-  min-height: 40px;
-}
+.company-logo { display: flex; align-items: center; min-width: 140px; min-height: 40px; }
+.company-logo img { max-height: 40px; object-fit: contain; }
+.company-logo span { font-weight: 700; font-size: 1rem; }
+.divider { width: 1px; height: 40px; background: #e2e8f0; }
 
-.company-logo img {
-  max-height: 40px;
-  object-fit: contain;
-}
+.page-nav { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
+.page-nav a, .footer-links a { color: #334155; text-decoration: none; font-size: 0.95rem; }
 
-.company-logo span {
-  font-weight: 700;
-  font-size: 1rem;
-}
-
-.divider {
-  width: 1px;
-  height: 40px;
-  background: #e2e8f0;
-}
-
-.page-nav {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-}
-
-.page-nav a,
-.footer-links a {
-  color: #334155;
-  text-decoration: none;
-  font-size: 0.95rem;
-}
-
-.button {
-  border: none;
-  border-radius: 9999px;
-  padding: 0.85rem 1.5rem;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.button.primary {
-  background: var(--brand-color);
-  color: white;
-}
-
-.button.secondary {
-  background: white;
-  color: var(--brand-color);
-  border: 1px solid var(--brand-color);
-}
-
-.button.outline {
-  background: transparent;
-  color: var(--brand-color);
-  border: 1px solid var(--brand-color);
-}
+.button { border: none; border-radius: 9999px; padding: 0.85rem 1.5rem; font-weight: 600; cursor: pointer; }
+.button.primary { background: var(--brand-color); color: white; }
+.button.secondary { background: white; color: var(--brand-color); border: 1px solid var(--brand-color); }
 
 .hero {
   min-height: 520px;
@@ -263,11 +179,7 @@ const reserve = () => emit('reserve')
   color: white;
 }
 
-.hero-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(15, 23, 42, 0.35);
-}
+.hero-overlay { position: absolute; inset: 0; background: rgba(15, 23, 42, 0.35); }
 
 .hero-content {
   position: relative;
@@ -284,27 +196,13 @@ const reserve = () => emit('reserve')
   color: #d1fae5;
 }
 
-.hero h1 {
-  font-size: clamp(2.5rem, 4vw, 4rem);
-  line-height: 1.05;
-  margin-bottom: 1rem;
-}
-
-.hero-text {
-  max-width: 500px;
-  margin-bottom: 1.5rem;
-  color: #e2e8f0;
-}
-
-.hero-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
+.hero h1 { font-size: clamp(2.5rem, 4vw, 4rem); line-height: 1.05; margin-bottom: 1rem; }
+.hero-text { max-width: 500px; margin-bottom: 1.5rem; color: #e2e8f0; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 1rem; }
 
 .info-panel {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
   padding: 2rem;
   max-width: 1200px;
@@ -321,15 +219,14 @@ const reserve = () => emit('reserve')
   gap: 1rem;
 }
 
-.icon {
-  width: 3rem;
-  height: 3rem;
-  display: grid;
-  place-items: center;
-  border-radius: 9999px;
-  background: rgba(15, 118, 110, 0.1);
-  font-size: 1.2rem;
+.icon-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
 }
+
+.icon-dot.red { background: #ef4444; }
 
 .stats-section {
   background: linear-gradient(180deg, rgba(15,118,110,0.12), rgba(255,255,255,0.9));
@@ -344,51 +241,22 @@ const reserve = () => emit('reserve')
   padding: 2rem;
   box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
 }
 
-.stats-label {
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  color: #64748b;
-  margin-bottom: 0.5rem;
-}
+.stats-label { text-transform: uppercase; letter-spacing: 0.18em; color: #64748b; margin: 0; }
+.stats-value { font-size: 3rem; font-weight: 700; color: #0f172a; margin: 0; }
+.stats-text { color: #64748b; margin: 0; }
 
-.stats-value {
-  font-size: 3rem;
-  font-weight: 700;
-  color: #0f172a;
-  margin: 0.5rem 0;
-}
+.steps-section { padding: 3rem 2rem; max-width: 1200px; margin: 0 auto; }
+.steps-section h2 { text-align: center; font-size: 2rem; margin-bottom: 2rem; }
 
-.stats-text {
-  color: #64748b;
-  margin-bottom: 1.5rem;
-}
+.steps-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; }
 
-.steps-section {
-  padding: 3rem 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.steps-section h2 {
-  text-align: center;
-  font-size: 2rem;
-  margin-bottom: 2rem;
-}
-
-.steps-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1.5rem;
-}
-
-.step-card {
-  background: white;
-  border-radius: 1.5rem;
-  padding: 2rem;
-  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
-}
+.step-card { background: white; border-radius: 1.5rem; padding: 2rem; box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08); }
 
 .step-number {
   width: 2.5rem;
@@ -402,14 +270,9 @@ const reserve = () => emit('reserve')
   font-weight: 700;
 }
 
-.step-card h3 {
-  margin-bottom: 0.75rem;
-}
+.step-card h3 { margin-bottom: 0.75rem; }
 
-.engagement-section {
-  padding: 3rem 2rem;
-  background: white;
-}
+.engagement-section { padding: 3rem 2rem; background: white; }
 
 .engagement-content {
   max-width: 1200px;
@@ -436,49 +299,19 @@ const reserve = () => emit('reserve')
   gap: 2rem;
 }
 
-.footer-links {
-  display: flex;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-}
-
-.page-footer a {
-  color: #cbd5e1;
-  text-decoration: none;
-}
+.footer-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+.page-footer a { color: #cbd5e1; text-decoration: none; }
 
 @media (max-width: 980px) {
-  .info-panel,
-  .steps-grid,
-  .engagement-content {
-    grid-template-columns: 1fr;
-  }
-
-  .page-header {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .page-nav {
-    justify-content: flex-start;
-    flex-wrap: wrap;
-  }
+  .info-panel, .steps-grid, .engagement-content { grid-template-columns: 1fr; }
+  .page-header { flex-direction: column; align-items: stretch; }
+  .page-nav { justify-content: flex-start; }
 }
 
 @media (max-width: 680px) {
-  .hero {
-    min-height: 420px;
-  }
-
-  .hero-content {
-    padding: 2rem 1.25rem;
-  }
-
-  .page-header,
-  .stats-section,
-  .steps-section,
-  .engagement-section,
-  .page-footer {
+  .hero { min-height: 420px; }
+  .hero-content { padding: 2rem 1.25rem; }
+  .page-header, .stats-section, .steps-section, .engagement-section, .page-footer {
     padding-left: 1rem;
     padding-right: 1rem;
   }
