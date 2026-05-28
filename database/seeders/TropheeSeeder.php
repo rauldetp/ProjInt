@@ -5,11 +5,14 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Trophee;
 use App\Models\Entreprise;
+use App\Models\Admin;
 
 class TropheeSeeder extends Seeder
 {
     public function run(): void
     {
+        $admin = Admin::first();
+
         $trophees = [
             [
                 'entreprise_slug' => 'pictet',
@@ -33,6 +36,7 @@ class TropheeSeeder extends Seeder
 
             Trophee::create([
                 'entreprise_id' => $entreprise->id,
+                'admin_id' => $admin->id,
                 'annee' => $data['annee'],
                 'commentaire' => $data['commentaire'],
             ]);
