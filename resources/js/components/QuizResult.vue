@@ -33,14 +33,11 @@
             <p>La validation finale sera effectuée sur place par l'équipe médicale.</p>
           </div>
 
-          <button
+          <ReservationCTA
             v-if="props.resultat === 'eligible'"
-            class="button"
-            type="button"
-            @click="handleReserve"
-          >
-            Prendre rendez-vous
-          </button>
+            :collecte="collecte"
+            :showInfos="true"
+          />
 
           <button
             v-else-if="props.resultat === 'non-eligible'"
@@ -68,6 +65,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import courage from '../assets/courage.png'
+import ReservationCTA from './ReservationCTA.vue'
 
 const props = defineProps({
   resultat: {
@@ -82,36 +80,19 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(['reserve'])
 const showRaisons = ref(false)
 
 const title = computed(() => {
-  if (props.resultat === 'eligible') {
-    return 'Bravo ! Vous êtes la star du don.'
-  }
-
-  if (props.resultat === 'non-eligible') {
-    return 'Certains points ne sont pas éligibles.'
-  }
-
+  if (props.resultat === 'eligible') return 'Bravo ! Vous êtes la star du don.'
+  if (props.resultat === 'non-eligible') return 'Certains points ne sont pas éligibles.'
   return 'Courage vous informe !'
 })
 
 const subtitle = computed(() => {
-  if (props.resultat === 'eligible') {
-    return 'Sur la base de vos réponses, vous remplissez les principales conditions de don.'
-  }
-
-  if (props.resultat === 'non-eligible') {
-    return 'Malheureusement, sur la base de vos réponses, certains points ne remplissent pas les conditions de don adéquates.'
-  }
-
+  if (props.resultat === 'eligible') return 'Sur la base de vos réponses, vous remplissez les principales conditions de don.'
+  if (props.resultat === 'non-eligible') return 'Malheureusement, sur la base de vos réponses, certains points ne remplissent pas les conditions de don adéquates.'
   return 'Nous ne pouvons pas déterminer votre éligibilité complète pour le moment. Voici quelques conseils à suivre avant de vous rendre à la collecte.'
 })
-
-const handleReserve = () => {
-  emit('reserve', props.collecte?.lien_rdv_externe || null)
-}
 </script>
 
 <style scoped>
@@ -248,4 +229,3 @@ const handleReserve = () => {
   }
 }
 </style>
- 
