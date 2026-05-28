@@ -2,11 +2,14 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\EntrepriseController;
 
-// Auth publique
+// Public
+Route::get('/entreprises/{slug}', [EntrepriseController::class, 'show']);
 Route::post('/login', [AuthController::class, 'login']);
 
-// Routes coordinateur
-Route::middleware(['auth:sanctum', 'coordinateur'])->group(function () {
+// Authentifié (tous rôles)
+Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/me', [AuthController::class, 'me']);
 });
