@@ -8,6 +8,7 @@ class Trophee extends Model
 {
     protected $fillable = [
         'entreprise_id',
+        'admin_id',
         'annee',
         'commentaire',
     ];
@@ -15,5 +16,10 @@ class Trophee extends Model
     public function entreprise()
     {
         return $this->belongsTo(Entreprise::class);
+    }
+
+    public function admin()
+    {
+        return $this->belongsTo(Admin::class);
     }
 }
