@@ -1,5 +1,8 @@
 <template>
-  <div class="entreprise-page" :style="{ '--brand-color': brandColor }">
+  <div v-if="loading" class="loading">Chargement...</div>
+  <div v-else-if="error" class="error">{{ error }}</div>
+  <div v-else class="entreprise-page" :style="{ '--brand-color': brandColor }">
+
     <header class="page-header">
       <div class="brand">
         <div class="hug-logo">HUG</div>
@@ -32,7 +35,7 @@
     <section class="info-panel">
       <div class="info-card">
         <span class="icon-dot red"></span>
-        <p>{{ collecte.surSite ? 'Sur site entreprise' : 'Centre de transfusion' }}</p>
+        <p>{{ collecte?.sur_site ? 'Sur site entreprise' : 'Centre de transfusion' }}</p>
       </div>
       <div class="info-card">
         <span class="icon-dot red"></span>
@@ -43,11 +46,20 @@
     <section class="stats-section">
       <div class="stats-card">
         <p class="stats-label">Déjà</p>
-        <p class="stats-value">{{ collecte.nb_inscrits_estime ?? 0 }}</p>
+        <p class="stats-value">{{ collecte?.nb_inscrits_estime ?? 0 }}</p>
         <p class="stats-text">collègues ont déjà passé le test !</p>
         <button class="button primary" @click="startQuiz">Participer dès maintenant</button>
         <ReservationCTA v-if="collecte" :collecte="collecte" />
       </div>
+    </section>
+
+    <section v-if="showQuiz" class="quiz-section">
+        <QuizResult
+            v-if="quizResultat"
+            :resultat="quizResultat"
+            :collecte="collecte"
+        />
+        <Quiz v-else @result="quizResultat = $event" />
     </section>
 
     <section class="steps-section">
@@ -92,44 +104,75 @@
         <a href="#faq">FAQ</a>
       </div>
     </footer>
+
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 import ReservationCTA from '../components/ReservationCTA.vue'
+import Quiz from '../components/Quiz.vue'
+import QuizResult from '../components/QuizResult.vue'
 
-const props = defineProps({
-  entreprise: { type: Object, required: true },
-  collecte: { type: Object, required: true },
+const quizResultat = ref(null)
+const route = useRoute()
+const entreprise = ref({})
+const collecte = ref(null)
+const loading = ref(true)
+const error = ref(null)
+const showQuiz = ref(false)
+
+onMounted(async () => {
+  try {
+    const res = await fetch(`/api/entreprises/${route.params.slug}`)
+    if (!res.ok) throw new Error('Entreprise introuvable')
+    const data = await res.json()
+    entreprise.value = data.entreprise
+    collecte.value = data.collecte
+  } catch (e) {
+    error.value = e.message
+  } finally {
+    loading.value = false
+  }
 })
 
-const emit = defineEmits(['startQuiz'])
-
-const brandColor = computed(() => props.entreprise.couleur_primaire || '#0f766e')
-
-const heroImage = computed(() => props.entreprise.image || props.collecte.hero_image || null)
+const brandColor = computed(() => entreprise.value.couleur_primaire || '#0f766e')
 
 const heroStyle = computed(() => {
-  if (!heroImage.value) {
-    return { backgroundImage: "linear-gradient(180deg, rgba(15,118,110,0.85), rgba(15,118,110,0.85)), url('/images/hero-default.jpg')" }
+  return {
+    backgroundImage: "linear-gradient(180deg, rgba(15,118,110,0.85), rgba(15,118,110,0.85)), url('/images/hero-default.jpg')"
   }
-  return { backgroundImage: `linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.35)), url('${heroImage.value}')` }
 })
 
 const dateRange = computed(() => {
-  if (!props.collecte?.date_debut) return 'Dates à définir'
-  const start = new Date(props.collecte.date_debut).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' })
-  const end = props.collecte.date_fin
-    ? new Date(props.collecte.date_fin).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' })
+  if (!collecte.value?.date_debut) return 'Dates à définir'
+  const start = new Date(collecte.value.date_debut).toLocaleDateString('fr-FR', {
+    day: '2-digit', month: '2-digit', year: 'numeric'
+  })
+  const end = collecte.value.date_fin
+    ? new Date(collecte.value.date_fin).toLocaleDateString('fr-FR', {
+        day: '2-digit', month: '2-digit', year: 'numeric'
+      })
     : start
   return start === end ? start : `${start} - ${end}`
 })
 
-const startQuiz = () => emit('startQuiz')
+const startQuiz = () => {
+  showQuiz.value = true
+}
 </script>
 
 <style scoped>
+.loading, .error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  font-size: 1.25rem;
+  color: #64748b;
+}
+
 .entreprise-page {
   font-family: Inter, ui-sans-serif, system-ui, sans-serif;
   color: #0f172a;
@@ -219,13 +262,7 @@ const startQuiz = () => emit('startQuiz')
   gap: 1rem;
 }
 
-.icon-dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
+.icon-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
 .icon-dot.red { background: #ef4444; }
 
 .stats-section {
@@ -253,9 +290,7 @@ const startQuiz = () => emit('startQuiz')
 
 .steps-section { padding: 3rem 2rem; max-width: 1200px; margin: 0 auto; }
 .steps-section h2 { text-align: center; font-size: 2rem; margin-bottom: 2rem; }
-
 .steps-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; }
-
 .step-card { background: white; border-radius: 1.5rem; padding: 2rem; box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08); }
 
 .step-number {

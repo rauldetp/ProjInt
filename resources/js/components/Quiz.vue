@@ -2,36 +2,27 @@
   <div class="quiz">
     <h1>Puis-je donner mon sang ?</h1>
 
-    <div v-if="result">
-      <p class="result-label">Résultat :</p>
-      <p v-if="result === 'eligible'">Éligible</p>
-      <p v-else-if="result === 'not_eligible'">Non éligible</p>
-      <p v-else>Incertain</p>
-      <button @click="restartQuiz">Recommencer</button>
-    </div>
+    <p>Question {{ currentQuestion + 1 }} / {{ questions.length }}</p>
+    <p class="question">{{ questions[currentQuestion] }}</p>
 
-    <div v-else>
-      <p>Question {{ currentQuestion + 1 }} / {{ questions.length }}</p>
-      <p class="question">{{ questions[currentQuestion] }}</p>
-
-      <div class="answers">
-        <button type="button" @click="answer('yes')">Oui</button>
-        <button type="button" @click="answer('no')">Non</button>
-        <button
-          v-if="currentQuestion === 8"
-          type="button"
-          @click="answer('prefer_not_to_answer')"
-        >
-          Je ne préfère pas répondre
-        </button>
-      </div>
+    <div class="answers">
+      <button type="button" @click="answer('yes')">Oui</button>
+      <button type="button" @click="answer('no')">Non</button>
+      <button
+        v-if="currentQuestion === 8"
+        type="button"
+        @click="answer('prefer_not_to_answer')"
+      >
+        Je ne préfère pas répondre
+      </button>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 
+const emit = defineEmits(['result'])
 const currentQuestion = ref(0)
 const answers = ref([])
 
@@ -61,14 +52,18 @@ const result = computed(() => {
   }
 
   if (hasAnyRiskYes) {
-    return 'not_eligible'
+    return 'non-eligible'
   }
 
   if (question9Uncertain) {
-    return 'uncertain'
+    return 'incertain'
   }
 
-  return 'uncertain'
+  return 'incertain'
+})
+
+watch(result, (val) => {
+  if (val) emit('result', val)
 })
 
 const answer = value => {
@@ -77,10 +72,5 @@ const answer = value => {
   if (currentQuestion.value < questions.length - 1) {
     currentQuestion.value += 1
   }
-}
-
-const restartQuiz = () => {
-  currentQuestion.value = 0
-  answers.value = []
 }
 </script>
