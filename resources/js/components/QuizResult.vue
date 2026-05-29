@@ -3,7 +3,8 @@
     <div class="layout">
       <div class="mascotte-column">
         <div class="mascotte-circle">
-          <img :src="courage" alt="Mascotte Courage" />
+            <img v-if="courage" :src="courage" alt="Mascotte Courage" />
+            <div v-else class="mascotte-placeholder"></div>
         </div>
       </div>
 
@@ -64,7 +65,8 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-import courage from '../assets/courage.png'
+const courage = null
+//import courage from '../assets/courage.png'
 import ReservationCTA from './ReservationCTA.vue'
 
 const props = defineProps({

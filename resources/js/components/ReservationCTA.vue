@@ -9,7 +9,7 @@
     <div class="infos-collecte" v-if="showInfos">
       <div class="info-item">
         <span class="label">Lieu</span>
-        <span>{{ collecte.surSite ? 'Sur site entreprise' : 'Centre de transfusion' }}</span>
+        <span>{{ collecte.sur_site ? 'Sur site entreprise' : 'Centre de transfusion' }}</span>
       </div>
       <div class="info-item">
         <span class="label">Date</span>
