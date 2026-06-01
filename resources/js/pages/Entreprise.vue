@@ -59,7 +59,7 @@
             :resultat="quizResultat"
             :collecte="collecte"
         />
-        <Quiz v-else @result="quizResultat = $event" />
+        <Quiz v-else @result="handleQuizResult" />
     </section>
 
     <section class="steps-section">
@@ -164,6 +164,20 @@ const dateRange = computed(() => {
 
 const startQuiz = () => {
   showQuiz.value = true
+}
+
+async function handleQuizResult(resultat) {
+  quizResultat.value = resultat
+  if (!collecte.value?.id) return
+  try {
+    await fetch(`/api/collectes/${collecte.value.id}/quiz-result`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ resultat }),
+    })
+  } catch (e) {
+    console.error('Erreur sauvegarde quiz', e)
+  }
 }
 </script>
 
