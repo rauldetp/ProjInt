@@ -78,5 +78,5 @@ class AdminCoordinateurController extends Controller
     public function show(Coordinateur $coordinateur)
     {
     return response()->json($coordinateur->load(['user', 'entreprise']));
-    }
+     }
 }
