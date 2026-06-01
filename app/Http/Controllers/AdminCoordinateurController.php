@@ -74,4 +74,9 @@ class AdminCoordinateurController extends Controller
         $coordinateur->user->delete();
         return response()->json(['message' => 'Coordinateur supprimé.']);
     }
+
+    public function show(Coordinateur $coordinateur)
+    {
+    return response()->json($coordinateur->load(['user', 'entreprise']));
+    }
 }
