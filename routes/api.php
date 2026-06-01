@@ -7,6 +7,7 @@ use App\Http\Controllers\CollecteController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminCollecteController;
 use App\Http\Controllers\AdminCoordinateurController;
+use App\Http\Controllers\CoordinateurController;
 
 // Public
 Route::get('/entreprises/{slug}', [EntrepriseController::class, 'show']);
@@ -34,4 +35,9 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function ()
     Route::put('/coordinateurs/{coordinateur}', [AdminCoordinateurController::class, 'update']);
     Route::delete('/coordinateurs/{coordinateur}', [AdminCoordinateurController::class, 'destroy']);
     Route::get('/coordinateurs/{coordinateur}', [AdminCoordinateurController::class, 'show']);
+});
+
+// Coordinateur uniquement
+Route::middleware(['auth:sanctum', 'coordinateur'])->prefix('coordinateur')->group(function () {
+    Route::get('/collectes', [CoordinateurController::class, 'collectes']);
 });
