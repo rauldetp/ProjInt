@@ -140,8 +140,12 @@ onMounted(async () => {
 const brandColor = computed(() => entreprise.value.couleur_primaire || '#0f766e')
 
 const heroStyle = computed(() => {
+  const hex = entreprise.value.couleur_primaire || '#0f766e'
+  const r = parseInt(hex.slice(1, 3), 16)
+  const g = parseInt(hex.slice(3, 5), 16)
+  const b = parseInt(hex.slice(5, 7), 16)
   return {
-    backgroundImage: "linear-gradient(180deg, rgba(15,118,110,0.85), rgba(15,118,110,0.85)), url('/images/hero-default.jpg')"
+    backgroundImage: `linear-gradient(180deg, rgba(${r},${g},${b},0.85), rgba(${r},${g},${b},0.85)), url('/images/hero-default.jpg')`
   }
 })
 
