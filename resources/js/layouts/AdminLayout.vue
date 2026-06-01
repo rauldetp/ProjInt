@@ -11,6 +11,9 @@
           <RouterLink to="/admin/collectes" active-class="active">
             Collectes
           </RouterLink>
+          <RouterLink to="/admin/coordinateurs" active-class="active">
+            Coordinateurs
+          </RouterLink>
         </template>
 
         <template v-if="auth.isCoordinateur">
