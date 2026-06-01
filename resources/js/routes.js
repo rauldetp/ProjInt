@@ -11,7 +11,7 @@ const routes = [
     {
         path: '/admin',
         component: AdminLayout,
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: true, role: 'admin' },
         children: [
             {
                 path: '',
@@ -31,6 +31,14 @@ const routes = [
             },
         ],
     },
+    {
+        path: '/coordinateur',
+        component: AdminLayout,
+        meta: { requiresAuth: true, role: 'coordinateur' },
+        children: [
+            { path: '', component: () => import('./pages/coordinateur/Dashboard.vue') },
+        ],
+    },
 ]
 
 export default routes
@@ -38,11 +46,18 @@ export default routes
 export function setupGuards(router) {
     router.beforeEach((to) => {
         const auth = useAuthStore()
+
         if (to.meta.requiresAuth && !auth.isLoggedIn) {
             return '/login'
         }
+        if (to.meta.role === 'admin' && !auth.isAdmin) {
+            return auth.isCoordinateur ? '/coordinateur' : '/login'
+        }
+        if (to.meta.role === 'coordinateur' && !auth.isCoordinateur) {
+            return auth.isAdmin ? '/admin' : '/login'
+        }
         if (to.path === '/login' && auth.isLoggedIn) {
-            return '/admin'
+            return auth.isAdmin ? '/admin' : '/coordinateur'
         }
     })
 }
