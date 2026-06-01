@@ -84,11 +84,11 @@ const handleRDV = async () => {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  background: #f0fdf4;
-  border: 1px solid #86efac;
+  background: #fff1f2;
+  border: 1px solid #fecdd3;
   border-radius: 12px;
   padding: 0.85rem 1.25rem;
-  color: #166534;
+  color: #9f1239;
   font-size: 0.95rem;
 }
 
@@ -96,7 +96,7 @@ const handleRDV = async () => {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: #16a34a;
+  background: #e11d48;
   flex-shrink: 0;
 }
 
@@ -125,7 +125,7 @@ const handleRDV = async () => {
 .btn-rdv {
   border: none;
   border-radius: 9999px;
-  background: #16a34a;
+  background: #e11d48;
   color: white;
   padding: 1rem 1.75rem;
   font-size: 1rem;
@@ -136,20 +136,20 @@ const handleRDV = async () => {
 }
 
 .btn-rdv:disabled {
-  background: #86efac;
+  background: #fda4af;
   cursor: default;
 }
 
 .btn-rdv:hover:not(:disabled) {
-  background: #15803d;
+  background: #be123c;
 }
 
 .confirmation {
-  background: #dcfce7;
-  border: 1px solid #86efac;
+  background: #fff1f2;
+  border: 1px solid #fecdd3;
   border-radius: 12px;
   padding: 1rem 1.25rem;
-  color: #166534;
+  color: #9f1239;
   font-size: 0.95rem;
 }
 </style>

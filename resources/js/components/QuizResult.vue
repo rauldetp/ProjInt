@@ -65,8 +65,9 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+// Décommenter quand resources/js/assets/courage.png est ajouté
+// import courageImg from '../assets/courage.png'
 const courage = null
-//import courage from '../assets/courage.png'
 import ReservationCTA from './ReservationCTA.vue'
 
 const props = defineProps({
@@ -153,11 +154,11 @@ const subtitle = computed(() => {
 }
 
 .advice-card {
-  background: #dcfce7;
-  border: 1px solid #86efac;
+  background: #fff1f2;
+  border: 1px solid #fecdd3;
   border-radius: 18px;
   padding: 1.25rem 1.5rem;
-  color: #166534;
+  color: #9f1239;
   margin-bottom: 1.75rem;
 }
 
@@ -185,7 +186,7 @@ const subtitle = computed(() => {
   padding: 0.95rem 1.5rem;
   border: none;
   border-radius: 9999px;
-  background: #16a34a;
+  background: #e11d48;
   color: white;
   font-weight: 600;
   cursor: pointer;
@@ -198,7 +199,7 @@ const subtitle = computed(() => {
 }
 
 .button:hover {
-  background: #15803d;
+  background: #be123c;
 }
 
 .button.secondary:hover {
