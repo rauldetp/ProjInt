@@ -33,4 +33,5 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function ()
     Route::post('/coordinateurs', [AdminCoordinateurController::class, 'store']);
     Route::put('/coordinateurs/{coordinateur}', [AdminCoordinateurController::class, 'update']);
     Route::delete('/coordinateurs/{coordinateur}', [AdminCoordinateurController::class, 'destroy']);
+    Route::get('/coordinateurs/{coordinateur}', [AdminCoordinateurController::class, 'show']);
 });

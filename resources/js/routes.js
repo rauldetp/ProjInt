@@ -37,6 +37,10 @@ const routes = [
                 path: 'coordinateurs/create',
                 component: () => import('./pages/admin/coordinateurs/Create.vue'),
             },
+            {
+                path: 'coordinateurs/:id/edit',
+                component: () => import('./pages/admin/coordinateurs/Edit.vue'),
+            },
         ],
     },
     {
