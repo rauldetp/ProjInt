@@ -22,7 +22,7 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function () {
     Route::get('/stats', [AdminController::class, 'stats']);
     Route::get('/entreprises', [AdminController::class, 'entreprises']);
-
+    Route::get('/collectes/{collecte}', [AdminCollecteController::class, 'show']);
     Route::get('/collectes', [AdminCollecteController::class, 'index']);
     Route::post('/collectes', [AdminCollecteController::class, 'store']);
     Route::put('/collectes/{collecte}', [AdminCollecteController::class, 'update']);
