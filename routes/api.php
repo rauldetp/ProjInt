@@ -13,6 +13,7 @@ use App\Http\Controllers\CoordinateurController;
 Route::get('/entreprises/{slug}', [EntrepriseController::class, 'show']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/collectes/{collecte}/nb_inscrits_estime', [CollecteController::class, 'incrementInscrits']);
+Route::post('/collectes/{collecte}/quiz-result', [CollecteController::class, 'storeQuizResult']);
 
 // Authentifié (tous rôles)
 Route::middleware('auth:sanctum')->group(function () {
