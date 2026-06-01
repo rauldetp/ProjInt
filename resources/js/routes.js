@@ -29,6 +29,14 @@ const routes = [
                 path: 'collectes/:id/edit',
                 component: () => import('./pages/admin/collectes/Edit.vue'),
             },
+            {
+                path: 'coordinateurs',
+                component: () => import('./pages/admin/coordinateurs/Index.vue'),
+            },
+            {
+                path: 'coordinateurs/create',
+                component: () => import('./pages/admin/coordinateurs/Create.vue'),
+            },
         ],
     },
     {
@@ -36,7 +44,7 @@ const routes = [
         component: AdminLayout,
         meta: { requiresAuth: true, role: 'coordinateur' },
         children: [
-            { path: '', component: () => import('./pages/coordinateur/Dashboard.vue') },
+            { path: '', component: () => import('./pages/coordinateurs/Dashboard.vue') },
         ],
     },
 ]
