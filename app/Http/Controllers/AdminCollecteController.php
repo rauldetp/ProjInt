@@ -82,4 +82,9 @@ class AdminCollecteController extends Controller
 
         return response()->json($collecte);
     }
+
+    public function show(Collecte $collecte)
+    {
+        return response()->json($collecte->load('entreprise'));
+    }
 }
