@@ -145,7 +145,7 @@ const heroStyle = computed(() => {
   const g = parseInt(hex.slice(3, 5), 16)
   const b = parseInt(hex.slice(5, 7), 16)
   return {
-    backgroundImage: `linear-gradient(180deg, rgba(${r},${g},${b},0.85), rgba(${r},${g},${b},0.85)), url('/images/hero-default.jpg')`
+    backgroundImage: `linear-gradient(180deg, rgba(${r},${g},${b},0.6), rgba(${r},${g},${b},0.6)), url('/images/hero-default.jpg')`
   }
 })
 
@@ -226,7 +226,7 @@ const startQuiz = () => {
   color: white;
 }
 
-.hero-overlay { position: absolute; inset: 0; background: rgba(15, 23, 42, 0.35); }
+.hero-overlay { position: absolute; inset: 0; background: rgba(15, 23, 42, 0.2); }
 
 .hero-content {
   position: relative;
