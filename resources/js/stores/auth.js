@@ -18,8 +18,8 @@ export const useAuthStore = defineStore('auth', () => {
     if (!res.ok) throw new Error('Identifiants incorrects')
     const data = await res.json()
     token.value = data.token
-    user.value = data.user
     localStorage.setItem('token', data.token)
+    await fetchMe()
   }
 
   async function fetchMe() {
@@ -32,7 +32,8 @@ export const useAuthStore = defineStore('auth', () => {
         },
       })
       if (!res.ok) { logout(); return }
-      user.value = await res.json()
+      const data = await res.json()
+      user.value = data.user
     } catch {
       logout()
     }
