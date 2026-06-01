@@ -54,8 +54,10 @@ async function handleLogin() {
   errorMsg.value = ''
   try {
     await auth.login(email.value, password.value)
-    if (auth.isAdmin || auth.isCoordinateur) {
+    if (auth.isAdmin) {
       router.push('/admin')
+    } else if (auth.isCoordinateur) {
+      router.push('/coordinateur')
     } else {
       router.push('/')
     }
