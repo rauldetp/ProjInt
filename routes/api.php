@@ -8,6 +8,8 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminCollecteController;
 use App\Http\Controllers\AdminCoordinateurController;
 use App\Http\Controllers\CoordinateurController;
+use App\Http\Controllers\AdminLabelController;
+use App\Http\Controllers\AdminTropheeController;
 
 // Public
 Route::get('/entreprises/{slug}', [EntrepriseController::class, 'show']);
@@ -36,6 +38,13 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function ()
     Route::put('/coordinateurs/{coordinateur}', [AdminCoordinateurController::class, 'update']);
     Route::delete('/coordinateurs/{coordinateur}', [AdminCoordinateurController::class, 'destroy']);
     Route::get('/coordinateurs/{coordinateur}', [AdminCoordinateurController::class, 'show']);
+    Route::get('/labels', [AdminLabelController::class, 'index']);
+    Route::post('/labels', [AdminLabelController::class, 'store']);
+    Route::put('/labels/{label}', [AdminLabelController::class, 'update']);
+    Route::delete('/labels/{label}', [AdminLabelController::class, 'destroy']);
+    Route::get('/trophees', [AdminTropheeController::class, 'index']);
+    Route::post('/trophees', [AdminTropheeController::class, 'store']);
+    Route::delete('/trophees/{trophee}', [AdminTropheeController::class, 'destroy']);
 });
 
 // Coordinateur uniquement

@@ -41,6 +41,14 @@ const routes = [
                 path: 'coordinateurs/:id/edit',
                 component: () => import('./pages/admin/coordinateurs/Edit.vue'),
             },
+            {
+                path: 'labels',
+                component: () => import('./pages/admin/labels/Index.vue'),
+            },
+            {
+                path: 'trophees',
+                component: () => import('./pages/admin/trophees/Index.vue'),
+            },
         ],
     },
     {
