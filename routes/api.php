@@ -12,10 +12,13 @@ use App\Http\Controllers\AdminLabelController;
 use App\Http\Controllers\AdminTropheeController;
 
 // Public
+Route::get('/entreprises', [EntrepriseController::class, 'index']);
 Route::get('/entreprises/{slug}', [EntrepriseController::class, 'show']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register']);
 Route::post('/collectes/{collecte}/nb_inscrits_estime', [CollecteController::class, 'incrementInscrits']);
 Route::post('/collectes/{collecte}/quiz-result', [CollecteController::class, 'storeQuizResult']);
+Route::get('/palmares', [AdminTropheeController::class, 'palmares']);
 
 // Authentifié (tous rôles)
 Route::middleware('auth:sanctum')->group(function () {
