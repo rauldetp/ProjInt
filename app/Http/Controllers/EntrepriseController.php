@@ -30,4 +30,14 @@ class EntrepriseController extends Controller
             'trophees' => $entreprise->trophees ?? [],
         ], Response::HTTP_OK);
     }
+
+    public function index()
+    {
+        return response()->json(
+            \App\Models\Entreprise::select('id', 'nom', 'slug', 'logo', 'couleur_primaire')
+                ->whereNull('parent_id')
+                ->orderBy('nom')
+                ->get()
+        );
+    }
 }

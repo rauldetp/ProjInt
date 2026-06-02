@@ -1,199 +1,9 @@
-<template>
-    <div v-if="loading" class="loading">Chargement...</div>
-    <div v-else-if="error" class="error">{{ error }}</div>
-    <div
-        v-else
-        class="entreprise-page"
-        :style="{ '--brand-color': brandColor }"
-    >
-        <header class="page-header">
-            <div class="brand">
-                <div class="hug-logo">HUG</div>
-                <div class="divider"></div>
-                <div class="company-logo">
-                    <img
-                        v-if="entreprise.logo"
-                        :src="entreprise.logo"
-                        :alt="entreprise.nom"
-                    />
-                    <span v-else>{{ entreprise.nom }}</span>
-                </div>
-            </div>
-            <nav class="page-nav">
-                <a href="#label">Label CTS</a>
-                <a href="#trophee">Trophée de la générosité</a>
-                <a href="#faq">FAQ</a>
-                <a href="#contact">Contact</a>
-            </nav>
-        </header>
-
-        <section class="hero" :style="heroStyle">
-            <div class="hero-overlay"></div>
-            <div class="hero-content">
-                <p class="eyebrow">Collecte de sang</p>
-                <h1>{{ entreprise.nom }} x HUG</h1>
-                <p class="hero-text">
-                    Participez à la collecte organisée dans vos locaux du
-                    {{ entreprise.ville || "site partenaire" }}.
-                </p>
-                <div class="hero-actions">
-                    <button class="button secondary" @click="startQuiz">
-                        Faire le quiz
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <section class="info-panel">
-            <div class="info-card">
-                <span class="icon-dot red"></span>
-                <p>
-                    {{
-                        collecte?.sur_site
-                            ? "Sur site entreprise"
-                            : "Centre de transfusion"
-                    }}
-                </p>
-            </div>
-            <div class="info-card">
-                <span class="icon-dot red"></span>
-                <p>{{ dateRange }}</p>
-            </div>
-        </section>
-
-        <section class="stats-section">
-            <div class="stats-card">
-                <p class="stats-label">Déjà</p>
-                <p class="stats-value">
-                    {{ collecte?.nb_inscrits_estime ?? 0 }}
-                </p>
-                <p class="stats-text">collègues ont déjà passé le test !</p>
-                <button class="button primary" @click="startQuiz">
-                    Participer dès maintenant
-                </button>
-                <ReservationCTA v-if="collecte" :collecte="collecte" />
-            </div>
-        </section>
-
-        <section v-if="showQuiz" class="quiz-section">
-            <QuizResult
-                v-if="quizResultat"
-                :resultat="quizResultat"
-                :collecte="collecte"
-            />
-            <Quiz v-else @result="handleQuizResult" />
-        </section>
-
-        <section class="steps-section">
-            <h2>La démarche en trois étapes</h2>
-            <div class="steps-grid">
-                <div class="step-card">
-                    <div class="step-number">1</div>
-                    <h3>Accueil</h3>
-                    <p>
-                        Arrivez sur la collecte et rencontrez l'équipe HUG pour
-                        votre accueil.
-                    </p>
-                </div>
-                <div class="step-card">
-                    <div class="step-number">2</div>
-                    <h3>Questionnaire médical</h3>
-                    <p>
-                        Répondez au quiz de pré-qualification pour savoir si
-                        vous êtes éligible.
-                    </p>
-                </div>
-                <div class="step-card">
-                    <div class="step-number">3</div>
-                    <h3>Don</h3>
-                    <p>
-                        Donnez votre sang en toute sécurité dans un cadre
-                        médicalisé.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <section v-if="label" id="label" class="label-section">
-            <div class="label-content">
-                <div class="label-badge">
-                    <span class="label-icon">🏅</span>
-                    <div>
-                        <p class="label-tag">Label CTS</p>
-                        <h2 class="label-title">
-                            {{ entreprise.nom }} est labellisée
-                        </h2>
-                        <p class="label-desc">
-                            Cette entreprise s'engage activement dans la
-                            collecte de sang en partenariat avec les HUG. Label
-                            valide jusqu'au
-                            {{ formatDate(label.date_expiration) }}.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section
-            v-if="trophees.length > 0"
-            id="trophee"
-            class="trophees-section"
-        >
-            <h2 class="trophees-title">Trophée de la générosité</h2>
-            <p class="trophees-subtitle">
-                {{ entreprise.nom }} figure au palmarès des entreprises les plus
-                engagées.
-            </p>
-            <div class="trophees-list">
-                <div
-                    v-for="trophee in trophees"
-                    :key="trophee.id"
-                    class="trophee-card"
-                >
-                    <p class="trophee-annee">{{ trophee.annee }}</p>
-                    <p class="trophee-label">Lauréat</p>
-                    <p v-if="trophee.commentaire" class="trophee-commentaire">
-                        {{ trophee.commentaire }}
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <section class="engagement-section">
-            <div class="engagement-content">
-                <div>
-                    <p class="eyebrow">{{ entreprise.nom }} s'engage</p>
-                    <h2>Engagement collectif autour du don du sang</h2>
-                    <p>
-                        Rejoignez les équipes de {{ entreprise.nom }} et aidez à
-                        soutenir les patients grâce à un geste solidaire.
-                    </p>
-                    <ReservationCTA v-if="collecte" :collecte="collecte" />
-                </div>
-                <div class="engagement-visual"></div>
-            </div>
-        </section>
-
-        <footer class="page-footer">
-            <div class="footer-logo">HUG</div>
-            <div class="footer-links">
-                <a href="#label">Label CTS</a>
-                <a href="#trophee">Trophée de la générosité</a>
-                <a href="#temoignages">Témoignages</a>
-                <a href="#faq">FAQ</a>
-            </div>
-        </footer>
-    </div>
-</template>
-
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
-import ReservationCTA from "../components/ReservationCTA.vue";
 import Quiz from "../components/Quiz.vue";
 import QuizResult from "../components/QuizResult.vue";
 
-const quizResultat = ref(null);
 const route = useRoute();
 const entreprise = ref({});
 const collecte = ref(null);
@@ -202,6 +12,7 @@ const trophees = ref([]);
 const loading = ref(true);
 const error = ref(null);
 const showQuiz = ref(false);
+const quizResultat = ref(null);
 
 onMounted(async () => {
     try {
@@ -220,38 +31,29 @@ onMounted(async () => {
 });
 
 const brandColor = computed(
-    () => entreprise.value.couleur_primaire || "#0f766e",
+    () => entreprise.value.couleur_primaire || "#e60f48",
 );
-
-const heroStyle = computed(() => {
-    const hex = entreprise.value.couleur_primaire || "#0f766e";
-    const r = parseInt(hex.slice(1, 3), 16);
-    const g = parseInt(hex.slice(3, 5), 16);
-    const b = parseInt(hex.slice(5, 7), 16);
-    return {
-        backgroundImage: `linear-gradient(180deg, rgba(${r},${g},${b},0.6), rgba(${r},${g},${b},0.6)), url('/images/hero-default.jpg')`,
-    };
-});
 
 const dateRange = computed(() => {
     if (!collecte.value?.date_debut) return "Dates à définir";
-    const start = new Date(collecte.value.date_debut).toLocaleDateString(
-        "fr-FR",
-        { day: "2-digit", month: "2-digit", year: "numeric" },
-    );
-    const end = collecte.value.date_fin
-        ? new Date(collecte.value.date_fin).toLocaleDateString("fr-FR", {
-              day: "2-digit",
-              month: "2-digit",
-              year: "numeric",
-          })
-        : start;
-    return start === end ? start : `${start} - ${end}`;
+    const fmt = (d) =>
+        new Date(d).toLocaleDateString("fr-FR", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+        });
+    const start = fmt(collecte.value.date_debut);
+    const end = collecte.value.date_fin ? fmt(collecte.value.date_fin) : start;
+    return start === end ? `Le ${start}` : `Le ${start} et ${end}`;
 });
 
-const startQuiz = () => {
-    showQuiz.value = true;
-};
+function formatDate(date) {
+    return new Date(date).toLocaleDateString("fr-FR", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+    });
+}
 
 async function handleQuizResult(resultat) {
     quizResultat.value = resultat;
@@ -269,429 +71,810 @@ async function handleQuizResult(resultat) {
         console.error("Erreur sauvegarde quiz", e);
     }
 }
-
-function formatDate(date) {
-    return new Date(date).toLocaleDateString("fr-FR", {
-        day: "2-digit",
-        month: "long",
-        year: "numeric",
-    });
-}
 </script>
 
+<template>
+    <div v-if="loading" class="state-center">Chargement...</div>
+    <div v-else-if="error" class="state-center" style="color: #e60f48">
+        {{ error }}
+    </div>
+
+    <div v-else class="page" :style="{ '--brand': brandColor }">
+        <!-- Navbar -->
+        <header class="navbar">
+            <div class="navbar-inner">
+                <div class="navbar-brand">
+                    <RouterLink
+                        to="/"
+                        class="brand-hug"
+                        style="text-decoration: none"
+                        >HUG</RouterLink
+                    >
+                    <div class="brand-sep"></div>
+                    <span class="brand-company" :style="{ color: brandColor }">
+                        <img
+                            v-if="entreprise.logo"
+                            :src="entreprise.logo"
+                            :alt="entreprise.nom"
+                            class="company-logo-img"
+                        />
+                        <span v-else>{{ entreprise.nom }}</span>
+                    </span>
+                </div>
+                <nav class="navbar-links">
+                    <RouterLink to="/label">Label CTS</RouterLink>
+                    <RouterLink to="/trophee"
+                        >Trophée de la générosité</RouterLink
+                    >
+                    <a href="#">Coin entreprise</a>
+                    <RouterLink
+                        to="/contact"
+                        style="color: #2c4140; text-decoration: none"
+                        class="hover:opacity-60 transition"
+                        >Contact</RouterLink
+                    >
+                </nav>
+                <RouterLink
+                    to="/login"
+                    class="navbar-cta"
+                    :style="{ color: brandColor, borderColor: brandColor }"
+                >
+                    S'inscrire
+                </RouterLink>
+            </div>
+        </header>
+
+        <!-- Hero -->
+        <section class="hero">
+            <img
+                :src="'/images/Hero_Entreprise.webp'"
+                alt=""
+                class="hero-img"
+            />
+            <div
+                class="hero-overlay"
+                :style="{ background: `rgba(44,65,64,0.5)` }"
+            ></div>
+            <div class="hero-content">
+                <p class="hero-eyebrow">Collecte de sang</p>
+                <h1 class="hero-title">{{ entreprise.nom }} x HUG</h1>
+                <p class="hero-sub" v-if="collecte">
+                    Faites un geste citoyen directement sur votre lieu de
+                    travail. Testez votre éligibilité en 2 minutes et réservez
+                    votre créneau pour soutenir le Centre de Transfusion
+                    Sanguine.
+                </p>
+                <button
+                    class="hero-btn"
+                    :style="{ background: brandColor }"
+                    @click="showQuiz = true"
+                >
+                    S'inscrire →
+                </button>
+            </div>
+        </section>
+
+        <!-- Info cards -->
+        <section id="info" class="info-section">
+            <p class="info-title">Informations pratiques</p>
+            <div class="info-grid">
+                <div class="info-card">
+                    <span class="info-icon">📍</span>
+                    <p class="info-text">
+                        {{
+                            collecte?.sur_site
+                                ? (entreprise.adresse ?? entreprise.ville)
+                                : "Centre de transfusion"
+                        }}
+                    </p>
+                </div>
+                <div class="info-card">
+                    <span class="info-icon">🕐</span>
+                    <p class="info-text">
+                        {{ collecte?.horaires ?? "Horaires à définir" }}
+                    </p>
+                </div>
+                <div class="info-card">
+                    <span class="info-icon">📅</span>
+                    <p class="info-text">{{ dateRange }}</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quiz overlay -->
+        <div v-if="showQuiz" class="quiz-overlay">
+            <QuizResult
+                v-if="quizResultat"
+                :resultat="quizResultat"
+                :collecte="collecte"
+            />
+            <Quiz v-else @result="handleQuizResult" />
+            <button
+                class="quiz-close"
+                @click="
+                    showQuiz = false;
+                    quizResultat = null;
+                "
+            >
+                ✕ Fermer
+            </button>
+        </div>
+
+        <!-- Eligibility section -->
+        <section id="eligibilite" class="eligibilite-section">
+            <h2 class="eligibilite-title">Suis-je éligible ?</h2>
+            <p class="eligibilite-sub">
+                Faites le point rapidement sur les conditions principales de
+                don.
+            </p>
+            <div class="eligibilite-card" v-if="collecte">
+                <span class="eligibilite-icon">📋</span>
+                <span
+                    >Déjà
+                    <strong>{{ collecte.nb_inscrits_estime }}</strong> autres
+                    employés ont passé le test !</span
+                >
+            </div>
+            <div class="eligibilite-actions">
+                <button
+                    class="btn-filled"
+                    :style="{ background: brandColor }"
+                    @click="
+                        showQuiz = true;
+                        quizResultat = null;
+                    "
+                >
+                    Participer dès maintenant →
+                </button>
+                <button
+                    v-if="quizResultat"
+                    class="btn-outlined"
+                    :style="{ color: brandColor, borderColor: brandColor }"
+                    @click="showQuiz = true"
+                >
+                    Récapitulatif du test précédent
+                </button>
+            </div>
+        </section>
+
+        <!-- 3 steps -->
+        <section class="steps-section">
+            <h2 class="steps-title">La démarche en trois étapes</h2>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div
+                        class="step-num"
+                        :style="{
+                            color: brandColor,
+                            background: `${brandColor}18`,
+                        }"
+                    >
+                        1
+                    </div>
+                    <h3 class="step-heading">Accueil</h3>
+                    <p class="step-body">
+                        Passez notre quiz d'éligibilité rapide en 9 questions
+                        conçu avec le CTS pour lever vos doutes en toute
+                        confidentialité avant de vous inscrire.
+                    </p>
+                </div>
+                <div class="step-card">
+                    <div
+                        class="step-num"
+                        :style="{
+                            color: brandColor,
+                            background: `${brandColor}18`,
+                        }"
+                    >
+                        2
+                    </div>
+                    <h3 class="step-heading">Questionnaire médical</h3>
+                    <p class="step-body">
+                        Une fois votre créneau réservé, vous remplirez le
+                        questionnaire officiel des HUG qui sera validé sur place
+                        par l'équipe médicale.
+                    </p>
+                </div>
+                <div class="step-card">
+                    <div
+                        class="step-num"
+                        :style="{
+                            color: brandColor,
+                            background: `${brandColor}18`,
+                        }"
+                    >
+                        3
+                    </div>
+                    <h3 class="step-heading">Don</h3>
+                    <p class="step-body">
+                        Le jour J, vous êtes pris en charge dans vos locaux. Le
+                        prélèvement dure moins de 10 minutes et se termine par
+                        une collation conviviale offerte par le personnel.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Engagement -->
+        <section class="engagement-section">
+            <div class="engagement-inner">
+                <div class="engagement-text">
+                    <h2 class="engagement-title">
+                        {{ entreprise.nom }} s'engage
+                    </h2>
+                    <p class="engagement-body">
+                        Dans le cadre de notre politique de Responsabilité
+                        Sociale d'Entreprise (RSE),
+                        {{ entreprise.nom }} est fière de s'associer
+                        historiquement aux Hôpitaux Universitaires de Genève.
+                        Parce que votre temps est précieux, la direction libère
+                        chaque collaborateur volontaire sur son temps de travail
+                        pour lui permettre d'accomplir ce geste solidaire
+                        essentiel.
+                    </p>
+                    <button
+                        class="btn-filled"
+                        :style="{ background: brandColor }"
+                        @click="
+                            showQuiz = true;
+                            quizResultat = null;
+                        "
+                    >
+                        S'inscrire à la collecte
+                    </button>
+                </div>
+                <div class="engagement-logo-card">
+                    <img
+                        v-if="entreprise.logo"
+                        :src="entreprise.logo"
+                        :alt="entreprise.nom"
+                        class="engagement-logo"
+                    />
+                    <span
+                        v-else
+                        class="engagement-logo-text"
+                        :style="{ color: brandColor }"
+                        >{{ entreprise.nom }}</span
+                    >
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="site-footer">
+            <div class="footer-inner">
+                <div class="footer-grid">
+                    <div>
+                        <span class="footer-hug">HUG</span>
+                        <p class="footer-tagline">
+                            Hôpitaux<br />Universitaires<br />Genève
+                        </p>
+                    </div>
+                    <div>
+                        <p class="footer-col-title">Pages</p>
+                        <ul>
+                            <li>
+                                <RouterLink
+                                    to="/label"
+                                    style="
+                                        font-size: 1rem;
+                                        color: white;
+                                        text-decoration: none;
+                                    "
+                                    class="hover:opacity-70 transition"
+                                    >Label CTS</RouterLink
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="/#trophee"
+                                    style="
+                                        font-size: 1rem;
+                                        color: white;
+                                        text-decoration: none;
+                                    "
+                                    class="hover:opacity-70 transition"
+                                    >Trophée de la générosité</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                    href="/#temoignages"
+                                    style="
+                                        font-size: 1rem;
+                                        color: white;
+                                        text-decoration: none;
+                                    "
+                                    class="hover:opacity-70 transition"
+                                    >Témoignages</a
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <p class="footer-col-title">Support</p>
+                        <ul>
+                            <li>
+                                <a
+                                    href="/#faq"
+                                    style="
+                                        font-size: 1rem;
+                                        color: white;
+                                        text-decoration: none;
+                                    "
+                                    class="hover:opacity-70 transition"
+                                    >FAQ</a
+                                >
+                            </li>
+                            <li><a href="#">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <p class="footer-col-title">Mentions légales</p>
+                        <ul>
+                            <li>
+                                <a href="#">Politique de confidentialité</a>
+                            </li>
+                            <li><a href="#">Conditions générales</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-copy">
+                    <p>
+                        © {{ new Date().getFullYear() }} Hôpitaux Universitaire
+                        Genève. Tous droits réservés.
+                    </p>
+                </div>
+            </div>
+        </footer>
+    </div>
+</template>
+
 <style scoped>
-.loading,
-.error {
+.state-center {
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    font-size: 1.25rem;
-    color: #64748b;
+    font-size: 1.1rem;
+    color: #497371;
 }
 
-.entreprise-page {
-    font-family: Inter, ui-sans-serif, system-ui, sans-serif;
-    color: #0f172a;
-    background: #f8fafc;
+.page {
+    font-family: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
+    background: white;
 }
 
-.page-header {
+/* Navbar */
+.navbar {
+    background: white;
+    border-bottom: 1px solid #f2f4f3;
+    height: 76px;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+.navbar-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 1rem;
-    padding: 1.5rem 2rem;
-    background: white;
-    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
-    position: sticky;
-    top: 0;
-    z-index: 20;
+    gap: 2rem;
 }
-
-.brand {
+.navbar-brand {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.5rem;
+    flex-shrink: 0;
 }
-
-.hug-logo,
-.footer-logo {
+.brand-hug {
+    font-weight: 800;
+    font-size: 1.25rem;
+    color: #2c4140;
+}
+.brand-sep {
+    width: 1px;
+    height: 20px;
+    background: rgba(44, 65, 64, 0.3);
+    margin: 0 0.5rem;
+}
+.brand-company {
     font-weight: 700;
     font-size: 1.1rem;
-    color: var(--brand-color);
-}
-
-.company-logo {
     display: flex;
     align-items: center;
-    min-width: 140px;
-    min-height: 40px;
 }
-.company-logo img {
-    max-height: 40px;
+.company-logo-img {
+    max-height: 36px;
     object-fit: contain;
 }
-.company-logo span {
-    font-weight: 700;
-    font-size: 1rem;
-}
-.divider {
-    width: 1px;
-    height: 40px;
-    background: #e2e8f0;
-}
-
-.page-nav {
+.navbar-links {
     display: flex;
     align-items: center;
     gap: 1.5rem;
-    flex-wrap: wrap;
 }
-.page-nav a,
-.footer-links a {
-    color: #334155;
+.navbar-links a {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #2c4140;
     text-decoration: none;
-    font-size: 0.95rem;
+    transition: opacity 0.15s;
 }
-
-.button {
-    border: none;
-    border-radius: 9999px;
-    padding: 0.85rem 1.5rem;
+.navbar-links a:hover {
+    opacity: 0.6;
+}
+.navbar-cta {
+    font-size: 1rem;
     font-weight: 600;
-    cursor: pointer;
+    border: 2px solid;
+    border-radius: 9999px;
+    padding: 0.4rem 1.25rem;
+    text-decoration: none;
+    transition: opacity 0.15s;
+    flex-shrink: 0;
 }
-.button.primary {
-    background: var(--brand-color);
-    color: white;
-}
-.button.secondary {
-    background: white;
-    color: var(--brand-color);
-    border: 1px solid var(--brand-color);
+.navbar-cta:hover {
+    opacity: 0.75;
 }
 
+/* Hero */
 .hero {
-    min-height: 520px;
-    background-size: cover;
-    background-position: center;
     position: relative;
+    height: 420px;
     display: flex;
-    align-items: center;
-    color: white;
+    align-items: flex-end;
+    padding-bottom: 3rem;
+    overflow: hidden;
+    background: #2c4140;
 }
-
+.hero-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.65;
+}
 .hero-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(15, 23, 42, 0.2);
 }
-
 .hero-content {
     position: relative;
-    max-width: 760px;
-    padding: 3rem 2rem;
+    max-width: 1280px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 2rem;
     z-index: 1;
 }
-
-.eyebrow {
+.hero-eyebrow {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.8);
     text-transform: uppercase;
-    letter-spacing: 0.25em;
-    font-size: 0.8rem;
-    margin-bottom: 0.75rem;
-    color: #d1fae5;
+    letter-spacing: 0.15em;
+    margin: 0 0 0.5rem;
+}
+.hero-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: white;
+    margin: 0 0 1rem;
+    line-height: 1.15;
+}
+.hero-sub {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.85);
+    max-width: 520px;
+    margin: 0 0 1.5rem;
+    line-height: 1.65;
+}
+.hero-btn {
+    font-size: 1rem;
+    font-weight: 600;
+    color: white;
+    border: none;
+    border-radius: 9999px;
+    padding: 0.75rem 1.75rem;
+    cursor: pointer;
+    transition: opacity 0.15s;
+}
+.hero-btn:hover {
+    opacity: 0.85;
 }
 
-.hero h1 {
-    font-size: clamp(2.5rem, 4vw, 4rem);
-    line-height: 1.05;
-    margin-bottom: 1rem;
-}
-.hero-text {
-    max-width: 500px;
-    margin-bottom: 1.5rem;
-    color: #e2e8f0;
-}
-.hero-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-}
-
-.info-panel {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1rem;
-    padding: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.info-card {
-    background: white;
-    border-radius: 1rem;
-    padding: 1.5rem;
-    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.icon-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    flex-shrink: 0;
-}
-.icon-dot.red {
-    background: #ef4444;
-}
-
-.stats-section {
-    background: linear-gradient(
-        180deg,
-        rgba(15, 118, 110, 0.12),
-        rgba(255, 255, 255, 0.9)
-    );
+/* Info section */
+.info-section {
     padding: 3rem 2rem;
+    max-width: 1280px;
+    margin: 0 auto;
+}
+.info-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #2c4140;
+    text-align: center;
+    margin: 0 0 1.5rem;
+}
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+.info-card {
+    background: #f2f4f3;
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+}
+.info-icon {
+    font-size: 1.25rem;
+}
+.info-text {
+    font-size: 0.9rem;
+    color: #497371;
+    margin: 0;
 }
 
-.stats-card {
-    max-width: 760px;
-    margin: 0 auto;
+/* Quiz overlay */
+.quiz-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
     background: white;
-    border-radius: 1.5rem;
-    padding: 2rem;
-    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
-    text-align: center;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    justify-content: center;
+    padding: 2rem;
+}
+.quiz-close {
+    position: fixed;
+    top: 1.25rem;
+    left: 1.25rem;
+    background: none;
+    border: none;
+    font-size: 0.95rem;
+    color: #e60f48;
+    cursor: pointer;
+    font-weight: 600;
 }
 
-.stats-label {
-    text-transform: uppercase;
-    letter-spacing: 0.18em;
-    color: #64748b;
-    margin: 0;
-}
-.stats-value {
-    font-size: 3rem;
-    font-weight: 700;
-    color: #0f172a;
-    margin: 0;
-}
-.stats-text {
-    color: #64748b;
-    margin: 0;
-}
-
-.steps-section {
-    padding: 3rem 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-.steps-section h2 {
+/* Eligibility */
+.eligibilite-section {
+    padding: 4rem 2rem;
     text-align: center;
+    background: linear-gradient(135deg, #65c6c1, #93cfa9);
+}
+.eligibilite-title {
     font-size: 2rem;
+    font-weight: 700;
+    color: #2c4140;
+    margin: 0 0 0.75rem;
+}
+.eligibilite-sub {
+    font-size: 1rem;
+    color: #2c4140;
+    opacity: 0.8;
+    margin: 0 0 2rem;
+}
+.eligibilite-card {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: white;
+    border-radius: 0.75rem;
+    padding: 0.85rem 1.5rem;
+    font-size: 0.95rem;
+    color: #2c4140;
     margin-bottom: 2rem;
+}
+.eligibilite-icon {
+    font-size: 1.1rem;
+}
+.eligibilite-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+.btn-filled {
+    font-size: 1rem;
+    font-weight: 600;
+    color: white;
+    border: none;
+    border-radius: 9999px;
+    padding: 0.8rem 1.75rem;
+    cursor: pointer;
+    transition: opacity 0.15s;
+}
+.btn-filled:hover {
+    opacity: 0.85;
+}
+.btn-outlined {
+    font-size: 1rem;
+    font-weight: 600;
+    border: 2px solid;
+    border-radius: 9999px;
+    padding: 0.8rem 1.75rem;
+    background: white;
+    cursor: pointer;
+    transition: opacity 0.15s;
+}
+.btn-outlined:hover {
+    opacity: 0.75;
+}
+
+/* Steps */
+.steps-section {
+    background: #f2f4f3;
+    padding: 4.5rem 2rem;
+}
+.steps-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2c4140;
+    text-align: center;
+    margin: 0 0 2.5rem;
 }
 .steps-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 1.5rem;
+    max-width: 1100px;
+    margin: 0 auto;
 }
 .step-card {
     background: white;
-    border-radius: 1.5rem;
+    border-radius: 1rem;
     padding: 2rem;
-    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
 }
-
-.step-number {
-    width: 2.5rem;
-    height: 2.5rem;
+.step-num {
+    width: 2.25rem;
+    height: 2.25rem;
     border-radius: 9999px;
-    display: grid;
-    place-items: center;
-    margin-bottom: 1rem;
-    color: white;
-    background: var(--brand-color);
-    font-weight: 700;
-}
-
-.step-card h3 {
-    margin-bottom: 0.75rem;
-}
-
-.label-section {
-    padding: 3rem 2rem;
-    background: linear-gradient(135deg, #f0fdf4, #dcfce7);
-}
-.label-content {
-    max-width: 1200px;
-    margin: 0 auto;
-}
-.label-badge {
     display: flex;
-    align-items: flex-start;
-    gap: 2rem;
-    background: white;
-    border-radius: 1.5rem;
-    padding: 2rem 2.5rem;
-    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
-    border-left: 6px solid #16a34a;
-}
-.label-icon {
-    font-size: 3rem;
-    flex-shrink: 0;
-}
-.label-tag {
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    color: #16a34a;
+    align-items: center;
+    justify-content: center;
     font-weight: 700;
-    margin: 0 0 0.5rem;
+    font-size: 1rem;
+    margin-bottom: 1rem;
 }
-.label-title {
-    font-size: 1.5rem;
+.step-heading {
+    font-size: 1.1rem;
     font-weight: 700;
-    color: #0f172a;
+    color: #2c4140;
     margin: 0 0 0.75rem;
 }
-.label-desc {
-    color: #475569;
+.step-body {
+    font-size: 0.9rem;
+    color: #497371;
+    line-height: 1.65;
     margin: 0;
-    line-height: 1.6;
 }
 
-.trophees-section {
-    padding: 3rem 2rem;
-    background: #0f172a;
-    color: white;
-    text-align: center;
+/* Engagement */
+.engagement-section {
+    background: white;
+    padding: 4.5rem 2rem;
 }
-.trophees-title {
+.engagement-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+}
+.engagement-title {
     font-size: 2rem;
     font-weight: 700;
-    margin: 0 0 0.75rem;
+    color: #2c4140;
+    margin: 0 0 1rem;
 }
-.trophees-subtitle {
-    color: #94a3b8;
-    margin: 0 0 2.5rem;
+.engagement-body {
     font-size: 1rem;
+    color: #497371;
+    line-height: 1.7;
+    margin: 0 0 2rem;
 }
-.trophees-list {
+.engagement-logo-card {
+    background: #f2f4f3;
+    border-radius: 1rem;
+    padding: 3rem;
     display: flex;
+    align-items: center;
     justify-content: center;
-    flex-wrap: wrap;
-    gap: 1.5rem;
-    max-width: 900px;
+    min-height: 200px;
+}
+.engagement-logo {
+    max-width: 200px;
+    max-height: 80px;
+    object-fit: contain;
+}
+.engagement-logo-text {
+    font-size: 2rem;
+    font-weight: 800;
+}
+
+/* Footer */
+.site-footer {
+    background: #2c4140;
+    padding: 3.5rem 0 2.5rem;
+}
+.footer-inner {
+    max-width: 1280px;
     margin: 0 auto;
+    padding: 0 2rem;
 }
-.trophee-card {
-    background: #1e293b;
-    border-radius: 1.25rem;
-    padding: 1.75rem 2.5rem;
-    border: 1px solid #334155;
-    min-width: 160px;
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2.5rem;
+    margin-bottom: 3rem;
 }
-.trophee-annee {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #fbbf24;
+.footer-hug {
+    display: block;
+    font-weight: 800;
+    font-size: 1.5rem;
+    color: white;
+    margin-bottom: 0.25rem;
+}
+.footer-tagline {
+    font-size: 0.75rem;
+    color: #93cfa9;
+    line-height: 1.6;
     margin: 0;
 }
-.trophee-label {
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    color: #94a3b8;
-    margin: 0.25rem 0 0;
-}
-.trophee-commentaire {
-    font-size: 0.85rem;
-    color: #64748b;
-    margin: 0.75rem 0 0;
-    font-style: italic;
-}
-
-.engagement-section {
-    padding: 3rem 2rem;
-    background: white;
-}
-
-.engagement-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    gap: 2rem;
-    align-items: center;
-}
-
-.engagement-visual {
-    min-height: 320px;
-    border-radius: 1.5rem;
-    background: linear-gradient(
-        180deg,
-        rgba(15, 118, 110, 0.25),
-        rgba(255, 255, 255, 0.75)
-    );
-}
-
-.page-footer {
-    padding: 2rem;
-    background: #0f172a;
+.footer-col-title {
+    font-weight: 700;
+    font-size: 1.5rem;
     color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 2rem;
+    margin: 0 0 1.25rem;
 }
-
-.footer-links {
+.site-footer ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
     display: flex;
-    gap: 1.5rem;
-    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 0.75rem;
 }
-.page-footer a {
-    color: #cbd5e1;
+.site-footer ul li a {
+    font-size: 1rem;
+    color: white;
     text-decoration: none;
+    transition: opacity 0.15s;
+}
+.site-footer ul li a:hover {
+    opacity: 0.7;
+}
+.footer-copy {
+    border-top: 1px solid rgba(242, 244, 243, 0.15);
+    padding-top: 1.5rem;
+    text-align: center;
+}
+.footer-copy p {
+    font-size: 1rem;
+    color: #f2f4f3;
+    margin: 0;
 }
 
-@media (max-width: 980px) {
-    .info-panel,
+@media (max-width: 900px) {
+    .info-grid,
     .steps-grid,
-    .engagement-content {
+    .engagement-inner {
         grid-template-columns: 1fr;
     }
-    .page-header {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    .page-nav {
-        justify-content: flex-start;
-    }
-}
-
-@media (max-width: 680px) {
-    .hero {
-        min-height: 420px;
-    }
-    .hero-content {
-        padding: 2rem 1.25rem;
-    }
-    .page-header,
-    .stats-section,
-    .steps-section,
-    .engagement-section,
-    .page-footer {
-        padding-left: 1rem;
-        padding-right: 1rem;
+    .navbar-links {
+        display: none;
     }
 }
 </style>

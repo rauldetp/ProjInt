@@ -35,4 +35,22 @@ class AdminTropheeController extends Controller
         $trophee->delete();
         return response()->json(['message' => 'Trophée supprimé.']);
     }
+
+    public function palmares()
+    {
+        $trophees = Trophee::with('entreprise')
+            ->orderBy('annee', 'desc')
+            ->get()
+            ->groupBy('annee')
+            ->map(fn ($items, $annee) => [
+                'annee'    => (int) $annee,
+                'laureats' => $items->map(fn ($t) => [
+                    'entreprise'  => $t->entreprise?->nom,
+                    'commentaire' => $t->commentaire,
+                ])->values(),
+            ])
+            ->values();
+
+        return response()->json($trophees);
+    }
 }
