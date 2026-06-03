@@ -79,17 +79,17 @@ onMounted(() => {
         </header>
 
         <!-- Hero -->
-        <section style="background: #2c4140; padding: 72px 0 56px">
+        <section style="background: linear-gradient(135deg, #65c6c1, #93cfa9); padding: 72px 0 56px">
             <div class="max-w-4xl mx-auto px-8">
                 <p
                     class="font-semibold mb-3 uppercase tracking-widest"
-                    style="font-size: 13px; color: #93cfa9"
+                    style="font-size: 13px; color: #2c4140; opacity: 0.65"
                 >
                     Hôpitaux universitaires de Genève
                 </p>
                 <h1
-                    class="font-bold text-white"
-                    style="font-size: 48px; line-height: 1.2"
+                    class="font-bold"
+                    style="font-size: 48px; line-height: 1.2; color: #2c4140"
                 >
                     Contacter les HUG
                 </h1>

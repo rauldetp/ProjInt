@@ -167,24 +167,25 @@ onMounted(() => {
         </header>
 
         <!-- Hero -->
-        <section style="background: #2c4140; padding: 64px 0 52px">
+        <section style="background: linear-gradient(135deg, #65c6c1, #93cfa9); padding: 64px 0 52px">
             <div class="max-w-4xl mx-auto px-8">
                 <p
                     class="font-semibold mb-3 uppercase tracking-widest"
-                    style="font-size: 13px; color: #93cfa9"
+                    style="font-size: 13px; color: #2c4140; opacity: 0.65"
                 >
                     Aide & support
                 </p>
                 <h1
-                    class="font-bold text-white mb-4"
-                    style="font-size: 48px; line-height: 1.2"
+                    class="font-bold mb-4"
+                    style="font-size: 48px; line-height: 1.2; color: #2c4140"
                 >
                     Foire aux questions
                 </h1>
                 <p
                     style="
                         font-size: 17px;
-                        color: rgba(255, 255, 255, 0.7);
+                        color: #2c4140;
+                        opacity: 0.75;
                         line-height: 1.6;
                         max-width: 520px;
                     "
