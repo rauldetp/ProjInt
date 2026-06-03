@@ -32,7 +32,7 @@
                     </template>
                     <template v-if="auth.isCoordinateur">
                         <RouterLink
-                            to="/coordinateur"
+                            :to="auth.entrepriseSlug ? `/entreprise/${auth.entrepriseSlug}/espace` : '/login'"
                             exact-active-class="active"
                             >Vue globale</RouterLink
                         >

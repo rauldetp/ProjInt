@@ -24,11 +24,14 @@ class AdminController extends Controller
             $q->where('statut', 'validee');
         })->count();
 
+        $collectesEnAttente = Collecte::where('statut', 'en_attente')->count();
+
         return response()->json([
-            'collectes_actives'      => $collectesActives,
-            'total_inscrits'         => $totalInscrits,
-            'total_dons_realises'    => $totalDons,
-            'entreprises_partenaires'=> $entreprisesPartenaires,
+            'collectes_actives'       => $collectesActives,
+            'collectes_en_attente'    => $collectesEnAttente,
+            'total_inscrits'          => $totalInscrits,
+            'total_dons_realises'     => $totalDons,
+            'entreprises_partenaires' => $entreprisesPartenaires,
         ]);
     }
 

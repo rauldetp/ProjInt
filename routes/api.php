@@ -53,4 +53,5 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function ()
 // Coordinateur uniquement
 Route::middleware(['auth:sanctum', 'coordinateur'])->prefix('coordinateur')->group(function () {
     Route::get('/collectes', [CoordinateurController::class, 'collectes']);
+    Route::post('/collectes', [CoordinateurController::class, 'store']);
 });

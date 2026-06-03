@@ -6,7 +6,7 @@ import { useAuthStore } from "../stores/auth";
 const auth = useAuthStore();
 const router = useRouter();
 
-const mode = ref("login"); // 'login' | 'register'
+const mode = ref("login"); // 'login' | 'register' | 'admin'
 const step = ref(1); // 1 | 2 | 3
 
 // --- Connexion ---
@@ -58,6 +58,13 @@ function backToLogin() {
     errorMsg.value = "";
 }
 
+function switchToAdmin() {
+    mode.value = "admin";
+    errorMsg.value = "";
+    email.value = "";
+    password.value = "";
+}
+
 function nextStep() {
     errorMsg.value = "";
     if (step.value === 1) {
@@ -85,8 +92,10 @@ async function handleLogin() {
     try {
         await auth.login(email.value, password.value);
         if (auth.isAdmin) router.push("/admin");
-        else if (auth.isCoordinateur) router.push("/coordinateur");
-        else router.push("/");
+        else if (auth.isCoordinateur) {
+            const slug = auth.entrepriseSlug;
+            router.push(slug ? `/entreprise/${slug}` : "/coordinateur");
+        } else router.push("/");
     } catch (e) {
         errorMsg.value = "Email ou mot de passe incorrect.";
     } finally {
@@ -186,6 +195,14 @@ const selectStyle = inputStyle + `
                     </p>
                     <p style="font-size: 16px; color: rgba(44,65,64,0.7); line-height: 1.7; max-width: 340px">
                         Rejoignez les entreprises genevoises engagées pour le don du sang et donnez un impact concret à votre politique RSE.
+                    </p>
+                </template>
+                <template v-else-if="mode === 'admin'">
+                    <p class="font-black mb-4" style="font-size: 36px; color: #2c4140; line-height: 1.2">
+                        Administration<br />HUG — CTS
+                    </p>
+                    <p style="font-size: 15px; color: rgba(44,65,64,0.65); line-height: 1.7; max-width: 300px">
+                        Accès réservé à l'équipe du Centre de Transfusion Sanguine des Hôpitaux Universitaires de Genève.
                     </p>
                 </template>
                 <template v-else>
@@ -326,10 +343,75 @@ const selectStyle = inputStyle + `
                     >
                         Rejoindre le programme →
                     </button>
+
+                    <!-- Lien admin discret -->
+                    <div class="text-center mt-8">
+                        <button
+                            @click="switchToAdmin"
+                            style="background: none; border: none; cursor: pointer; font-size: 12px; color: #c0cac9; text-decoration: underline; text-underline-offset: 3px"
+                            class="hover:opacity-70 transition"
+                        >
+                            Accès administrateur
+                        </button>
+                    </div>
+                </template>
+
+                <!-- ══════════════════ ADMIN ══════════════════ -->
+                <template v-if="mode === 'admin'">
+                    <button
+                        @click="backToLogin"
+                        class="flex items-center gap-2 mb-6 transition hover:opacity-60"
+                        style="background: none; border: none; cursor: pointer; padding: 0; color: #497371; font-size: 14px"
+                    >
+                        ← Retour
+                    </button>
+
+                    <h1 class="font-bold mb-1" style="font-size: 26px; color: #2c4140">
+                        Administration
+                    </h1>
+                    <p class="mb-8" style="font-size: 15px; color: #497371">
+                        Espace réservé à l'équipe CTS des HUG.
+                    </p>
+
+                    <form @submit.prevent="handleLogin" class="flex flex-col gap-5">
+                        <div>
+                            <label class="block font-semibold mb-1" style="font-size: 14px; color: #2c4140">
+                                Adresse email
+                            </label>
+                            <input
+                                v-model="email"
+                                type="email"
+                                required
+                                placeholder="admin@cts-hug.ch"
+                                :style="inputStyle"
+                            />
+                        </div>
+                        <div>
+                            <label class="block font-semibold mb-1" style="font-size: 14px; color: #2c4140">
+                                Mot de passe
+                            </label>
+                            <input
+                                v-model="password"
+                                type="password"
+                                required
+                                placeholder="••••••••"
+                                :style="inputStyle"
+                            />
+                        </div>
+                        <button
+                            type="submit"
+                            :disabled="loading"
+                            class="w-full text-white font-semibold rounded-full py-3 transition hover:opacity-80"
+                            style="background: #2c4140; font-size: 16px; border: none; cursor: pointer; margin-top: 4px"
+                            :style="loading ? 'opacity:0.6;cursor:not-allowed' : ''"
+                        >
+                            {{ loading ? "Connexion…" : "Accéder au panneau" }}
+                        </button>
+                    </form>
                 </template>
 
                 <!-- ══════════════════ INSCRIPTION ══════════════════ -->
-                <template v-else>
+                <template v-else-if="mode === 'register'">
                     <!-- Header étape -->
                     <button
                         @click="step > 1 ? step-- : backToLogin()"

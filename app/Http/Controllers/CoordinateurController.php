@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Collecte;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class CoordinateurController extends Controller
 {
@@ -23,5 +25,34 @@ class CoordinateurController extends Controller
             'entreprise' => $coordinateur->entreprise,
             'collectes'  => $collectes,
         ]);
+    }
+
+    public function store(Request $request)
+    {
+        $coordinateur = $request->user()->coordinateur;
+
+        if (!$coordinateur) {
+            return response()->json(['error' => 'Non autorisé'], 403);
+        }
+
+        $data = $request->validate([
+            'titre'          => 'nullable|string|max:255',
+            'date_debut'     => 'required|date',
+            'date_fin'       => 'nullable|date|after_or_equal:date_debut',
+            'sur_site'       => 'required|boolean',
+            'lieu'           => 'nullable|string|max:255',
+            'horaires'       => 'nullable|string|max:255',
+            'objectif_dons'  => 'nullable|integer|min:1',
+        ]);
+
+        $data['entreprise_id']  = $coordinateur->entreprise_id;
+        $data['coordinateur_id'] = $coordinateur->id;
+        $data['statut']         = 'en_attente';
+        $data['active']         = false;
+        $data['nb_inscrits_estime'] = 0;
+
+        $collecte = Collecte::create($data);
+
+        return response()->json($collecte->load('entreprise'), Response::HTTP_CREATED);
     }
 }

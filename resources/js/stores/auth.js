@@ -8,6 +8,8 @@ export const useAuthStore = defineStore('auth', () => {
   const isLoggedIn = computed(() => !!token.value)
   const isAdmin = computed(() => user.value?.role === 'admin')
   const isCoordinateur = computed(() => user.value?.role === 'coordinateur')
+  const entrepriseSlug = computed(() => user.value?.coordinateur?.entreprise?.slug ?? null)
+  const entrepriseBrand = computed(() => user.value?.coordinateur?.entreprise ?? null)
 
   async function login(email, password) {
     const res = await fetch('/api/login', {
@@ -49,5 +51,5 @@ export const useAuthStore = defineStore('auth', () => {
     localStorage.removeItem('token')
   }
 
-  return { user, token, isLoggedIn, isAdmin, isCoordinateur, login, fetchMe, logout }
+  return { user, token, isLoggedIn, isAdmin, isCoordinateur, entrepriseSlug, entrepriseBrand, login, fetchMe, logout }
 })

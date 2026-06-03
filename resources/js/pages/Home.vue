@@ -1,6 +1,8 @@
 <script setup>
 import { ref, onMounted } from "vue";
+import { useCoinEntrepriseLink } from "../composables/useCoinEntrepriseLink";
 
+const { coinEntrepriseLink } = useCoinEntrepriseLink();
 const bannerVisible = ref(true);
 const openFaq = ref(null);
 
@@ -97,7 +99,7 @@ onMounted(() => {
                     <nav class="hidden md:flex items-center gap-7 text-base font-medium">
                         <RouterLink to="/label" class="hover:opacity-70 transition" style="color:#2c4140; text-decoration:none;">Label CTS</RouterLink>
                         <RouterLink to="/trophee" class="hover:opacity-70 transition" style="color:#2c4140; text-decoration:none;">Trophée de la générosité</RouterLink>
-                        <RouterLink to="/coordinateur" class="hover:opacity-70 transition" style="color:#2c4140; text-decoration:none;">Coin entreprise</RouterLink>
+                        <RouterLink :to="coinEntrepriseLink" class="hover:opacity-70 transition" style="color:#2c4140; text-decoration:none;">Coin entreprise</RouterLink>
                         <RouterLink to="/contact" style="color: #2c4140; text-decoration: none" class="hover:opacity-60 transition">Contact</RouterLink>                    </nav>
                     <!-- CTA button -->
                     <RouterLink
