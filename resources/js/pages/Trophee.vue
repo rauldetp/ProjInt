@@ -1,5 +1,8 @@
 <script setup>
 import { ref, onMounted } from "vue";
+import { useCoinEntrepriseLink } from "../composables/useCoinEntrepriseLink";
+
+const { coinEntrepriseLink } = useCoinEntrepriseLink();
 
 const palmares = ref([]);
 const palmaresLoading = ref(true);
@@ -123,7 +126,7 @@ onMounted(async () => {
                         >Trophée de la générosité</RouterLink
                     >
                     <RouterLink
-                        to="/coordinateur"
+                        :to="coinEntrepriseLink"
                         style="color: #2c4140; text-decoration: none"
                         class="hover:opacity-60 transition"
                         >Coin entreprise</RouterLink
@@ -187,11 +190,7 @@ onMounted(async () => {
                 <RouterLink
                     to="/login"
                     class="inline-block text-white font-semibold rounded-full px-7 py-3 transition hover:opacity-80"
-                    style="
-                        background: #e60f48;
-                        font-size: 16px;
-                        text-decoration: none;
-                    "
+                    style="background: #e60f48; font-size: 16px; text-decoration: none"
                 >
                     Candidater pour 2026 →
                 </RouterLink>

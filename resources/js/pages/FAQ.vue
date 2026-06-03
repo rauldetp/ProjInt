@@ -1,6 +1,8 @@
 <script setup>
 import { ref, onMounted } from "vue";
+import { useCoinEntrepriseLink } from "../composables/useCoinEntrepriseLink";
 
+const { coinEntrepriseLink } = useCoinEntrepriseLink();
 const openFaq = ref(null);
 
 function toggle(id) {
@@ -140,7 +142,7 @@ onMounted(() => {
                         >Trophée de la générosité</RouterLink
                     >
                     <RouterLink
-                        to="/coordinateur"
+                        :to="coinEntrepriseLink"
                         style="color: #2c4140; text-decoration: none"
                         class="hover:opacity-60 transition"
                         >Coin entreprise</RouterLink

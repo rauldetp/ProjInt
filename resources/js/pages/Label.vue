@@ -1,5 +1,8 @@
 <script setup>
 import { onMounted } from "vue";
+import { useCoinEntrepriseLink } from "../composables/useCoinEntrepriseLink";
+
+const { coinEntrepriseLink } = useCoinEntrepriseLink();
 
 onMounted(() => {
     document.title = "Label CTS — HUG";
@@ -50,7 +53,7 @@ onMounted(() => {
                         >Trophée de la générosité</RouterLink
                     >
                     <RouterLink
-                        to="/coordinateur"
+                        :to="coinEntrepriseLink"
                         style="color: #2c4140; text-decoration: none"
                         class="hover:opacity-60 transition"
                         >Coin entreprise</RouterLink

@@ -7,6 +7,7 @@ import Trophee from './pages/Trophee.vue'
 import AdminLayout from './layouts/AdminLayout.vue'
 import Contact from './pages/Contact.vue'
 import FAQ from './pages/FAQ.vue'
+import InscriptionCollecte from './pages/InscriptionCollecte.vue'
 import { useAuthStore } from './stores/auth'
 
 const routes = [
@@ -18,6 +19,11 @@ const routes = [
     { path: '/faq', component: FAQ },
     { path: '/entreprises', component: Entreprises },
     { path: '/entreprise/:slug', component: Entreprise },
+    { path: '/entreprise/:slug/inscription', component: InscriptionCollecte },
+    { path: '/entreprise/:slug/label', component: () => import('./pages/CoLabel.vue') },
+    { path: '/entreprise/:slug/trophee', component: () => import('./pages/CoTrophee.vue') },
+    { path: '/entreprise/:slug/espace', component: () => import('./pages/CoEspaceEntreprise.vue'), meta: { requiresAuth: true, role: 'coordinateur' } },
+    { path: '/entreprise/:slug/nouvelle-collecte', component: () => import('./pages/CoNouvelleCollecte.vue'), meta: { requiresAuth: true, role: 'coordinateur' } },
     {
         path: '/admin',
         component: AdminLayout,
@@ -50,8 +56,8 @@ export function setupGuards(router) {
     router.beforeEach((to) => {
         const auth = useAuthStore()
         if (to.meta.requiresAuth && !auth.isLoggedIn) return '/login'
-        if (to.meta.role === 'admin' && !auth.isAdmin) return auth.isCoordinateur ? '/coordinateur' : '/login'
+        if (to.meta.role === 'admin' && !auth.isAdmin) return auth.isCoordinateur ? `/entreprise/${auth.entrepriseSlug}/espace` : '/login'
         if (to.meta.role === 'coordinateur' && !auth.isCoordinateur) return auth.isAdmin ? '/admin' : '/login'
-        if (to.path === '/login' && auth.isLoggedIn) return auth.isAdmin ? '/admin' : '/coordinateur'
+        if (to.path === '/login' && auth.isLoggedIn) return auth.isAdmin ? '/admin' : `/entreprise/${auth.entrepriseSlug}/espace`
     })
 }

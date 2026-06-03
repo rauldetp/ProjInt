@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Collecte extends Model
 {
     protected $fillable = [
+        'titre',
         'entreprise_id',
         'admin_id',
         'coordinateur_id',
