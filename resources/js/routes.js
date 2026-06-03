@@ -6,6 +6,7 @@ import Label from './pages/Label.vue'
 import Trophee from './pages/Trophee.vue'
 import AdminLayout from './layouts/AdminLayout.vue'
 import Contact from './pages/Contact.vue'
+import FAQ from './pages/FAQ.vue'
 import { useAuthStore } from './stores/auth'
 
 const routes = [
@@ -14,6 +15,7 @@ const routes = [
     { path: '/label', component: Label },
     { path: '/trophee', component: Trophee },
     { path: '/contact', component: Contact },
+    { path: '/faq', component: FAQ },
     { path: '/entreprises', component: Entreprises },
     { path: '/entreprise/:slug', component: Entreprise },
     {

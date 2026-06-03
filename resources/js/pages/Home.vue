@@ -5,12 +5,30 @@ const bannerVisible = ref(true);
 const openFaq = ref(null);
 
 const faqItems = [
-    { q: "Quels sont les critères pour obtenir le label CTS ?" },
-    { q: "Comment fonctionne la sélection pour le trophée annuel ?" },
-    { q: "Combien de temps faut-il pour mettre en place une campagne ?" },
-    { q: "Qui organise la collecte dans nos locaux ?" },
-    { q: "Y a-t-il un coût pour l'entreprise ?" },
-    { q: "Les données de nos employés sont-elles protégées ?" },
+    {
+        q: "Quels sont les critères pour obtenir le label CTS ?",
+        a: "Le label CTS est attribué à toute entreprise ayant organisé au moins une collecte de don du sang dans l'année. Il est décerné automatiquement à l'issue de la collecte par les HUG, sans candidature particulière à déposer.",
+    },
+    {
+        q: "Comment fonctionne la sélection pour le trophée annuel ?",
+        a: "Le Trophée de la Générosité est attribué par un jury HUG chaque décembre. Trois critères sont évalués : le taux de participation (donneurs présentés / effectif total), la régularité de l'engagement sur plusieurs années, et la qualité de la mobilisation interne.",
+    },
+    {
+        q: "Combien de temps faut-il pour mettre en place une collecte ?",
+        a: "En général, 4 à 6 semaines suffisent entre la première prise de contact et le jour J. L'équipe CTS des HUG vous accompagne pour toute la logistique : matériel, personnel soignant, gestion des créneaux.",
+    },
+    {
+        q: "Qui organise la collecte dans nos locaux ?",
+        a: "L'équipe mobile du Centre de Transfusion Sanguine (CTS) des HUG se déplace directement dans vos locaux avec tout le matériel nécessaire. Votre coordinateur interne s'occupe de la communication et de la gestion des inscriptions via la plateforme.",
+    },
+    {
+        q: "Y a-t-il un coût pour l'entreprise ?",
+        a: "Non. L'organisation de la collecte est entièrement prise en charge par les HUG. L'entreprise met simplement à disposition un espace adapté (environ 50 m² minimum) et libère du temps à ses collaborateurs pour le don.",
+    },
+    {
+        q: "Les données de nos employés sont-elles protégées ?",
+        a: "Oui. Seules les données strictement nécessaires à la gestion des inscriptions sont collectées, conformément au RGPD et à la loi suisse sur la protection des données (LPD). Aucune donnée médicale n'est transmise à l'entreprise.",
+    },
 ];
 
 function toggleFaq(i) {
@@ -551,19 +569,18 @@ onMounted(() => {
                                 line-height: 1.6;
                             "
                         >
-                            La réponse à cette question sera disponible
-                            prochainement.
+                            {{ item.a }}
                         </div>
                     </div>
                 </div>
                 <div class="text-center">
-                    <a
-                        href="#contact"
+                    <RouterLink
+                        to="/faq"
                         class="inline-block text-white font-semibold px-6 py-3 rounded-full transition hover:opacity-80"
-                        style="background: #e60f48; font-size: 16px"
+                        style="background: #e60f48; font-size: 16px; text-decoration: none"
                     >
-                        Vers la FAQ complète
-                    </a>
+                        Vers la FAQ complète →
+                    </RouterLink>
                 </div>
             </div>
         </section>
@@ -661,19 +678,19 @@ onMounted(() => {
                         </p>
                         <ul class="space-y-3">
                             <li>
-                                <a
-                                    href="#faq"
+                                <RouterLink
+                                    to="/faq"
                                     class="text-white hover:opacity-70 transition"
-                                    style="font-size: 16px"
-                                    >FAQ</a
+                                    style="font-size: 16px; text-decoration: none"
+                                    >FAQ</RouterLink
                                 >
                             </li>
                             <li>
-                                <a
-                                    href="#"
+                                <RouterLink
+                                    to="/contact"
                                     class="text-white hover:opacity-70 transition"
-                                    style="font-size: 16px"
-                                    >Contact</a
+                                    style="font-size: 16px; text-decoration: none"
+                                    >Contact</RouterLink
                                 >
                             </li>
                         </ul>
