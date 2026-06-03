@@ -106,7 +106,12 @@ async function handleQuizResult(resultat) {
                     <RouterLink to="/trophee"
                         >Trophée de la générosité</RouterLink
                     >
-                    <a href="#">Coin entreprise</a>
+                    <RouterLink
+                        to="/coordinateur"
+                        style="color: #2c4140; text-decoration: none"
+                        class="hover:opacity-60 transition"
+                        >Coin entreprise</RouterLink
+                    >
                     <RouterLink
                         to="/contact"
                         style="color: #2c4140; text-decoration: none"
@@ -395,18 +400,29 @@ async function handleQuizResult(resultat) {
                         <p class="footer-col-title">Support</p>
                         <ul>
                             <li>
-                                <a
-                                    href="/#faq"
+                                <RouterLink
+                                    to="/faq"
                                     style="
                                         font-size: 1rem;
                                         color: white;
                                         text-decoration: none;
                                     "
                                     class="hover:opacity-70 transition"
-                                    >FAQ</a
+                                    >FAQ</RouterLink
                                 >
                             </li>
-                            <li><a href="#">Contact</a></li>
+                            <li>
+                                <RouterLink
+                                    to="/contact"
+                                    style="
+                                        font-size: 1rem;
+                                        color: white;
+                                        text-decoration: none;
+                                    "
+                                    class="hover:opacity-70 transition"
+                                    >Contact</RouterLink
+                                >
+                            </li>
                         </ul>
                     </div>
                     <div>

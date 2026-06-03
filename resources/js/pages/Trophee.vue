@@ -128,11 +128,11 @@ onMounted(async () => {
                         class="hover:opacity-60 transition"
                         >Coin entreprise</RouterLink
                     >
-                    <a
-                        href="/#contact"
+                    <RouterLink
+                        to="/contact"
                         style="color: #2c4140; text-decoration: none"
                         class="hover:opacity-60 transition"
-                        >Contact</a
+                        >Contact</RouterLink
                     >
                 </nav>
                 <RouterLink
@@ -995,26 +995,25 @@ onMounted(async () => {
                         </p>
                         <ul class="space-y-3">
                             <li>
-                                <a
-                                    href="/#faq"
+                                <RouterLink
+                                    to="/faq"
                                     class="text-white hover:opacity-70 transition"
                                     style="
                                         font-size: 16px;
                                         text-decoration: none;
                                     "
-                                    >FAQ</a
+                                    >FAQ</RouterLink
                                 >
                             </li>
                             <li>
                                 <RouterLink
                                     to="/contact"
+                                    class="text-white hover:opacity-70 transition"
                                     style="
-                                        color: #2c4140;
+                                        font-size: 16px;
                                         text-decoration: none;
                                     "
-                                    class="hover:opacity-60 transition"
                                     >Contact</RouterLink
-                                >
                                 >
                             </li>
                         </ul>

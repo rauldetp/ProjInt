@@ -481,25 +481,25 @@ onMounted(() => {
                         </p>
                         <ul class="space-y-3">
                             <li>
-                                <a
-                                    href="/#faq"
+                                <RouterLink
+                                    to="/faq"
                                     class="text-white hover:opacity-70 transition"
                                     style="
                                         font-size: 16px;
                                         text-decoration: none;
                                     "
-                                    >FAQ</a
+                                    >FAQ</RouterLink
                                 >
                             </li>
                             <li>
-                                <a
-                                    href="#"
+                                <RouterLink
+                                    to="/contact"
                                     class="text-white hover:opacity-70 transition"
                                     style="
                                         font-size: 16px;
                                         text-decoration: none;
                                     "
-                                    >Contact</a
+                                    >Contact</RouterLink
                                 >
                             </li>
                         </ul>
