@@ -45,11 +45,18 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $data = $request->validate([
-            'name'       => 'required|string|max:255',
-            'email'      => 'required|email|unique:users,email',
-            'password'   => 'required|string|min:8',
-            'entreprise' => 'required|string|max:255',
-            'telephone'  => 'nullable|string|max:20',
+            'name'             => 'required|string|max:255',
+            'email'            => 'required|email|unique:users,email',
+            'password'         => 'required|string|min:8',
+            'entreprise'       => 'required|string|max:255',
+            'telephone'        => 'nullable|string|max:20',
+            'adresse'          => 'nullable|string|max:255',
+            'ville'            => 'nullable|string|max:100',
+            'npa'              => 'nullable|string|max:10',
+            'domaine'          => 'nullable|in:horlogerie,banque,assurance,sante,industrie,technologie,autre',
+            'nb_employes'      => 'nullable|integer|min:1',
+            'poste'            => 'nullable|string|max:100',
+            'couleur_primaire' => 'nullable|string|max:7',
         ]);
 
         $user = \App\Models\User::create([
@@ -67,20 +74,21 @@ class AuthController extends Controller
         }
 
         $entreprise = \App\Models\Entreprise::create([
-            'nom'         => $data['entreprise'],
-            'slug'        => $slug,
-            'nb_employes' => null,
-            'domaine'     => null,
-            'adresse'     => null,
-            'ville'       => null,
-            'npa'         => null,
+            'nom'              => $data['entreprise'],
+            'slug'             => $slug,
+            'nb_employes'      => $data['nb_employes'] ?? null,
+            'domaine'          => $data['domaine'] ?? null,
+            'adresse'          => $data['adresse'] ?? null,
+            'ville'            => $data['ville'] ?? null,
+            'npa'              => $data['npa'] ?? null,
+            'couleur_primaire' => $data['couleur_primaire'] ?? null,
         ]);
 
         \App\Models\Coordinateur::create([
             'user_id'       => $user->id,
             'entreprise_id' => $entreprise->id,
             'telephone'     => $data['telephone'] ?? null,
-            'poste'         => null,
+            'poste'         => $data['poste'] ?? null,
         ]);
 
         $token = $user->createToken('auth_token')->plainTextToken;
