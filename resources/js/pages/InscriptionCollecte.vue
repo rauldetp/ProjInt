@@ -9,6 +9,7 @@ const cobrand = useCobrandStore();
 const { coinEntrepriseLink } = useCoinEntrepriseLink();
 
 const entreprise = ref(null);
+const collecte = ref(null);
 const loading = ref(true);
 
 const brandColor = computed(() => cobrand.couleurPrimaire || "#e60f48");
@@ -20,6 +21,7 @@ onMounted(async () => {
         if (res.ok) {
             const data = await res.json();
             entreprise.value = data.entreprise;
+            collecte.value = data.collecte ?? null;
             if (data.entreprise) {
                 cobrand.set(data.entreprise);
             }
@@ -46,16 +48,17 @@ onMounted(async () => {
                 </div>
                 <nav class="hidden md:flex items-center gap-7 text-base font-medium">
                     <RouterLink :to="`/entreprise/${route.params.slug}`" style="color: #2c4140; text-decoration: none" class="hover:opacity-60 transition">Accueil</RouterLink>
-                    <RouterLink to="/label" style="color: #2c4140; text-decoration: none" class="hover:opacity-60 transition">Label CTS</RouterLink>
-                    <RouterLink to="/trophee" style="color: #2c4140; text-decoration: none" class="hover:opacity-60 transition">Trophée</RouterLink>
+                    <RouterLink :to="`/entreprise/${route.params.slug}/label`" style="color: #2c4140; text-decoration: none" class="hover:opacity-60 transition">Label CTS</RouterLink>
+                    <RouterLink :to="`/entreprise/${route.params.slug}/trophee`" style="color: #2c4140; text-decoration: none" class="hover:opacity-60 transition">Trophée de la générosité</RouterLink>
                     <RouterLink :to="coinEntrepriseLink" style="color: #2c4140; text-decoration: none" class="hover:opacity-60 transition">Coin entreprise</RouterLink>
                 </nav>
                 <RouterLink
+                    v-if="collecte"
                     :to="`/entreprise/${route.params.slug}/inscription`"
                     class="border-2 rounded-full px-5 py-2 text-base font-semibold transition hover:opacity-75"
                     :style="{ color: brandColor, borderColor: brandColor, textDecoration: 'none' }"
                 >
-                    S'inscrire
+                    S'inscrire à la collecte
                 </RouterLink>
             </div>
         </header>
@@ -63,13 +66,13 @@ onMounted(async () => {
         <!-- Hero -->
         <section class="py-16 text-center" :style="{ background: heroGradient }">
             <div class="max-w-2xl mx-auto px-8">
-                <p class="font-semibold mb-3 uppercase tracking-widest" style="font-size: 13px; color: rgba(255,255,255,0.75)">
+                <p class="font-semibold mb-3 uppercase tracking-widest" :style="{ fontSize: '13px', color: cobrand.textOnBrand, opacity: 0.75 }">
                     {{ entreprise?.nom ?? 'Entreprise' }} × HUG
                 </p>
-                <h1 class="font-bold text-white mb-4" style="font-size: 42px; line-height: 1.2">
+                <h1 class="font-bold mb-4" :style="{ color: cobrand.textOnBrand, fontSize: '42px', lineHeight: '1.2' }">
                     S'inscrire à la collecte de sang
                 </h1>
-                <p style="font-size: 17px; color: rgba(255,255,255,0.8); line-height: 1.6">
+                <p :style="{ fontSize: '17px', color: cobrand.textOnBrand, opacity: 0.85, lineHeight: '1.6' }">
                     Remplissez le dossier d'inscription pour réserver votre créneau.
                 </p>
             </div>

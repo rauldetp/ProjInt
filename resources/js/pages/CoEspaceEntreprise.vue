@@ -17,6 +17,9 @@ const chartMode     = ref("jours");
 const filterStatut  = ref("tout");
 
 const brandColor   = computed(() => cobrand.couleurPrimaire || "#e60f48");
+const hasActiveCollecte = computed(() =>
+    collectes.value.some(c => c.active && c.statut === "validee")
+);
 
 /* ── Totaux ─────────────────────────────────────────────────── */
 const totalInscrits = computed(() =>
@@ -140,27 +143,20 @@ onMounted(async () => {
                 <nav class="hidden md:flex items-center gap-7 text-base font-medium">
                     <RouterLink :to="`/entreprise/${route.params.slug}`" style="color: #2c4140; text-decoration: none" class="hover:opacity-60 transition">Accueil</RouterLink>
                     <RouterLink :to="`/entreprise/${route.params.slug}/label`" style="color: #2c4140; text-decoration: none" class="hover:opacity-60 transition">Label CTS</RouterLink>
-                    <RouterLink :to="`/entreprise/${route.params.slug}/trophee`" style="color: #2c4140; text-decoration: none" class="hover:opacity-60 transition">Trophée de la Générosité</RouterLink>
+                    <RouterLink :to="`/entreprise/${route.params.slug}/trophee`" style="color: #2c4140; text-decoration: none" class="hover:opacity-60 transition">Trophée de la générosité</RouterLink>
                     <RouterLink
                         :to="`/entreprise/${route.params.slug}/espace`"
                         style="text-decoration: none; font-weight: 700"
                         :style="{ color: brandColor }"
                     >Espace entreprise</RouterLink>
-                    <RouterLink to="/contact" style="color: #2c4140; text-decoration: none" class="hover:opacity-60 transition">Contact</RouterLink>
                 </nav>
-                <div class="flex items-center gap-3">
-                    <RouterLink
-                        :to="`/entreprise/${route.params.slug}/nouvelle-collecte`"
-                        class="border-2 rounded-full px-5 py-2 text-sm font-semibold transition hover:opacity-75"
-                        style="text-decoration: none; white-space: nowrap"
-                        :style="{ color: brandColor, borderColor: brandColor }"
-                    >Participer à la collecte</RouterLink>
-                    <button
-                        @click="() => { $router.push('/login'); }"
-                        class="text-sm font-medium hover:opacity-60 transition"
-                        style="background: none; border: none; cursor: pointer; color: #497371; padding: 0"
-                    >Déconnexion</button>
-                </div>
+                <RouterLink
+                    v-if="hasActiveCollecte"
+                    :to="`/entreprise/${route.params.slug}/inscription`"
+                    class="border-2 rounded-full px-5 py-2 text-sm font-semibold transition hover:opacity-75"
+                    style="text-decoration: none; white-space: nowrap"
+                    :style="{ color: brandColor, borderColor: brandColor }"
+                >S'inscrire à la collecte</RouterLink>
             </div>
         </header>
 

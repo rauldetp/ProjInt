@@ -25,6 +25,16 @@ export const useCobrandStore = defineStore('cobrand', () => {
 
     const isActive = computed(() => !!couleurPrimaire.value)
 
+    // Luminance perçue (0–1). Seuil 0.5 : au-dessus → fond clair → texte noir.
+    const textOnBrand = computed(() => {
+        const hex = couleurPrimaire.value || '#e60f48'
+        const r = parseInt(hex.slice(1, 3), 16)
+        const g = parseInt(hex.slice(3, 5), 16)
+        const b = parseInt(hex.slice(5, 7), 16)
+        const lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255
+        return lum > 0.5 ? '#1a1a1a' : '#ffffff'
+    })
+
     function persist() {
         localStorage.setItem(LS_KEY, JSON.stringify({
             couleurPrimaire: couleurPrimaire.value,
@@ -51,5 +61,5 @@ export const useCobrandStore = defineStore('cobrand', () => {
         localStorage.removeItem(LS_KEY)
     }
 
-    return { couleurPrimaire, logo, nom, slug, gradientStyle, isActive, set, clear }
+    return { couleurPrimaire, logo, nom, slug, gradientStyle, isActive, textOnBrand, set, clear }
 })

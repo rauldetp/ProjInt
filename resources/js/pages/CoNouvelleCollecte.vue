@@ -10,6 +10,7 @@ const cobrand = useCobrandStore();
 const auth   = useAuthStore();
 
 const entreprise = ref(null);
+const collecte   = ref(null);
 const loading    = ref(true);
 const submitting = ref(false);
 const submitError = ref(null);
@@ -76,6 +77,7 @@ onMounted(async () => {
         if (res.ok) {
             const data = await res.json();
             entreprise.value = data.entreprise;
+            collecte.value = data.collecte ?? null;
             if (data.entreprise) cobrand.set(data.entreprise);
         }
     } catch {}
@@ -103,16 +105,16 @@ onMounted(async () => {
                 <nav class="hidden md:flex items-center gap-7 text-base font-medium">
                     <RouterLink :to="`/entreprise/${route.params.slug}`" style="color: #2c4140; text-decoration: none" class="hover:opacity-60 transition">Accueil</RouterLink>
                     <RouterLink :to="`/entreprise/${route.params.slug}/label`" style="color: #2c4140; text-decoration: none" class="hover:opacity-60 transition">Label CTS</RouterLink>
-                    <RouterLink :to="`/entreprise/${route.params.slug}/trophee`" style="color: #2c4140; text-decoration: none" class="hover:opacity-60 transition">Trophée de la Générosité</RouterLink>
+                    <RouterLink :to="`/entreprise/${route.params.slug}/trophee`" style="color: #2c4140; text-decoration: none" class="hover:opacity-60 transition">Trophée de la générosité</RouterLink>
                     <RouterLink :to="`/entreprise/${route.params.slug}/espace`" style="color: #2c4140; text-decoration: none" class="hover:opacity-60 transition">Espace entreprise</RouterLink>
-                    <RouterLink to="/contact" style="color: #2c4140; text-decoration: none" class="hover:opacity-60 transition">Contact</RouterLink>
                 </nav>
                 <RouterLink
-                    :to="`/entreprise/${route.params.slug}/nouvelle-collecte`"
+                    v-if="collecte"
+                    :to="`/entreprise/${route.params.slug}/inscription`"
                     class="border-2 rounded-full px-5 py-2 text-sm font-semibold"
                     style="text-decoration: none; white-space: nowrap"
                     :style="{ color: brandColor, borderColor: brandColor }"
-                >Participer à la collecte</RouterLink>
+                >S'inscrire à la collecte</RouterLink>
             </div>
         </header>
 

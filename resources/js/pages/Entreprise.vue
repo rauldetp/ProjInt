@@ -2,13 +2,10 @@
 import { ref, computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { useCobrandStore } from "../stores/cobrand";
-import { useCoinEntrepriseLink } from "../composables/useCoinEntrepriseLink";
-import Quiz from "../components/Quiz.vue";
-import QuizResult from "../components/QuizResult.vue";
+import CoNavbar from "../components/CoNavbar.vue";
 
 const route = useRoute();
 const cobrand = useCobrandStore();
-const { coinEntrepriseLink } = useCoinEntrepriseLink();
 
 const entreprise = ref({});
 const collecte = ref(null);
@@ -16,8 +13,6 @@ const label = ref(null);
 const trophees = ref([]);
 const loading = ref(true);
 const error = ref(null);
-const showQuiz = ref(false);
-const quizResultat = ref(null);
 
 onMounted(async () => {
     try {
@@ -40,14 +35,9 @@ onMounted(async () => {
 });
 
 const brandColor = computed(() => entreprise.value.couleur_primaire || "#e60f48");
+const textOnBrand = computed(() => cobrand.textOnBrand);
+const sectionGradient = computed(() => `linear-gradient(135deg, ${brandColor.value}, #ffffff)`);
 
-const heroGradient = computed(() =>
-    `linear-gradient(135deg, ${brandColor.value}, #ffffff)`
-);
-
-const quizGradient = computed(() =>
-    `linear-gradient(135deg, ${brandColor.value}22, ${brandColor.value}0a)`
-);
 
 const dateRange = computed(() => {
     if (!collecte.value?.date_debut) return "Dates à définir";
@@ -62,19 +52,6 @@ const dateRange = computed(() => {
     return end && end !== start ? `${start} – ${end}` : start;
 });
 
-async function handleQuizResult(resultat) {
-    quizResultat.value = resultat;
-    if (!collecte.value?.id) return;
-    try {
-        await fetch(`/api/collectes/${collecte.value.id}/quiz-result`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json", Accept: "application/json" },
-            body: JSON.stringify({ resultat }),
-        });
-    } catch (e) {
-        console.error("Erreur sauvegarde quiz", e);
-    }
-}
 </script>
 
 <template>
@@ -84,46 +61,11 @@ async function handleQuizResult(resultat) {
     <div v-else class="page">
 
         <!-- Navbar -->
-        <header class="navbar">
-            <div class="navbar-inner">
-                <!-- Brand -->
-                <div class="navbar-brand">
-                    <RouterLink to="/" class="brand-hug">HUG</RouterLink>
-                    <span class="brand-pipe">|</span>
-                    <span class="brand-subtitle">Don du sang</span>
-                    <span class="brand-cross">×</span>
-                    <span class="brand-company" :style="{ color: brandColor }">
-                        <img
-                            v-if="entreprise.logo"
-                            :src="entreprise.logo"
-                            :alt="entreprise.nom"
-                            class="company-logo-img"
-                        />
-                        <span v-else>{{ entreprise.nom }}</span>
-                    </span>
-                </div>
-
-                <!-- Nav links -->
-                <nav class="navbar-links">
-                    <RouterLink :to="`/entreprise/${route.params.slug}`">Accueil</RouterLink>
-                    <RouterLink :to="`/entreprise/${route.params.slug}/label`">Label CTS</RouterLink>
-                    <RouterLink :to="`/entreprise/${route.params.slug}/trophee`">Trophée de la générosité</RouterLink>
-                    <RouterLink :to="coinEntrepriseLink">Coin entreprise</RouterLink>
-                </nav>
-
-                <!-- CTA -->
-                <RouterLink
-                    :to="`/entreprise/${route.params.slug}/inscription`"
-                    class="navbar-cta"
-                    :style="{ color: brandColor, borderColor: brandColor }"
-                >
-                    S'inscrire à la collecte
-                </RouterLink>
-            </div>
-        </header>
+        <CoNavbar :collecte="collecte" />
 
         <!-- Hero -->
-        <section class="hero" :style="{ background: heroGradient }">
+        <section class="hero">
+            <div class="hero-overlay"></div>
             <div class="hero-inner">
                 <!-- Left: text -->
                 <div class="hero-text">
@@ -131,21 +73,15 @@ async function handleQuizResult(resultat) {
                     <h1 class="hero-title">
                         {{ entreprise.nom }}<br />× HUG
                     </h1>
-                    <p class="hero-date" v-if="collecte">
-                        📅 {{ dateRange }}
-                    </p>
+                    <p class="hero-date" v-if="collecte">📅 {{ dateRange }}</p>
                     <div class="hero-actions">
-                        <button
-                            class="hero-btn-primary"
-                            @click="showQuiz = true; quizResultat = null"
-                        >
-                            Tester mon éligibilité →
-                        </button>
                         <RouterLink
+                            v-if="collecte && collecte.active"
                             :to="`/entreprise/${route.params.slug}/inscription`"
-                            class="hero-btn-secondary"
+                            class="hero-btn-primary"
+                            :style="{ background: brandColor, color: textOnBrand }"
                         >
-                            S'inscrire directement
+                            S'inscrire →
                         </RouterLink>
                     </div>
                 </div>
@@ -178,7 +114,7 @@ async function handleQuizResult(resultat) {
                     <RouterLink
                         :to="`/entreprise/${route.params.slug}/inscription`"
                         class="hero-card-cta"
-                        :style="{ background: brandColor }"
+                        :style="{ background: brandColor, color: textOnBrand }"
                     >
                         Réserver mon créneau →
                     </RouterLink>
@@ -194,58 +130,35 @@ async function handleQuizResult(resultat) {
             </div>
         </section>
 
-        <!-- Quiz overlay -->
-        <div v-if="showQuiz" class="quiz-overlay">
-            <QuizResult
-                v-if="quizResultat"
-                :resultat="quizResultat"
-                :collecte="collecte"
-            />
-            <Quiz v-else @result="handleQuizResult" />
-            <button
-                class="quiz-close"
-                @click="showQuiz = false; quizResultat = null"
-            >
-                ✕ Fermer
-            </button>
-        </div>
-
         <!-- Quiz CTA section -->
-        <section class="quiz-section" :style="{ background: quizGradient }">
+        <section class="quiz-section" :style="{ background: sectionGradient }">
             <div class="quiz-section-inner">
-                <div class="quiz-section-text">
-                    <h2 class="quiz-section-title">Suis-je éligible au don ?</h2>
-                    <p class="quiz-section-sub">
-                        Faites le point en 2 minutes sur les conditions principales de don.
-                        Notre quiz confidentiel vous guide avant votre inscription.
+                <div class="quiz-insight">
+                    <div class="quiz-insight-icon">📋</div>
+                    <p class="quiz-insight-text">
+                        <template v-if="collecte?.nb_inscrits_estime">Déjà <strong>{{ collecte.nb_inscrits_estime }}</strong> autres employés ont passé le test !</template>
+                        <template v-else>Rejoignez vos collègues et passez le test d'éligibilité !</template>
                     </p>
-                    <div class="quiz-section-actions">
-                        <button
-                            class="btn-filled"
-                            :style="{ background: brandColor }"
-                            @click="showQuiz = true; quizResultat = null"
-                        >
-                            Faire le quiz →
-                        </button>
-                        <button
-                            v-if="quizResultat"
-                            class="btn-outlined"
-                            :style="{ color: brandColor, borderColor: brandColor }"
-                            @click="showQuiz = true"
-                        >
-                            Voir mon résultat
-                        </button>
-                    </div>
-                    <div class="quiz-stat" v-if="collecte?.nb_inscrits_estime">
-                        <span>📋</span>
-                        <span>Déjà <strong>{{ collecte.nb_inscrits_estime }}</strong> employés ont participé</span>
-                    </div>
                 </div>
-                <div class="quiz-section-mascot">
-                    <div class="quiz-mascot-placeholder" :style="{ borderColor: brandColor + '40' }">
-                        <span style="font-size: 48px">🩸</span>
-                        <p :style="{ color: brandColor, fontWeight: 600, fontSize: '14px', margin: '8px 0 0' }">Quiz à venir</p>
-                    </div>
+                <h2 class="quiz-section-title" :style="{ color: textOnBrand }">Suis-je éligible ?</h2>
+                <p class="quiz-section-sub" :style="{ color: textOnBrand }">
+                    Testez votre éligibilité en 2 minutes et réservez votre créneau pour soutenir le Centre de Transfusion Sanguine.
+                </p>
+                <div class="quiz-section-actions">
+                    <RouterLink
+                        :to="`/entreprise/${route.params.slug}/quiz`"
+                        class="btn-filled btn-link"
+                        :style="{ background: textOnBrand, color: brandColor }"
+                    >
+                        Passer les questions →
+                    </RouterLink>
+                    <RouterLink
+                        :to="`/entreprise/${route.params.slug}/quiz?voir=resultat`"
+                        class="btn-outlined btn-link"
+                        :style="{ color: textOnBrand, borderColor: textOnBrand }"
+                    >
+                        Voir mon résultat →
+                    </RouterLink>
                 </div>
             </div>
         </section>
@@ -294,9 +207,10 @@ async function handleQuizResult(resultat) {
                         volontaire sur son temps de travail pour accomplir ce geste solidaire essentiel.
                     </p>
                     <RouterLink
+                        v-if="collecte && collecte.active"
                         :to="`/entreprise/${route.params.slug}/inscription`"
                         class="btn-filled btn-link"
-                        :style="{ background: brandColor }"
+                        :style="{ background: brandColor, color: textOnBrand }"
                     >
                         S'inscrire à la collecte →
                     </RouterLink>
@@ -380,99 +294,30 @@ async function handleQuizResult(resultat) {
     background: white;
 }
 
-/* ── Navbar ─────────────────────────────────────────── */
-.navbar {
-    background: white;
-    border-bottom: 1px solid #f2f4f3;
-    height: 76px;
-    position: sticky;
-    top: 0;
-    z-index: 50;
+/* ── Hero ────────────────────────────────────────────── */
+.hero {
+    position: relative;
+    overflow: hidden;
+    height: 512px;
+    display: flex;
+    align-items: center;
+    background-image: url('/images/Hero_Cobrand.webp');
+    background-size: cover;
+    background-position: center;
 }
-.navbar-inner {
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.42);
+    z-index: 1;
+}
+.hero-inner {
+    position: relative;
+    z-index: 2;
+    width: 100%;
     max-width: 1280px;
     margin: 0 auto;
     padding: 0 2rem;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 2rem;
-}
-.navbar-brand {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    flex-shrink: 0;
-}
-.brand-hug {
-    font-weight: 800;
-    font-size: 1.2rem;
-    color: #2c4140;
-    text-decoration: none;
-}
-.brand-pipe {
-    color: rgba(44, 65, 64, 0.3);
-    font-size: 1.1rem;
-    margin: 0 0.2rem;
-}
-.brand-subtitle {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: #497371;
-}
-.brand-cross {
-    color: rgba(44, 65, 64, 0.3);
-    font-size: 1.1rem;
-    margin: 0 0.2rem;
-}
-.brand-company {
-    font-weight: 700;
-    font-size: 0.95rem;
-    display: flex;
-    align-items: center;
-}
-.company-logo-img {
-    max-height: 32px;
-    object-fit: contain;
-}
-.navbar-links {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-}
-.navbar-links a {
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: #2c4140;
-    text-decoration: none;
-    transition: opacity 0.15s;
-}
-.navbar-links a:hover {
-    opacity: 0.6;
-}
-.navbar-cta {
-    font-size: 0.85rem;
-    font-weight: 600;
-    border: 2px solid;
-    border-radius: 9999px;
-    padding: 0.4rem 1.1rem;
-    text-decoration: none;
-    transition: opacity 0.15s;
-    flex-shrink: 0;
-    white-space: nowrap;
-}
-.navbar-cta:hover {
-    opacity: 0.75;
-}
-
-/* ── Hero ────────────────────────────────────────────── */
-.hero {
-    padding: 5rem 2rem;
-}
-.hero-inner {
-    max-width: 1100px;
-    margin: 0 auto;
     display: grid;
     grid-template-columns: 1fr 380px;
     gap: 3rem;
@@ -510,33 +355,16 @@ async function handleQuizResult(resultat) {
 .hero-btn-primary {
     font-size: 1rem;
     font-weight: 700;
-    color: white;
-    background: rgba(255, 255, 255, 0.25);
-    border: 2px solid rgba(255, 255, 255, 0.6);
+    border: none;
     border-radius: 9999px;
     padding: 0.75rem 1.75rem;
     cursor: pointer;
-    transition: background 0.15s;
-    backdrop-filter: blur(4px);
+    transition: opacity 0.15s;
+    text-decoration: none;
+    display: inline-block;
 }
 .hero-btn-primary:hover {
-    background: rgba(255, 255, 255, 0.35);
-}
-.hero-btn-secondary {
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.85);
-    background: transparent;
-    border: 2px solid rgba(255, 255, 255, 0.4);
-    border-radius: 9999px;
-    padding: 0.75rem 1.5rem;
-    text-decoration: none;
-    transition: opacity 0.15s;
-    display: inline-flex;
-    align-items: center;
-}
-.hero-btn-secondary:hover {
-    opacity: 0.75;
+    opacity: 0.85;
 }
 
 /* Hero info card */
@@ -544,7 +372,7 @@ async function handleQuizResult(resultat) {
     background: white;
     border-radius: 16px;
     padding: 2rem;
-    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.15);
+    box-shadow: none;
 }
 .hero-card-title {
     font-size: 1rem;
@@ -575,7 +403,6 @@ async function handleQuizResult(resultat) {
 .hero-card-cta {
     display: block;
     text-align: center;
-    color: white;
     font-weight: 700;
     font-size: 0.95rem;
     text-decoration: none;
@@ -614,45 +441,64 @@ async function handleQuizResult(resultat) {
 
 /* ── Quiz CTA section ────────────────────────────────── */
 .quiz-section {
-    padding: 5rem 2rem;
+    padding: 5rem 2rem 8rem;
 }
 .quiz-section-inner {
-    max-width: 1100px;
+    max-width: 680px;
     margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr 300px;
-    gap: 4rem;
+    display: flex;
+    flex-direction: column;
     align-items: center;
+    text-align: center;
+    gap: 0;
 }
 .quiz-section-title {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #2c4140;
+    font-size: 2.25rem;
+    font-weight: 800;
     margin: 0 0 0.75rem;
 }
 .quiz-section-sub {
     font-size: 1rem;
-    color: #497371;
     line-height: 1.7;
     margin: 0 0 2rem;
-    max-width: 520px;
+    opacity: 0.85;
 }
 .quiz-section-actions {
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
-    margin-bottom: 1.5rem;
+    justify-content: center;
 }
-.quiz-stat {
-    display: inline-flex;
+.quiz-insight {
+    display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 1.25rem;
     background: white;
-    border-radius: 9999px;
-    padding: 0.5rem 1rem;
-    font-size: 0.85rem;
-    color: #497371;
-    box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+    border-radius: 16px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2.5rem;
+    width: 100%;
+}
+.quiz-insight-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: #f2f4f3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+}
+.quiz-insight-text {
+    font-size: 1rem;
+    color: #2c4140;
+    margin: 0;
+    line-height: 1.5;
+    font-weight: 500;
+}
+.quiz-result-btn {
+    cursor: pointer;
 }
 .quiz-mascot-placeholder {
     border: 2px dashed;
@@ -692,7 +538,7 @@ async function handleQuizResult(resultat) {
     border: 2px solid;
     border-radius: 9999px;
     padding: 0.8rem 1.75rem;
-    background: white;
+    background: transparent;
     cursor: pointer;
     transition: opacity 0.15s;
 }
@@ -892,9 +738,6 @@ async function handleQuizResult(resultat) {
     }
     .steps-grid {
         grid-template-columns: 1fr;
-    }
-    .navbar-links {
-        display: none;
     }
     .hero-title {
         font-size: 2.2rem;
