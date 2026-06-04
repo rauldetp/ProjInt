@@ -1,6 +1,6 @@
 <template>
     <div class="layout">
-        <!-- Top Nav -->
+        <!-- Top Nav (same as public site) -->
         <header class="top-nav">
             <div class="nav-inner">
                 <div class="nav-brand">
@@ -14,35 +14,26 @@
                     <span class="brand-sub">Don du sang</span>
                 </div>
                 <nav class="nav-links">
-                    <template v-if="auth.isAdmin">
-                        <RouterLink to="/admin" exact-active-class="active"
-                            >Vue globale</RouterLink
-                        >
-                        <RouterLink to="/admin/collectes" active-class="active"
-                            >Collectes</RouterLink
-                        >
-                        <RouterLink
-                            to="/admin/coordinateurs"
-                            active-class="active"
-                            >Entreprises</RouterLink
-                        >
-                        <RouterLink to="/admin/labels" active-class="active"
-                            >Labels & Trophées</RouterLink
-                        >
-                    </template>
-                    <template v-if="auth.isCoordinateur">
-                        <RouterLink
-                            :to="auth.entrepriseSlug ? `/entreprise/${auth.entrepriseSlug}/espace` : '/login'"
-                            exact-active-class="active"
-                            >Vue globale</RouterLink
-                        >
-                    </template>
+                    <RouterLink to="/label" style="color:#2c4140; text-decoration:none;" class="hover:opacity-70 transition">Label CTS</RouterLink>
+                    <RouterLink to="/trophee" style="color:#2c4140; text-decoration:none;" class="hover:opacity-70 transition">Trophée de la générosité</RouterLink>
+                    <RouterLink :to="coinEntrepriseLink" style="color:#2c4140; text-decoration:none;" class="hover:opacity-70 transition">Coin entreprise</RouterLink>
+                    <RouterLink to="/contact" style="color:#2c4140; text-decoration:none;" class="hover:opacity-70 transition">Contact</RouterLink>
                 </nav>
                 <button class="btn-logout" @click="handleLogout">
                     Déconnexion
                 </button>
             </div>
         </header>
+
+        <!-- Admin sub-nav -->
+        <div v-if="auth.isAdmin" class="admin-subnav">
+            <div class="subnav-inner">
+                <RouterLink to="/admin" exact-active-class="subnav-active">Vue globale</RouterLink>
+                <RouterLink to="/admin/collectes" active-class="subnav-active">Collectes</RouterLink>
+                <RouterLink to="/admin/coordinateurs" active-class="subnav-active">Entreprises</RouterLink>
+                <RouterLink to="/admin/labels" active-class="subnav-active">Labels & Trophées</RouterLink>
+            </div>
+        </div>
 
         <!-- Content -->
         <main class="main-content">
@@ -111,9 +102,11 @@
 <script setup>
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth";
+import { useCoinEntrepriseLink } from "../composables/useCoinEntrepriseLink";
 
 const auth = useAuthStore();
 const router = useRouter();
+const { coinEntrepriseLink } = useCoinEntrepriseLink();
 
 function handleLogout() {
     auth.logout();
@@ -137,6 +130,39 @@ function handleLogout() {
     position: sticky;
     top: 0;
     z-index: 50;
+}
+
+.admin-subnav {
+    background: white;
+    border-bottom: 1px solid #f2f4f3;
+    position: sticky;
+    top: 76px;
+    z-index: 49;
+}
+.subnav-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0;
+}
+.admin-subnav a {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #497371;
+    text-decoration: none;
+    padding: 0.6rem 1.25rem;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+}
+.admin-subnav a:hover {
+    color: #2c4140;
+}
+.admin-subnav a.subnav-active {
+    color: #e60f48;
+    font-weight: 600;
+    border-bottom-color: #e60f48;
 }
 
 .nav-inner {

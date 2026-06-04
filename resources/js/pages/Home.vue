@@ -1,8 +1,18 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
+import { useAuthStore } from "../stores/auth";
 import { useCoinEntrepriseLink } from "../composables/useCoinEntrepriseLink";
 
+const auth = useAuthStore();
 const { coinEntrepriseLink } = useCoinEntrepriseLink();
+
+// CTA "Participer" : quand déjà connecté, redirige vers le site coobrandé
+const participerLink = computed(() => {
+    if (auth.isAdmin) return '/entreprises';
+    if (auth.isCoordinateur && auth.entrepriseSlug) return `/entreprise/${auth.entrepriseSlug}`;
+    return '/login';
+});
+
 const bannerVisible = ref(true);
 const openFaq = ref(null);
 
@@ -100,10 +110,11 @@ onMounted(() => {
                         <RouterLink to="/label" class="hover:opacity-70 transition" style="color:#2c4140; text-decoration:none;">Label CTS</RouterLink>
                         <RouterLink to="/trophee" class="hover:opacity-70 transition" style="color:#2c4140; text-decoration:none;">Trophée de la générosité</RouterLink>
                         <RouterLink :to="coinEntrepriseLink" class="hover:opacity-70 transition" style="color:#2c4140; text-decoration:none;">Coin entreprise</RouterLink>
+                        <RouterLink to="/quiz" class="hover:opacity-70 transition" style="color:#2c4140; text-decoration:none;">Quiz d'éligibilité</RouterLink>
                         <RouterLink to="/contact" style="color: #2c4140; text-decoration: none" class="hover:opacity-60 transition">Contact</RouterLink>                    </nav>
                     <!-- CTA button -->
                     <RouterLink
-                        to="/login"
+                        :to="participerLink"
                         class="text-base font-semibold px-6 py-2 rounded-full border-2 transition hover:opacity-80"
                         style="color: #e60f48; border-color: #e60f48; text-decoration: none"
                     >
@@ -114,7 +125,7 @@ onMounted(() => {
 
         <!-- Hero -->
         <section
-            class="relative flex items-end pb-16 overflow-hidden"
+            class="relative flex items-end pb-16"
             style="height: 512px; background: #2c4140"
         >
             <img
@@ -134,18 +145,27 @@ onMounted(() => {
                 >
                     Engagez votre entreprise.<br />Obtenez le label CTS.
                 </h1>
-                <RouterLink
-                    to="/label"
-                    class="inline-block bg-rose-600 hover:bg-rose-700 text-white text-sm font-semibold px-6 py-3 rounded-full transition"
-                    style="background: #e60f48"
-                >
-                    En savoir plus
-                </RouterLink>
+                <div class="flex items-center gap-4 flex-wrap">
+                    <RouterLink
+                        to="/label"
+                        class="inline-block text-white text-sm font-semibold px-6 py-3 rounded-full transition hover:opacity-80"
+                        style="background: #e60f48"
+                    >
+                        En savoir plus
+                    </RouterLink>
+                    <RouterLink
+                        to="/quiz"
+                        class="inline-block text-white text-sm font-semibold px-6 py-3 rounded-full transition hover:opacity-80"
+                        style="background: transparent; border: 2px solid white"
+                    >
+                        Quiz d'éligibilité →
+                    </RouterLink>
+                </div>
             </div>
         </section>
 
         <!-- Stats -->
-        <section class="bg-white" style="padding: 40px 0">
+        <section class="bg-white" style="padding: 40px 0; position: relative; z-index: 1; margin-top: -2px">
             <div
                 class="max-w-5xl mx-auto px-8 grid grid-cols-3 gap-8 text-center"
             >
@@ -211,6 +231,9 @@ onMounted(() => {
             style="
                 background: linear-gradient(90deg, #65c6c1, #93cfa9);
                 padding: 48px 0;
+                position: relative;
+                z-index: 1;
+                margin-top: -2px;
             "
         >
             <div class="max-w-6xl mx-auto px-8">
@@ -266,7 +289,7 @@ onMounted(() => {
         </section>
 
         <!-- 3 steps -->
-        <section style="background: #f2f4f3; padding: 72px 0">
+        <section style="background: #f2f4f3; padding: 72px 0; position: relative; z-index: 1; margin-top: -2px">
             <div class="max-w-6xl mx-auto px-8">
                 <h2
                     class="text-center font-bold mb-12"
@@ -364,7 +387,7 @@ onMounted(() => {
         </section>
 
         <!-- Label CTS -->
-        <section id="label" class="bg-white" style="padding: 72px 0">
+        <section id="label" class="bg-white" style="padding: 72px 0; position: relative; z-index: 1; margin-top: -2px">
             <div
                 class="max-w-6xl mx-auto px-8 grid grid-cols-2 gap-16 items-center"
             >
@@ -430,7 +453,7 @@ onMounted(() => {
         </section>
 
         <!-- Trophy -->
-        <section id="trophee" style="background: #f2f4f3; padding: 72px 0">
+        <section id="trophee" style="background: #f2f4f3; padding: 72px 0; position: relative; z-index: 1; margin-top: -2px">
             <div
                 class="max-w-6xl mx-auto px-8 grid grid-cols-2 gap-16 items-center"
             >
@@ -487,7 +510,7 @@ onMounted(() => {
         </section>
 
         <!-- Témoignages -->
-        <section id="temoignages" class="bg-white" style="padding: 72px 0">
+        <section id="temoignages" class="bg-white" style="padding: 72px 0; position: relative; z-index: 1; margin-top: -2px">
             <div
                 class="max-w-6xl mx-auto px-8 grid grid-cols-2 gap-16 items-center"
             >
@@ -536,7 +559,7 @@ onMounted(() => {
         </section>
 
         <!-- FAQ -->
-        <section id="faq" style="background: #f2f4f3; padding: 72px 0">
+        <section id="faq" style="background: #f2f4f3; padding: 72px 0; position: relative; z-index: 1; margin-top: -2px">
             <div class="max-w-3xl mx-auto px-8">
                 <h2
                     class="text-center font-bold mb-10"
@@ -592,6 +615,9 @@ onMounted(() => {
             style="
                 background: linear-gradient(90deg, #65c6c1, #93cfa9);
                 padding: 72px 0;
+                position: relative;
+                z-index: 1;
+                margin-top: -2px;
             "
         >
             <div class="max-w-2xl mx-auto px-8 text-center">

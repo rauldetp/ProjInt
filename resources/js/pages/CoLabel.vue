@@ -2,17 +2,16 @@
 import { ref, computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { useCobrandStore } from "../stores/cobrand";
-import { useCoinEntrepriseLink } from "../composables/useCoinEntrepriseLink";
+import CoNavbar from "../components/CoNavbar.vue";
 
 const route = useRoute();
 const cobrand = useCobrandStore();
-const { coinEntrepriseLink } = useCoinEntrepriseLink();
 
 const entreprise = ref(null);
+const collecte = ref(null);
 const loading = ref(true);
 
 const brandColor = computed(() => cobrand.couleurPrimaire || "#e60f48");
-const heroGradient = computed(() => `linear-gradient(135deg, ${brandColor.value}, #ffffff)`);
 const sectionGradient = computed(() => `linear-gradient(135deg, ${brandColor.value}, #ffffff)`);
 
 onMounted(async () => {
@@ -21,6 +20,7 @@ onMounted(async () => {
         if (res.ok) {
             const data = await res.json();
             entreprise.value = data.entreprise;
+            collecte.value = data.collecte ?? null;
             if (data.entreprise) cobrand.set(data.entreprise);
         }
     } catch {}
@@ -32,49 +32,23 @@ onMounted(async () => {
 <template>
     <div class="min-h-screen bg-white" style="font-family: 'Instrument Sans', sans-serif">
 
-        <!-- Navbar co-brandée -->
-        <header class="bg-white sticky top-0 z-50" style="height: 76px; border-bottom: 1px solid #f2f4f3">
-            <div class="max-w-7xl mx-auto px-8 h-full flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                    <RouterLink to="/" style="font-weight: 800; font-size: 20px; color: #2c4140; text-decoration: none">HUG</RouterLink>
-                    <span style="color: rgba(44,65,64,0.3); font-size: 18px; margin: 0 4px">|</span>
-                    <span style="font-size: 15px; font-weight: 600; color: #497371">Don du sang</span>
-                    <span style="color: rgba(44,65,64,0.3); font-size: 18px; margin: 0 4px">×</span>
-                    <span style="font-size: 15px; font-weight: 700" :style="{ color: brandColor }">
-                        <img v-if="cobrand.logo" :src="cobrand.logo" :alt="cobrand.nom" style="max-height: 28px; object-fit: contain" />
-                        <span v-else>{{ cobrand.nom || entreprise?.nom }}</span>
-                    </span>
-                </div>
-                <nav class="hidden md:flex items-center gap-7 text-base font-medium">
-                    <RouterLink :to="`/entreprise/${route.params.slug}`" style="color: #2c4140; text-decoration: none" class="hover:opacity-60 transition">Accueil</RouterLink>
-                    <RouterLink :to="`/entreprise/${route.params.slug}/label`" style="font-weight: 700; text-decoration: none" :style="{ color: brandColor }">Label CTS</RouterLink>
-                    <RouterLink :to="`/entreprise/${route.params.slug}/trophee`" style="color: #2c4140; text-decoration: none" class="hover:opacity-60 transition">Trophée de la générosité</RouterLink>
-                    <RouterLink :to="coinEntrepriseLink" style="color: #2c4140; text-decoration: none" class="hover:opacity-60 transition">Coin entreprise</RouterLink>
-                </nav>
-                <RouterLink
-                    :to="`/entreprise/${route.params.slug}/inscription`"
-                    class="border-2 rounded-full px-5 py-2 text-sm font-semibold transition hover:opacity-75"
-                    style="text-decoration: none; white-space: nowrap"
-                    :style="{ color: brandColor, borderColor: brandColor }"
-                >
-                    S'inscrire à la collecte
-                </RouterLink>
-            </div>
-        </header>
+        <!-- Navbar -->
+        <CoNavbar :collecte="collecte" />
 
         <!-- Hero -->
-        <section class="relative flex items-end pb-14 overflow-hidden" :style="{ height: '420px', background: heroGradient }">
-            <div class="relative max-w-7xl mx-auto px-8 w-full z-10">
-                <h1 class="font-bold leading-tight mb-4" style="font-size: 48px; color: #2c4140">
+        <section class="relative flex items-center overflow-hidden" style="height: 512px; background-image: url('/images/Hero_labelCTS.webp'); background-size: cover; background-position: center;">
+            <div class="absolute inset-0" style="background: rgba(0,0,0,0.42); z-index: 1"></div>
+            <div class="relative w-full" style="z-index: 2; max-width: 1280px; margin: 0 auto; padding: 0 2rem; width: 100%">
+                <h1 class="font-bold leading-tight mb-4" style="font-size: 48px; color: white">
                     Notre Label CTS
                 </h1>
-                <p class="mb-6 max-w-lg" style="font-size: 18px; color: #2c4140; opacity: 0.8; line-height: 1.6">
+                <p class="mb-6 max-w-lg" style="font-size: 18px; color: rgba(255,255,255,0.85); line-height: 1.6">
                     Le label CTS des HUG récompense les entreprises qui s'engagent concrètement pour le don du sang et la solidarité.
                 </p>
                 <a
                     href="#ce-quil-represente"
-                    class="inline-block text-white font-semibold rounded-full px-6 py-3 transition hover:opacity-80"
-                    :style="{ background: brandColor, fontSize: '16px' }"
+                    class="inline-block font-semibold rounded-full px-6 py-3 transition hover:opacity-80"
+                    :style="{ background: brandColor, color: cobrand.textOnBrand, fontSize: '16px' }"
                 >
                     Découvrir le Label
                 </a>
@@ -135,10 +109,10 @@ onMounted(async () => {
         <!-- Quote gradient co-brandé -->
         <section class="py-20 text-center" :style="{ background: sectionGradient }">
             <div class="max-w-3xl mx-auto px-8">
-                <blockquote class="font-bold mb-4" style="font-size: 28px; color: #2c4140; line-height: 1.45; font-style: italic">
+                <blockquote class="font-bold mb-4" :style="{ fontSize: '28px', color: cobrand.textOnBrand, lineHeight: '1.45', fontStyle: 'italic' }">
                     « Une initiative simple, qui a fédéré toute notre équipe autour d'une cause qui compte vraiment. »
                 </blockquote>
-                <p class="font-semibold" style="font-size: 14px; color: #2c4140; opacity: 0.75">Sophie M., Responsable RH, Nestlé SA</p>
+                <p class="font-semibold" :style="{ fontSize: '14px', color: cobrand.textOnBrand, opacity: 0.75 }">Sophie M., Responsable RH, Nestlé SA</p>
             </div>
         </section>
 
@@ -151,9 +125,10 @@ onMounted(async () => {
                         Obtenir le Label CTS est un processus simple, transparent et entièrement accompagné par nos équipes médicales. Après avoir soumis votre demande d'organisation, le CTS valide avec vous le mode opératoire et la période de collecte. Vous disposez ensuite de tous nos outils numériques et kits de communication pour mobiliser vos équipes. Le label vous est officiellement et automatiquement décerné dès la finalisation de votre événement pour une validité d'un an.
                     </p>
                     <RouterLink
+                        v-if="collecte"
                         :to="`/entreprise/${route.params.slug}/inscription`"
-                        class="inline-block text-white font-semibold rounded-full px-6 py-3 transition hover:opacity-80"
-                        :style="{ background: brandColor, fontSize: '16px', textDecoration: 'none' }"
+                        class="inline-block font-semibold rounded-full px-6 py-3 transition hover:opacity-80"
+                        :style="{ background: brandColor, color: cobrand.textOnBrand, fontSize: '16px', textDecoration: 'none' }"
                     >
                         S'inscrire à la collecte
                     </RouterLink>
@@ -177,8 +152,8 @@ onMounted(async () => {
                     </p>
                     <RouterLink
                         to="/entreprises"
-                        class="inline-block text-white font-semibold rounded-full px-6 py-3 transition hover:opacity-80"
-                        :style="{ background: brandColor, fontSize: '16px', textDecoration: 'none' }"
+                        class="inline-block font-semibold rounded-full px-6 py-3 transition hover:opacity-80"
+                        :style="{ background: brandColor, color: cobrand.textOnBrand, fontSize: '16px', textDecoration: 'none' }"
                     >
                         Découvrez nos entreprises partenaires
                     </RouterLink>

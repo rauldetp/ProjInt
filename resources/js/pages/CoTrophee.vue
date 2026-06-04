@@ -2,19 +2,18 @@
 import { ref, computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { useCobrandStore } from "../stores/cobrand";
-import { useCoinEntrepriseLink } from "../composables/useCoinEntrepriseLink";
+import CoNavbar from "../components/CoNavbar.vue";
 
 const route = useRoute();
 const cobrand = useCobrandStore();
-const { coinEntrepriseLink } = useCoinEntrepriseLink();
 
 const entreprise = ref(null);
+const collecte = ref(null);
 const loading = ref(true);
 const palmares = ref([]);
 const palmaresLoading = ref(true);
 
 const brandColor = computed(() => cobrand.couleurPrimaire || "#e60f48");
-const heroGradient = computed(() => `linear-gradient(135deg, ${brandColor.value}, #ffffff)`);
 const sectionGradient = computed(() => `linear-gradient(135deg, ${brandColor.value}, #ffffff)`);
 
 const temoignages = [
@@ -43,6 +42,7 @@ onMounted(async () => {
         if (res.ok) {
             const data = await res.json();
             entreprise.value = data.entreprise;
+            collecte.value = data.collecte ?? null;
             if (data.entreprise) cobrand.set(data.entreprise);
         }
     } catch {}
@@ -58,50 +58,24 @@ onMounted(async () => {
 <template>
     <div class="min-h-screen bg-white" style="font-family: 'Instrument Sans', sans-serif">
 
-        <!-- Navbar co-brandée -->
-        <header class="bg-white sticky top-0 z-50" style="height: 76px; border-bottom: 1px solid #f2f4f3">
-            <div class="max-w-7xl mx-auto px-8 h-full flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                    <RouterLink to="/" style="font-weight: 800; font-size: 20px; color: #2c4140; text-decoration: none">HUG</RouterLink>
-                    <span style="color: rgba(44,65,64,0.3); font-size: 18px; margin: 0 4px">|</span>
-                    <span style="font-size: 15px; font-weight: 600; color: #497371">Don du sang</span>
-                    <span style="color: rgba(44,65,64,0.3); font-size: 18px; margin: 0 4px">×</span>
-                    <span style="font-size: 15px; font-weight: 700" :style="{ color: brandColor }">
-                        <img v-if="cobrand.logo" :src="cobrand.logo" :alt="cobrand.nom" style="max-height: 28px; object-fit: contain" />
-                        <span v-else>{{ cobrand.nom || entreprise?.nom }}</span>
-                    </span>
-                </div>
-                <nav class="hidden md:flex items-center gap-7 text-base font-medium">
-                    <RouterLink :to="`/entreprise/${route.params.slug}`" style="color: #2c4140; text-decoration: none" class="hover:opacity-60 transition">Accueil</RouterLink>
-                    <RouterLink :to="`/entreprise/${route.params.slug}/label`" style="color: #2c4140; text-decoration: none" class="hover:opacity-60 transition">Label CTS</RouterLink>
-                    <RouterLink :to="`/entreprise/${route.params.slug}/trophee`" style="font-weight: 700; text-decoration: none" :style="{ color: brandColor }">Trophée de la générosité</RouterLink>
-                    <RouterLink :to="coinEntrepriseLink" style="color: #2c4140; text-decoration: none" class="hover:opacity-60 transition">Coin entreprise</RouterLink>
-                </nav>
-                <RouterLink
-                    :to="`/entreprise/${route.params.slug}/inscription`"
-                    class="border-2 rounded-full px-5 py-2 text-sm font-semibold transition hover:opacity-75"
-                    style="text-decoration: none; white-space: nowrap"
-                    :style="{ color: brandColor, borderColor: brandColor }"
-                >
-                    S'inscrire à la collecte
-                </RouterLink>
-            </div>
-        </header>
+        <!-- Navbar -->
+        <CoNavbar :collecte="collecte" />
 
         <!-- Hero -->
-        <section class="relative flex items-end pb-14 overflow-hidden" :style="{ height: '460px', background: heroGradient }">
-            <div class="relative max-w-7xl mx-auto px-8 w-full z-10">
-                <p class="font-semibold mb-3 uppercase tracking-widest" style="font-size: 13px" :style="{ color: brandColor }">Depuis 2008</p>
-                <h1 class="font-bold leading-tight mb-4" style="font-size: 52px; color: #2c4140">
+        <section class="relative flex items-center overflow-hidden" style="height: 512px; background-image: url('/images/Hero_Cobrand.webp'); background-size: cover; background-position: center;">
+            <div class="absolute inset-0" style="background: rgba(0,0,0,0.42); z-index: 1"></div>
+            <div class="relative w-full" style="z-index: 2; max-width: 1280px; margin: 0 auto; padding: 0 2rem; width: 100%">
+                <p class="font-semibold mb-3 uppercase tracking-widest" style="font-size: 13px; color: rgba(255,255,255,0.7)">Depuis 2008</p>
+                <h1 class="font-bold leading-tight mb-4" style="font-size: 52px; color: white">
                     Le Trophée<br />de la Générosité
                 </h1>
-                <p class="mb-8 max-w-xl" style="font-size: 18px; color: #2c4140; opacity: 0.8; line-height: 1.6">
+                <p class="mb-8 max-w-xl" style="font-size: 18px; color: rgba(255,255,255,0.85); line-height: 1.6">
                     La distinction annuelle qui récompense les entreprises genevoises les plus engagées pour le don du sang.
                 </p>
                 <RouterLink
                     to="/login"
-                    class="inline-block text-white font-semibold rounded-full px-7 py-3 transition hover:opacity-80"
-                    :style="{ background: brandColor, fontSize: '16px', textDecoration: 'none' }"
+                    class="inline-block font-semibold rounded-full px-7 py-3 transition hover:opacity-80"
+                    :style="{ background: brandColor, color: cobrand.textOnBrand, fontSize: '16px', textDecoration: 'none' }"
                 >
                     Candidater pour 2026 →
                 </RouterLink>
@@ -159,7 +133,7 @@ onMounted(async () => {
                             <div class="flex items-start gap-3"><span style="color: #c0cac9; flex-shrink: 0; margin-top: 2px; font-size: 14px">—</span><span style="font-size: 15px; color: #497371; line-height: 1.55"><strong style="color: #2c4140">Automatique</strong> dès la fin de la collecte</span></div>
                             <div class="flex items-start gap-3"><span style="color: #c0cac9; flex-shrink: 0; margin-top: 2px; font-size: 14px">—</span><span style="font-size: 15px; color: #497371; line-height: 1.55">Valide <strong style="color: #2c4140">1 an</strong>, renouvelable</span></div>
                         </div>
-                        <RouterLink :to="`/entreprise/${route.params.slug}/label`" class="inline-block mt-8 font-semibold rounded-full border-2 px-6 py-2 transition hover:opacity-75" style="font-size: 15px; color: #2c4140; border-color: #2c4140; text-decoration: none">Découvrir le Label →</RouterLink>
+                        <RouterLink :to="`/entreprise/${route.params.slug}/label`" class="inline-block mt-8 font-semibold rounded-full px-6 py-2 transition hover:opacity-75" :style="{ fontSize: '15px', background: brandColor, color: cobrand.textOnBrand, textDecoration: 'none' }">Découvrir le Label →</RouterLink>
                     </div>
                     <div :style="{ borderTop: `2px solid ${brandColor}`, paddingTop: '1.5rem' }">
                         <p class="font-bold mb-1" style="font-size: 20px; color: #2c4140">Trophée de la Générosité</p>
@@ -169,7 +143,7 @@ onMounted(async () => {
                             <div class="flex items-start gap-3"><span style="color: #c0cac9; flex-shrink: 0; margin-top: 2px; font-size: 14px">—</span><span style="font-size: 15px; color: #497371; line-height: 1.55">Attribué par <strong style="color: #2c4140">jury HUG</strong> en décembre</span></div>
                             <div class="flex items-start gap-3"><span style="color: #c0cac9; flex-shrink: 0; margin-top: 2px; font-size: 14px">—</span><span style="font-size: 15px; color: #497371; line-height: 1.55">Distinction <strong style="color: #2c4140">permanente</strong> au palmarès</span></div>
                         </div>
-                        <RouterLink to="/login" class="inline-block mt-8 text-white font-semibold rounded-full px-6 py-2 transition hover:opacity-80" :style="{ fontSize: '15px', background: brandColor, textDecoration: 'none' }">Candidater au Trophée 2026 →</RouterLink>
+                        <RouterLink to="/login" class="inline-block mt-8 font-semibold rounded-full px-6 py-2 transition hover:opacity-80" :style="{ fontSize: '15px', background: brandColor, color: cobrand.textOnBrand, textDecoration: 'none' }">Candidater au Trophée 2026 →</RouterLink>
                     </div>
                 </div>
             </div>
@@ -194,7 +168,7 @@ onMounted(async () => {
         <!-- Témoignages co-brandés -->
         <section class="py-20" :style="{ background: sectionGradient }">
             <div class="max-w-6xl mx-auto px-8">
-                <h2 class="font-bold text-center mb-12" style="font-size: 32px; color: #2c4140">Ils ont reçu le Trophée</h2>
+                <h2 class="font-bold text-center mb-12" :style="{ fontSize: '32px', color: cobrand.textOnBrand }">Ils ont reçu le Trophée</h2>
                 <div class="grid grid-cols-3 gap-6">
                     <div v-for="t in temoignages" :key="t.author" class="rounded-2xl bg-white flex flex-col gap-4" style="padding: 2rem">
                         <p class="italic flex-1" style="font-size: 15px; color: #2c4140; line-height: 1.7">« {{ t.quote }} »</p>
@@ -256,11 +230,11 @@ onMounted(async () => {
         <!-- CTA final co-brandé -->
         <section class="py-20 text-center" :style="{ background: sectionGradient }">
             <div class="max-w-2xl mx-auto px-8">
-                <h2 class="font-bold mb-4" style="font-size: 36px; color: #2c4140; line-height: 1.25">Votre entreprise mérite<br />d'être reconnue.</h2>
-                <p class="mb-10" style="font-size: 17px; color: #2c4140; opacity: 0.8; line-height: 1.6">Rejoignez les entreprises qui font la différence pour la santé publique genevoise.</p>
+                <h2 class="font-bold mb-4" :style="{ fontSize: '36px', color: cobrand.textOnBrand, lineHeight: '1.25' }">Votre entreprise mérite<br />d'être reconnue.</h2>
+                <p class="mb-10" :style="{ fontSize: '17px', color: cobrand.textOnBrand, opacity: 0.85, lineHeight: '1.6' }">Rejoignez les entreprises qui font la différence pour la santé publique genevoise.</p>
                 <div class="flex items-center justify-center gap-4 flex-wrap">
-                    <RouterLink to="/login" class="inline-block text-white font-semibold rounded-full px-8 py-3 transition hover:opacity-80" :style="{ background: brandColor, fontSize: '16px', textDecoration: 'none' }">Candidater au Trophée 2026</RouterLink>
-                    <RouterLink :to="`/entreprise/${route.params.slug}/label`" class="inline-block font-semibold rounded-full px-8 py-3 border-2 transition hover:opacity-75" style="color: #2c4140; border-color: #2c4140; font-size: 16px; text-decoration: none; background: transparent">Découvrir le Label CTS</RouterLink>
+                    <RouterLink to="/login" class="inline-block font-semibold rounded-full px-8 py-3 transition hover:opacity-80" :style="{ background: cobrand.textOnBrand, color: brandColor, fontSize: '16px', textDecoration: 'none' }">Candidater au Trophée 2026</RouterLink>
+                    <RouterLink :to="`/entreprise/${route.params.slug}/label`" class="inline-block font-semibold rounded-full px-8 py-3 transition hover:opacity-75" :style="{ border: `2px solid ${cobrand.textOnBrand}`, color: cobrand.textOnBrand, fontSize: '16px', textDecoration: 'none', background: 'transparent' }">Découvrir le Label CTS</RouterLink>
                 </div>
             </div>
         </section>
