@@ -3,6 +3,7 @@ import { ref, computed, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useCobrandStore } from "../stores/cobrand";
 import { useAuthStore } from "../stores/auth";
+import CoNavbar from "../components/CoNavbar.vue";
 
 const route  = useRoute();
 const router = useRouter();
@@ -26,10 +27,12 @@ const form = ref({
     lieu:          "",
     horaires:      "",
     objectif_dons: "",
+    nb_employes:   "",
 });
 
-const acceptPublication = ref(false);
-const acceptTrophee     = ref(false);
+const acceptPublication   = ref(false);
+const acceptTrophee       = ref(false);
+const showSmallCompanyInfo = ref(false);
 
 /* ── Submit ─────────────────────────────────────────────────── */
 async function submitForm() {
@@ -61,8 +64,12 @@ async function submitForm() {
             throw new Error(data.message || "Erreur lors de la soumission.");
         }
 
-        // Redirect to espace entreprise after success
-        router.push(`/entreprise/${route.params.slug}/espace`);
+        const n = parseInt(form.value.nb_employes);
+        if (!isNaN(n) && n < 500) {
+            showSmallCompanyInfo.value = true;
+        } else {
+            router.push(`/entreprise/${route.params.slug}/espace`);
+        }
     } catch (e) {
         submitError.value = e.message;
     } finally {
@@ -82,6 +89,9 @@ onMounted(async () => {
         }
     } catch {}
     finally { loading.value = false; }
+    if (entreprise.value?.nb_employes) {
+        form.value.nb_employes = String(entreprise.value.nb_employes);
+    }
     document.title = `Nouvelle collecte — ${cobrand.nom || "HUG"}`;
 });
 </script>
@@ -89,34 +99,7 @@ onMounted(async () => {
 <template>
     <div class="min-h-screen bg-white" style="font-family: 'Instrument Sans', sans-serif">
 
-        <!-- Navbar co-brandée -->
-        <header class="bg-white sticky top-0 z-50" style="height: 76px; border-bottom: 1px solid #f2f4f3">
-            <div class="max-w-7xl mx-auto px-8 h-full flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                    <RouterLink to="/" style="font-weight: 800; font-size: 20px; color: #2c4140; text-decoration: none">HUG</RouterLink>
-                    <span style="color: rgba(44,65,64,0.3); font-size: 18px; margin: 0 4px">|</span>
-                    <span style="font-size: 15px; font-weight: 600; color: #497371">Don du sang</span>
-                    <span style="color: rgba(44,65,64,0.3); font-size: 18px; margin: 0 4px">×</span>
-                    <span style="font-size: 15px; font-weight: 700" :style="{ color: brandColor }">
-                        <img v-if="cobrand.logo" :src="cobrand.logo" :alt="cobrand.nom" style="max-height: 28px; object-fit: contain" />
-                        <span v-else>{{ cobrand.nom || entreprise?.nom }}</span>
-                    </span>
-                </div>
-                <nav class="hidden md:flex items-center gap-7 text-base font-medium">
-                    <RouterLink :to="`/entreprise/${route.params.slug}`" style="color: #2c4140; text-decoration: none" class="hover:opacity-60 transition">Accueil</RouterLink>
-                    <RouterLink :to="`/entreprise/${route.params.slug}/label`" style="color: #2c4140; text-decoration: none" class="hover:opacity-60 transition">Label CTS</RouterLink>
-                    <RouterLink :to="`/entreprise/${route.params.slug}/trophee`" style="color: #2c4140; text-decoration: none" class="hover:opacity-60 transition">Trophée de la générosité</RouterLink>
-                    <RouterLink :to="`/entreprise/${route.params.slug}/espace`" style="color: #2c4140; text-decoration: none" class="hover:opacity-60 transition">Espace entreprise</RouterLink>
-                </nav>
-                <RouterLink
-                    v-if="collecte"
-                    :to="`/entreprise/${route.params.slug}/inscription`"
-                    class="border-2 rounded-full px-5 py-2 text-sm font-semibold"
-                    style="text-decoration: none; white-space: nowrap"
-                    :style="{ color: brandColor, borderColor: brandColor }"
-                >S'inscrire à la collecte</RouterLink>
-            </div>
-        </header>
+        <CoNavbar :collecte="collecte" />
 
         <!-- Form content -->
         <section style="background: #f2f4f3; min-height: calc(100vh - 76px - 180px); padding: 3rem 0 5rem">
@@ -230,6 +213,21 @@ onMounted(async () => {
                         </div>
                     </div>
 
+                    <!-- Nombre d'employés -->
+                    <div>
+                        <label for="nb_employes" style="font-size: 12px; font-weight: 600; color: #497371; display: block; margin-bottom: 0.4rem">
+                            Nombre d'employés dans l'entreprise
+                        </label>
+                        <input
+                            id="nb_employes"
+                            v-model="form.nb_employes"
+                            type="number"
+                            min="1"
+                            placeholder="ex : 250"
+                            style="width: 100%; max-width: 200px; border-radius: 8px; padding: 0.75rem 1rem; font-size: 14px; color: #2c4140; border: 1px solid #dce5e4; background: white; outline: none; box-sizing: border-box"
+                        />
+                    </div>
+
                     <!-- Participation et confidentialité -->
                     <div>
                         <p style="font-size: 12px; font-weight: 600; color: #497371; margin: 0 0 0.75rem">Participation et confidentialité</p>
@@ -263,6 +261,51 @@ onMounted(async () => {
             </div>
         </section>
 
+        <!-- ── Overlay : moins de 500 salariés ───────────────────── -->
+        <Transition name="fade">
+            <div v-if="showSmallCompanyInfo" class="overlay-backdrop" @click.self="router.push(`/entreprise/${route.params.slug}/espace`)">
+                <div class="overlay-card">
+
+                    <h2 class="overlay-title">VOTRE ENTREPRISE COMPTE<br />MOINS DE 500 SALARIÉS&nbsp;?</h2>
+
+                    <p class="overlay-lead">Découvrez nos solutions pour le don</p>
+
+                    <div class="overlay-solution">
+                        <span class="overlay-bullet">•</span>
+                        <strong>Aux HUG</strong>
+                    </div>
+                    <p class="overlay-text">
+                        Vous avez constitué un groupe de donneurs&nbsp;? Parfait. Nos équipes vous accueillent sur le site fixe de prélèvement le plus proche de votre entreprise. Vous pouvez d'ores et déjà réserver des temps dédiés au don de sang sur notre site.
+                    </p>
+
+                    <div class="overlay-solution">
+                        <span class="overlay-bullet">•</span>
+                        <strong>Dans votre commune</strong>
+                    </div>
+                    <p class="overlay-text">
+                        Il y a sûrement une collecte de don à proximité de votre entreprise. Réunissez tous les collaborateurs donneurs et rejoignez les donneurs de l'extérieur.
+                    </p>
+
+                    <a
+                        href="https://www.hug.ch/don-du-sang"
+                        target="_blank"
+                        rel="noopener"
+                        class="overlay-btn-reglementaire"
+                    >DÉCOUVRIR LES ASPECTS RÉGLEMENTAIRES</a>
+
+                    <button
+                        class="overlay-btn-continue"
+                        :style="{ background: brandColor }"
+                        @click="router.push(`/entreprise/${route.params.slug}/espace`)"
+                    >
+                        Continuer vers mon espace
+                        <span class="material-symbols-outlined" style="font-size: 18px">arrow_forward</span>
+                    </button>
+
+                </div>
+            </div>
+        </Transition>
+
         <!-- Footer simplifié -->
         <footer style="background: #2c4140; padding: 2.5rem 0 2rem">
             <div class="max-w-6xl mx-auto px-8 flex items-center justify-between">
@@ -277,3 +320,107 @@ onMounted(async () => {
         </footer>
     </div>
 </template>
+
+<style scoped>
+/* ── Overlay backdrop ──────────────────────────────────────── */
+.overlay-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(44, 65, 64, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    padding: 1.5rem;
+}
+.overlay-card {
+    background: white;
+    border-radius: 16px;
+    padding: 2.5rem 2.75rem;
+    max-width: 560px;
+    width: 100%;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+}
+
+/* ── Contenu ───────────────────────────────────────────────── */
+.overlay-title {
+    font-size: 1.9rem;
+    font-weight: 900;
+    color: #1d7fc4;
+    line-height: 1.15;
+    text-transform: uppercase;
+    margin: 0 0 1.25rem;
+    font-style: italic;
+}
+.overlay-lead {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #2c4140;
+    margin: 0 0 0.6rem;
+}
+.overlay-solution {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 1rem 0 0.4rem;
+}
+.overlay-bullet {
+    color: #e60f48;
+    font-size: 1.2rem;
+    line-height: 1;
+}
+.overlay-solution strong {
+    font-size: 0.95rem;
+    color: #2c4140;
+}
+.overlay-text {
+    font-size: 0.875rem;
+    color: #2c4140;
+    line-height: 1.65;
+    margin: 0;
+}
+
+/* ── Boutons ───────────────────────────────────────────────── */
+.overlay-btn-reglementaire {
+    display: block;
+    width: 100%;
+    margin-top: 1.75rem;
+    border: 2px solid #e60f48;
+    border-radius: 9999px;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: #e60f48;
+    text-align: center;
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    transition: background 0.15s, color 0.15s;
+    box-sizing: border-box;
+}
+.overlay-btn-reglementaire:hover {
+    background: #e60f48;
+    color: white;
+}
+.overlay-btn-continue {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    width: 100%;
+    margin-top: 0.75rem;
+    border: none;
+    border-radius: 9999px;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    font-family: inherit;
+    transition: opacity 0.15s;
+}
+.overlay-btn-continue:hover { opacity: 0.85; }
+
+/* ── Transition fade ───────────────────────────────────────── */
+.fade-enter-active, .fade-leave-active { transition: opacity 0.2s; }
+.fade-enter-from, .fade-leave-to { opacity: 0; }
+</style>

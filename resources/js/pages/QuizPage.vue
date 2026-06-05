@@ -1,21 +1,35 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
-import { useCoinEntrepriseLink } from "../composables/useCoinEntrepriseLink";
 import { useAuthStore } from "../stores/auth";
+import HugNavbar from "../components/HugNavbar.vue";
 
-const { coinEntrepriseLink } = useCoinEntrepriseLink();
 const auth = useAuthStore();
 
-const BRAND       = "#e60f48";
-const TEXT_ON_BR  = "white";
-const STORAGE_KEY = "quizResult_hug";
+const BRAND = "#e60f48";
+const TEAL  = "#65c6c1";
+const COOKIE_RESULT  = "quizResult_hug";
+const COOKIE_ANSWERS = "quizAnswers_hug";
+const COOKIE_DAYS    = 7;
+
+// ── Cookie helpers ────────────────────────────────────────────────
+function setCookie(name, value, days) {
+    const exp = new Date(Date.now() + days * 864e5).toUTCString();
+    document.cookie = `${name}=${encodeURIComponent(value)};expires=${exp};path=/;SameSite=Lax`;
+}
+function getCookie(name) {
+    const m = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
+    return m ? decodeURIComponent(m[1]) : null;
+}
+function deleteCookie(name) {
+    document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/`;
+}
 
 // ── State ────────────────────────────────────────────────────────
 const step           = ref("intro"); // intro | quiz | info | recap | result
 const currentQ       = ref(0);
 const answers        = ref([]);
 const selectedAnswer = ref(null);
-const currentInfo    = ref(null);   // { message, reassurance?, type: 'warn'|'tip' }
+const currentInfo    = ref(null);
 const resultat       = ref(null);
 
 const participerLink = computed(() => {
@@ -25,72 +39,106 @@ const participerLink = computed(() => {
 });
 
 onMounted(() => {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) resultat.value = saved;
+    const savedResult = getCookie(COOKIE_RESULT);
+    if (savedResult) {
+        resultat.value = savedResult;
+        const savedAnswers = getCookie(COOKIE_ANSWERS);
+        if (savedAnswers) {
+            try { answers.value = JSON.parse(savedAnswers); } catch {}
+        }
+    }
     document.title = "Quiz d'éligibilité — HUG Don du sang";
 });
 
 // ── Questions ────────────────────────────────────────────────────
 const questions = [
     {
-        icon: "🎂",
+        icon: "person",
         text: "Avez-vous entre 18 et 75 ans ?",
         options: ["Oui", "Non"],
-        feedback: { trigger: "Non", type: "warn", message: "Le don du sang est soumis à certaines limites d'âge afin de garantir la sécurité des donneurs et des patients." },
+        feedback: { trigger: "Non", type: "warn", message: "Le don du sang est réservé aux personnes âgées de 18 à 75 ans afin de garantir la sécurité des donneurs et des receveurs." },
+        info: { message: "À 18 ans, vous pouvez effectuer votre tout premier don. Les HUG et le CTS accueillent les donneurs jusqu'à 75 ans, avec un entretien médical complémentaire pour les donneurs de plus de 60 ans.", tip: "Plus vous commencez à donner tôt, plus vous contribuez à maintenir les stocks de sang disponibles pour les patients tout au long de l'année." },
     },
     {
-        icon: "❤️",
+        icon: "wine_bar",
+        text: "Avez-vous consommé de l'alcool au cours des 24 dernières heures ?",
+        options: ["Oui", "Non"],
+        feedback: {
+            trigger: "Oui", type: "warn",
+            message: "L'alcool peut perturber la récupération de votre organisme après un don de sang.\n\nIl est recommandé d'éviter d'en consommer avant votre rendez-vous.",
+            tip: "Pensez à bien vous hydrater avant votre don : buvez de l'eau régulièrement tout au long de journée.",
+        },
+        info: { message: "Éviter l'alcool dans les 24 heures précédant un don est une excellente pratique. L'alcool favorise la déshydratation et peut accentuer les effets du prélèvement sur votre tension artérielle.", tip: "Buvez au moins 500 ml d'eau supplémentaires dans les heures qui précèdent votre don pour optimiser la récupération de votre organisme." },
+    },
+    {
+        icon: "health_and_safety",
         text: "Vous sentez-vous en bonne santé aujourd'hui ?",
         options: ["Oui", "Non"],
         feedback: { trigger: "Non", type: "warn", message: "Même un simple refroidissement peut empêcher temporairement un don. Le plus important est de venir lorsque vous êtes en pleine forme." },
-        micro: { type: "tip", message: "Le don dure généralement moins de 10 minutes." },
+        info: { message: "Être en forme le jour du don est la meilleure des conditions. Si des symptômes apparaissent le matin même de votre rendez-vous, il est préférable de reporter le don.", tip: "Un simple rhume ou une légère fièvre est une raison valable d'annuler — votre santé passe avant tout !" },
     },
     {
-        icon: "💉",
-        text: "Avez-vous eu un tatouage ou un piercing récemment ?",
-        options: ["Oui", "Non"],
-        feedback: { trigger: "Oui", type: "warn", message: "Après un tatouage ou un piercing, un délai est parfois nécessaire avant de pouvoir donner son sang.", reassurance: "Cela ne signifie pas que vous ne pourrez plus donner à l'avenir." },
-    },
-    {
-        icon: "🏥",
+        icon: "medical_services",
         text: "Avez-vous subi une opération ou un traitement médical récemment ?",
         options: ["Oui", "Non"],
-        feedback: { trigger: "Oui", type: "warn", message: "Certaines interventions nécessitent un délai avant un don. Le personnel médical vérifiera cela avec vous." },
-        micro: { type: "tip", message: "Le personnel médical vous accompagne à chaque étape." },
+        feedback: { trigger: "Oui", type: "warn", message: "Certaines interventions nécessitent un délai avant un don. Le personnel médical vérifiera cela avec vous lors de l'entretien de pré-don." },
+        info: { message: "Sans intervention médicale récente, vous n'avez pas de délai supplémentaire à respecter pour ce critère. L'infirmière vérifiera tout de même vos antécédents lors de l'entretien.", tip: "Si vous avez eu une opération il y a plusieurs mois, mentionnez-le quand même lors de l'entretien — certains actes chirurgicaux nécessitent un délai plus long." },
     },
     {
-        icon: "💊",
+        icon: "draw",
+        text: "Avez-vous eu un tatouage ou un piercing récemment ?",
+        options: ["Oui", "Non"],
+        feedback: { trigger: "Oui", type: "warn", message: "Après un tatouage ou un piercing, un délai de 4 mois est requis avant de pouvoir donner son sang.", reassurance: "Passé ce délai, vous pourrez à nouveau donner sans restriction." },
+        info: { message: "Sans tatouage ni piercing récent, vous n'avez aucune restriction liée à ce critère. Les tatouages réalisés dans des établissements professionnels agréés en Suisse imposent un délai de 4 mois, puis le don est à nouveau possible.", tip: "Les techniques modernes de tatouage présentent un faible risque d'infection, mais le délai de précaution reste en vigueur dans tous les centres de transfusion suisses." },
+    },
+    {
+        icon: "medication",
         text: "Prenez-vous actuellement des médicaments importants ?",
         options: ["Oui", "Non"],
-        feedback: { trigger: "Oui", type: "warn", message: "Certains traitements sont compatibles avec le don, d'autres nécessitent un délai temporaire." },
+        feedback: { trigger: "Oui", type: "warn", message: "Certains traitements sont compatibles avec le don, d'autres nécessitent un délai temporaire. Le médecin du CTS pourra vous renseigner lors de l'entretien." },
+        info: { message: "Sans traitement médicamenteux en cours, vous n'avez pas de restriction liée aux médicaments. Certains médicaments courants comme l'ibuprofène sont acceptés, mais doivent toujours être mentionnés lors de l'entretien.", tip: "Même les compléments alimentaires, les vitamines ou les contraceptifs oraux doivent être signalés lors de l'entretien de pré-don, par mesure de précaution." },
     },
     {
-        icon: "🍽️",
+        icon: "restaurant",
         text: "Avez-vous suffisamment mangé et bu aujourd'hui ?",
         options: ["Oui", "Non"],
         feedback: { trigger: "Non", type: "warn", message: "Il est fortement recommandé de manger et de bien s'hydrater avant un don afin d'éviter les malaises." },
-        micro: { type: "tip", message: "La majorité des donneurs reprennent leur journée normalement." },
+        info: { message: "Un repas léger et une bonne hydratation avant le don sont essentiels pour éviter tout malaise. Un repas trop riche en graisses peut temporairement rendre le plasma trouble et affecter certaines analyses.", tip: "Après votre don, reposez-vous 10 à 15 minutes et consommez les collations proposées par l'équipe soignante avant de quitter le centre." },
     },
     {
-        icon: "👶",
+        icon: "pregnant_woman",
         text: "Êtes-vous enceinte ou avez-vous accouché récemment ?",
         options: ["Oui", "Non"],
-        feedback: { trigger: "Oui", type: "warn", message: "Un délai est nécessaire après une grossesse avant de pouvoir donner son sang." },
+        feedback: { trigger: "Oui", type: "warn", message: "Un délai de 6 mois après l'accouchement est nécessaire avant de pouvoir donner son sang, afin de permettre à l'organisme de se reconstituer pleinement." },
+        info: { message: "Les femmes peuvent donner leur sang aussi régulièrement que les hommes, avec un intervalle minimum de 4 mois entre chaque don. En cas d'allaitement, il est conseillé d'attendre la fin de cette période.", tip: "Le fer contenu dans le sang est particulièrement important pour les femmes. Une alimentation riche en fer (viande rouge, légumineuses, épinards) aide à maintenir un bon taux d'hémoglobine entre les dons." },
     },
     {
-        icon: "✈️",
+        icon: "flight",
         text: "Avez-vous voyagé récemment dans certaines régions à risque ?",
         options: ["Oui", "Non", "Je ne sais pas"],
-        feedback: { trigger: "Oui", type: "warn", message: "Certaines destinations nécessitent un délai temporaire avant le don." },
-        micro: { type: "tip", message: "Vous n'êtes pas seul : votre communauté participe avec vous." },
-    },
-    {
-        icon: "🌟",
-        text: "Souhaitez-vous participer à une collecte de don du sang ?",
-        options: ["Oui", "J'hésite encore"],
-        feedback: { trigger: "J'hésite encore", type: "tip", message: "C'est normal d'avoir des questions avant un premier don. Courage est là pour vous accompagner." },
+        feedback: { trigger: "Oui", type: "warn", message: "Certaines destinations — notamment en zone tropicale ou dans des régions touchées par des maladies vectorielles comme le paludisme — nécessitent un délai d'attente après le retour." },
+        info: { message: "Sans voyage récent dans une zone à risque, vous n'avez aucune restriction liée aux voyages. En cas de doute, le CTS dispose d'une liste mise à jour des destinations imposant un délai d'attente.", tip: "En cas de retour d'une zone endémique pour le paludisme, un délai de 28 jours minimum est généralement requis avant de pouvoir donner." },
     },
 ];
+
+// ── Helpers ──────────────────────────────────────────────────────
+function isGoodAnswer(opt) {
+    const q = questions[currentQ.value];
+    return !q.feedback || opt !== q.feedback.trigger;
+}
+
+function isGoodForDonation(i) {
+    const q = questions[i];
+    const a = answers.value[i];
+    return !a || !q.feedback || a !== q.feedback.trigger;
+}
+
+function getAnswerBadgeStyle(answer) {
+    if (!answer) return { background: '#f2f4f3', color: '#8fa8a6' };
+    if (answer === 'Oui') return { background: '#d1fae5', color: '#065f46' };
+    if (answer === 'Non') return { background: '#fee2e2', color: '#991b1b' };
+    return { background: '#f0f9f8', color: '#2c4140' };
+}
 
 // ── Actions ──────────────────────────────────────────────────────
 function startQuiz() {
@@ -110,11 +158,6 @@ function selectAnswer(opt) {
     selectedAnswer.value = opt;
 }
 
-function isGoodAnswer(opt) {
-    const q = questions[currentQ.value];
-    return !q.feedback || opt !== q.feedback.trigger;
-}
-
 function confirm() {
     const opt = selectedAnswer.value;
     if (!opt) return;
@@ -122,14 +165,11 @@ function confirm() {
     answers.value = [...answers.value.slice(0, currentQ.value), opt];
 
     const q = questions[currentQ.value];
-    const hasFeedback = q.feedback && opt === q.feedback.trigger;
-    const hasMicro    = q.micro && opt !== q.feedback?.trigger;
-
-    if (hasFeedback) {
+    if (q.feedback && opt === q.feedback.trigger) {
         currentInfo.value = q.feedback;
         step.value = "info";
-    } else if (hasMicro) {
-        currentInfo.value = q.micro;
+    } else if (q.info) {
+        currentInfo.value = q.info;
         step.value = "info";
     } else {
         advanceQuestion();
@@ -174,95 +214,79 @@ function goBack() {
 function showResult() {
     const r = computeResult();
     resultat.value = r;
-    localStorage.setItem(STORAGE_KEY, r);
+    setCookie(COOKIE_RESULT,  r, COOKIE_DAYS);
+    setCookie(COOKIE_ANSWERS, JSON.stringify(answers.value), COOKIE_DAYS);
     step.value = "result";
 }
 
 function computeResult() {
     const a = answers.value;
-    if (a[0] === "Non") return "non-eligible";
-    if (a[1] === "Non") return "non-eligible";
-    if (a[2] === "Oui") return "non-eligible";
-    if (a[3] === "Oui") return "non-eligible";
-    if (a[5] === "Non") return "non-eligible";
-    if (a[6] === "Oui") return "non-eligible";
-    if (a[7] === "Oui") return "non-eligible";
-    if (a[4] === "Oui") return "incertain";
-    if (a[7] === "Je ne sais pas") return "incertain";
+    if (a[0] === "Non") return "non-eligible";   // age
+    if (a[2] === "Non") return "non-eligible";   // health
+    if (a[3] === "Oui") return "non-eligible";   // medical treatment
+    if (a[6] === "Non") return "non-eligible";   // food/drink
+    if (a[7] === "Oui") return "non-eligible";   // pregnancy
+    if (a[4] === "Oui") return "incertain";      // tattoo/piercing
+    if (a[5] === "Oui") return "incertain";      // medication
+    if (a[8] === "Oui" || a[8] === "Je ne sais pas") return "incertain"; // travel
     return "eligible";
 }
 
 function retakeQuiz() {
     resultat.value = null;
-    localStorage.removeItem(STORAGE_KEY);
+    deleteCookie(COOKIE_RESULT);
+    deleteCookie(COOKIE_ANSWERS);
     startQuiz();
-}
-
-function getAnswerBadgeStyle(answer, q) {
-    if (!answer) return { background: '#f2f4f3', color: '#8fa8a6' };
-    const isGood = q.feedback ? answer !== q.feedback.trigger : true;
-    if (isGood) return { background: '#dcfce7', color: '#166534' };
-    return { background: '#fee2e2', color: '#991b1b' };
 }
 </script>
 
 <template>
     <div class="page">
 
-        <!-- Navbar HUG -->
-        <header class="navbar">
-            <div class="navbar-inner">
-                <div class="navbar-brand">
-                    <RouterLink to="/" class="brand-hug">HUG</RouterLink>
-                    <div class="brand-divider"></div>
-                    <span class="brand-subtitle">Don du sang</span>
-                </div>
-                <nav class="navbar-links">
-                    <RouterLink to="/label" style="color:#2c4140; text-decoration:none;">Label CTS</RouterLink>
-                    <RouterLink to="/trophee" style="color:#2c4140; text-decoration:none;">Trophée de la générosité</RouterLink>
-                    <RouterLink :to="coinEntrepriseLink" style="color:#2c4140; text-decoration:none;">Coin entreprise</RouterLink>
-                    <RouterLink to="/quiz" style="color:#e60f48; font-weight:700; text-decoration:none;">Quiz d'éligibilité</RouterLink>
-                    <RouterLink to="/contact" style="color:#2c4140; text-decoration:none;">Contact</RouterLink>
-                </nav>
-                <RouterLink :to="participerLink" class="navbar-cta">Participer</RouterLink>
-            </div>
-        </header>
+        <HugNavbar />
 
         <!-- ══════════════════════════════════════════════════════
              INTRO — split screen
         ═══════════════════════════════════════════════════════ -->
         <div v-if="step === 'intro'" class="split-screen">
 
-            <!-- Mascotte -->
             <div class="mascotte-col">
-                <div class="mascotte-wrap">
-                    <!-- TODO: remplacer par <img src="/images/courage-intro.png" alt="Courage"> -->
-                    <div class="mascotte-placeholder">
-                        🦫
-                        <span class="mascotte-label">Courage</span>
-                    </div>
+                <div class="mascotte-circle">
+                    <!-- Remplacer par l'image Courage quand disponible -->
+                    <img :src="'/images/courage_intro.webp'" alt="" class="mascotte-img" />
                 </div>
             </div>
 
-            <!-- Contenu -->
             <div class="content-col">
                 <div class="intro-content">
-                    <div class="intro-badge">9 questions · 2 minutes</div>
-                    <h1 class="intro-title">Je suis Courage,<br>votre guide !</h1>
+                    <h1 class="intro-title">Je suis Courage, votre guide!</h1>
                     <p class="intro-sub">
-                        En quelques questions simples, découvrez si vous pouvez probablement participer à une collecte de don du sang.
+                        Je vais vous poser 9 questions rapides et vous donner des conseils utiles à chaque étape pour vérifier si vous pouvez donner votre sang.
                     </p>
-                    <p class="intro-disclaimer">
-                        Ce quiz ne remplace pas le questionnaire médical officiel réalisé sur place avec le personnel du CTS.
-                    </p>
-                    <div class="intro-actions">
-                        <button class="btn-primary" @click="startQuiz">
-                            Commencer le quiz →
-                        </button>
-                        <button class="btn-outline" @click="viewPreviousResult">
-                            Voir mon résultat →
-                        </button>
+
+                    <div class="feature-cards">
+                        <div class="feature-card">
+                            <span class="material-symbols-outlined feature-icon">schedule</span>
+                            <p class="feature-label">Seulement 5 minutes</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="material-symbols-outlined feature-icon">security</span>
+                            <p class="feature-label">100 % confidentiel</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="material-symbols-outlined feature-icon">favorite</span>
+                            <p class="feature-label">Préparer votre don</p>
+                        </div>
                     </div>
+
+                    <button class="btn-teal" @click="startQuiz">
+                        Commencer le test
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </button>
+
+                    <button v-if="resultat" class="btn-retake" @click="viewPreviousResult">
+                        Voir mon résultat précédent
+                    </button>
                 </div>
             </div>
         </div>
@@ -272,23 +296,27 @@ function getAnswerBadgeStyle(answer, q) {
         ═══════════════════════════════════════════════════════ -->
         <div v-else-if="step === 'quiz'" class="quiz-screen">
 
-            <!-- Progress dots -->
-            <div class="progress-dots">
-                <span
-                    v-for="(_, i) in questions"
-                    :key="i"
-                    class="dot"
-                    :class="{ 'dot-active': i === currentQ, 'dot-done': i < currentQ }"
-                    :style="i === currentQ || i < currentQ ? { background: BRAND } : {}"
-                ></span>
+            <!-- Progress steps -->
+            <div class="progress-steps">
+                <template v-for="(_, i) in questions" :key="i">
+                    <div
+                        class="step"
+                        :class="{ 'step-done': i < currentQ, 'step-active': i === currentQ }"
+                    >{{ i + 1 }}</div>
+                    <div
+                        v-if="i < questions.length - 1"
+                        class="step-line"
+                        :class="{ 'step-line-done': i < currentQ }"
+                    ></div>
+                </template>
             </div>
 
             <div class="quiz-inner">
+                <!-- Icon -->
                 <div class="question-icon">
-                    <span>{{ questions[currentQ].icon }}</span>
+                    <span class="material-symbols-outlined question-icon-ms">{{ questions[currentQ].icon }}</span>
                 </div>
 
-                <p class="quiz-counter">Question {{ currentQ + 1 }} / {{ questions.length }}</p>
                 <h2 class="quiz-question">{{ questions[currentQ].text }}</h2>
 
                 <div class="quiz-options">
@@ -296,27 +324,24 @@ function getAnswerBadgeStyle(answer, q) {
                         v-for="opt in questions[currentQ].options"
                         :key="opt"
                         class="quiz-option"
-                        :class="{
-                            'is-good': selectedAnswer === opt && isGoodAnswer(opt),
-                            'is-bad':  selectedAnswer === opt && !isGoodAnswer(opt),
-                        }"
+                        :class="[
+                            opt === 'Oui' ? 'opt-oui' : opt === 'Non' ? 'opt-non' : 'opt-other',
+                            { 'is-selected': selectedAnswer === opt },
+                        ]"
                         @click="selectAnswer(opt)"
                     >
                         <span class="opt-icon">
                             <svg v-if="selectedAnswer === opt && isGoodAnswer(opt)" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                             <svg v-else-if="selectedAnswer === opt && !isGoodAnswer(opt)" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                         </span>
-                        <span>{{ opt }}</span>
+                        {{ opt }}
                     </button>
                 </div>
 
                 <Transition name="slide-up">
-                    <button
-                        v-if="selectedAnswer"
-                        class="btn-continuer"
-                        @click="confirm"
-                    >
-                        Prochaine question →
+                    <button v-if="selectedAnswer" class="btn-continuer" @click="confirm">
+                        Prochaine question
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                     </button>
                 </Transition>
 
@@ -328,31 +353,47 @@ function getAnswerBadgeStyle(answer, q) {
         </div>
 
         <!-- ══════════════════════════════════════════════════════
-             SLIDE INFO — "Courage vous informe !"
+             SLIDE INFO — split screen
         ═══════════════════════════════════════════════════════ -->
-        <div v-else-if="step === 'info'" class="info-screen">
-            <div class="info-inner">
+        <div v-else-if="step === 'info'" class="split-screen">
 
-                <div class="info-header">
-                    <div class="info-avatar" :class="currentInfo?.type === 'tip' ? 'info-avatar-tip' : 'info-avatar-warn'">
-                        <!-- TODO: remplacer par <img src="/images/courage-thumbs.png" alt="Courage"> -->
-                        <span class="info-avatar-emoji">🦫</span>
-                    </div>
-                    <h2 class="info-title">Courage vous informe !</h2>
+            <div class="mascotte-col">
+                <div class="mascotte-circle">
+                    <img :src="'/images/courage_info.webp'" alt="" class="mascotte-img" />
                 </div>
+            </div>
 
-                <div class="info-card" :class="currentInfo?.type === 'tip' ? 'info-card-tip' : 'info-card-warn'">
-                    <p class="info-msg">{{ currentInfo?.message }}</p>
-                    <p v-if="currentInfo?.reassurance" class="info-reassurance">
+            <div class="content-col">
+                <div class="info-content">
+                    <h2 class="info-title">Courage vous informe !</h2>
+
+                    <p
+                        v-for="(line, i) in currentInfo.message.split('\n\n')"
+                        :key="i"
+                        class="info-msg"
+                    >{{ line }}</p>
+
+                    <p v-if="currentInfo.reassurance" class="info-reassurance">
                         {{ currentInfo.reassurance }}
                     </p>
-                </div>
 
-                <button class="btn-primary" @click="continueFromInfo">Continuer</button>
-                <button class="btn-back" style="margin-top: 1rem" @click="goBack">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-                    Retour
-                </button>
+                    <div v-if="currentInfo.tip" class="tip-card">
+                        <div class="tip-icon-wrap">
+                            <span class="material-symbols-outlined tip-icon">lightbulb</span>
+                        </div>
+                        <p class="tip-text">{{ currentInfo.tip }}</p>
+                    </div>
+
+                    <button class="btn-teal" style="margin-top: 0.5rem" @click="continueFromInfo">
+                        J'ai bien compris
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </button>
+
+                    <button class="btn-back" style="margin-top: 1.25rem" @click="goBack">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+                        Retour
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -362,25 +403,33 @@ function getAnswerBadgeStyle(answer, q) {
         <div v-else-if="step === 'recap'" class="recap-screen">
             <div class="recap-inner">
                 <h2 class="recap-title">Réponses données</h2>
-                <p class="recap-sub">Vérifiez vos réponses avant de voir votre résultat.</p>
 
                 <div class="answers-grid">
-                    <div v-for="(q, i) in questions" :key="i" class="answer-row">
-                        <div class="answer-q">
-                            <span class="answer-icon">{{ q.icon }}</span>
-                            <span class="answer-text">{{ q.text }}</span>
+                    <div v-for="(q, i) in questions" :key="i" class="answer-card">
+                        <div class="card-top">
+                            <div class="card-check" :class="isGoodForDonation(i) ? 'check-good' : 'check-bad'">
+                                <svg v-if="isGoodForDonation(i)" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                <svg v-else width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                            </div>
+                            <p class="card-question">{{ q.text }}</p>
+                            <div class="card-info-btn">
+                                <span class="material-symbols-outlined" style="font-size: 18px; color: #000">info</span>
+                            </div>
                         </div>
-                        <span class="answer-badge" :style="getAnswerBadgeStyle(answers[i], q)">
-                            {{ answers[i] ?? '—' }}
-                        </span>
+                        <div class="card-bottom">
+                            <span class="card-answer-label">Vous avez répondu :</span>
+                            <span class="answer-badge" :style="getAnswerBadgeStyle(answers[i])">
+                                {{ answers[i] ?? '—' }}
+                            </span>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Section "Prêt ?" -->
                 <div class="ready-section">
                     <p class="ready-title">Vous vous sentez prêt ?</p>
                     <button class="btn-ready" @click="showResult">
-                        Voir mon résultat →
+                        Voir mon résultat
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                     </button>
                 </div>
             </div>
@@ -391,90 +440,59 @@ function getAnswerBadgeStyle(answer, q) {
         ═══════════════════════════════════════════════════════ -->
         <div v-else-if="step === 'result'" class="split-screen">
 
-            <!-- Mascotte -->
-            <div class="mascotte-col" :class="resultat === 'eligible' ? 'mascotte-col-eligible' : 'mascotte-col-neutral'">
-                <div class="mascotte-wrap">
-                    <!-- TODO: remplacer par image selon resultat -->
-                    <div class="mascotte-placeholder" :class="resultat === 'eligible' ? 'mascotte-eligible' : 'mascotte-neutral'">
-                        {{ resultat === 'eligible' ? '🦫🏆' : resultat === 'non-eligible' ? '🦫😟' : '🦫🤔' }}
-                        <span class="mascotte-label">Courage</span>
-                    </div>
+            <div class="mascotte-col">
+                <div class="mascotte-circle">
+                    <img
+                        :src="resultat === 'eligible' ? '/images/courage_eligible.webp' : '/images/courage_non_eligible.webp'"
+                        alt="" class="mascotte-img"
+                    />
                 </div>
             </div>
 
-            <!-- Résultat contenu -->
             <div class="content-col">
                 <div class="result-content">
 
                     <!-- ÉLIGIBLE -->
                     <template v-if="resultat === 'eligible'">
-                        <div class="result-check result-check-ok">
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#e60f48" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="20 6 9 17 4 12"/>
-                            </svg>
-                        </div>
-                        <div class="result-badge result-badge-ok">Bonne nouvelle !</div>
                         <h2 class="result-title">Bravo ! Vous êtes la star du don.</h2>
-                        <div class="result-highlight result-highlight-ok">
-                            <p>D'après vos réponses, vous pouvez probablement participer à une collecte de don du sang. Le personnel du CTS vérifiera les derniers critères sur place.</p>
+                        <p class="result-sub">Sur la base de vos réponses, vous remplissez les principales conditions de don.</p>
+                        <div class="result-tip-card">
+                            <span class="material-symbols-outlined" style="font-size: 18px; color: #000">info</span>
+                            <p>La validation finale sera effectuée sur place par l'équipe médicale.</p>
                         </div>
-                        <p class="result-emotion">❤️ Un seul don peut aider jusqu'à trois personnes.</p>
-                        <div class="result-actions">
-                            <RouterLink :to="participerLink" class="btn-primary btn-link">
-                                Participer à la collecte →
-                            </RouterLink>
-                            <RouterLink to="/" class="btn-outline btn-link btn-outline-teal">
-                                Voir les informations pratiques
-                            </RouterLink>
-                        </div>
+                        <RouterLink :to="participerLink" class="btn-teal btn-link">
+                            Prendre rendez-vous
+                            <span class="material-symbols-outlined" style="font-size: 18px; color: #000">calendar_month</span>
+                        </RouterLink>
                     </template>
 
                     <!-- NON ÉLIGIBLE -->
                     <template v-else-if="resultat === 'non-eligible'">
-                        <div class="result-check result-check-nok">
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#497371" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
-                            </svg>
-                        </div>
-                        <div class="result-badge result-badge-nok">Pas cette fois-ci</div>
                         <h2 class="result-title">Certains points ne sont pas éligibles.</h2>
-                        <div class="result-highlight result-highlight-nok">
-                            <p>D'après vos réponses, il est possible qu'un délai temporaire soit nécessaire avant de pouvoir donner votre sang.</p>
-                        </div>
-                        <p class="result-reassurance">Cela ne signifie pas que vous ne pourrez jamais donner.</p>
-                        <div class="result-actions">
-                            <a href="https://www.hug.ch/don-du-sang" target="_blank" class="btn-primary btn-link btn-teal">
-                                En savoir plus
-                            </a>
-                            <RouterLink to="/" class="btn-outline btn-link btn-outline-teal">
-                                Découvrir les prochaines collectes
-                            </RouterLink>
-                        </div>
+                        <p class="result-sub">Malheureusement, sur la base de vos réponses, certains points ne remplissent pas les conditions de don adéquates.</p>
+                        <button class="btn-teal" @click="retakeQuiz">
+                            Découvrir pourquoi
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        </button>
                     </template>
 
                     <!-- INCERTAIN -->
                     <template v-else>
-                        <div class="result-check result-check-incertain">
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#8b6914" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>
-                            </svg>
-                        </div>
-                        <div class="result-badge result-badge-incertain">Quelques vérifications nécessaires</div>
                         <h2 class="result-title">Certaines situations nécessitent une validation médicale.</h2>
-                        <div class="result-highlight result-highlight-incertain">
-                            <p>Le personnel du CTS pourra vous renseigner lors de votre rendez-vous.</p>
+                        <p class="result-sub">Le personnel du CTS pourra vous renseigner lors de votre rendez-vous.</p>
+                        <div class="result-tip-card">
+                            <span class="material-symbols-outlined" style="font-size: 18px; color: #000">info</span>
+                            <p>Vous pouvez tout de même vous inscrire et venir rencontrer notre équipe médicale.</p>
                         </div>
-                        <div class="result-actions">
-                            <RouterLink :to="participerLink" class="btn-primary btn-link btn-amber">
-                                Prendre rendez-vous quand même
-                            </RouterLink>
-                            <RouterLink to="/" class="btn-outline btn-link btn-outline-teal">
-                                Retour à l'accueil
-                            </RouterLink>
-                        </div>
+                        <RouterLink :to="participerLink" class="btn-teal btn-link">
+                            Prendre rendez-vous
+                            <span class="material-symbols-outlined" style="font-size: 18px; color: #000">calendar_month</span>
+                        </RouterLink>
                     </template>
 
-                    <button class="btn-retake" @click="retakeQuiz">↺ Refaire le quiz</button>
+                    <button class="btn-retake" @click="retakeQuiz" style="margin-top: 1.5rem">
+                        ↺ Refaire le quiz
+                    </button>
                 </div>
             </div>
         </div>
@@ -491,57 +509,7 @@ function getAnswerBadgeStyle(answer, q) {
     background: white;
 }
 
-/* ── Navbar ─────────────────────────────────────────── */
-.navbar {
-    background: white;
-    border-bottom: 1px solid #f2f4f3;
-    height: 76px;
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    flex-shrink: 0;
-}
-.navbar-inner {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 0 2rem;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 2rem;
-}
-.navbar-brand { display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0; }
-.brand-hug { font-weight: 800; font-size: 1.25rem; color: #2c4140; text-decoration: none; }
-.brand-divider { width: 1px; height: 1.25rem; background: rgba(44,65,64,0.3); margin: 0 0.25rem; }
-.brand-subtitle { font-size: 0.95rem; font-weight: 600; color: #e60f48; }
-.navbar-links {
-    display: flex;
-    align-items: center;
-    gap: 1.75rem;
-    margin-left: auto;
-}
-.navbar-links a {
-    font-size: 0.9rem;
-    font-weight: 500;
-    text-decoration: none;
-    transition: opacity 0.15s;
-}
-.navbar-links a:hover { opacity: 0.7; }
-.navbar-cta {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: #e60f48;
-    border: 2px solid #e60f48;
-    border-radius: 9999px;
-    padding: 0.4rem 1.25rem;
-    text-decoration: none;
-    transition: opacity 0.15s;
-    flex-shrink: 0;
-}
-.navbar-cta:hover { opacity: 0.8; }
-
-/* ── Split screen (intro + result) ──────────────────── */
+/* ── Split screen ────────────────────────────────────── */
 .split-screen {
     flex: 1;
     display: grid;
@@ -552,151 +520,162 @@ function getAnswerBadgeStyle(answer, q) {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 3rem 2rem;
+    padding: 4rem 2rem;
+    background: white;
 }
-.mascotte-col-eligible { background: rgba(230,15,72,0.05); }
-.mascotte-col-neutral  { background: #f2f4f3; }
-.mascotte-wrap {
+.mascotte-circle {
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    background: #f2f4f3;
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
+}
+.mascotte-img {
     width: 100%;
-    max-width: 320px;
-}
-.mascotte-placeholder {
-    width: 220px;
-    height: 280px;
-    border-radius: 24px;
-    border: 3px dashed;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
-    font-size: 4rem;
-    opacity: 0.7;
-}
-.mascotte-eligible { border-color: rgba(230,15,72,0.3); color: #e60f48; }
-.mascotte-neutral  { border-color: #c5d0cf; color: #497371; }
-.mascotte-label {
-    font-size: 0.8rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    opacity: 0.5;
+    height: 100%;
+    object-fit: contain;
 }
 .content-col {
     display: flex;
     align-items: center;
-    justify-content: center;
-    padding: 3rem 4rem;
+    justify-content: flex-start;
+    padding: 4rem 3rem 4rem 4rem;
     background: white;
 }
 
 /* ── Intro ──────────────────────────────────────────── */
 .intro-content {
-    max-width: 420px;
+    max-width: 460px;
     width: 100%;
 }
-.intro-badge {
-    display: inline-block;
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    border-radius: 9999px;
-    padding: 0.35rem 1rem;
-    margin-bottom: 1.5rem;
-    background: rgba(230,15,72,0.1);
-    color: #e60f48;
-}
 .intro-title {
-    font-size: 2.25rem;
+    font-size: 2.5rem;
     font-weight: 800;
     color: #2c4140;
     margin: 0 0 1rem;
-    line-height: 1.2;
+    line-height: 1.15;
 }
 .intro-sub {
     font-size: 1rem;
     color: #497371;
     line-height: 1.7;
-    margin: 0 0 0.6rem;
+    margin: 0 0 2rem;
+    max-width: 380px;
 }
-.intro-disclaimer {
-    font-size: 0.82rem;
-    color: #8fa8a6;
-    font-style: italic;
-    line-height: 1.6;
-    margin: 0 0 2.5rem;
+.feature-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 2rem;
 }
-.intro-actions {
+.feature-card {
+    border: 1.5px solid #f2f4f3;
+    border-radius: 14px;
+    padding: 1.25rem 1rem;
     display: flex;
     flex-direction: column;
-    gap: 0.85rem;
+    align-items: flex-start;
+    gap: 0.75rem;
+}
+.feature-icon {
+    font-size: 22px;
+    color: #000;
+}
+.feature-label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #497371;
+    margin: 0;
+    line-height: 1.4;
 }
 
-/* Shared buttons */
-.btn-primary {
+/* ── Shared buttons ──────────────────────────────────── */
+.btn-teal {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
     font-size: 1rem;
-    font-weight: 700;
-    background: #e60f48;
-    color: white;
+    font-weight: 600;
+    background: #65c6c1;
+    color: #2c4140;
     border: none;
     border-radius: 9999px;
-    padding: 0.9rem 2.5rem;
+    padding: 0.85rem 1.75rem;
     cursor: pointer;
     transition: opacity 0.15s;
-    text-align: center;
     font-family: inherit;
-    white-space: nowrap;
-}
-.btn-primary:hover { opacity: 0.85; }
-.btn-link { text-decoration: none; display: inline-block; }
-.btn-outline {
-    font-size: 0.95rem;
-    font-weight: 600;
-    background: white;
-    color: #e60f48;
-    border: 2px solid #e60f48;
-    border-radius: 9999px;
-    padding: 0.8rem 2rem;
-    cursor: pointer;
-    transition: opacity 0.15s;
-    text-align: center;
-    font-family: inherit;
-    white-space: nowrap;
     text-decoration: none;
-    display: inline-block;
+    white-space: nowrap;
 }
-.btn-outline:hover { opacity: 0.75; }
-.btn-teal { background: #2c4140 !important; color: white !important; border-color: #2c4140 !important; }
-.btn-amber { background: #d97706 !important; color: white !important; border-color: #d97706 !important; }
-.btn-outline-teal { color: #497371 !important; border-color: #c5d0cf !important; }
+.btn-teal:hover { opacity: 0.85; }
+.btn-link { text-decoration: none; display: inline-flex; }
+.btn-retake {
+    background: none;
+    border: none;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #8fa8a6;
+    cursor: pointer;
+    padding: 0;
+    font-family: inherit;
+    transition: opacity 0.15s;
+    display: block;
+}
+.btn-retake:hover { opacity: 0.7; }
 
 /* ── QUIZ screen ─────────────────────────────────────── */
 .quiz-screen {
     flex: 1;
     display: flex;
     flex-direction: column;
-    background: #f7f8f8;
+    background: white;
+    min-height: calc(100vh - 76px);
 }
-.progress-dots {
+
+/* Progress numbered steps */
+.progress-steps {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    padding: 1.5rem 2rem 0;
+    padding: 2.5rem 2rem 0;
+    gap: 0;
 }
-.dot {
-    width: 10px;
-    height: 10px;
+.step {
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
-    background: #e8ecec;
-    transition: background 0.3s, transform 0.2s;
+    border: 2px solid #e0e8e8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #8fa8a6;
+    background: white;
+    flex-shrink: 0;
+    transition: background 0.3s, border-color 0.3s, color 0.3s;
 }
-.dot-active { transform: scale(1.25); }
-.dot-done   { opacity: 0.5; }
+.step-active,
+.step-done {
+    background: #e60f48;
+    border-color: #e60f48;
+    color: white;
+}
+.step-line {
+    flex: 1;
+    height: 2px;
+    background: #e0e8e8;
+    min-width: 12px;
+    max-width: 48px;
+    transition: background 0.3s;
+}
+.step-line-done {
+    background: #e60f48;
+}
+
 .quiz-inner {
     flex: 1;
     display: flex;
@@ -706,41 +685,43 @@ function getAnswerBadgeStyle(answer, q) {
     max-width: 640px;
     width: 100%;
     margin: 0 auto;
-    padding: 2rem 2rem 3rem;
+    padding: 2rem 2rem 4rem;
     text-align: center;
 }
 .question-icon {
-    width: 64px;
-    height: 64px;
-    border-radius: 18px;
-    background: rgba(230,15,72,0.1);
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: #f2f4f3;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.75rem;
-    margin-bottom: 1.25rem;
+    margin-bottom: 2rem;
+    flex-shrink: 0;
 }
-.quiz-counter {
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-    color: #e60f48;
-    margin: 0 0 0.75rem;
+.question-icon-img {
+    width: 56px;
+    height: 56px;
+    object-fit: contain;
+}
+.question-icon-ms {
+    font-size: 48px;
+    color: #000;
 }
 .quiz-question {
-    font-size: 1.75rem;
+    font-size: 1.9rem;
     font-weight: 800;
     color: #2c4140;
-    margin: 0 0 2.5rem;
+    margin: 0 0 2rem;
     line-height: 1.25;
+    max-width: 520px;
 }
 .quiz-options {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.65rem;
     width: 100%;
-    max-width: 460px;
+    max-width: 440px;
     margin-bottom: 2rem;
 }
 .quiz-option {
@@ -749,35 +730,26 @@ function getAnswerBadgeStyle(answer, q) {
     gap: 0.75rem;
     width: 100%;
     background: white;
-    border: 2px solid #dde3e3;
+    border: 2px solid #dde8e7;
     border-radius: 9999px;
-    padding: 1rem 1.5rem;
+    padding: 0.9rem 1.5rem;
     cursor: pointer;
     transition: border-color 0.18s, color 0.18s, box-shadow 0.18s;
-    font-size: 1.05rem;
+    font-size: 1rem;
     font-weight: 600;
     color: #2c4140;
     font-family: inherit;
     text-align: left;
-    box-shadow: 0 1px 3px rgba(44,65,64,0.06);
 }
-.quiz-option:hover:not(.is-good):not(.is-bad) {
-    border-color: #b8c5c4;
-    box-shadow: 0 2px 8px rgba(44,65,64,0.1);
-}
-.quiz-option.is-good {
-    border-color: #22c55e;
-    color: #16a34a;
-    box-shadow: 0 2px 8px rgba(34,197,94,0.15);
-}
-.quiz-option.is-bad {
-    border-color: #ef4444;
-    color: #dc2626;
-    box-shadow: 0 2px 8px rgba(239,68,68,0.15);
-}
+.quiz-option.opt-oui { border-color: #22c55e; color: #16a34a; }
+.quiz-option.opt-non { border-color: #ef4444; color: #dc2626; }
+.quiz-option.opt-oui.is-selected { background: #f0fdf4; }
+.quiz-option.opt-non.is-selected { background: #fff1f2; }
+.quiz-option.opt-other.is-selected { border-color: #2c4140; background: #f0f9f8; }
+.quiz-option:hover:not(.is-selected) { opacity: 0.75; }
 .opt-icon {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     flex-shrink: 0;
     display: flex;
     align-items: center;
@@ -785,20 +757,22 @@ function getAnswerBadgeStyle(answer, q) {
 }
 
 .btn-continuer {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
     font-size: 0.95rem;
     font-weight: 600;
-    background: #e8f4f3;
+    background: rgba(101,198,193,0.18);
     color: #2c4140;
     border: none;
     border-radius: 9999px;
-    padding: 0.9rem 2.5rem;
+    padding: 0.85rem 2rem;
     cursor: pointer;
-    transition: background 0.15s, opacity 0.15s;
+    transition: background 0.15s;
     font-family: inherit;
     margin-bottom: 1.5rem;
-    min-width: 240px;
 }
-.btn-continuer:hover { background: #d4ecea; }
+.btn-continuer:hover { background: rgba(101,198,193,0.3); }
 
 .btn-back {
     display: inline-flex;
@@ -820,153 +794,170 @@ function getAnswerBadgeStyle(answer, q) {
 .slide-up-enter-from   { opacity: 0; transform: translateY(10px); }
 
 /* ── INFO screen ─────────────────────────────────────── */
-.info-screen {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #f7f8f8;
-    padding: 3rem 1.5rem;
-}
-.info-inner {
-    max-width: 520px;
+.info-content {
+    max-width: 480px;
     width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 1.5rem;
+    gap: 0.75rem;
 }
-.info-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-}
-.info-avatar {
-    width: 96px;
-    height: 96px;
-    border-radius: 50%;
-    border: 3px solid;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2.5rem;
-}
-.info-avatar-warn { background: #fff8e1; border-color: #fde68a; }
-.info-avatar-tip  { background: #f0fdf8; border-color: #a7f3d0; }
-.info-avatar-emoji { line-height: 1; }
 .info-title {
-    font-size: 1.5rem;
+    font-size: 2rem;
     font-weight: 800;
     color: #2c4140;
-    margin: 0;
+    margin: 0 0 0.25rem;
+    line-height: 1.2;
 }
-.info-card {
-    border-radius: 16px;
-    padding: 1.5rem 1.75rem;
-    width: 100%;
-    text-align: left;
-}
-.info-card-warn { background: #fff8e1; border: 1.5px solid #fde68a; }
-.info-card-tip  { background: #f0fdf8; border: 1.5px solid #a7f3d0; }
 .info-msg {
     font-size: 1rem;
-    color: #2c4140;
-    line-height: 1.65;
+    color: #497371;
+    line-height: 1.7;
     margin: 0;
     font-weight: 500;
 }
 .info-reassurance {
-    font-size: 0.88rem;
-    color: #497371;
+    font-size: 0.9rem;
+    color: #8fa8a6;
     font-style: italic;
-    margin: 0.75rem 0 0;
+    margin: 0;
+    line-height: 1.6;
+}
+.tip-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    background: #f0f9f8;
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    margin-top: 0.5rem;
+}
+.tip-icon-wrap {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(230,15,72,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.tip-icon {
+    font-size: 16px;
+    color: #000;
+}
+.tip-text {
+    font-size: 0.9rem;
+    color: #2c4140;
+    line-height: 1.6;
+    margin: 0;
+    font-style: italic;
 }
 
 /* ── RECAP screen ────────────────────────────────────── */
 .recap-screen {
     flex: 1;
-    background: #f7f8f8;
-    padding: 3rem 1.5rem;
+    background: white;
+    padding: 3rem 1.5rem 0;
 }
 .recap-inner {
-    max-width: 800px;
+    max-width: 1000px;
     margin: 0 auto;
 }
 .recap-title {
     font-size: 1.75rem;
     font-weight: 800;
     color: #2c4140;
-    margin: 0 0 0.5rem;
-    text-align: center;
-}
-.recap-sub {
-    font-size: 0.95rem;
-    color: #497371;
-    text-align: center;
-    margin: 0 0 2.5rem;
+    margin: 0 0 1.75rem;
 }
 .answers-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 0;
+}
+.answer-card {
+    background: white;
+    border: 1.5px solid #f0f4f4;
+    border-radius: 14px;
+    padding: 1.1rem 1.25rem 1rem;
     display: flex;
     flex-direction: column;
-    gap: 0.65rem;
-    margin-bottom: 2.5rem;
+    gap: 0.85rem;
 }
-.answer-row {
-    background: white;
-    border-radius: 12px;
-    padding: 1rem 1.25rem;
+.card-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+}
+.card-check {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #f2f4f3;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    box-shadow: 0 1px 4px rgba(44,65,64,0.05);
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
 }
-.answer-q {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    flex: 1;
-    min-width: 0;
-}
-.answer-icon { font-size: 1.1rem; flex-shrink: 0; }
-.answer-text {
-    font-size: 0.9rem;
+.check-good { color: #16a34a; }
+.check-bad  { color: #dc2626; }
+.card-question {
+    font-size: 0.88rem;
     color: #2c4140;
     font-weight: 500;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    margin: 0;
+    flex: 1;
+    line-height: 1.45;
+}
+.card-info-btn {
+    flex-shrink: 0;
+    cursor: default;
+    display: flex;
+    align-items: center;
+}
+.card-bottom {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+.card-answer-label {
+    font-size: 0.82rem;
+    color: #8fa8a6;
+    font-weight: 500;
 }
 .answer-badge {
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     font-weight: 700;
     border-radius: 9999px;
-    padding: 0.3rem 0.9rem;
+    padding: 0.2rem 0.75rem;
     white-space: nowrap;
-    flex-shrink: 0;
 }
+
 .ready-section {
-    border-radius: 20px;
-    padding: 2.5rem 2rem;
+    margin-top: 3rem;
+    padding: 3.5rem 2rem;
     text-align: center;
-    background: #e60f48;
+    background: linear-gradient(135deg, #65c6c1, #93cfa9);
 }
 .ready-title {
-    font-size: 1.5rem;
+    font-size: 2rem;
     font-weight: 800;
-    color: white;
-    margin: 0 0 1.5rem;
+    color: #2c4140;
+    margin: 0 0 1.75rem;
 }
 .btn-ready {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
     font-size: 1rem;
     font-weight: 700;
-    background: white;
-    color: #e60f48;
+    background: #e60f48;
+    color: white;
     border: none;
     border-radius: 9999px;
-    padding: 0.9rem 2.5rem;
+    padding: 0.9rem 2rem;
     cursor: pointer;
     transition: opacity 0.15s;
     font-family: inherit;
@@ -975,102 +966,58 @@ function getAnswerBadgeStyle(answer, q) {
 
 /* ── RESULT content ──────────────────────────────────── */
 .result-content {
-    max-width: 420px;
+    max-width: 460px;
     width: 100%;
     display: flex;
     flex-direction: column;
     gap: 1rem;
 }
-.result-check {
-    width: 60px;
-    height: 60px;
-    border-radius: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.result-check-ok        { background: rgba(230,15,72,0.1); }
-.result-check-nok       { background: #f2f4f3; }
-.result-check-incertain { background: #fefce8; }
-.result-badge {
-    display: inline-block;
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    border-radius: 9999px;
-    padding: 0.3rem 1rem;
-    align-self: flex-start;
-}
-.result-badge-ok        { background: rgba(230,15,72,0.1); color: #e60f48; }
-.result-badge-nok       { background: #f2f4f3; color: #497371; }
-.result-badge-incertain { background: #fefce8; color: #854d0e; }
 .result-title {
-    font-size: 1.6rem;
+    font-size: 2rem;
     font-weight: 800;
     color: #2c4140;
     margin: 0;
-    line-height: 1.25;
+    line-height: 1.2;
 }
-.result-highlight {
-    border-radius: 12px;
-    border: 1.5px solid;
-    padding: 1rem 1.25rem;
+.result-sub {
     font-size: 0.95rem;
+    color: #497371;
     line-height: 1.65;
-}
-.result-highlight-ok        { border-color: rgba(230,15,72,0.25); background: rgba(230,15,72,0.05); color: #e60f48; }
-.result-highlight-nok       { border-color: #c5d0cf; background: #f7f8f8; color: #2c4140; }
-.result-highlight-incertain { border-color: #fde68a; background: #fefce8; color: #2c4140; }
-.result-highlight p { margin: 0; }
-.result-emotion {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: #497371;
     margin: 0;
 }
-.result-reassurance {
-    font-size: 0.88rem;
-    color: #497371;
-    font-style: italic;
-    margin: 0;
-}
-.result-actions {
+.result-tip-card {
     display: flex;
-    flex-direction: column;
+    align-items: flex-start;
     gap: 0.75rem;
+    background: #f0f9f8;
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
 }
-.btn-retake {
-    background: none;
-    border: none;
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: #e60f48;
-    cursor: pointer;
-    padding: 0;
-    font-family: inherit;
-    transition: opacity 0.15s;
-    margin-top: 0.5rem;
-    align-self: flex-start;
+.result-tip-card p {
+    font-size: 0.9rem;
+    color: #2c4140;
+    line-height: 1.6;
+    margin: 0;
+    font-style: italic;
 }
-.btn-retake:hover { opacity: 0.7; }
 
 /* ── Responsive ─────────────────────────────────────── */
-@media (max-width: 960px) {
-    .navbar-links { display: none; }
-}
 @media (max-width: 900px) {
     .split-screen { grid-template-columns: 1fr; }
-    .mascotte-col { min-height: 200px; padding: 2rem; }
-    .mascotte-placeholder { width: 140px; height: 180px; font-size: 2.5rem; }
-    .content-col { padding: 2rem; }
+    .mascotte-col { min-height: 220px; padding: 2rem; }
+    .mascotte-circle { width: 200px; height: 200px; }
+    .content-col { justify-content: center; padding: 2rem; }
     .intro-title, .result-title { font-size: 1.75rem; }
-    .result-actions .btn-primary,
-    .result-actions .btn-outline { width: 100%; text-align: center; display: block; }
+    .quiz-question { font-size: 1.4rem; }
+    .answers-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 600px) {
-    .quiz-question { font-size: 1.35rem; }
-    .quiz-inner { padding: 1.5rem 1.25rem 2rem; }
-    .recap-inner { padding: 0; }
+    .quiz-inner { padding: 1.5rem 1.25rem 3rem; }
+    .progress-steps { padding: 1.5rem 1rem 0; }
+    .step { width: 28px; height: 28px; font-size: 0.7rem; }
+    .answers-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 480px) {
+    .answers-grid { grid-template-columns: 1fr; }
 }
 </style>

@@ -10,6 +10,7 @@ use App\Http\Controllers\AdminCoordinateurController;
 use App\Http\Controllers\CoordinateurController;
 use App\Http\Controllers\AdminLabelController;
 use App\Http\Controllers\AdminTropheeController;
+use App\Http\Controllers\AdminEntrepriseController;
 
 // Public
 Route::get('/entreprises', [EntrepriseController::class, 'index']);
@@ -29,7 +30,11 @@ Route::middleware('auth:sanctum')->group(function () {
 // Admin uniquement
 Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function () {
     Route::get('/stats', [AdminController::class, 'stats']);
-    Route::get('/entreprises', [AdminController::class, 'entreprises']);
+    Route::get('/entreprises', [AdminEntrepriseController::class, 'index']);
+    Route::post('/entreprises', [AdminEntrepriseController::class, 'store']);
+    Route::get('/entreprises/{entreprise}', [AdminEntrepriseController::class, 'show']);
+    Route::put('/entreprises/{entreprise}', [AdminEntrepriseController::class, 'update']);
+    Route::delete('/entreprises/{entreprise}', [AdminEntrepriseController::class, 'destroy']);
     Route::get('/collectes/{collecte}', [AdminCollecteController::class, 'show']);
     Route::get('/collectes', [AdminCollecteController::class, 'index']);
     Route::post('/collectes', [AdminCollecteController::class, 'store']);

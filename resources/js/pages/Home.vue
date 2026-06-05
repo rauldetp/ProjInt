@@ -1,17 +1,6 @@
 <script setup>
-import { ref, computed, onMounted } from "vue";
-import { useAuthStore } from "../stores/auth";
-import { useCoinEntrepriseLink } from "../composables/useCoinEntrepriseLink";
-
-const auth = useAuthStore();
-const { coinEntrepriseLink } = useCoinEntrepriseLink();
-
-// CTA "Participer" : quand déjà connecté, redirige vers le site coobrandé
-const participerLink = computed(() => {
-    if (auth.isAdmin) return '/entreprises';
-    if (auth.isCoordinateur && auth.entrepriseSlug) return `/entreprise/${auth.entrepriseSlug}`;
-    return '/login';
-});
+import { ref, onMounted } from "vue";
+import HugNavbar from "../components/HugNavbar.vue";
 
 const bannerVisible = ref(true);
 const openFaq = ref(null);
@@ -80,48 +69,8 @@ onMounted(() => {
                 </button>
             </div>
 
-            <!-- Main navbar -->
-            <header
-                class="bg-white border-b border-[#f2f4f3]"
-                style="height: 76px"
-            >
-                <div
-                    class="max-w-7xl mx-auto px-8 h-full flex items-center justify-between"
-                >
-                    <!-- Logo -->
-                    <div class="flex items-center gap-2">
-                        <span
-                            class="font-extrabold text-xl tracking-tight"
-                            style="color: #2c4140"
-                            >HUG</span
-                        >
-                        <div
-                            class="w-px h-5 mx-2"
-                            style="background: #2c4140; opacity: 0.3"
-                        ></div>
-                        <span
-                            class="text-base font-semibold"
-                            style="color: #e60f48"
-                            >Don du sang</span
-                        >
-                    </div>
-                    <!-- Nav links -->
-                    <nav class="hidden md:flex items-center gap-7 text-base font-medium">
-                        <RouterLink to="/label" class="hover:opacity-70 transition" style="color:#2c4140; text-decoration:none;">Label CTS</RouterLink>
-                        <RouterLink to="/trophee" class="hover:opacity-70 transition" style="color:#2c4140; text-decoration:none;">Trophée de la générosité</RouterLink>
-                        <RouterLink :to="coinEntrepriseLink" class="hover:opacity-70 transition" style="color:#2c4140; text-decoration:none;">Coin entreprise</RouterLink>
-                        <RouterLink to="/quiz" class="hover:opacity-70 transition" style="color:#2c4140; text-decoration:none;">Quiz d'éligibilité</RouterLink>
-                        <RouterLink to="/contact" style="color: #2c4140; text-decoration: none" class="hover:opacity-60 transition">Contact</RouterLink>                    </nav>
-                    <!-- CTA button -->
-                    <RouterLink
-                        :to="participerLink"
-                        class="text-base font-semibold px-6 py-2 rounded-full border-2 transition hover:opacity-80"
-                        style="color: #e60f48; border-color: #e60f48; text-decoration: none"
-                    >
-                        Participer
-                    </RouterLink>                </div>
-            </header>
         </div>
+        <HugNavbar />
 
         <!-- Hero -->
         <section
@@ -505,6 +454,65 @@ onMounted(() => {
                     >
                         Découvrir le trophée
                     </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Moins de 500 salariés -->
+        <section id="petites-entreprises" class="bg-white" style="padding: 72px 0; position: relative; z-index: 1; margin-top: -2px">
+            <div class="max-w-6xl mx-auto px-8 grid grid-cols-2 gap-16 items-center">
+                <div>
+                    <p
+                        class="font-bold uppercase mb-3"
+                        style="font-size: 12px; letter-spacing: 2px; color: #e60f48"
+                    >
+                        Toutes les entreprises peuvent agir
+                    </p>
+                    <h2
+                        class="font-bold mb-4"
+                        style="font-size: 32px; color: #2c4140; line-height: 1.2"
+                    >
+                        Votre entreprise compte<br />moins de 500 salariés ?
+                    </h2>
+                    <p
+                        class="mb-6 max-w-md"
+                        style="font-size: 16px; color: #497371; line-height: 1.7"
+                    >
+                        Découvrez nos solutions adaptées pour organiser le don du sang, même sans espace dédié dans vos locaux.
+                    </p>
+                    <ul class="mb-8" style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 16px">
+                        <li style="display: flex; align-items: flex-start; gap: 12px">
+                            <span class="material-symbols-outlined" style="color: #e60f48; font-size: 22px; flex-shrink: 0; margin-top: 2px">local_hospital</span>
+                            <div>
+                                <p class="font-semibold" style="font-size: 16px; color: #2c4140; margin: 0 0 4px">Aux HUG</p>
+                                <p style="font-size: 14px; color: #497371; margin: 0; line-height: 1.6">Vos collaborateurs se rendent directement au Centre de Transfusion Sanguine des HUG. Simple, encadré et sans organisation logistique.</p>
+                            </div>
+                        </li>
+                        <li style="display: flex; align-items: flex-start; gap: 12px">
+                            <span class="material-symbols-outlined" style="color: #e60f48; font-size: 22px; flex-shrink: 0; margin-top: 2px">location_city</span>
+                            <div>
+                                <p class="font-semibold" style="font-size: 16px; color: #2c4140; margin: 0 0 4px">Dans votre commune</p>
+                                <p style="font-size: 14px; color: #497371; margin: 0; line-height: 1.6">Rejoignez une collecte mobile organisée dans votre région. Nous vous informons des prochaines dates à proximité.</p>
+                            </div>
+                        </li>
+                    </ul>
+                    <a
+                        href="#contact"
+                        class="inline-block font-semibold px-6 py-3 rounded-full transition hover:opacity-80"
+                        style="border: 2px solid #e60f48; color: #e60f48; font-size: 15px; background: transparent"
+                    >
+                        Découvrir les aspects réglementaires
+                    </a>
+                </div>
+                <div
+                    class="relative rounded-2xl overflow-hidden"
+                    style="height: 380px; background: #f2f4f3"
+                >
+                    <img
+                        :src="'/images/thumbnail_mouvement.webp'"
+                        alt=""
+                        class="absolute inset-0 w-full h-full object-cover"
+                    />
                 </div>
             </div>
         </section>

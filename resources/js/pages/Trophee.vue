@@ -1,8 +1,6 @@
 <script setup>
 import { ref, onMounted } from "vue";
-import { useCoinEntrepriseLink } from "../composables/useCoinEntrepriseLink";
-
-const { coinEntrepriseLink } = useCoinEntrepriseLink();
+import HugNavbar from "../components/HugNavbar.vue";
 
 const palmares = ref([]);
 const palmaresLoading = ref(true);
@@ -84,73 +82,7 @@ onMounted(async () => {
 
 <template>
     <div class="min-h-screen bg-white">
-        <!-- Navbar -->
-        <header
-            class="bg-white border-b border-[#f2f4f3] sticky top-0 z-50"
-            style="height: 76px"
-        >
-            <div
-                class="max-w-7xl mx-auto px-8 h-full flex items-center justify-between"
-            >
-                <div class="flex items-center gap-2">
-                    <RouterLink
-                        to="/"
-                        class="font-extrabold text-xl tracking-tight"
-                        style="color: #2c4140; text-decoration: none"
-                        >HUG</RouterLink
-                    >
-                    <div
-                        class="w-px h-5 mx-2"
-                        style="background: rgba(44, 65, 64, 0.3)"
-                    ></div>
-                    <span class="text-base font-semibold" style="color: #e60f48"
-                        >Don du sang</span
-                    >
-                </div>
-                <nav
-                    class="hidden md:flex items-center gap-7 text-base font-medium"
-                >
-                    <RouterLink
-                        to="/label"
-                        style="color: #2c4140; text-decoration: none"
-                        class="hover:opacity-60 transition"
-                        >Label CTS</RouterLink
-                    >
-                    <RouterLink
-                        to="/trophee"
-                        style="
-                            color: #e60f48;
-                            font-weight: 700;
-                            text-decoration: none;
-                        "
-                        >Trophée de la générosité</RouterLink
-                    >
-                    <RouterLink
-                        :to="coinEntrepriseLink"
-                        style="color: #2c4140; text-decoration: none"
-                        class="hover:opacity-60 transition"
-                        >Coin entreprise</RouterLink
-                    >
-                    <RouterLink
-                        to="/contact"
-                        style="color: #2c4140; text-decoration: none"
-                        class="hover:opacity-60 transition"
-                        >Contact</RouterLink
-                    >
-                </nav>
-                <RouterLink
-                    to="/login"
-                    class="border-2 rounded-full px-5 py-2 text-base font-semibold transition hover:opacity-75"
-                    style="
-                        color: #e60f48;
-                        border-color: #e60f48;
-                        text-decoration: none;
-                    "
-                >
-                    Participer
-                </RouterLink>
-            </div>
-        </header>
+        <HugNavbar />
 
         <!-- Hero -->
         <section

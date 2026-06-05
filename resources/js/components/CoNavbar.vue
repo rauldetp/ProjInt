@@ -1,6 +1,6 @@
 <script setup>
 import { computed } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useCobrandStore } from '../stores/cobrand';
 import { useAuthStore } from '../stores/auth';
 
@@ -8,9 +8,15 @@ const props = defineProps({
     collecte: { type: Object, default: null },
 });
 
-const route = useRoute();
+const route  = useRoute();
+const router = useRouter();
 const cobrand = useCobrandStore();
 const auth = useAuthStore();
+
+function handleLogout() {
+    auth.logout();
+    router.push('/');
+}
 
 const slug = computed(() => route.params.slug);
 const brandColor = computed(() => cobrand.couleurPrimaire || '#e60f48');
@@ -57,20 +63,28 @@ function linkStyle(path) {
                 <RouterLink :to="`/entreprise/${slug}`" :style="linkStyle(`/entreprise/${slug}`)">Accueil</RouterLink>
                 <RouterLink :to="`/entreprise/${slug}/label`" :style="linkStyle(`/entreprise/${slug}/label`)">Label CTS</RouterLink>
                 <RouterLink :to="`/entreprise/${slug}/trophee`" :style="linkStyle(`/entreprise/${slug}/trophee`)">Trophée de la générosité</RouterLink>
-                <RouterLink :to="coinEntrepriseLink" :style="{ color: '#2c4140', fontWeight: '500', textDecoration: 'none' }">Coin entreprise</RouterLink>
+                <RouterLink :to="coinEntrepriseLink" :style="linkStyle(coinEntrepriseLink)">Coin entreprise</RouterLink>
                 <RouterLink :to="`/entreprise/${slug}/quiz`" :style="linkStyle(`/entreprise/${slug}/quiz`)">Quiz d'éligibilité</RouterLink>
             </nav>
 
             <!-- CTA -->
-            <RouterLink
-                v-if="collecte?.active"
-                :to="`/entreprise/${slug}/inscription`"
-                class="co-navbar-cta"
-                :style="{ color: brandColor, borderColor: brandColor }"
-            >
-                S'inscrire à la collecte
-            </RouterLink>
-            <div v-else class="co-navbar-cta-placeholder"></div>
+            <div class="co-navbar-actions">
+                <RouterLink
+                    v-if="collecte?.active"
+                    :to="`/entreprise/${slug}/inscription`"
+                    class="co-navbar-cta"
+                    :style="{ color: brandColor, borderColor: brandColor }"
+                >
+                    S'inscrire à la collecte
+                </RouterLink>
+                <button
+                    class="co-navbar-cta co-navbar-logout"
+                    :style="{ color: brandColor, borderColor: brandColor }"
+                    @click="handleLogout"
+                >
+                    Déconnexion
+                </button>
+            </div>
 
         </div>
     </header>
@@ -106,7 +120,7 @@ function linkStyle(path) {
 }
 .brand-hug {
     font-weight: 800;
-    font-size: 1.2rem;
+    font-size: 1.25rem;
     color: #2c4140;
     text-decoration: none;
 }
@@ -116,7 +130,7 @@ function linkStyle(path) {
     margin: 0 0.2rem;
 }
 .brand-subtitle {
-    font-size: 0.9rem;
+    font-size: 1rem;
     font-weight: 600;
     color: #497371;
 }
@@ -127,7 +141,7 @@ function linkStyle(path) {
 }
 .brand-company {
     font-weight: 700;
-    font-size: 0.95rem;
+    font-size: 1rem;
     display: flex;
     align-items: center;
 }
@@ -140,11 +154,12 @@ function linkStyle(path) {
 .co-nav-links {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    gap: 1.75rem;
     margin-left: auto;
 }
 .co-nav-links a {
-    font-size: 0.9rem;
+    font-size: 1rem;
+    font-weight: 500;
     white-space: nowrap;
     transition: opacity 0.15s;
 }
@@ -153,25 +168,31 @@ function linkStyle(path) {
 }
 
 /* CTA */
+.co-navbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    flex-shrink: 0;
+}
 .co-navbar-cta {
-    font-size: 0.85rem;
+    font-size: 1rem;
     font-weight: 600;
     border: 2px solid;
     border-radius: 9999px;
     padding: 0.4rem 1.1rem;
     text-decoration: none;
     transition: opacity 0.15s;
-    flex-shrink: 0;
     white-space: nowrap;
+    background: white;
+    cursor: pointer;
+    font-family: inherit;
 }
 .co-navbar-cta:hover { opacity: 0.75; }
-.co-navbar-cta-placeholder {
-    width: 160px;
-    flex-shrink: 0;
+.co-navbar-logout {
+    /* même style que .co-navbar-cta — hérite tout */
 }
 
 @media (max-width: 960px) {
     .co-nav-links { display: none; }
-    .co-navbar-cta-placeholder { display: none; }
 }
 </style>

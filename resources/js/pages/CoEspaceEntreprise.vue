@@ -3,6 +3,7 @@ import { ref, computed, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useCobrandStore } from "../stores/cobrand";
 import { useAuthStore } from "../stores/auth";
+import CoNavbar from "../components/CoNavbar.vue";
 
 const route  = useRoute();
 const router = useRouter();
@@ -17,9 +18,10 @@ const chartMode     = ref("jours");
 const filterStatut  = ref("tout");
 
 const brandColor   = computed(() => cobrand.couleurPrimaire || "#e60f48");
-const hasActiveCollecte = computed(() =>
-    collectes.value.some(c => c.active && c.statut === "validee")
+const activeCollecte = computed(() =>
+    collectes.value.find(c => c.active && c.statut === "validee") ?? null
 );
+const hasActiveCollecte = computed(() => !!activeCollecte.value);
 
 /* ── Totaux ─────────────────────────────────────────────────── */
 const totalInscrits = computed(() =>
@@ -128,37 +130,7 @@ onMounted(async () => {
     <div class="min-h-screen bg-white" style="font-family: 'Instrument Sans', sans-serif">
 
         <!-- Navbar co-brandée -->
-        <header class="bg-white sticky top-0 z-50" style="height: 76px; border-bottom: 1px solid #f2f4f3">
-            <div class="max-w-7xl mx-auto px-8 h-full flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                    <RouterLink to="/" style="font-weight: 800; font-size: 20px; color: #2c4140; text-decoration: none">HUG</RouterLink>
-                    <span style="color: rgba(44,65,64,0.3); font-size: 18px; margin: 0 4px">|</span>
-                    <span style="font-size: 15px; font-weight: 600; color: #497371">Don du sang</span>
-                    <span style="color: rgba(44,65,64,0.3); font-size: 18px; margin: 0 4px">×</span>
-                    <span style="font-size: 15px; font-weight: 700" :style="{ color: brandColor }">
-                        <img v-if="cobrand.logo" :src="cobrand.logo" :alt="cobrand.nom" style="max-height: 28px; object-fit: contain" />
-                        <span v-else>{{ cobrand.nom || entreprise?.nom }}</span>
-                    </span>
-                </div>
-                <nav class="hidden md:flex items-center gap-7 text-base font-medium">
-                    <RouterLink :to="`/entreprise/${route.params.slug}`" style="color: #2c4140; text-decoration: none" class="hover:opacity-60 transition">Accueil</RouterLink>
-                    <RouterLink :to="`/entreprise/${route.params.slug}/label`" style="color: #2c4140; text-decoration: none" class="hover:opacity-60 transition">Label CTS</RouterLink>
-                    <RouterLink :to="`/entreprise/${route.params.slug}/trophee`" style="color: #2c4140; text-decoration: none" class="hover:opacity-60 transition">Trophée de la générosité</RouterLink>
-                    <RouterLink
-                        :to="`/entreprise/${route.params.slug}/espace`"
-                        style="text-decoration: none; font-weight: 700"
-                        :style="{ color: brandColor }"
-                    >Espace entreprise</RouterLink>
-                </nav>
-                <RouterLink
-                    v-if="hasActiveCollecte"
-                    :to="`/entreprise/${route.params.slug}/inscription`"
-                    class="border-2 rounded-full px-5 py-2 text-sm font-semibold transition hover:opacity-75"
-                    style="text-decoration: none; white-space: nowrap"
-                    :style="{ color: brandColor, borderColor: brandColor }"
-                >S'inscrire à la collecte</RouterLink>
-            </div>
-        </header>
+        <CoNavbar :collecte="activeCollecte" />
 
         <div v-if="loading" class="flex items-center justify-center py-20" style="color: #497371">Chargement…</div>
         <div v-else-if="error" class="flex items-center justify-center py-20" style="color: #e60f48">{{ error }}</div>
@@ -224,9 +196,12 @@ onMounted(async () => {
                         <h2 class="font-bold" style="font-size: 28px; color: #2c4140; margin: 0">Campagnes de collectes</h2>
                         <RouterLink
                             :to="`/entreprise/${route.params.slug}/nouvelle-collecte`"
-                            style="width: 36px; height: 36px; border: 1px solid #e2e8f0; border-radius: 9999px; display: flex; align-items: center; justify-content: center; color: #497371; text-decoration: none; font-size: 1.25rem; transition: border-color 0.15s"
-                            class="hover:border-gray-400"
-                        >+</RouterLink>
+                            style="display: inline-flex; align-items: center; gap: 0.4rem; background: #2c4140; color: white; border-radius: 9999px; padding: 0.5rem 1.1rem; font-size: 0.875rem; font-weight: 600; text-decoration: none; transition: opacity 0.15s; white-space: nowrap"
+                            class="hover:opacity-80"
+                        >
+                            <span class="material-symbols-outlined" style="font-size: 18px">add</span>
+                            Nouvelle collecte
+                        </RouterLink>
                     </div>
 
                     <!-- Filtres -->
@@ -269,7 +244,7 @@ onMounted(async () => {
                                       : { background: '#f2f4f3', color: '#497371' }"
                             >{{ badgeLabel(c) }}</span>
                             <p style="font-size: 0.85rem; color: #497371; margin: 0">
-                                👥 {{ c.nb_inscrits_estime ?? 0 }} inscrit(s)
+                                <span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle">group</span> {{ c.nb_inscrits_estime ?? 0 }} inscrit(s)
                             </p>
                             <p style="font-size: 0.82rem; color: #497371; margin: 0">{{ c.lieu || "Lieu à définir" }}</p>
                         </div>

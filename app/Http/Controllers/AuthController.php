@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class AuthController extends Controller
 {
@@ -57,7 +58,14 @@ class AuthController extends Controller
             'nb_employes'      => 'nullable|integer|min:1',
             'poste'            => 'nullable|string|max:100',
             'couleur_primaire' => 'nullable|string|max:7',
+            'logo'             => 'nullable|image|mimes:jpg,jpeg,png,svg,webp|max:2048',
         ]);
+
+        $logoUrl = null;
+        if ($request->hasFile('logo')) {
+            $path = $request->file('logo')->store('logos', 'public');
+            $logoUrl = Storage::url($path);
+        }
 
         $user = \App\Models\User::create([
             'name'     => $data['name'],
@@ -82,6 +90,7 @@ class AuthController extends Controller
             'ville'            => $data['ville'] ?? null,
             'npa'              => $data['npa'] ?? null,
             'couleur_primaire' => $data['couleur_primaire'] ?? null,
+            'logo'             => $logoUrl,
         ]);
 
         \App\Models\Coordinateur::create([
@@ -93,6 +102,6 @@ class AuthController extends Controller
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        return response()->json(['token' => $token, 'role' => 'coordinateur'], 201);
+        return response()->json(['token' => $token, 'role' => 'coordinateur', 'slug' => $slug], 201);
     }
 }
