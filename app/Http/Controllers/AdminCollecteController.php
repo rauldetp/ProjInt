@@ -55,7 +55,7 @@ class AdminCollecteController extends Controller
             'objectif_dons'      => 'nullable|integer|min:1',
             'lien_rdv_externe'   => 'nullable|url',
             'active'             => 'sometimes|boolean',
-            'statut'             => 'sometimes|in:en_attente,validee,terminee',
+            'statut'             => 'sometimes|in:en_attente,validee,terminee,annulee',
         ]);
 
         $collecte->update($data);
@@ -72,7 +72,7 @@ class AdminCollecteController extends Controller
     public function updateStatut(Request $request, Collecte $collecte)
     {
         $data = $request->validate([
-            'statut' => 'required|in:en_attente,validee,terminee',
+            'statut' => 'required|in:en_attente,validee,terminee,annulee',
         ]);
 
         $collecte->update([

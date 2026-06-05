@@ -314,7 +314,6 @@ onMounted(fetchData);
     background: white;
     border-radius: 0.75rem;
     padding: 1.5rem;
-    box-shadow: 0 2px 8px rgba(44, 65, 64, 0.06);
     border: 1px solid transparent;
 }
 .stat-card--alert-active {
@@ -338,7 +337,6 @@ onMounted(fetchData);
     background: white;
     border-radius: 0.75rem;
     padding: 1.5rem;
-    box-shadow: 0 2px 8px rgba(44, 65, 64, 0.06);
     margin-bottom: 2.5rem;
 }
 .chart-title {
@@ -437,7 +435,6 @@ onMounted(fetchData);
     background: white;
     border-radius: 0.75rem;
     padding: 1.25rem;
-    box-shadow: 0 2px 8px rgba(44, 65, 64, 0.06);
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
@@ -462,7 +459,6 @@ onMounted(fetchData);
     background: white;
     border-radius: 0.75rem;
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(44,65,64,0.06);
     margin-bottom: 2.5rem;
 }
 .attente-row {
@@ -592,7 +588,6 @@ onMounted(fetchData);
     background: white;
     border-radius: 0.75rem;
     padding: 1.25rem;
-    box-shadow: 0 2px 8px rgba(44, 65, 64, 0.06);
     display: flex;
     gap: 1rem;
     align-items: flex-start;

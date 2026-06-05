@@ -15,6 +15,8 @@ use App\Http\Controllers\AdminEntrepriseController;
 // Public
 Route::get('/entreprises', [EntrepriseController::class, 'index']);
 Route::get('/entreprises/{slug}', [EntrepriseController::class, 'show']);
+Route::get('/entreprises/{slug}/collectes', [EntrepriseController::class, 'collectes']);
+Route::get('/collectes/{collecte}', [CollecteController::class, 'show']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/collectes/{collecte}/nb_inscrits_estime', [CollecteController::class, 'incrementInscrits']);
@@ -59,4 +61,7 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function ()
 Route::middleware(['auth:sanctum', 'coordinateur'])->prefix('coordinateur')->group(function () {
     Route::get('/collectes', [CoordinateurController::class, 'collectes']);
     Route::post('/collectes', [CoordinateurController::class, 'store']);
+    Route::get('/collectes/{collecte}', [CoordinateurController::class, 'show']);
+    Route::put('/collectes/{collecte}', [CoordinateurController::class, 'update']);
+    Route::post('/collectes/{collecte}/annuler', [CoordinateurController::class, 'annuler']);
 });

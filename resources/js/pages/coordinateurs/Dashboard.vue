@@ -86,6 +86,8 @@
                     v-for="collecte in collectes"
                     :key="collecte.id"
                     class="collecte-card"
+                    style="cursor: pointer"
+                    @click="goVoir(collecte)"
                 >
                     <div class="card-top">
                         <div>
@@ -94,7 +96,25 @@
                                 {{ formatDate(collecte.date_debut) }}
                             </p>
                         </div>
-                        <button class="card-menu">···</button>
+                        <div class="card-menu-wrap">
+                            <button
+                                class="card-menu"
+                                @click.stop="toggleMenu(collecte.id)"
+                            >···</button>
+                            <div
+                                v-if="openMenu === collecte.id"
+                                class="card-dropdown"
+                            >
+                                <button @click.stop="goModifier(collecte)">
+                                    <span class="material-symbols-outlined" style="font-size:16px">edit</span>
+                                    Modifier
+                                </button>
+                                <button class="danger" @click.stop="goAnnuler(collecte)">
+                                    <span class="material-symbols-outlined" style="font-size:16px">cancel</span>
+                                    Annuler
+                                </button>
+                            </div>
+                        </div>
                     </div>
                     <span :class="['badge', badgeClass(collecte)]">{{
                         badgeLabel(collecte)
@@ -112,7 +132,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, onBeforeUnmount } from "vue";
 import { useAuthStore } from "../../stores/auth";
 import { useRouter } from "vue-router";
 
@@ -123,6 +143,45 @@ const collectes = ref([]);
 const loading = ref(true);
 const error = ref(null);
 const chartMode = ref("jours");
+const openMenu = ref(null);
+
+function toggleMenu(id) {
+    openMenu.value = openMenu.value === id ? null : id;
+}
+
+function closeMenu() {
+    openMenu.value = null;
+}
+
+function goVoir(collecte) {
+    router.push(`/entreprise/${auth.entrepriseSlug}/collecte/${collecte.id}`);
+}
+
+function goModifier(collecte) {
+    closeMenu();
+    router.push(`/entreprise/${auth.entrepriseSlug}/nouvelle-collecte?edit=${collecte.id}`);
+}
+
+async function goAnnuler(collecte) {
+    closeMenu();
+    if (!confirm("Confirmer l'annulation de cette collecte ?")) return;
+    try {
+        await fetch(`/api/coordinateur/collectes/${collecte.id}/annuler`, {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${auth.token}`,
+                Accept: "application/json",
+            },
+        });
+        collectes.value = collectes.value.filter(c => c.id !== collecte.id);
+    } catch (e) {
+        alert("Erreur lors de l'annulation.");
+    }
+}
+
+onBeforeUnmount(() => {
+    document.removeEventListener("click", closeMenu);
+});
 
 const totalInscrits = computed(() =>
     collectes.value.reduce((sum, c) => sum + (c.nb_inscrits_estime ?? 0), 0),
@@ -153,6 +212,7 @@ function badgeClass(c) {
 }
 
 onMounted(async () => {
+    document.addEventListener("click", closeMenu);
     try {
         const res = await fetch("/api/coordinateur/collectes", {
             headers: {
@@ -198,7 +258,6 @@ onMounted(async () => {
     background: white;
     border-radius: 0.75rem;
     padding: 1.5rem;
-    box-shadow: 0 2px 8px rgba(44, 65, 64, 0.06);
 }
 .stat-value {
     font-size: 2rem;
@@ -216,7 +275,6 @@ onMounted(async () => {
     background: white;
     border-radius: 0.75rem;
     padding: 1.5rem;
-    box-shadow: 0 2px 8px rgba(44, 65, 64, 0.06);
     margin-bottom: 2.5rem;
     max-width: 700px;
     margin-left: auto;
@@ -306,7 +364,6 @@ onMounted(async () => {
     background: white;
     border-radius: 0.75rem;
     padding: 1.25rem;
-    box-shadow: 0 2px 8px rgba(44, 65, 64, 0.06);
     display: flex;
     flex-direction: column;
     gap: 0.6rem;
@@ -333,15 +390,59 @@ onMounted(async () => {
     color: #497371;
     margin: 0;
 }
+.card-menu-wrap {
+    position: relative;
+}
 .card-menu {
     background: none;
     border: none;
     color: #497371;
     font-size: 1.25rem;
     cursor: pointer;
-    padding: 0;
+    padding: 0 4px;
     line-height: 1;
     letter-spacing: 2px;
+    border-radius: 6px;
+    transition: background 0.15s;
+}
+.card-menu:hover {
+    background: #f2f4f3;
+}
+.card-dropdown {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    background: white;
+    border-radius: 0.6rem;
+    box-shadow: 0 4px 20px rgba(44, 65, 64, 0.14);
+    border: 1px solid #f2f4f3;
+    min-width: 148px;
+    z-index: 100;
+    overflow: hidden;
+}
+.card-dropdown button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 10px 14px;
+    background: none;
+    border: none;
+    font-size: 0.875rem;
+    color: #2c4140;
+    cursor: pointer;
+    font-family: inherit;
+    text-align: left;
+    transition: background 0.12s;
+}
+.card-dropdown button:hover {
+    background: #f9fafb;
+}
+.card-dropdown button.danger {
+    color: #e60f48;
+}
+.card-dropdown button.danger:hover {
+    background: #fff1f4;
 }
 
 .badge {

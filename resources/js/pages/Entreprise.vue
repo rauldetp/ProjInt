@@ -111,21 +111,36 @@ const dateRange = computed(() => {
                             <span>{{ collecte.nb_inscrits_estime }} inscrits</span>
                         </li>
                     </ul>
-                    <RouterLink
-                        :to="`/entreprise/${route.params.slug}/inscription`"
-                        class="hero-card-cta"
-                        :style="{ background: brandColor, color: textOnBrand }"
-                    >
-                        Réserver mon créneau →
-                    </RouterLink>
+                    <div class="hero-card-actions">
+                        <RouterLink
+                            :to="`/entreprise/${route.params.slug}/inscription`"
+                            class="hero-card-cta"
+                            :style="{ background: brandColor, color: textOnBrand }"
+                        >
+                            Réserver mon créneau →
+                        </RouterLink>
+                        <RouterLink
+                            :to="`/entreprise/${route.params.slug}/collecte/${collecte.id}`"
+                            class="hero-card-details"
+                        >
+                            Voir les détails
+                        </RouterLink>
+                    </div>
                 </div>
 
                 <!-- Fallback card if no collecte -->
                 <div class="hero-card" v-else>
                     <p class="hero-card-title">Prochaine collecte</p>
-                    <p style="font-size: 14px; color: #497371; margin: 0">
+                    <p style="font-size: 14px; color: #497371; margin: 0 0 1rem">
                         Aucune collecte active pour le moment. Revenez bientôt !
                     </p>
+                    <RouterLink
+                        :to="`/entreprise/${route.params.slug}/espace`"
+                        class="hero-card-details"
+                        style="display: inline-block"
+                    >
+                        Voir toutes les collectes →
+                    </RouterLink>
                 </div>
             </div>
         </section>
@@ -224,7 +239,7 @@ const dateRange = computed(() => {
                     </a>
                 </div>
                 <div class="small-co-img">
-                    <img src="/images/thumbnail_mouvement.webp" alt="" />
+                    <img :src="'/images/thumbnail_mouvement.webp'" alt="" />
                 </div>
             </div>
         </section>
@@ -448,6 +463,26 @@ const dateRange = computed(() => {
 }
 .hero-card-cta:hover {
     opacity: 0.85;
+}
+.hero-card-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+.hero-card-details {
+    display: block;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    border-radius: 9999px;
+    padding: 0.65rem 1.5rem;
+    border: 1.5px solid rgba(255,255,255,0.5);
+    color: white;
+    transition: background 0.15s;
+}
+.hero-card-details:hover {
+    background: rgba(255,255,255,0.12);
 }
 
 /* ── Quiz overlay ─────────────────────────────────────── */

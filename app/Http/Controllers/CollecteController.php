@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 
 class CollecteController extends Controller
 {
+    public function show(Collecte $collecte)
+    {
+        return response()->json($collecte->load('entreprise'));
+    }
+
     public function incrementInscrits(Collecte $collecte)
     {
         $collecte->increment('nb_inscrits_estime');

@@ -10,11 +10,13 @@ const router = useRouter();
 const cobrand = useCobrandStore();
 const auth   = useAuthStore();
 
-const entreprise = ref(null);
-const collecte   = ref(null);
-const loading    = ref(true);
-const submitting = ref(false);
+const entreprise  = ref(null);
+const collecte    = ref(null);
+const loading     = ref(true);
+const submitting  = ref(false);
 const submitError = ref(null);
+const editId      = computed(() => route.query.edit ? parseInt(route.query.edit) : null);
+const isEdit      = computed(() => !!editId.value);
 
 const brandColor = computed(() => cobrand.couleurPrimaire || "#e60f48");
 
@@ -40,17 +42,22 @@ async function submitForm() {
     submitting.value  = true;
     try {
         const payload = {
-            titre:        form.value.titre         || null,
-            date_debut:   form.value.date_debut,
-            date_fin:     form.value.date_fin      || null,
-            sur_site:     form.value.sur_site,
-            lieu:         form.value.lieu          || null,
-            horaires:     form.value.horaires      || null,
-            objectif_dons: form.value.objectif_dons ? parseInt(form.value.objectif_dons) : null,
+            titre:         form.value.titre          || null,
+            date_debut:    form.value.date_debut,
+            date_fin:      form.value.date_fin       || null,
+            sur_site:      form.value.sur_site,
+            lieu:          form.value.lieu           || null,
+            horaires:      form.value.horaires       || null,
+            objectif_dons: form.value.objectif_dons  ? parseInt(form.value.objectif_dons) : null,
         };
 
-        const res = await fetch("/api/coordinateur/collectes", {
-            method: "POST",
+        const url    = isEdit.value
+            ? `/api/coordinateur/collectes/${editId.value}`
+            : "/api/coordinateur/collectes";
+        const method = isEdit.value ? "PUT" : "POST";
+
+        const res = await fetch(url, {
+            method,
             headers: {
                 Authorization: `Bearer ${auth.token}`,
                 "Content-Type": "application/json",
@@ -65,7 +72,7 @@ async function submitForm() {
         }
 
         const n = parseInt(form.value.nb_employes);
-        if (!isNaN(n) && n < 500) {
+        if (!isEdit.value && !isNaN(n) && n < 500) {
             showSmallCompanyInfo.value = true;
         } else {
             router.push(`/entreprise/${route.params.slug}/espace`);
@@ -77,22 +84,48 @@ async function submitForm() {
     }
 }
 
-/* ── Fetch entreprise pour cobrand ───────────────────────────── */
+/* ── Fetch entreprise + éventuelle collecte à modifier ────────── */
 onMounted(async () => {
     try {
         const res = await fetch(`/api/entreprises/${route.params.slug}`);
         if (res.ok) {
             const data = await res.json();
             entreprise.value = data.entreprise;
-            collecte.value = data.collecte ?? null;
+            collecte.value   = data.collecte ?? null;
             if (data.entreprise) cobrand.set(data.entreprise);
         }
     } catch {}
-    finally { loading.value = false; }
+
     if (entreprise.value?.nb_employes) {
         form.value.nb_employes = String(entreprise.value.nb_employes);
     }
-    document.title = `Nouvelle collecte — ${cobrand.nom || "HUG"}`;
+
+    // Mode édition : charger la collecte existante et pré-remplir le formulaire
+    if (editId.value) {
+        try {
+            const res = await fetch(`/api/coordinateur/collectes/${editId.value}`, {
+                headers: {
+                    Authorization: `Bearer ${auth.token}`,
+                    Accept: "application/json",
+                },
+            });
+            if (res.ok) {
+                const c = await res.json();
+                form.value.titre         = c.titre         ?? "";
+                form.value.date_debut    = c.date_debut    ? String(c.date_debut).split("T")[0] : "";
+                form.value.date_fin      = c.date_fin      ? String(c.date_fin).split("T")[0]   : "";
+                form.value.sur_site      = !!c.sur_site;
+                form.value.lieu          = c.lieu          ?? "";
+                form.value.horaires      = c.horaires      ?? "";
+                form.value.objectif_dons = c.objectif_dons ?? "";
+            }
+        } catch {}
+    }
+
+    loading.value = false;
+    document.title = isEdit.value
+        ? `Modifier la collecte — ${cobrand.nom || "HUG"}`
+        : `Nouvelle collecte — ${cobrand.nom || "HUG"}`;
 });
 </script>
 
@@ -104,7 +137,7 @@ onMounted(async () => {
         <!-- Form content -->
         <section style="background: #f2f4f3; min-height: calc(100vh - 76px - 180px); padding: 3rem 0 5rem">
             <div class="max-w-3xl mx-auto px-8">
-                <h1 class="font-bold mb-8" style="font-size: 32px; color: #2c4140">Créer une nouvelle collecte</h1>
+                <h1 class="font-bold mb-8" style="font-size: 32px; color: #2c4140">{{ isEdit ? "Modifier la collecte" : "Créer une nouvelle collecte" }}</h1>
 
                 <form @submit.prevent="submitForm" style="display: flex; flex-direction: column; gap: 1.5rem">
 
@@ -254,7 +287,7 @@ onMounted(async () => {
                             :disabled="submitting || !form.date_debut"
                             style="border-radius: 9999px; padding: 0.75rem 2rem; font-size: 15px; font-weight: 600; color: white; border: none; cursor: pointer; transition: opacity 0.15s"
                             :style="{ background: brandColor, opacity: (submitting || !form.date_debut) ? 0.6 : 1 }"
-                        >{{ submitting ? "Envoi en cours…" : "Envoyer la demande" }}</button>
+                        >{{ submitting ? "Enregistrement…" : isEdit ? "Enregistrer les modifications" : "Envoyer la demande" }}</button>
                     </div>
 
                 </form>

@@ -201,7 +201,6 @@ onMounted(fetchCollectes)
   background: white;
   border-radius: 1rem;
   overflow: hidden;
-  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.07);
   font-size: 0.9rem;
 }
 

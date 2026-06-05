@@ -304,6 +304,11 @@ function retakeQuiz() {
                         </div>
                     </div>
 
+                    <div v-if="collecte?.nb_inscrits_estime" class="social-proof-chip">
+                        <span class="material-symbols-outlined" style="font-size: 18px">group</span>
+                        <span>Déjà <strong>{{ collecte.nb_inscrits_estime }}</strong> collègues ont passé le test !</span>
+                    </div>
+
                     <button
                         class="btn-brand"
                         :style="{ background: brandColor, color: textOnBrand }"
@@ -494,6 +499,10 @@ function retakeQuiz() {
                             <span class="material-symbols-outlined" style="font-size: 18px; color: #000">info</span>
                             <p>La validation finale sera effectuée sur place par l'équipe médicale.</p>
                         </div>
+                        <div v-if="collecte?.nb_inscrits_estime && collecte?.active" class="social-proof-chip social-proof-result">
+                            <span class="material-symbols-outlined" style="font-size: 18px">group</span>
+                            <span>Rejoignez les <strong>{{ collecte.nb_inscrits_estime }}</strong> collègues qui participent !</span>
+                        </div>
                         <RouterLink
                             v-if="collecte?.active"
                             :to="`/entreprise/${route.params.slug}/inscription`"
@@ -646,6 +655,24 @@ function retakeQuiz() {
     color: #497371;
     margin: 0;
     line-height: 1.4;
+}
+
+/* ── Social proof ────────────────────────────────────── */
+.social-proof-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #f0f9f8;
+    border-radius: 9999px;
+    padding: 0.55rem 1.1rem;
+    font-size: 0.88rem;
+    color: #2c4140;
+    font-weight: 500;
+    margin-bottom: 1.25rem;
+}
+.social-proof-result {
+    background: #d1fae5;
+    color: #065f46;
 }
 
 /* ── Shared buttons ──────────────────────────────────── */

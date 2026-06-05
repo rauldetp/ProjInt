@@ -27,6 +27,60 @@ class CoordinateurController extends Controller
         ]);
     }
 
+    public function show(Request $request, Collecte $collecte)
+    {
+        $coordinateur = $request->user()->coordinateur;
+
+        if (!$coordinateur || $collecte->entreprise_id !== $coordinateur->entreprise_id) {
+            return response()->json(['error' => 'Non autorisé'], 403);
+        }
+
+        return response()->json($collecte);
+    }
+
+    public function update(Request $request, Collecte $collecte)
+    {
+        $coordinateur = $request->user()->coordinateur;
+
+        if (!$coordinateur || $collecte->entreprise_id !== $coordinateur->entreprise_id) {
+            return response()->json(['error' => 'Non autorisé'], 403);
+        }
+
+        $data = $request->validate([
+            'titre'          => 'nullable|string|max:255',
+            'date_debut'     => 'required|date',
+            'date_fin'       => 'nullable|date|after_or_equal:date_debut',
+            'sur_site'       => 'required|boolean',
+            'lieu'           => 'nullable|string|max:255',
+            'horaires'       => 'nullable|string|max:255',
+            'objectif_dons'  => 'nullable|integer|min:1',
+        ]);
+
+        $collecte->update($data);
+
+        return response()->json($collecte);
+    }
+
+    public function annuler(Request $request, Collecte $collecte)
+    {
+        $coordinateur = $request->user()->coordinateur;
+
+        if (!$coordinateur || $collecte->entreprise_id !== $coordinateur->entreprise_id) {
+            return response()->json(['error' => 'Non autorisé'], 403);
+        }
+
+        if ($collecte->statut === 'terminee') {
+            return response()->json(['error' => 'Impossible d\'annuler une collecte terminée.'], 422);
+        }
+
+        $collecte->update([
+            'statut' => 'annulee',
+            'active' => false,
+        ]);
+
+        return response()->json(['message' => 'Collecte annulée.']);
+    }
+
     public function store(Request $request)
     {
         $coordinateur = $request->user()->coordinateur;

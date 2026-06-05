@@ -102,7 +102,6 @@ const subtitle = computed(() => {
 .quiz-result {
   background: white;
   border-radius: 24px;
-  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
   overflow: hidden;
 }
 
