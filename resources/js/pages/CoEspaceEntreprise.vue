@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, onBeforeUnmount } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useCobrandStore } from "../stores/cobrand";
 import { useAuthStore } from "../stores/auth";
@@ -106,11 +106,45 @@ function formatDate(date) {
     });
 }
 
+/* ── Menu contextuel ─────────────────────────────────────────── */
+const openMenu = ref(null);
+
+function toggleMenu(id) {
+    openMenu.value = openMenu.value === id ? null : id;
+}
+function closeMenu() {
+    openMenu.value = null;
+}
+
+function goVoir(c) {
+    router.push(`/entreprise/${route.params.slug}/collecte/${c.id}`);
+}
+function goModifier(c) {
+    closeMenu();
+    router.push(`/entreprise/${route.params.slug}/nouvelle-collecte?edit=${c.id}`);
+}
+async function goAnnuler(c) {
+    closeMenu();
+    if (!confirm("Confirmer l'annulation de cette collecte ?")) return;
+    try {
+        await fetch(`/api/coordinateur/collectes/${c.id}/annuler`, {
+            method: "POST",
+            headers: { Authorization: `Bearer ${auth.token}`, Accept: "application/json" },
+        });
+        collectes.value = collectes.value.filter(x => x.id !== c.id);
+    } catch {
+        alert("Erreur lors de l'annulation.");
+    }
+}
+
+onBeforeUnmount(() => document.removeEventListener("click", closeMenu));
+
 /* ── Fetch ────────────────────────────────────────────────────── */
 onMounted(async () => {
+    document.addEventListener("click", closeMenu);
     try {
-        const res = await fetch("/api/coordinateur/collectes", {
-            headers: { Authorization: `Bearer ${auth.token}`, Accept: "application/json" },
+        const res = await fetch(`/api/entreprises/${route.params.slug}/collectes`, {
+            headers: { Accept: "application/json" },
         });
         if (!res.ok) throw new Error("Erreur lors du chargement.");
         const data = await res.json();
@@ -144,18 +178,18 @@ onMounted(async () => {
 
                     <!-- Stats -->
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; max-width: 640px; margin: 0 auto 2rem">
-                        <div style="background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 2px 8px rgba(44,65,64,0.06)">
+                        <div style="background: white; border-radius: 12px; padding: 1.5rem">
                             <p class="font-bold" style="font-size: 2rem; color: #2c4140; margin: 0 0 0.25rem">{{ totalInscrits }}</p>
                             <p style="font-size: 0.8rem; color: #497371; margin: 0">Employés ont passé le questionnaire</p>
                         </div>
-                        <div style="background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 2px 8px rgba(44,65,64,0.06)">
+                        <div style="background: white; border-radius: 12px; padding: 1.5rem">
                             <p class="font-bold" style="font-size: 2rem; color: #2c4140; margin: 0 0 0.25rem">{{ collectes.length }}</p>
                             <p style="font-size: 0.8rem; color: #497371; margin: 0">Nombre total de collectes</p>
                         </div>
                     </div>
 
                     <!-- Chart -->
-                    <div style="background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 2px 8px rgba(44,65,64,0.06); max-width: 640px; margin: 0 auto">
+                    <div style="background: white; border-radius: 12px; padding: 1.5rem; max-width: 640px; margin: 0 auto">
                         <p class="font-semibold text-center" style="font-size: 1rem; color: #2c4140; margin: 0 0 1rem">Nombres d'inscriptions totaux</p>
                         <div style="background: #f9fafb; border-radius: 8px; padding: 1rem; margin-bottom: 1rem">
                             <svg viewBox="0 0 600 100" style="width: 100%; height: 80px">
@@ -195,6 +229,7 @@ onMounted(async () => {
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem">
                         <h2 class="font-bold" style="font-size: 28px; color: #2c4140; margin: 0">Campagnes de collectes</h2>
                         <RouterLink
+                            v-if="auth.isCoordinateur"
                             :to="`/entreprise/${route.params.slug}/nouvelle-collecte`"
                             style="display: inline-flex; align-items: center; gap: 0.4rem; background: #2c4140; color: white; border-radius: 9999px; padding: 0.5rem 1.1rem; font-size: 0.875rem; font-weight: 600; text-decoration: none; transition: opacity 0.15s; white-space: nowrap"
                             class="hover:opacity-80"
@@ -225,7 +260,8 @@ onMounted(async () => {
                         <div
                             v-for="c in collectesFiltrees"
                             :key="c.id"
-                            style="background: white; border-radius: 12px; padding: 1.25rem; box-shadow: 0 2px 8px rgba(44,65,64,0.08); display: flex; flex-direction: column; gap: 0.6rem; border: 1px solid #f2f4f3"
+                            style="background: white; border-radius: 12px; padding: 1.25rem; display: flex; flex-direction: column; gap: 0.6rem; border: 1px solid #f2f4f3; cursor: pointer"
+                            @click="goVoir(c)"
                         >
                             <div style="display: flex; justify-content: space-between; align-items: flex-start">
                                 <div>
@@ -234,7 +270,24 @@ onMounted(async () => {
                                     </p>
                                     <p style="font-size: 0.8rem; color: #497371; margin: 0.1rem 0 0">{{ formatDate(c.date_debut) }}</p>
                                 </div>
-                                <button style="background: none; border: none; color: #497371; font-size: 1.1rem; cursor: pointer; padding: 0; letter-spacing: 2px">···</button>
+                                <div v-if="auth.isCoordinateur" style="position: relative">
+                                    <button
+                                        @click.stop="toggleMenu(c.id)"
+                                        style="background: none; border: none; color: #497371; font-size: 1.1rem; cursor: pointer; padding: 2px 6px; letter-spacing: 2px; border-radius: 6px; transition: background 0.15s"
+                                        :style="openMenu === c.id ? { background: '#f2f4f3' } : {}"
+                                    >···</button>
+                                    <div
+                                        v-if="openMenu === c.id"
+                                        style="position: absolute; top: calc(100% + 6px); right: 0; background: white; border-radius: 10px; box-shadow: 0 4px 20px rgba(44,65,64,0.14); border: 1px solid #f2f4f3; min-width: 148px; z-index: 100; overflow: hidden"
+                                    >
+                                        <button @click.stop="goModifier(c)" style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 10px 14px; background: none; border: none; font-size: 0.875rem; color: #2c4140; cursor: pointer; font-family: inherit; text-align: left; transition: background 0.12s" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='none'">
+                                            <span class="material-symbols-outlined" style="font-size:16px">edit</span> Modifier
+                                        </button>
+                                        <button @click.stop="goAnnuler(c)" style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 10px 14px; background: none; border: none; font-size: 0.875rem; color: #e60f48; cursor: pointer; font-family: inherit; text-align: left; transition: background 0.12s" onmouseover="this.style.background='#fff1f4'" onmouseout="this.style.background='none'">
+                                            <span class="material-symbols-outlined" style="font-size:16px">cancel</span> Annuler
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                             <span
                                 style="display: inline-block; padding: 0.2rem 0.65rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; width: fit-content"

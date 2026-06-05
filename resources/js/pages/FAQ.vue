@@ -1,8 +1,6 @@
 <script setup>
 import { ref, onMounted } from "vue";
-import { useCoinEntrepriseLink } from "../composables/useCoinEntrepriseLink";
-
-const { coinEntrepriseLink } = useCoinEntrepriseLink();
+import HugNavbar from "../components/HugNavbar.vue";
 const openFaq = ref(null);
 
 function toggle(id) {
@@ -11,86 +9,149 @@ function toggle(id) {
 
 const categories = [
     {
-        id: "don",
-        title: "Don du sang — Questions générales",
+        id: "avant",
+        title: "Avant le don",
+        insight: "Le don dure généralement moins de 10 minutes.",
         items: [
             {
-                q: "Qui peut donner du sang ?",
-                a: "Toute personne en bonne santé, âgée de 18 à 75 ans, pesant au moins 50 kg peut donner du sang. Les personnes de plus de 65 ans peuvent donner sous réserve de l'accord du médecin CTS. Une carte d'identité ou un passeport est obligatoire pour le premier don.",
+                q: "Puis-je donner mon sang ?",
+                a: "La plupart des personnes en bonne santé peuvent donner leur sang. Certaines situations peuvent cependant empêcher un don temporairement : maladie récente, tatouage récent, voyage, opération, certains médicaments, etc. Pour le savoir rapidement, notre quiz simplifié vous guide avant la prise de rendez-vous.",
             },
             {
-                q: "Quelles sont les contre-indications temporaires les plus fréquentes ?",
-                a: "Les contre-indications temporaires incluent notamment : une prise d'antibiotiques (attendre 7 jours après la fin du traitement), une grossesse ou un accouchement récent (attendre 6 mois), un tatouage ou piercing récent (attendre 4 mois), un séjour dans certains pays à risque (délai variable), ou une grippe ou rhume récent (attendre la guérison complète).",
+                q: "Dois-je manger avant de donner mon sang ?",
+                a: "Oui. Il est recommandé de manger normalement et de bien boire avant le don afin d'éviter les malaises ou la fatigue. Ne venez jamais à jeun.",
             },
             {
-                q: "Combien de temps dure un don de sang total ?",
-                a: "Le don de sang total dure environ 10 minutes. Avec l'accueil, le questionnaire médical, la collation post-don et le repos, comptez 45 à 60 minutes au total. Un don de plaquettes ou de plasma peut prendre jusqu'à 90 minutes.",
+                q: "Est-ce que donner son sang fait mal ?",
+                a: "Le don est généralement peu douloureux. Vous ressentez principalement une petite piqûre au début, comme une prise de sang classique.",
             },
             {
-                q: "À quelle fréquence peut-on donner du sang ?",
-                a: "Les hommes peuvent donner jusqu'à 4 fois par an, avec un délai minimum de 8 semaines entre deux dons. Les femmes peuvent donner jusqu'à 3 fois par an. Pour les dons de plaquettes, la fréquence peut être plus élevée (jusqu'à 24 fois par an).",
+                q: "Combien de temps dure un don ?",
+                a: "Le prélèvement dure environ 10 minutes. Avec l'accueil, le questionnaire et le temps de repos, il faut compter environ 45 minutes au total.",
             },
             {
-                q: "Le don de sang est-il rémunéré en Suisse ?",
-                a: "Non. Le don de sang en Suisse est entièrement bénévole et volontaire. Aucune rémunération financière n'est versée. Les donneurs reçoivent en revanche une collation après le don.",
+                q: "Puis-je donner mon sang si j'ai un tatouage ou un piercing ?",
+                a: "Oui, mais un délai est généralement nécessaire après un tatouage ou un piercing avant de pouvoir donner. Le quiz vous aide à savoir rapidement si vous êtes concerné.",
             },
             {
-                q: "Quels types de dons sont possibles ?",
-                a: "Le CTS des HUG collecte plusieurs types de dons : le sang total (le plus courant), les plaquettes (aphérèse), le plasma, et les granulocytes. Le médecin CTS oriente chaque donneur vers le don le plus adapté à son profil.",
+                q: "Puis-je donner mon sang si je prends des médicaments ?",
+                a: "Cela dépend du traitement. Certains médicaments n'empêchent pas le don, d'autres oui temporairement. Le personnel médical vérifiera toujours cela avant le don.",
             },
             {
-                q: "Le don de sang est-il dangereux pour la santé ?",
-                a: "Non. Tout le matériel utilisé est stérile et à usage unique. Il est impossible de contracter une maladie en donnant son sang. Après le don, le corps reconstitue le volume sanguin en quelques heures, et les globules rouges en 4 à 6 semaines.",
+                q: "Puis-je donner mon sang si je suis malade ?",
+                a: "Non. Même un simple refroidissement peut empêcher temporairement un don. Il est important de venir uniquement en bonne santé.",
             },
             {
-                q: "Puis-je donner si je prends des médicaments ?",
-                a: "Cela dépend du médicament. Les anticoagulants, certains antibiotiques ou traitements dermatologiques sont des contre-indications temporaires ou permanentes. Le questionnaire médical pré-don et le médecin CTS évaluent chaque cas individuellement.",
+                q: "Faut-il être à jeun ?",
+                a: "Non. Au contraire, il est conseillé de manger et de boire suffisamment avant le don.",
+            },
+        ],
+    },
+    {
+        id: "pendant",
+        title: "Pendant le don",
+        insight: "Le personnel médical vous accompagne à chaque étape.",
+        items: [
+            {
+                q: "Que se passe-t-il pendant le don ?",
+                a: "Le personnel médical vous accueille, vérifie votre questionnaire, puis procède au prélèvement dans un espace sécurisé et encadré.",
+            },
+            {
+                q: "Combien de sang est prélevé ?",
+                a: "Environ 450 ml de sang sont prélevés lors d'un don standard.",
+            },
+            {
+                q: "Le matériel est-il stérile ?",
+                a: "Oui. Tout le matériel utilisé est stérile et à usage unique. Il est impossible de contracter une maladie en donnant son sang.",
+            },
+            {
+                q: "Vais-je me sentir faible pendant le don ?",
+                a: "La majorité des donneurs se sentent bien pendant le prélèvement. Certaines personnes peuvent ressentir une légère fatigue ou un petit vertige, mais le personnel est présent pour accompagner chaque étape.",
+            },
+        ],
+    },
+    {
+        id: "apres",
+        title: "Après le don",
+        insight: "La majorité des donneurs reprennent leur journée normalement après le don.",
+        items: [
+            {
+                q: "Puis-je retourner travailler après le don ?",
+                a: "Oui, la majorité des donneurs reprennent leur journée normalement après avoir mangé, bu et pris un petit moment de repos.",
+            },
+            {
+                q: "Puis-je faire du sport après un don ?",
+                a: "Il est conseillé d'éviter les efforts physiques intenses le jour même du don.",
+            },
+            {
+                q: "Que se passe-t-il après le prélèvement ?",
+                a: "Après le don, une collation est proposée afin de récupérer tranquillement avant de repartir.",
+            },
+            {
+                q: "Mon corps récupère-t-il rapidement ?",
+                a: "Oui. Le plasma est remplacé rapidement par le corps. Il est important de bien s'hydrater et de manger normalement après le don.",
             },
         ],
     },
     {
         id: "entreprise",
-        title: "Don du sang en entreprise",
+        title: "Collectes en entreprise",
+        insight: "Vous n'êtes pas seul : votre entreprise participe avec vous.",
         items: [
             {
-                q: "Comment organiser une collecte de sang dans mon entreprise ?",
-                a: "Il suffit de créer un compte sur cette plateforme et de contacter l'équipe CTS des HUG. Un coordinateur interne est désigné dans votre entreprise. L'équipe mobile CTS se charge de tout le reste : logistique, matériel, personnel soignant. Vous n'avez qu'à communiquer en interne et gérer les inscriptions.",
+                q: "Comment fonctionne une collecte en entreprise ?",
+                a: "Le Centre de Transfusion Sanguine se déplace directement dans l'entreprise afin de permettre aux collaborateurs de donner leur sang sur place.",
             },
             {
-                q: "Combien de temps faut-il pour mettre en place une collecte ?",
-                a: "En général, 4 à 6 semaines entre la première prise de contact et le jour de la collecte. Ce délai permet de planifier la date, organiser l'espace, préparer la communication interne et ouvrir les créneaux d'inscription.",
+                q: "Qui peut participer à une collecte en entreprise ?",
+                a: "Tous les collaborateurs répondant aux critères médicaux peuvent participer.",
             },
             {
-                q: "Quelle surface faut-il prévoir pour accueillir une collecte ?",
-                a: "Un espace d'environ 50 m² minimum est nécessaire, avec une bonne aération et une accessibilité pour les donneurs. Idéalement une salle de conférence ou un espace polyvalent avec tables et chaises. L'équipe CTS apporte tout son équipement.",
+                q: "Une entreprise doit-elle avoir plus de 1000 employés ?",
+                a: "Les grandes entreprises peuvent accueillir une collecte directement dans leurs locaux. Les PME peuvent également participer via des dons de groupe organisés dans un centre de transfusion.",
             },
             {
-                q: "Combien de donneurs peut-on accueillir lors d'une collecte ?",
-                a: "En règle générale, l'équipe CTS peut accueillir entre 20 et 50 donneurs par jour selon la taille du dispositif mis en place. Un créneau de 30 minutes par donneur est à prévoir, avec une collecte possible sur une ou deux journées.",
+                q: "Pourquoi organiser une collecte en entreprise ?",
+                a: "Cela permet de faciliter le don pour les collaborateurs, de renforcer l'engagement collectif et de participer concrètement à une action utile localement.",
+            },
+            {
+                q: "Une entreprise reçoit-elle une reconnaissance ?",
+                a: "Oui. Les entreprises participantes peuvent obtenir un Label CTS et participer au Trophée de la Générosité, récompensant chaque année les entreprises les plus engagées.",
             },
             {
                 q: "Y a-t-il un coût pour l'entreprise ?",
-                a: "Non. La collecte est entièrement organisée et financée par les HUG. L'entreprise met à disposition l'espace et libère du temps à ses collaborateurs. Il n'y a aucun frais de participation.",
-            },
-            {
-                q: "Qui s'occupe de la communication interne ?",
-                a: "Le coordinateur interne de l'entreprise — généralement un responsable RH ou RSE — gère la communication auprès des collaborateurs. Le CTS des HUG met à disposition des modèles de communication (emails, affiches, etc.) prêts à l'emploi.",
+                a: "Non. La collecte est entièrement organisée et financée par les HUG. L'entreprise met à disposition l'espace et libère du temps à ses collaborateurs.",
             },
             {
                 q: "Les données de nos employés sont-elles protégées ?",
-                a: "Oui. Seules les données nécessaires à la gestion des inscriptions (nom, prénom, créneau) sont utilisées. Aucune donnée médicale n'est transmise à l'employeur. Le traitement des données est conforme au RGPD et à la LPD suisse.",
+                a: "Oui. Aucune donnée médicale n'est transmise à l'employeur. Le traitement des données est conforme au RGPD et à la LPD suisse.",
+            },
+        ],
+    },
+    {
+        id: "securite",
+        title: "Sécurité & rassurance",
+        insight: "Même un premier don peut faire une vraie différence.",
+        items: [
+            {
+                q: "Mon sang est-il testé ?",
+                a: "Oui. Chaque don est analysé afin de garantir la sécurité des patients.",
             },
             {
-                q: "Quels sont les critères pour obtenir le label CTS ?",
-                a: "Le label CTS est attribué automatiquement à toute entreprise ayant organisé au moins une collecte dans l'année. Il certifie votre engagement citoyen pour le don du sang et est valable 1 an, renouvelable chaque année si une nouvelle collecte est organisée.",
+                q: "À quoi sert mon don ?",
+                a: "Un seul don peut contribuer à aider plusieurs patients ayant besoin de transfusions lors d'opérations, de traitements ou d'urgences médicales.",
+            },
+            {
+                q: "Puis-je attraper une maladie en donnant mon sang ?",
+                a: "Non. Le matériel utilisé est entièrement stérile et à usage unique.",
             },
             {
                 q: "Comment fonctionne le Trophée de la générosité ?",
-                a: "Le Trophée est attribué une fois par an, en décembre, par un jury HUG. Il récompense les entreprises les plus engagées selon trois critères : le taux de participation (donneurs / effectif), la régularité de l'engagement sur plusieurs années, et la qualité de la mobilisation interne. Les entreprises souhaitant candidater doivent soumettre un dossier avant le 30 novembre.",
+                a: "Le Trophée est attribué une fois par an par un jury HUG. Il récompense les entreprises les plus engagées selon leur taux de participation, leur régularité et la qualité de leur mobilisation interne.",
             },
             {
-                q: "Est-ce qu'une PME peut participer au programme ?",
-                a: "Absolument. Le programme est ouvert à toutes les entreprises genevoises, quelle que soit leur taille. Une PME de 20 collaborateurs peut obtenir le label CTS et même candidater au Trophée. Le taux de participation est calculé au prorata des effectifs, ce qui valorise l'engagement de toutes les structures.",
+                q: "Quels sont les critères pour obtenir le Label CTS ?",
+                a: "Le Label CTS est attribué à toute entreprise ayant organisé au moins une collecte dans l'année. Il certifie votre engagement citoyen et est valable 1 an, renouvelable.",
             },
         ],
     },
@@ -103,70 +164,7 @@ onMounted(() => {
 
 <template>
     <div class="min-h-screen bg-white">
-        <!-- Navbar -->
-        <header
-            class="bg-white border-b border-[#f2f4f3] sticky top-0 z-50"
-            style="height: 76px"
-        >
-            <div
-                class="max-w-7xl mx-auto px-8 h-full flex items-center justify-between"
-            >
-                <div class="flex items-center gap-2">
-                    <RouterLink
-                        to="/"
-                        class="font-extrabold text-xl tracking-tight"
-                        style="color: #2c4140; text-decoration: none"
-                        >HUG</RouterLink
-                    >
-                    <div
-                        class="w-px h-5 mx-2"
-                        style="background: rgba(44, 65, 64, 0.3)"
-                    ></div>
-                    <span class="text-base font-semibold" style="color: #e60f48"
-                        >Don du sang</span
-                    >
-                </div>
-                <nav
-                    class="hidden md:flex items-center gap-7 text-base font-medium"
-                >
-                    <RouterLink
-                        to="/label"
-                        style="color: #2c4140; text-decoration: none"
-                        class="hover:opacity-60 transition"
-                        >Label CTS</RouterLink
-                    >
-                    <RouterLink
-                        to="/trophee"
-                        style="color: #2c4140; text-decoration: none"
-                        class="hover:opacity-60 transition"
-                        >Trophée de la générosité</RouterLink
-                    >
-                    <RouterLink
-                        :to="coinEntrepriseLink"
-                        style="color: #2c4140; text-decoration: none"
-                        class="hover:opacity-60 transition"
-                        >Coin entreprise</RouterLink
-                    >
-                    <RouterLink
-                        to="/contact"
-                        style="color: #2c4140; text-decoration: none"
-                        class="hover:opacity-60 transition"
-                        >Contact</RouterLink
-                    >
-                </nav>
-                <RouterLink
-                    to="/login"
-                    class="border-2 rounded-full px-5 py-2 text-base font-semibold transition hover:opacity-75"
-                    style="
-                        color: #e60f48;
-                        border-color: #e60f48;
-                        text-decoration: none;
-                    "
-                >
-                    Participer
-                </RouterLink>
-            </div>
-        </header>
+        <HugNavbar />
 
         <!-- Hero -->
         <section style="background: linear-gradient(135deg, #65c6c1, #93cfa9); padding: 64px 0 52px">

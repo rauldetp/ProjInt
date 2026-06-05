@@ -31,6 +31,20 @@ class EntrepriseController extends Controller
         ], Response::HTTP_OK);
     }
 
+    public function collectes(string $slug)
+    {
+        $entreprise = Entreprise::where('slug', $slug)->firstOrFail();
+
+        $collectes = $entreprise->collectes()
+            ->orderBy('date_debut', 'desc')
+            ->get();
+
+        return response()->json([
+            'entreprise' => $entreprise,
+            'collectes'  => $collectes,
+        ]);
+    }
+
     public function index()
     {
         return response()->json(

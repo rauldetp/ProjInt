@@ -26,6 +26,7 @@
             <option value="en_attente">En attente</option>
             <option value="validee">Validée</option>
             <option value="terminee">Terminée</option>
+            <option value="annulee">Annulée</option>
           </select>
         </div>
 
@@ -193,7 +194,6 @@ onMounted(fetchData)
   background: white;
   border-radius: 1rem;
   padding: 2rem;
-  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.07);
 }
 
 .form-grid {

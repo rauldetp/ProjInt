@@ -24,8 +24,9 @@ const routes = [
     { path: '/entreprise/:slug/trophee', component: () => import('./pages/CoTrophee.vue') },
     { path: '/entreprise/:slug/quiz', component: () => import('./pages/CoQuiz.vue') },
     { path: '/quiz', component: () => import('./pages/QuizPage.vue') },
-    { path: '/entreprise/:slug/espace', component: () => import('./pages/CoEspaceEntreprise.vue'), meta: { requiresAuth: true, role: 'coordinateur' } },
+    { path: '/entreprise/:slug/espace', component: () => import('./pages/CoEspaceEntreprise.vue') },
     { path: '/entreprise/:slug/nouvelle-collecte', component: () => import('./pages/CoNouvelleCollecte.vue'), meta: { requiresAuth: true, role: 'coordinateur' } },
+    { path: '/entreprise/:slug/collecte/:id', component: () => import('./pages/CoDetailCollecte.vue') },
     {
         path: '/admin',
         component: AdminLayout,
