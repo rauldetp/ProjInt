@@ -45,13 +45,6 @@ onMounted(async () => {
                 <p class="mb-6 max-w-lg" style="font-size: 18px; color: rgba(255,255,255,0.85); line-height: 1.6">
                     Le label CTS des HUG récompense les entreprises qui s'engagent concrètement pour le don du sang et la solidarité.
                 </p>
-                <a
-                    href="#ce-quil-represente"
-                    class="inline-block font-semibold rounded-full px-6 py-3 transition hover:opacity-80"
-                    :style="{ background: brandColor, color: cobrand.textOnBrand, fontSize: '16px' }"
-                >
-                    Découvrir le Label
-                </a>
             </div>
         </section>
 
@@ -83,21 +76,21 @@ onMounted(async () => {
                 <div class="grid grid-cols-3 gap-8">
                     <div class="flex flex-col items-center text-center gap-4">
                         <div class="rounded-full flex items-center justify-center" style="width: 64px; height: 64px; background: #f2f4f3">
-                            <span style="font-size: 24px">👥</span>
+                            <span class="material-symbols-outlined" style="font-size: 28px; color: #497371">group</span>
                         </div>
                         <h3 class="font-bold" style="font-size: 16px; color: #2c4140">Rejoignez une communauté d'entreprises</h3>
                         <p style="font-size: 14px; color: #497371; line-height: 1.6">Afficher votre engagement société auprès de vos collaborateurs, partenaires et clients.</p>
                     </div>
                     <div class="flex flex-col items-center text-center gap-4">
                         <div class="rounded-full flex items-center justify-center" style="width: 64px; height: 64px; background: #f2f4f3">
-                            <span style="font-size: 24px">🏆</span>
+                            <span class="material-symbols-outlined" style="font-size: 28px; color: #497371">emoji_events</span>
                         </div>
                         <h3 class="font-bold" style="font-size: 16px; color: #2c4140">Affichez votre engagement</h3>
                         <p style="font-size: 14px; color: #497371; line-height: 1.6">Associez votre entreprise à une démarche citoyenne et solidaire reconnue par les HUG.</p>
                     </div>
                     <div class="flex flex-col items-center text-center gap-4">
                         <div class="rounded-full flex items-center justify-center" style="width: 64px; height: 64px; background: #f2f4f3">
-                            <span style="font-size: 24px">❤️</span>
+                            <span class="material-symbols-outlined" style="font-size: 28px; color: #497371">favorite</span>
                         </div>
                         <h3 class="font-bold" style="font-size: 16px; color: #2c4140">Un impact réel et mesurable</h3>
                         <p style="font-size: 14px; color: #497371; line-height: 1.6">Votre mobilisation contribue directement à sauver des vies en Suisse.</p>

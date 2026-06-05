@@ -1,29 +1,7 @@
 <template>
     <div class="layout">
-        <!-- Top Nav (same as public site) -->
-        <header class="top-nav">
-            <div class="nav-inner">
-                <div class="nav-brand">
-                    <RouterLink
-                        to="/"
-                        class="brand-hug"
-                        style="text-decoration: none"
-                        >HUG</RouterLink
-                    >
-                    <div class="brand-sep"></div>
-                    <span class="brand-sub">Don du sang</span>
-                </div>
-                <nav class="nav-links">
-                    <RouterLink to="/label" style="color:#2c4140; text-decoration:none;" class="hover:opacity-70 transition">Label CTS</RouterLink>
-                    <RouterLink to="/trophee" style="color:#2c4140; text-decoration:none;" class="hover:opacity-70 transition">Trophée de la générosité</RouterLink>
-                    <RouterLink :to="coinEntrepriseLink" style="color:#2c4140; text-decoration:none;" class="hover:opacity-70 transition">Coin entreprise</RouterLink>
-                    <RouterLink to="/contact" style="color:#2c4140; text-decoration:none;" class="hover:opacity-70 transition">Contact</RouterLink>
-                </nav>
-                <button class="btn-logout" @click="handleLogout">
-                    Déconnexion
-                </button>
-            </div>
-        </header>
+        <!-- Top Nav -->
+        <HugNavbar :show-logout="true" />
 
         <!-- Admin sub-nav -->
         <div v-if="auth.isAdmin" class="admin-subnav">
@@ -100,18 +78,10 @@
 </template>
 
 <script setup>
-import { useRouter } from "vue-router";
 import { useAuthStore } from "../stores/auth";
-import { useCoinEntrepriseLink } from "../composables/useCoinEntrepriseLink";
+import HugNavbar from "../components/HugNavbar.vue";
 
 const auth = useAuthStore();
-const router = useRouter();
-const { coinEntrepriseLink } = useCoinEntrepriseLink();
-
-function handleLogout() {
-    auth.logout();
-    router.push("/login");
-}
 </script>
 
 <style scoped>
@@ -121,15 +91,6 @@ function handleLogout() {
     flex-direction: column;
     background: #f2f4f3;
     font-family: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
-}
-
-.top-nav {
-    background: white;
-    border-bottom: 1px solid #f2f4f3;
-    height: 76px;
-    position: sticky;
-    top: 0;
-    z-index: 50;
 }
 
 .admin-subnav {
@@ -163,76 +124,6 @@ function handleLogout() {
     color: #e60f48;
     font-weight: 600;
     border-bottom-color: #e60f48;
-}
-
-.nav-inner {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 0 2rem;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 2rem;
-}
-
-.nav-brand {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    flex-shrink: 0;
-}
-.brand-hug {
-    font-weight: 800;
-    font-size: 1.25rem;
-    color: #2c4140;
-}
-.brand-sep {
-    width: 1px;
-    height: 20px;
-    background: rgba(44, 65, 64, 0.3);
-    margin: 0 0.5rem;
-}
-.brand-sub {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #e60f48;
-}
-
-.nav-links {
-    display: flex;
-    align-items: center;
-    gap: 1.75rem;
-}
-.nav-links a {
-    font-size: 1rem;
-    font-weight: 500;
-    color: #2c4140;
-    text-decoration: none;
-    transition: opacity 0.15s;
-}
-.nav-links a:hover {
-    opacity: 0.6;
-}
-.nav-links a.active {
-    color: #e60f48;
-    font-weight: 600;
-}
-
-.btn-logout {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #e60f48;
-    border: 2px solid #e60f48;
-    border-radius: 9999px;
-    padding: 0.4rem 1.25rem;
-    background: none;
-    cursor: pointer;
-    flex-shrink: 0;
-    transition: opacity 0.15s;
-}
-.btn-logout:hover {
-    opacity: 0.75;
 }
 
 .main-content {

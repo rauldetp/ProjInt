@@ -73,7 +73,7 @@ const dateRange = computed(() => {
                     <h1 class="hero-title">
                         {{ entreprise.nom }}<br />× HUG
                     </h1>
-                    <p class="hero-date" v-if="collecte">📅 {{ dateRange }}</p>
+                    <p class="hero-date" v-if="collecte"><span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle">calendar_month</span> {{ dateRange }}</p>
                     <div class="hero-actions">
                         <RouterLink
                             v-if="collecte && collecte.active"
@@ -91,7 +91,7 @@ const dateRange = computed(() => {
                     <p class="hero-card-title">Informations pratiques</p>
                     <ul class="hero-card-list">
                         <li>
-                            <span class="info-icon">📍</span>
+                            <span class="info-icon material-symbols-outlined" style="font-size:18px">location_on</span>
                             <span>{{
                                 collecte.sur_site
                                     ? (entreprise.adresse ?? entreprise.ville ?? entreprise.nom)
@@ -99,15 +99,15 @@ const dateRange = computed(() => {
                             }}</span>
                         </li>
                         <li>
-                            <span class="info-icon">🕐</span>
+                            <span class="info-icon material-symbols-outlined" style="font-size:18px">schedule</span>
                             <span>{{ collecte.horaires ?? "Horaires à confirmer" }}</span>
                         </li>
                         <li>
-                            <span class="info-icon">📅</span>
+                            <span class="info-icon material-symbols-outlined" style="font-size:18px">calendar_month</span>
                             <span>{{ dateRange }}</span>
                         </li>
                         <li v-if="collecte.nb_inscrits_estime">
-                            <span class="info-icon">👥</span>
+                            <span class="info-icon material-symbols-outlined" style="font-size:18px">group</span>
                             <span>{{ collecte.nb_inscrits_estime }} inscrits</span>
                         </li>
                     </ul>
@@ -134,7 +134,7 @@ const dateRange = computed(() => {
         <section class="quiz-section" :style="{ background: sectionGradient }">
             <div class="quiz-section-inner">
                 <div class="quiz-insight">
-                    <div class="quiz-insight-icon">📋</div>
+                    <div class="quiz-insight-icon"><span class="material-symbols-outlined" style="font-size:24px">assignment</span></div>
                     <p class="quiz-insight-text">
                         <template v-if="collecte?.nb_inscrits_estime">Déjà <strong>{{ collecte.nb_inscrits_estime }}</strong> autres employés ont passé le test !</template>
                         <template v-else>Rejoignez vos collègues et passez le test d'éligibilité !</template>
@@ -194,6 +194,41 @@ const dateRange = computed(() => {
             </div>
         </section>
 
+        <!-- Moins de 500 salariés -->
+        <section class="small-co-section">
+            <div class="small-co-inner">
+                <div class="small-co-text">
+                    <p class="small-co-eyebrow" :style="{ color: brandColor }">Toutes les entreprises peuvent agir</p>
+                    <h2 class="small-co-title">Votre entreprise compte<br />moins de 500 salariés ?</h2>
+                    <p class="small-co-body">
+                        Découvrez nos solutions adaptées pour organiser le don du sang, même sans espace dédié dans vos locaux.
+                    </p>
+                    <ul class="small-co-list">
+                        <li class="small-co-item">
+                            <span class="material-symbols-outlined small-co-icon" :style="{ color: brandColor }">local_hospital</span>
+                            <div>
+                                <p class="small-co-item-title">Aux HUG</p>
+                                <p class="small-co-item-body">Vos collaborateurs se rendent directement au Centre de Transfusion Sanguine des HUG. Simple, encadré et sans organisation logistique.</p>
+                            </div>
+                        </li>
+                        <li class="small-co-item">
+                            <span class="material-symbols-outlined small-co-icon" :style="{ color: brandColor }">location_city</span>
+                            <div>
+                                <p class="small-co-item-title">Dans votre commune</p>
+                                <p class="small-co-item-body">Rejoignez une collecte mobile organisée dans votre région. Nous vous informons des prochaines dates à proximité.</p>
+                            </div>
+                        </li>
+                    </ul>
+                    <a href="#" class="small-co-btn" :style="{ borderColor: brandColor, color: brandColor }">
+                        Découvrir les aspects réglementaires
+                    </a>
+                </div>
+                <div class="small-co-img">
+                    <img src="/images/thumbnail_mouvement.webp" alt="" />
+                </div>
+            </div>
+        </section>
+
         <!-- Engagement -->
         <section class="engagement-section">
             <div class="engagement-inner">
@@ -232,7 +267,8 @@ const dateRange = computed(() => {
                         >{{ entreprise.nom }}</span>
                     </div>
                     <p class="engagement-label" v-if="label">
-                        🏆 Label CTS {{ label.date_attribution ? new Date(label.date_attribution).getFullYear() : '' }}
+                        <span class="material-symbols-outlined" style="font-size:16px; vertical-align: middle">emoji_events</span>
+                        Label CTS {{ label.date_attribution ? new Date(label.date_attribution).getFullYear() : '' }}
                     </p>
                 </div>
             </div>
@@ -729,11 +765,99 @@ const dateRange = computed(() => {
     margin: 0;
 }
 
+/* ── Moins de 500 salariés ───────────────────────────── */
+.small-co-section {
+    background: #f2f4f3;
+    padding: 72px 0;
+}
+.small-co-inner {
+    max-width: 1152px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+}
+.small-co-eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin: 0 0 12px;
+}
+.small-co-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #2c4140;
+    line-height: 1.2;
+    margin: 0 0 16px;
+}
+.small-co-body {
+    font-size: 16px;
+    color: #497371;
+    line-height: 1.7;
+    margin: 0 0 24px;
+}
+.small-co-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.small-co-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+.small-co-icon {
+    font-size: 22px;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+.small-co-item-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2c4140;
+    margin: 0 0 4px;
+}
+.small-co-item-body {
+    font-size: 14px;
+    color: #497371;
+    line-height: 1.6;
+    margin: 0;
+}
+.small-co-btn {
+    display: inline-block;
+    border: 2px solid;
+    border-radius: 9999px;
+    padding: 12px 24px;
+    font-size: 15px;
+    font-weight: 600;
+    background: transparent;
+    text-decoration: none;
+    transition: opacity 0.15s;
+}
+.small-co-btn:hover { opacity: 0.7; }
+.small-co-img {
+    border-radius: 1rem;
+    overflow: hidden;
+    height: 380px;
+}
+.small-co-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 /* ── Responsive ──────────────────────────────────────── */
 @media (max-width: 900px) {
     .hero-inner,
     .quiz-section-inner,
-    .engagement-inner {
+    .engagement-inner,
+    .small-co-inner {
         grid-template-columns: 1fr;
     }
     .steps-grid {
@@ -744,6 +868,9 @@ const dateRange = computed(() => {
     }
     .footer-grid {
         grid-template-columns: repeat(2, 1fr);
+    }
+    .small-co-img {
+        height: 220px;
     }
 }
 </style>

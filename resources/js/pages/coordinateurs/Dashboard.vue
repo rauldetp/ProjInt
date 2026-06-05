@@ -71,7 +71,10 @@
             <!-- Campagnes -->
             <div class="section-header">
                 <h2 class="section-title">Campagnes de collectes</h2>
-                <button class="section-add">+</button>
+                <button class="btn-nouvelle-collecte" @click="router.push(`/entreprise/${auth.entrepriseSlug}/nouvelle-collecte`)">
+                    <span class="material-symbols-outlined" style="font-size: 18px">add</span>
+                    Nouvelle collecte
+                </button>
             </div>
 
             <div v-if="collectes.length === 0" class="empty">
@@ -97,7 +100,7 @@
                         badgeLabel(collecte)
                     }}</span>
                     <p class="card-inscrits">
-                        👥 {{ collecte.nb_inscrits_estime }} inscrit(s)
+                        <span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle">group</span> {{ collecte.nb_inscrits_estime }} inscrit(s)
                     </p>
                     <p class="card-lieu">
                         {{ collecte.lieu ?? "Lieu à définir" }}
@@ -111,8 +114,10 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import { useAuthStore } from "../../stores/auth";
+import { useRouter } from "vue-router";
 
 const auth = useAuthStore();
+const router = useRouter();
 const entreprise = ref(null);
 const collectes = ref([]);
 const loading = ref(true);
@@ -274,24 +279,23 @@ onMounted(async () => {
     color: #2c4140;
     margin: 0;
 }
-.section-add {
-    width: 36px;
-    height: 36px;
-    border: 1px solid #e2e8f0;
-    border-radius: 9999px;
-    background: white;
-    font-size: 1.25rem;
-    color: #497371;
-    cursor: pointer;
-    display: flex;
+.btn-nouvelle-collecte {
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
-    transition: border-color 0.15s;
+    gap: 0.4rem;
+    background: #2c4140;
+    color: white;
+    border: none;
+    border-radius: 9999px;
+    padding: 0.5rem 1.1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: opacity 0.15s;
+    white-space: nowrap;
 }
-.section-add:hover {
-    border-color: #2c4140;
-    color: #2c4140;
-}
+.btn-nouvelle-collecte:hover { opacity: 0.8; }
 
 .cards-grid {
     display: grid;

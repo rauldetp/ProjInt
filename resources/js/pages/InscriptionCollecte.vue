@@ -87,7 +87,7 @@ onMounted(async () => {
                         style="width: 64px; height: 64px"
                         :style="{ background: brandColor + '15' }"
                     >
-                        <span style="font-size: 28px">📋</span>
+                        <span class="material-symbols-outlined" style="font-size: 28px">assignment</span>
                     </div>
                     <h2 class="font-bold mb-3" style="font-size: 22px; color: #2c4140">
                         Dossier d'inscription

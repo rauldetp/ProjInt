@@ -6,8 +6,12 @@ import { useAuthStore } from "../stores/auth";
 const auth = useAuthStore();
 const router = useRouter();
 
-const mode = ref("login"); // 'login' | 'register' | 'admin'
+const mode = ref("login"); // 'login' | 'register' | 'admin' | 'success'
 const step = ref(1); // 1 | 2 | 3
+
+// --- Succès inscription ---
+const newSlug          = ref("");
+const newEntrepriseName = ref("");
 
 // --- Connexion ---
 const email = ref("");
@@ -107,26 +111,25 @@ async function handleRegister() {
     loading.value = true;
     errorMsg.value = "";
     try {
+        const formData = new FormData();
+        formData.append("name",             name.value);
+        formData.append("email",            emailReg.value);
+        formData.append("password",         passwordReg.value);
+        formData.append("entreprise",       entreprise.value);
+        if (telephone.value)    formData.append("telephone",        telephone.value);
+        if (adresse.value)      formData.append("adresse",          adresse.value);
+        if (ville.value)        formData.append("ville",            ville.value);
+        if (npa.value)          formData.append("npa",              npa.value);
+        if (domaine.value)      formData.append("domaine",          domaine.value);
+        if (nbEmployes.value)   formData.append("nb_employes",      nbEmployes.value);
+        if (poste.value)        formData.append("poste",            poste.value);
+        if (couleurPrimaire.value) formData.append("couleur_primaire", couleurPrimaire.value);
+        if (logoFile.value)     formData.append("logo",             logoFile.value);
+
         const res = await fetch("/api/register", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json",
-            },
-            body: JSON.stringify({
-                name: name.value,
-                email: emailReg.value,
-                password: passwordReg.value,
-                entreprise: entreprise.value,
-                telephone: telephone.value || null,
-                adresse: adresse.value || null,
-                ville: ville.value || null,
-                npa: npa.value || null,
-                domaine: domaine.value || null,
-                nb_employes: nbEmployes.value ? parseInt(nbEmployes.value) : null,
-                poste: poste.value || null,
-                couleur_primaire: couleurPrimaire.value || null,
-            }),
+            headers: { Accept: "application/json" },
+            body: formData,
         });
         const data = await res.json();
         if (!res.ok) {
@@ -136,8 +139,11 @@ async function handleRegister() {
             throw new Error(msgs);
         }
         auth.token = data.token;
-        auth.role = data.role;
-        router.push("/coordinateur");
+        localStorage.setItem("token", data.token);
+        await auth.fetchMe();
+        newSlug.value           = data.slug;
+        newEntrepriseName.value = entreprise.value;
+        mode.value = "success";
     } catch (e) {
         errorMsg.value = e.message;
     } finally {
@@ -205,6 +211,24 @@ const selectStyle = inputStyle + `
                         Accès réservé à l'équipe du Centre de Transfusion Sanguine des Hôpitaux Universitaires de Genève.
                     </p>
                 </template>
+                <template v-else-if="mode === 'success'">
+                    <div style="display: flex; flex-direction: column; gap: 1.5rem; max-width: 320px">
+                        <div style="display: flex; flex-direction: column; gap: 0.5rem">
+                            <div v-for="item in [
+                                { icon: 'check_circle', text: 'Espace co-brandé créé' },
+                                { icon: 'palette', text: 'Logo &amp; couleurs configurés' },
+                                { icon: 'group', text: 'Page quiz personnalisée' },
+                                { icon: 'emoji_events', text: 'Trophée de la générosité activé' },
+                            ]" :key="item.text" style="display: flex; align-items: center; gap: 0.75rem">
+                                <span class="material-symbols-outlined" style="font-size: 20px; color: #2c4140">{{ item.icon }}</span>
+                                <span style="font-size: 15px; color: #2c4140; font-weight: 600" v-html="item.text"></span>
+                            </div>
+                        </div>
+                        <p style="font-size: 14px; color: rgba(44,65,64,0.65); line-height: 1.6">
+                            Notre équipe du CTS vous recontactera sous 48h pour organiser votre première campagne de collecte.
+                        </p>
+                    </div>
+                </template>
                 <template v-else>
                     <!-- Étapes -->
                     <div class="flex flex-col gap-5 mb-10">
@@ -271,7 +295,7 @@ const selectStyle = inputStyle + `
 
                 <!-- Erreur -->
                 <div
-                    v-if="errorMsg"
+                    v-if="errorMsg && mode !== 'success'"
                     class="mb-5 px-4 py-3 rounded-lg"
                     style="background: #fee2e2; color: #991b1b; font-size: 14px"
                 >
@@ -633,6 +657,66 @@ const selectStyle = inputStyle + `
                             En créant un compte vous acceptez que vos données soient utilisées dans le cadre du programme de don du sang des HUG.
                         </p>
                     </template>
+                </template>
+
+                <!-- ══════════════════ SUCCÈS ══════════════════ -->
+                <template v-else-if="mode === 'success'">
+                    <div style="text-align: center">
+                        <!-- Icône succès -->
+                        <div
+                            style="
+                                width: 72px; height: 72px; border-radius: 50%;
+                                background: #d1fae5; display: flex; align-items: center;
+                                justify-content: center; margin: 0 auto 1.5rem;
+                            "
+                        >
+                            <span class="material-symbols-outlined" style="font-size: 36px; color: #16a34a">check_circle</span>
+                        </div>
+
+                        <h1 class="font-bold mb-2" style="font-size: 24px; color: #2c4140; line-height: 1.3">
+                            Votre espace a bien été créé !
+                        </h1>
+                        <p style="font-size: 15px; color: #497371; line-height: 1.65; margin-bottom: 2rem">
+                            Bienvenue dans le programme <strong>Trophée de la générosité</strong>.<br />
+                            Votre site co-brandé
+                            <strong style="color: #2c4140">{{ newEntrepriseName }}</strong>
+                            est prêt.
+                        </p>
+
+                        <!-- Récap -->
+                        <div
+                            style="
+                                background: #f2f4f3; border-radius: 14px; padding: 1.25rem 1.5rem;
+                                margin-bottom: 2rem; text-align: left; display: flex; flex-direction: column; gap: 0.75rem
+                            "
+                        >
+                            <div v-for="item in [
+                                { icon: 'language',      text: 'Site co-brandé avec vos couleurs' },
+                                { icon: 'quiz',          text: 'Quiz d\'éligibilité personnalisé' },
+                                { icon: 'emoji_events',  text: 'Trophée de la générosité activé' },
+                                { icon: 'support_agent', text: 'Équipe CTS notifiée sous 48h' },
+                            ]" :key="item.text"
+                                style="display: flex; align-items: center; gap: 0.75rem"
+                            >
+                                <span class="material-symbols-outlined" style="font-size: 18px; color: #65c6c1">{{ item.icon }}</span>
+                                <span style="font-size: 14px; color: #2c4140; font-weight: 500">{{ item.text }}</span>
+                            </div>
+                        </div>
+
+                        <button
+                            @click="router.push(`/entreprise/${newSlug}`)"
+                            class="w-full text-white font-semibold rounded-full py-3 transition hover:opacity-80"
+                            style="background: #e60f48; font-size: 16px; border: none; cursor: pointer; margin-bottom: 1rem"
+                        >
+                            Accéder à mon espace
+                            <span class="material-symbols-outlined" style="font-size: 18px; vertical-align: middle; margin-left: 4px">arrow_forward</span>
+                        </button>
+
+                        <p style="font-size: 13px; color: #c0cac9">
+                            Vous pouvez fermer cette page et y revenir à tout moment depuis<br />
+                            <span style="color: #497371; font-weight: 600">hug.ch/entreprise/{{ newSlug }}</span>
+                        </p>
+                    </div>
                 </template>
 
             </div>

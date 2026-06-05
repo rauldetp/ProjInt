@@ -53,43 +53,47 @@
             </div>
 
             <!-- Collectes en attente de validation -->
-            <template v-if="collectesEnAttente.length > 0">
-                <div class="section-header">
-                    <h2 class="section-title">
-                        Collectes en attente de validation
-                        <span class="badge-count">{{ collectesEnAttente.length }}</span>
-                    </h2>
-                </div>
-                <div class="cards-grid" style="margin-bottom: 2.5rem">
-                    <div
-                        v-for="collecte in collectesEnAttente"
-                        :key="'att-' + collecte.id"
-                        class="collecte-card collecte-card--pending"
-                    >
-                        <div class="card-top">
-                            <div>
-                                <p class="card-company">{{ collecte.entreprise?.nom }}</p>
-                                <p class="card-subtitle">{{ collecte.titre || '—' }}</p>
-                                <p class="card-date">{{ formatDate(collecte.date_debut) }}</p>
-                            </div>
-                            <span class="badge badge-aconfirmer">À confirmer</span>
-                        </div>
-                        <p class="card-lieu">{{ collecte.lieu ?? "Lieu à définir" }}</p>
-                        <div class="card-actions">
-                            <button
-                                class="btn-valider"
-                                :disabled="validating === collecte.id"
-                                @click="validerCollecte(collecte)"
-                            >
-                                {{ validating === collecte.id ? "…" : "✓ Valider" }}
-                            </button>
-                            <RouterLink :to="`/admin/collectes/${collecte.id}/edit`" class="btn-edit">
-                                Modifier
-                            </RouterLink>
-                        </div>
+            <div class="section-header">
+                <h2 class="section-title">
+                    À valider
+                    <span v-if="collectesEnAttente.length > 0" class="badge-count">{{ collectesEnAttente.length }}</span>
+                </h2>
+            </div>
+
+            <div v-if="collectesEnAttente.length === 0" class="attente-empty">
+                <span class="material-symbols-outlined" style="font-size: 32px; color: #c0cac9">task_alt</span>
+                <p>Aucune collecte en attente de validation.</p>
+            </div>
+
+            <div v-else class="attente-list">
+                <div
+                    v-for="collecte in collectesEnAttente"
+                    :key="'att-' + collecte.id"
+                    class="attente-row"
+                >
+                    <div class="attente-logo">
+                        <img v-if="collecte.entreprise?.logo" :src="collecte.entreprise.logo" :alt="collecte.entreprise?.nom" />
+                        <span v-else class="attente-logo-placeholder">{{ collecte.entreprise?.nom?.charAt(0) }}</span>
+                    </div>
+                    <div class="attente-info">
+                        <p class="attente-company">{{ collecte.entreprise?.nom }}</p>
+                        <p class="attente-meta">{{ collecte.titre || 'Collecte sans titre' }} · {{ formatDate(collecte.date_debut) }}{{ collecte.lieu ? ' · ' + collecte.lieu : '' }}</p>
+                    </div>
+                    <div class="attente-actions">
+                        <RouterLink :to="`/admin/collectes/${collecte.id}/edit`" class="btn-edit">
+                            Modifier
+                        </RouterLink>
+                        <button
+                            class="btn-valider"
+                            :disabled="validating === collecte.id"
+                            @click="validerCollecte(collecte)"
+                        >
+                            <span class="material-symbols-outlined" style="font-size: 16px">check</span>
+                            {{ validating === collecte.id ? "…" : "Valider" }}
+                        </button>
                     </div>
                 </div>
-            </template>
+            </div>
 
             <!-- Dernières campagnes -->
             <div class="section-header">
@@ -111,7 +115,7 @@
                         <button class="card-menu">···</button>
                     </div>
                     <span :class="['badge', badgeClass(collecte)]">{{ badgeLabel(collecte) }}</span>
-                    <p class="card-inscrits">👥 {{ collecte.nb_inscrits_estime ?? 0 }} inscrit(s)</p>
+                    <p class="card-inscrits"><span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle">group</span> {{ collecte.nb_inscrits_estime ?? 0 }} inscrit(s)</p>
                     <p class="card-lieu">{{ collecte.lieu ?? "—" }}</p>
                 </div>
             </div>
@@ -438,10 +442,112 @@ onMounted(fetchData);
     flex-direction: column;
     gap: 0.5rem;
 }
-.collecte-card--pending {
-    border: 1.5px solid #fca5a5;
-    background: #fff9f9;
+/* ── Attente list ─────────────────────────────────────────── */
+.attente-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 2.5rem 1rem;
+    background: white;
+    border-radius: 0.75rem;
+    margin-bottom: 2.5rem;
+    color: #8fa8a6;
+    font-size: 0.9rem;
 }
+.attente-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    background: white;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(44,65,64,0.06);
+    margin-bottom: 2.5rem;
+}
+.attente-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid #f2f4f3;
+    transition: background 0.12s;
+}
+.attente-row:last-child { border-bottom: none; }
+.attente-row:hover { background: #fafcfc; }
+.attente-logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: #f2f4f3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.attente-logo img { width: 100%; height: 100%; object-fit: contain; }
+.attente-logo-placeholder {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #497371;
+}
+.attente-info {
+    flex: 1;
+    min-width: 0;
+}
+.attente-company {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #2c4140;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.attente-meta {
+    font-size: 0.8rem;
+    color: #8fa8a6;
+    margin: 0.15rem 0 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.attente-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+}
+.btn-valider {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: #e60f48;
+    color: white;
+    border: none;
+    border-radius: 9999px;
+    padding: 0.45rem 1rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.15s;
+    font-family: inherit;
+}
+.btn-valider:hover { opacity: 0.85; }
+.btn-valider:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-edit {
+    border: 1px solid #e2e8f0;
+    border-radius: 9999px;
+    padding: 0.45rem 1rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #497371;
+    text-decoration: none;
+    transition: border-color 0.15s, color 0.15s;
+    white-space: nowrap;
+}
+.btn-edit:hover { border-color: #2c4140; color: #2c4140; }
 .card-top {
     display: flex;
     justify-content: space-between;
@@ -480,38 +586,6 @@ onMounted(fetchData);
     line-height: 1;
     letter-spacing: 2px;
 }
-.card-actions {
-    display: flex;
-    gap: 0.6rem;
-    margin-top: 0.4rem;
-}
-.btn-valider {
-    flex: 1;
-    background: #e60f48;
-    color: white;
-    border: none;
-    border-radius: 9999px;
-    padding: 0.4rem 0.9rem;
-    font-size: 0.8rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: opacity 0.15s;
-}
-.btn-valider:hover { opacity: 0.85; }
-.btn-valider:disabled { opacity: 0.5; cursor: not-allowed; }
-.btn-edit {
-    flex: 1;
-    border: 1px solid #e2e8f0;
-    border-radius: 9999px;
-    padding: 0.4rem 0.9rem;
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: #497371;
-    text-decoration: none;
-    text-align: center;
-    transition: border-color 0.15s;
-}
-.btn-edit:hover { border-color: #2c4140; color: #2c4140; }
 
 /* Inscriptions cards */
 .insc-card {
