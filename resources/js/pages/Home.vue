@@ -192,7 +192,7 @@ onMounted(() => {
                     La démarche en trois étapes
                 </h2>
                 <div class="grid grid-cols-3 gap-8">
-                    <div class="bg-white rounded-xl p-8 shadow-md">
+                    <div class="bg-white rounded-xl p-8 shadow-light">
                         <div class="flex items-center gap-4 mb-6">
                             <div
                                 class="w-11 h-11 rounded-full flex items-center justify-center font-bold flex-shrink-0"
@@ -203,7 +203,7 @@ onMounted(() => {
                         <h3 class="font-bold mb-3" style="font-size: 24px; color: var(--default-titles)">Prise de contact</h3>
                         <p style="color: var(--default-text); line-height: 1.6">Notre équipe vous accompagne pour planifier votre projet selon vos besoins.</p>
                     </div>
-                    <div class="bg-white rounded-xl p-8 shadow-md">
+                    <div class="bg-white rounded-xl p-8 shadow-light">
                         <div class="flex items-center gap-4 mb-6">
                             <div
                                 class="w-11 h-11 rounded-full flex items-center justify-center font-bold flex-shrink-0"
@@ -214,7 +214,7 @@ onMounted(() => {
                         <h3 class="font-bold mb-3" style="font-size: 24px; color: var(--default-titles)">Organisation de la collecte</h3>
                         <p style="color: var(--default-text); line-height: 1.6">Nous planifions ensemble la collecte dans vos locaux et toute sécurité.</p>
                     </div>
-                    <div class="bg-white rounded-xl p-8 shadow-md">
+                    <div class="bg-white rounded-xl p-8 shadow-light">
                         <div class="flex items-center gap-4 mb-6">
                             <div
                                 class="w-11 h-11 rounded-full flex items-center justify-center font-bold flex-shrink-0"
@@ -444,7 +444,7 @@ onMounted(() => {
                     <div
                         v-for="(item, i) in faqItems"
                         :key="i"
-                        class="bg-white rounded-xl shadow-sm"
+                        class="bg-white rounded-xl shadow-light"
                     >
                         <button class="faq-btn" @click="toggleFaq(i)">
                             {{ item.q }}

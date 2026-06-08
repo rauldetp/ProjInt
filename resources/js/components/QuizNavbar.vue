@@ -12,7 +12,9 @@ defineProps({
                 <button class="quiz-nav-back" @click="onBack" aria-label="Retour">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
                 </button>
-                <div class="quiz-nav-avatar"></div>
+                <div class="quiz-nav-avatar">
+                    <img :src="'/images/courage/Mascotte_default.png'" alt="Courage" class="quiz-nav-avatar-img" />
+                </div>
                 <span class="quiz-nav-title">Test don du sang</span>
             </div>
 
@@ -74,6 +76,17 @@ defineProps({
     border-radius: 50%;
     background: var(--light-grey);
     flex-shrink: 0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.quiz-nav-avatar-img {
+    width: 100%;
+    height: 126%;
+    object-fit: cover;
+    object-position: top center;
+    transform: translateY(8px);
 }
 .quiz-nav-title {
     font-weight: 700;

@@ -279,7 +279,7 @@ function retakeQuiz() {
 
             <div class="mascotte-col" :style="{ background: brandColor + '08' }">
                 <div class="mascotte-circle">
-                    <img :src="'/images/courage_intro.webp'" alt="" class="mascotte-img" />
+                    <img :src="'/images/courage/Mascotte_default.png'" alt="Courage" class="mascotte-img" />
                 </div>
             </div>
 
@@ -338,7 +338,9 @@ function retakeQuiz() {
                     <div
                         class="step"
                         :class="{ 'step-active': i === currentQ, 'step-done': i < currentQ }"
-                        :style="(i === currentQ || i < currentQ) ? { background: brandColor, borderColor: brandColor, color: textOnBrand } : {}"
+                        :style="i < currentQ
+                            ? { background: brandColor, borderColor: brandColor, color: textOnBrand }
+                            : (i === currentQ ? { borderColor: brandColor, color: brandColor } : {})"
                     >{{ i + 1 }}</div>
                     <div
                         v-if="i < questions.length - 1"
@@ -367,19 +369,22 @@ function retakeQuiz() {
                         @click="selectAnswer(opt)"
                     >
                         <span class="opt-icon">
-                            <svg v-if="selectedAnswer === opt && isGoodAnswer(opt)" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                            <svg v-else-if="selectedAnswer === opt && !isGoodAnswer(opt)" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                            <svg v-if="opt === 'Oui'" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                            <svg v-else-if="opt === 'Non'" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                         </span>
                         {{ opt }}
                     </button>
                 </div>
 
-                <Transition name="slide-up">
-                    <button v-if="selectedAnswer" class="btn-continuer" @click="confirm">
-                        Prochaine question
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                    </button>
-                </Transition>
+                <button
+                    class="btn-continuer"
+                    :disabled="!selectedAnswer"
+                    :style="selectedAnswer ? { background: brandColor, color: textOnBrand } : null"
+                    @click="confirm"
+                >
+                    Prochaine question
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </button>
 
             </div>
         </div>
@@ -389,10 +394,8 @@ function retakeQuiz() {
         ═══════════════════════════════════════════════════════ -->
         <div v-else-if="step === 'info'" class="split-screen">
 
-            <div class="mascotte-col" :style="{ background: brandColor + '08' }">
-                <div class="mascotte-circle">
-                    <img :src="'/images/courage_info.webp'" alt="" class="mascotte-img" />
-                </div>
+            <div class="mascotte-col mascotte-col-full">
+                <img :src="'/images/courage/Mascotte_insight.png'" alt="Courage" class="mascotte-img-full" />
             </div>
 
             <div class="content-col">
@@ -425,9 +428,6 @@ function retakeQuiz() {
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                     </button>
 
-                    <button class="btn-back" style="display:none" @click="goBack">
-                        Retour
-                    </button>
                 </div>
             </div>
         </div>
@@ -477,11 +477,7 @@ function retakeQuiz() {
 
             <div class="mascotte-col" :style="{ background: brandColor + '08' }">
                 <div class="mascotte-circle">
-                    <img
-                        :src="resultat === 'eligible' ? '/images/courage_eligible.webp' : '/images/courage_non_eligible.webp'"
-                        alt=""
-                        class="mascotte-img"
-                    />
+                    <img :src="'/images/courage/Mascotte_default.png'" alt="Courage" class="mascotte-img" />
                 </div>
             </div>
 
@@ -579,8 +575,11 @@ function retakeQuiz() {
 .split-screen {
     flex: 1;
     display: grid;
-    grid-template-columns: 2fr 3fr;
+    grid-template-columns: 1fr 1fr;
     min-height: calc(100vh - 76px);
+    width: 100%;
+    max-width: 80rem;
+    margin: 0 auto;
 }
 .mascotte-col {
     display: flex;
@@ -589,8 +588,8 @@ function retakeQuiz() {
     padding: 4rem 2rem;
 }
 .mascotte-circle {
-    width: 320px;
-    height: 320px;
+    width: 360px;
+    height: 360px;
     border-radius: 50%;
     background: rgba(255,255,255,0.4);
     display: flex;
@@ -600,8 +599,19 @@ function retakeQuiz() {
 }
 .mascotte-img {
     width: 100%;
+    height: 126%;
+    object-fit: cover;
+    object-position: top center;
+    transform: translateY(50px);
+}
+.mascotte-col-full {
+    padding: 0;
+}
+.mascotte-img-full {
+    width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
+    object-position: center;
 }
 .content-col {
     display: flex;
@@ -719,16 +729,16 @@ function retakeQuiz() {
     padding: 2.5rem 2rem 0;
 }
 .step {
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    border: 2px solid #e0e8e8;
+    border: 1.5px solid #AFBFBF;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 0.82rem;
     font-weight: 700;
-    color: #8fa8a6;
+    color: #AFBFBF;
     background: white;
     flex-shrink: 0;
     transition: background 0.3s, border-color 0.3s, color 0.3s;
@@ -736,9 +746,10 @@ function retakeQuiz() {
 .step-line {
     flex: 1;
     height: 2px;
-    background: #e0e8e8;
-    min-width: 12px;
-    max-width: 48px;
+    background: #AFBFBF;
+    min-width: 8px;
+    max-width: 32px;
+    margin: 0 5px;
     transition: background 0.3s;
 }
 .quiz-inner {
@@ -801,11 +812,11 @@ function retakeQuiz() {
     font-family: inherit;
     text-align: left;
 }
-.quiz-option.opt-oui { border-color: #22c55e; color: #16a34a; }
-.quiz-option.opt-non { border-color: #ef4444; color: #dc2626; }
-.quiz-option.opt-oui.is-selected { background: #f0fdf4; }
-.quiz-option.opt-non.is-selected { background: #fff1f2; }
-.quiz-option.opt-other.is-selected { border-color: var(--default-titles); background: #f0f9f8; }
+.quiz-option.opt-oui { border-color: var(--color-default-green-39); color: var(--color-default-green-39); }
+.quiz-option.opt-non { border-color: var(--color-default-red); color: var(--color-default-red); }
+.quiz-option.opt-oui.is-selected { background: var(--color-default-green-39); border-color: var(--color-default-green-39); color: white; }
+.quiz-option.opt-non.is-selected { background: var(--color-default-red); border-color: var(--color-default-red); color: white; }
+.quiz-option.opt-other.is-selected { border-color: var(--color-default-blue-39); background: var(--color-default-blue-39); color: white; }
 .quiz-option:hover:not(.is-selected) { opacity: 0.75; }
 .opt-icon {
     width: 18px;
@@ -819,20 +830,24 @@ function retakeQuiz() {
 .btn-continuer {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 0.5rem;
-    font-size: 0.95rem;
-    font-weight: 600;
-    background: rgba(101,198,193,0.18);
-    color: var(--default-titles);
+    width: 100%;
+    max-width: 440px;
+    font-size: 1rem;
+    font-weight: 700;
+    background: var(--light-grey);
+    color: var(--default-text);
     border: none;
     border-radius: 9999px;
-    padding: 0.85rem 2rem;
+    padding: 0.75rem 1.5rem;
     cursor: pointer;
-    transition: background 0.15s;
+    transition: opacity 0.15s;
     font-family: inherit;
     margin-bottom: 1.5rem;
 }
-.btn-continuer:hover { background: rgba(101,198,193,0.3); }
+.btn-continuer:hover:not(:disabled) { opacity: 0.85; }
+.btn-continuer:disabled { cursor: not-allowed; }
 
 .btn-back {
     display: inline-flex;

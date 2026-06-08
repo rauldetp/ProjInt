@@ -221,7 +221,7 @@ onMounted(() => {
                         <div
                             v-for="(item, i) in cat.items"
                             :key="cat.id + i"
-                            class="bg-white rounded-xl shadow-sm"
+                            class="bg-white rounded-xl shadow-light"
                         >
                             <button class="faq-btn" @click="toggle(cat.id + i)">
                                 {{ item.q }}

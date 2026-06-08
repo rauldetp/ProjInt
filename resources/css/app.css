@@ -1,17 +1,5 @@
 @import "tailwindcss";
 
-html {
-    font-size: 16px;
-}
-
-/* ── Section heights ──────────────────────────────────── */
-.section-hero {
-    height: 512px;
-}
-.media-block {
-    height: 340px;
-}
-
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 @source '../**/*.blade.php';
@@ -72,13 +60,78 @@ html {
     --color-default-yellow-98: hsl(34 84% 98%);
 }
 
+html {
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.bg-light-grey{
+    background-color: var(--light-grey);
+}
+
+.bg-gradient{
+    background: linear-gradient(var(--color-default-blue-59), var(--color-default-green-69));
+}
+
+/* ── Marquee ──────────────────────────────────────────── */
+.marquee-track {
+    overflow: hidden;
+    width: 100%;
+    background-color: var(--light-grey);
+}
+.marquee-inner {
+    display: flex;
+    padding: 16px 0;
+    width: max-content;
+    animation: marquee 25s linear infinite;
+}
+.marquee-group {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+    padding-right: 4rem; /* gap reproduit à la jointure des 2 groupes */
+    flex-shrink: 0;
+}
+.marquee-track:hover .marquee-inner {
+    animation-play-state: paused;
+}
+@keyframes marquee {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+.text-display {
+    font-size: clamp(2rem, 3.75vw, 3rem);
+    line-height: 1.3;
+}
+.text-h2 {
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    line-height: 1.3;
+}
+.text-h3 {
+    font-size: clamp(1.125rem, 1.875vw, 1.5rem);
+    line-height: 1.3;
+}
+
+.section-hero {
+    height: 512px;
+}
+.media-block {
+    height: 340px;
+}
+
 .shadow-light {
-    box-shadow: 0 0 18px rgba(0,0,0,.07);
+    box-shadow: 0 0 18px rgba(0, 0, 0, 0.07);
 }
 
 .captions {
     font-size: 12px;
     font-weight: 700;
+    line-height: 1.4;
 }
 
 .banner {
@@ -127,7 +180,9 @@ html {
     margin-left: 1rem;
     background: white;
     border: 1px solid var(--color-default-red);
-    transition: background 0.15s, border-color 0.15s;
+    transition:
+        background 0.15s,
+        border-color 0.15s;
 }
 .faq-btn:hover .faq-btn-circle {
     background: var(--color-default-red-88);
@@ -195,8 +250,12 @@ html {
     background: var(--color-default-blue-59);
     color: var(--color-default-blue-19);
 }
-.btn-filled-blue:hover  { background: var(--color-default-blue); }
-.btn-filled-blue:active { background: var(--color-default-blue-39); }
+.btn-filled-blue:hover {
+    background: var(--color-default-blue);
+}
+.btn-filled-blue:active {
+    background: var(--color-default-blue-39);
+}
 .btn-filled-blue:focus-visible {
     background: var(--color-default-blue-59);
     outline: 2px solid white;
