@@ -255,8 +255,7 @@ function retakeQuiz() {
 
             <div class="mascotte-col">
                 <div class="mascotte-circle">
-                    <!-- Remplacer par l'image Courage quand disponible -->
-                    <img :src="'/images/courage_intro.webp'" alt="" class="mascotte-img" />
+                    <img :src="'/images/courage/Mascotte_default.png'" alt="Courage" class="mascotte-img" />
                 </div>
             </div>
 
@@ -341,7 +340,7 @@ function retakeQuiz() {
                     </button>
                 </div>
 
-                <button class="btn btn-filled-blue mb-6" :disabled="!selectedAnswer" @click="confirm">
+                <button class="btn btn-filled-blue mb-6" style="width: 100%; max-width: 440px" :disabled="!selectedAnswer" @click="confirm">
                     Prochaine question
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                 </button>
@@ -354,10 +353,8 @@ function retakeQuiz() {
         ═══════════════════════════════════════════════════════ -->
         <div v-else-if="step === 'info'" class="split-screen">
 
-            <div class="mascotte-col">
-                <div class="mascotte-circle">
-                    <img :src="'/images/courage_info.webp'" alt="" class="mascotte-img" />
-                </div>
+            <div class="mascotte-col mascotte-col-full">
+                <img :src="'/images/courage/Mascotte_insight.png'" alt="Courage" class="mascotte-img-full" />
             </div>
 
             <div class="content-col">
@@ -386,10 +383,6 @@ function retakeQuiz() {
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                     </button>
 
-                    <button class="btn-back" style="margin-top: 1.25rem" @click="goBack">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-                        Retour
-                    </button>
                 </div>
             </div>
         </div>
@@ -439,10 +432,7 @@ function retakeQuiz() {
 
             <div class="mascotte-col">
                 <div class="mascotte-circle">
-                    <img
-                        :src="resultat === 'eligible' ? '/images/courage_eligible.webp' : '/images/courage_non_eligible.webp'"
-                        alt="" class="mascotte-img"
-                    />
+                    <img :src="'/images/courage/Mascotte_default.png'" alt="Courage" class="mascotte-img" />
                 </div>
             </div>
 
@@ -510,8 +500,11 @@ function retakeQuiz() {
 .split-screen {
     flex: 1;
     display: grid;
-    grid-template-columns: 2fr 3fr;
+    grid-template-columns: 1fr 1fr;
     min-height: calc(100vh - 76px);
+    width: 100%;
+    max-width: 80rem;
+    margin: 0 auto;
 }
 .mascotte-col {
     display: flex;
@@ -521,8 +514,8 @@ function retakeQuiz() {
     background: white;
 }
 .mascotte-circle {
-    width: 320px;
-    height: 320px;
+    width: 360px;
+    height: 360px;
     border-radius: 50%;
     background: var(--light-grey);
     display: flex;
@@ -532,8 +525,19 @@ function retakeQuiz() {
 }
 .mascotte-img {
     width: 100%;
+    height: 126%;
+    object-fit: cover;
+    object-position: top center;
+    transform: translateY(50px);
+}
+.mascotte-col-full {
+    padding: 0;
+}
+.mascotte-img-full {
+    width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
+    object-position: center;
 }
 .content-col {
     display: flex;
@@ -743,21 +747,6 @@ function retakeQuiz() {
 }
 
 
-.btn-back {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    background: none;
-    border: none;
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: #8fa8a6;
-    cursor: pointer;
-    padding: 0;
-    font-family: inherit;
-    transition: opacity 0.15s;
-}
-.btn-back:hover { opacity: 0.65; }
 
 .slide-up-enter-active { transition: opacity 0.25s, transform 0.25s; }
 .slide-up-enter-from   { opacity: 0; transform: translateY(10px); }
