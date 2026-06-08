@@ -1,0 +1,111 @@
+<script setup>
+defineProps({
+    onBack: { type: Function, required: true },
+    cobrand: { type: Object, default: null },
+});
+</script>
+
+<template>
+    <header class="quiz-navbar">
+        <div class="quiz-navbar-inner">
+            <div class="quiz-nav-left">
+                <button class="quiz-nav-back" @click="onBack" aria-label="Retour">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+                </button>
+                <div class="quiz-nav-avatar"></div>
+                <span class="quiz-nav-title">Test don du sang</span>
+            </div>
+
+            <!-- Logos : HUG + Don du sang ou HUG × Entreprise -->
+            <div class="quiz-nav-logos">
+                <img :src="'/images/logo_hug_h_quadri.png'" alt="Logo HUG" class="quiz-nav-logo" />
+                <template v-if="cobrand">
+                    <span class="quiz-nav-sep">×</span>
+                    <img v-if="cobrand.logo" :src="cobrand.logo" :alt="cobrand.nom" class="quiz-nav-logo" />
+                    <span v-else class="quiz-nav-cobrand-name" :style="{ color: cobrand.couleurPrimaire }">{{ cobrand.nom }}</span>
+                </template>
+                <template v-else>
+                    <div class="brand-sep"></div>
+                    <span class="brand-sub">Don du sang</span>
+                </template>
+            </div>
+        </div>
+    </header>
+</template>
+
+<style scoped>
+.quiz-navbar {
+    background: white;
+    border-bottom: 1px solid var(--light-grey);
+    height: 76px;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    flex-shrink: 0;
+}
+.quiz-navbar-inner {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 0 2rem;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.quiz-nav-left {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+.quiz-nav-back {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    color: var(--default-titles);
+    padding: 0.25rem;
+    transition: opacity 0.15s;
+}
+.quiz-nav-back:hover { opacity: 0.6; }
+.quiz-nav-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--light-grey);
+    flex-shrink: 0;
+}
+.quiz-nav-title {
+    font-weight: 700;
+    color: var(--default-titles);
+}
+.quiz-nav-logos {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-shrink: 0;
+}
+.quiz-nav-logo {
+    max-height: 2.75rem;
+    width: auto;
+}
+.brand-sep {
+    width: 1px;
+    height: 20px;
+    background: rgba(44, 65, 64, 0.3);
+    margin: 0 0.25rem;
+}
+.brand-sub {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-default-red);
+}
+.quiz-nav-sep {
+    color: rgba(44, 65, 64, 0.3);
+    font-size: 1.1rem;
+}
+.quiz-nav-cobrand-name {
+    font-weight: 700;
+    font-size: 1rem;
+}
+</style>

@@ -1,12 +1,13 @@
-<script setup>
+﻿<script setup>
 import { ref, computed, onMounted } from "vue";
 import { useAuthStore } from "../stores/auth";
 import HugNavbar from "../components/HugNavbar.vue";
+import QuizNavbar from "../components/QuizNavbar.vue";
 
 const auth = useAuthStore();
 
-const BRAND = "#e60f48";
-const TEAL  = "#65c6c1";
+const BRAND = "var(--color-default-red)";
+const TEAL  = "var(--color-default-blue-59)";
 const COOKIE_RESULT  = "quizResult_hug";
 const COOKIE_ANSWERS = "quizAnswers_hug";
 const COOKIE_DAYS    = 7;
@@ -134,10 +135,10 @@ function isGoodForDonation(i) {
 }
 
 function getAnswerBadgeStyle(answer) {
-    if (!answer) return { background: '#f2f4f3', color: '#8fa8a6' };
+    if (!answer) return { background: 'var(--light-grey)', color: '#8fa8a6' };
     if (answer === 'Oui') return { background: '#d1fae5', color: '#065f46' };
     if (answer === 'Non') return { background: '#fee2e2', color: '#991b1b' };
-    return { background: '#f0f9f8', color: '#2c4140' };
+    return { background: '#f0f9f8', color: 'var(--default-titles)' };
 }
 
 // ── Actions ──────────────────────────────────────────────────────
@@ -243,7 +244,9 @@ function retakeQuiz() {
 <template>
     <div class="page">
 
-        <HugNavbar />
+        <!-- Nav standard sur l'intro, nav quiz sur les autres étapes -->
+        <HugNavbar v-if="step === 'intro'" />
+        <QuizNavbar v-else :on-back="goBack" />
 
         <!-- ══════════════════════════════════════════════════════
              INTRO — split screen
@@ -279,7 +282,7 @@ function retakeQuiz() {
                         </div>
                     </div>
 
-                    <button class="btn-teal" @click="startQuiz">
+                    <button class="btn btn-filled-blue" @click="startQuiz">
                         Commencer le test
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                     </button>
@@ -331,24 +334,18 @@ function retakeQuiz() {
                         @click="selectAnswer(opt)"
                     >
                         <span class="opt-icon">
-                            <svg v-if="selectedAnswer === opt && isGoodAnswer(opt)" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                            <svg v-else-if="selectedAnswer === opt && !isGoodAnswer(opt)" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                            <svg v-if="opt === 'Oui'" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                            <svg v-else-if="opt === 'Non'" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                         </span>
                         {{ opt }}
                     </button>
                 </div>
 
-                <Transition name="slide-up">
-                    <button v-if="selectedAnswer" class="btn-continuer" @click="confirm">
-                        Prochaine question
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                    </button>
-                </Transition>
-
-                <button class="btn-back" @click="goBack">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-                    Retour
+                <button class="btn btn-filled-blue mb-6" :disabled="!selectedAnswer" @click="confirm">
+                    Prochaine question
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                 </button>
+
             </div>
         </div>
 
@@ -384,7 +381,7 @@ function retakeQuiz() {
                         <p class="tip-text">{{ currentInfo.tip }}</p>
                     </div>
 
-                    <button class="btn-teal" style="margin-top: 0.5rem" @click="continueFromInfo">
+                    <button class="btn btn-filled-blue" style="margin-top: 0.5rem" @click="continueFromInfo">
                         J'ai bien compris
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                     </button>
@@ -460,7 +457,7 @@ function retakeQuiz() {
                             <span class="material-symbols-outlined" style="font-size: 18px; color: #000">info</span>
                             <p>La validation finale sera effectuée sur place par l'équipe médicale.</p>
                         </div>
-                        <RouterLink :to="participerLink" class="btn-teal btn-link">
+                        <RouterLink :to="participerLink" class="btn btn-filled-blue">
                             Prendre rendez-vous
                             <span class="material-symbols-outlined" style="font-size: 18px; color: #000">calendar_month</span>
                         </RouterLink>
@@ -470,7 +467,7 @@ function retakeQuiz() {
                     <template v-else-if="resultat === 'non-eligible'">
                         <h2 class="result-title">Certains points ne sont pas éligibles.</h2>
                         <p class="result-sub">Malheureusement, sur la base de vos réponses, certains points ne remplissent pas les conditions de don adéquates.</p>
-                        <button class="btn-teal" @click="retakeQuiz">
+                        <button class="btn btn-filled-blue" @click="retakeQuiz">
                             Découvrir pourquoi
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                         </button>
@@ -484,7 +481,7 @@ function retakeQuiz() {
                             <span class="material-symbols-outlined" style="font-size: 18px; color: #000">info</span>
                             <p>Vous pouvez tout de même vous inscrire et venir rencontrer notre équipe médicale.</p>
                         </div>
-                        <RouterLink :to="participerLink" class="btn-teal btn-link">
+                        <RouterLink :to="participerLink" class="btn btn-filled-blue">
                             Prendre rendez-vous
                             <span class="material-symbols-outlined" style="font-size: 18px; color: #000">calendar_month</span>
                         </RouterLink>
@@ -502,7 +499,7 @@ function retakeQuiz() {
 
 <style scoped>
 .page {
-    font-family: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+    font-family: inherit;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -527,7 +524,7 @@ function retakeQuiz() {
     width: 320px;
     height: 320px;
     border-radius: 50%;
-    background: #f2f4f3;
+    background: var(--light-grey);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -554,13 +551,13 @@ function retakeQuiz() {
 .intro-title {
     font-size: 2.5rem;
     font-weight: 800;
-    color: #2c4140;
+    color: var(--default-titles);
     margin: 0 0 1rem;
     line-height: 1.15;
 }
 .intro-sub {
     font-size: 1rem;
-    color: #497371;
+    color: var(--default-text);
     line-height: 1.7;
     margin: 0 0 2rem;
     max-width: 380px;
@@ -572,7 +569,7 @@ function retakeQuiz() {
     margin-bottom: 2rem;
 }
 .feature-card {
-    border: 1.5px solid #f2f4f3;
+    border: 1.5px solid var(--light-grey);
     border-radius: 14px;
     padding: 1.25rem 1rem;
     display: flex;
@@ -587,30 +584,13 @@ function retakeQuiz() {
 .feature-label {
     font-size: 0.82rem;
     font-weight: 600;
-    color: #497371;
+    color: var(--default-text);
     margin: 0;
     line-height: 1.4;
 }
 
 /* ── Shared buttons ──────────────────────────────────── */
-.btn-teal {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 1rem;
-    font-weight: 600;
-    background: #65c6c1;
-    color: #2c4140;
-    border: none;
-    border-radius: 9999px;
-    padding: 0.85rem 1.75rem;
-    cursor: pointer;
-    transition: opacity 0.15s;
-    font-family: inherit;
-    text-decoration: none;
-    white-space: nowrap;
-}
-.btn-teal:hover { opacity: 0.85; }
+
 .btn-link { text-decoration: none; display: inline-flex; }
 .btn-retake {
     background: none;
@@ -625,6 +605,7 @@ function retakeQuiz() {
     display: block;
 }
 .btn-retake:hover { opacity: 0.7; }
+
 
 /* ── QUIZ screen ─────────────────────────────────────── */
 .quiz-screen {
@@ -644,36 +625,41 @@ function retakeQuiz() {
     gap: 0;
 }
 .step {
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    border: 2px solid #e0e8e8;
+    border: 1.5px solid #AFBFBF;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 0.82rem;
     font-weight: 700;
-    color: #8fa8a6;
+    color: #AFBFBF;
     background: white;
     flex-shrink: 0;
     transition: background 0.3s, border-color 0.3s, color 0.3s;
 }
-.step-active,
+.step-active {
+    border-color: var(--color-default-red);
+    color: var(--color-default-red);
+    background: white;
+}
 .step-done {
-    background: #e60f48;
-    border-color: #e60f48;
+    background: var(--color-default-red);
+    border-color: var(--color-default-red);
     color: white;
 }
 .step-line {
     flex: 1;
     height: 2px;
-    background: #e0e8e8;
-    min-width: 12px;
-    max-width: 48px;
+    background: #AFBFBF;
+    min-width: 8px;
+    max-width: 32px;
+    margin: 0 5px;
     transition: background 0.3s;
 }
 .step-line-done {
-    background: #e60f48;
+    background: var(--color-default-red);
 }
 
 .quiz-inner {
@@ -692,7 +678,7 @@ function retakeQuiz() {
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    background: #f2f4f3;
+    background: var(--light-grey);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -711,7 +697,7 @@ function retakeQuiz() {
 .quiz-question {
     font-size: 1.9rem;
     font-weight: 800;
-    color: #2c4140;
+    color: var(--default-titles);
     margin: 0 0 2rem;
     line-height: 1.25;
     max-width: 520px;
@@ -737,15 +723,15 @@ function retakeQuiz() {
     transition: border-color 0.18s, color 0.18s, box-shadow 0.18s;
     font-size: 1rem;
     font-weight: 600;
-    color: #2c4140;
+    color: var(--default-titles);
     font-family: inherit;
     text-align: left;
 }
-.quiz-option.opt-oui { border-color: #22c55e; color: #16a34a; }
-.quiz-option.opt-non { border-color: #ef4444; color: #dc2626; }
-.quiz-option.opt-oui.is-selected { background: #f0fdf4; }
-.quiz-option.opt-non.is-selected { background: #fff1f2; }
-.quiz-option.opt-other.is-selected { border-color: #2c4140; background: #f0f9f8; }
+.quiz-option.opt-oui { border-color: var(--color-default-green-39); color: var(--color-default-green-39); }
+.quiz-option.opt-non { border-color: var(--color-default-red); color: var(--color-default-red); }
+.quiz-option.opt-oui.is-selected { background: var(--color-default-green-39); border-color: var(--color-default-green-39); color: white; }
+.quiz-option.opt-non.is-selected { background: var(--color-default-red); border-color: var(--color-default-red); color: white; }
+.quiz-option.opt-other.is-selected { border-color: var(--color-default-blue-39); background: var(--color-default-blue-39); color: white; }
 .quiz-option:hover:not(.is-selected) { opacity: 0.75; }
 .opt-icon {
     width: 18px;
@@ -756,23 +742,6 @@ function retakeQuiz() {
     justify-content: center;
 }
 
-.btn-continuer {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.95rem;
-    font-weight: 600;
-    background: rgba(101,198,193,0.18);
-    color: #2c4140;
-    border: none;
-    border-radius: 9999px;
-    padding: 0.85rem 2rem;
-    cursor: pointer;
-    transition: background 0.15s;
-    font-family: inherit;
-    margin-bottom: 1.5rem;
-}
-.btn-continuer:hover { background: rgba(101,198,193,0.3); }
 
 .btn-back {
     display: inline-flex;
@@ -804,13 +773,13 @@ function retakeQuiz() {
 .info-title {
     font-size: 2rem;
     font-weight: 800;
-    color: #2c4140;
+    color: var(--default-titles);
     margin: 0 0 0.25rem;
     line-height: 1.2;
 }
 .info-msg {
     font-size: 1rem;
-    color: #497371;
+    color: var(--default-text);
     line-height: 1.7;
     margin: 0;
     font-weight: 500;
@@ -842,12 +811,11 @@ function retakeQuiz() {
     flex-shrink: 0;
 }
 .tip-icon {
-    font-size: 16px;
     color: #000;
 }
 .tip-text {
     font-size: 0.9rem;
-    color: #2c4140;
+    color: var(--default-titles);
     line-height: 1.6;
     margin: 0;
     font-style: italic;
@@ -866,7 +834,7 @@ function retakeQuiz() {
 .recap-title {
     font-size: 1.75rem;
     font-weight: 800;
-    color: #2c4140;
+    color: var(--default-titles);
     margin: 0 0 1.75rem;
 }
 .answers-grid {
@@ -893,7 +861,7 @@ function retakeQuiz() {
     width: 28px;
     height: 28px;
     border-radius: 50%;
-    background: #f2f4f3;
+    background: var(--light-grey);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -904,7 +872,7 @@ function retakeQuiz() {
 .check-bad  { color: #dc2626; }
 .card-question {
     font-size: 0.88rem;
-    color: #2c4140;
+    color: var(--default-titles);
     font-weight: 500;
     margin: 0;
     flex: 1;
@@ -939,12 +907,12 @@ function retakeQuiz() {
     margin-top: 3rem;
     padding: 3.5rem 2rem;
     text-align: center;
-    background: linear-gradient(135deg, #65c6c1, #93cfa9);
+    background: linear-gradient(135deg, var(--color-default-blue-59), var(--color-default-green));
 }
 .ready-title {
     font-size: 2rem;
     font-weight: 800;
-    color: #2c4140;
+    color: var(--default-titles);
     margin: 0 0 1.75rem;
 }
 .btn-ready {
@@ -953,7 +921,7 @@ function retakeQuiz() {
     gap: 0.5rem;
     font-size: 1rem;
     font-weight: 700;
-    background: #e60f48;
+    background: var(--color-default-red);
     color: white;
     border: none;
     border-radius: 9999px;
@@ -975,13 +943,13 @@ function retakeQuiz() {
 .result-title {
     font-size: 2rem;
     font-weight: 800;
-    color: #2c4140;
+    color: var(--default-titles);
     margin: 0;
     line-height: 1.2;
 }
 .result-sub {
     font-size: 0.95rem;
-    color: #497371;
+    color: var(--default-text);
     line-height: 1.65;
     margin: 0;
 }
@@ -995,7 +963,7 @@ function retakeQuiz() {
 }
 .result-tip-card p {
     font-size: 0.9rem;
-    color: #2c4140;
+    color: var(--default-titles);
     line-height: 1.6;
     margin: 0;
     font-style: italic;

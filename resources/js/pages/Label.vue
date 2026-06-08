@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup>
 import { onMounted } from "vue";
 import HugNavbar from "../components/HugNavbar.vue";
 
@@ -14,7 +14,7 @@ onMounted(() => {
         <!-- Hero -->
         <section
             class="relative flex items-end pb-14 overflow-hidden"
-            style="height: 420px; background: #2c4140"
+            style="height: 420px; background: var(--default-titles)"
         >
             <img
                 :src="'/images/Hero_labelCTS.webp'"
@@ -47,19 +47,18 @@ onMounted(() => {
         <!-- Ce qu'il représente -->
         <section id="ce-quil-represente" class="bg-white py-20">
             <div
-                class="max-w-6xl mx-auto px-8 grid grid-cols-2 gap-16 items-center"
+                class="max-w-7xl mx-auto px-8 grid grid-cols-2 gap-16 items-center"
             >
                 <div>
                     <h2
                         class="font-bold mb-5"
-                        style="font-size: 32px; color: #2c4140"
+                        style="font-size: 32px; color: var(--default-titles)"
                     >
                         Ce qu'il représente
                     </h2>
                     <p
                         style="
-                            font-size: 16px;
-                            color: #497371;
+                            color: var(--default-text);
                             line-height: 1.75;
                         "
                     >
@@ -74,43 +73,26 @@ onMounted(() => {
                     </p>
                 </div>
                 <div
-                    class="flex flex-col items-center justify-center gap-4 rounded-2xl border p-12"
-                    style="border-color: #f2f4f3"
+                    class="flex flex-col items-center justify-center gap-4 rounded-2xl p-12"
+                    style="background-color: var(--light-grey)"
                 >
-                    <div
-                        class="rounded-full border-4 flex items-center justify-center"
-                        style="width: 80px; height: 80px; border-color: #e60f48"
-                    >
-                        <span style="color: #e60f48; font-size: 32px">♥</span>
-                    </div>
-                    <div class="text-center">
-                        <p
-                            class="font-black"
-                            style="
-                                font-size: 24px;
-                                color: #2c4140;
-                                letter-spacing: -0.5px;
-                            "
-                        >
-                            CTS
-                        </p>
-                        <p
-                            class="font-bold uppercase tracking-widest"
-                            style="font-size: 11px; color: #497371"
-                        >
-                            Collecte solidaire
-                        </p>
-                    </div>
+                    <img
+                        :src="'/images/logo_labelCTS_red.png'"
+                        alt="Label CTS"
+                    />
                 </div>
             </div>
         </section>
 
         <!-- Les bénéfices -->
-        <section class="bg-white py-16 border-t" style="border-color: #f2f4f3">
-            <div class="max-w-6xl mx-auto px-8">
+        <section
+            class="bg-white py-16 border-t"
+            style="border-color: var(--light-grey)"
+        >
+            <div class="max-w-7xl mx-auto px-8">
                 <h2
                     class="font-bold text-center mb-12"
-                    style="font-size: 32px; color: #2c4140"
+                    style="font-size: 32px; color: var(--default-titles)"
                 >
                     Les bénéfices du label
                 </h2>
@@ -121,21 +103,30 @@ onMounted(() => {
                             style="
                                 width: 64px;
                                 height: 64px;
-                                background: #f2f4f3;
+                                background: var(--light-grey);
                             "
                         >
-                            <span class="material-symbols-outlined" style="font-size: 28px; color: #497371">group</span>
+                            <span
+                                class="material-symbols-outlined"
+                                style="
+                                    font-size: 28px;
+                                    color: var(--default-text);
+                                "
+                                >group</span
+                            >
                         </div>
                         <h3
                             class="font-bold"
-                            style="font-size: 16px; color: #2c4140"
+                            style="
+                                color: var(--default-titles);
+                            "
                         >
                             Rejoignez une communauté d'entreprises
                         </h3>
                         <p
                             style="
                                 font-size: 14px;
-                                color: #497371;
+                                color: var(--default-text);
                                 line-height: 1.6;
                             "
                         >
@@ -149,21 +140,30 @@ onMounted(() => {
                             style="
                                 width: 64px;
                                 height: 64px;
-                                background: #f2f4f3;
+                                background: var(--light-grey);
                             "
                         >
-                            <span class="material-symbols-outlined" style="font-size: 28px; color: #497371">emoji_events</span>
+                            <span
+                                class="material-symbols-outlined"
+                                style="
+                                    font-size: 28px;
+                                    color: var(--default-text);
+                                "
+                                >emoji_events</span
+                            >
                         </div>
                         <h3
                             class="font-bold"
-                            style="font-size: 16px; color: #2c4140"
+                            style="
+                                color: var(--default-titles);
+                            "
                         >
                             Affichez votre engagement
                         </h3>
                         <p
                             style="
                                 font-size: 14px;
-                                color: #497371;
+                                color: var(--default-text);
                                 line-height: 1.6;
                             "
                         >
@@ -177,21 +177,30 @@ onMounted(() => {
                             style="
                                 width: 64px;
                                 height: 64px;
-                                background: #f2f4f3;
+                                background: var(--light-grey);
                             "
                         >
-                            <span class="material-symbols-outlined" style="font-size: 28px; color: #497371">favorite</span>
+                            <span
+                                class="material-symbols-outlined"
+                                style="
+                                    font-size: 28px;
+                                    color: var(--default-text);
+                                "
+                                >favorite</span
+                            >
                         </div>
                         <h3
                             class="font-bold"
-                            style="font-size: 16px; color: #2c4140"
+                            style="
+                                color: var(--default-titles);
+                            "
                         >
                             Un impact réel et mesurable
                         </h3>
                         <p
                             style="
                                 font-size: 14px;
-                                color: #497371;
+                                color: var(--default-text);
                                 line-height: 1.6;
                             "
                         >
@@ -206,14 +215,20 @@ onMounted(() => {
         <!-- Quote gradient -->
         <section
             class="py-20 text-center"
-            style="background: linear-gradient(135deg, #65c6c1, #93cfa9)"
+            style="
+                background: linear-gradient(
+                    135deg,
+                    var(--color-default-blue-59),
+                    var(--color-default-green)
+                );
+            "
         >
             <div class="max-w-3xl mx-auto px-8">
                 <blockquote
                     class="font-bold mb-4"
                     style="
                         font-size: 28px;
-                        color: #2c4140;
+                        color: var(--default-titles);
                         line-height: 1.45;
                         font-style: italic;
                     "
@@ -223,7 +238,11 @@ onMounted(() => {
                 </blockquote>
                 <p
                     class="font-semibold"
-                    style="font-size: 14px; color: #2c4140; opacity: 0.75"
+                    style="
+                        font-size: 14px;
+                        color: var(--default-titles);
+                        opacity: 0.75;
+                    "
                 >
                     Sophie M., Responsable RH, Nestlé SA
                 </p>
@@ -233,20 +252,19 @@ onMounted(() => {
         <!-- Comment ça marche -->
         <section class="bg-white py-20">
             <div
-                class="max-w-6xl mx-auto px-8 grid grid-cols-2 gap-16 items-center"
+                class="max-w-7xl mx-auto px-8 grid grid-cols-2 gap-16 items-center"
             >
                 <div>
                     <h2
                         class="font-bold mb-5"
-                        style="font-size: 32px; color: #2c4140"
+                        style="font-size: 32px; color: var(--default-titles)"
                     >
                         Comment ça marche ?
                     </h2>
                     <p
                         class="mb-8"
                         style="
-                            font-size: 16px;
-                            color: #497371;
+                            color: var(--default-text);
                             line-height: 1.75;
                         "
                     >
@@ -263,19 +281,14 @@ onMounted(() => {
                     </p>
                     <RouterLink
                         to="/login"
-                        class="inline-block text-white font-semibold rounded-full px-6 py-3 transition hover:opacity-80"
-                        style="
-                            background: #e60f48;
-                            font-size: 16px;
-                            text-decoration: none;
-                        "
+                        class="btn btn-filled-red"
                     >
                         Inscrire mon entreprise
                     </RouterLink>
                 </div>
                 <div
                     class="relative rounded-2xl overflow-hidden"
-                    style="height: 300px; background: #f2f4f3"
+                    style="height: 300px; background: var(--light-grey)"
                 >
                     <img
                         :src="'/images/thumbnail_commentcamarche.webp'"
@@ -287,9 +300,9 @@ onMounted(() => {
         </section>
 
         <!-- Rejoignez le mouvement -->
-        <section class="py-20" style="background: #f2f4f3">
+        <section class="py-20" style="background: var(--light-grey)">
             <div
-                class="max-w-6xl mx-auto px-8 grid grid-cols-2 gap-16 items-center"
+                class="max-w-7xl mx-auto px-8 grid grid-cols-2 gap-16 items-center"
             >
                 <div
                     class="relative rounded-2xl overflow-hidden"
@@ -304,15 +317,14 @@ onMounted(() => {
                 <div>
                     <h2
                         class="font-bold mb-5"
-                        style="font-size: 32px; color: #2c4140"
+                        style="font-size: 32px; color: var(--default-titles)"
                     >
                         Rejoignez le mouvement
                     </h2>
                     <p
                         class="mb-8"
                         style="
-                            font-size: 16px;
-                            color: #497371;
+                            color: var(--default-text);
                             line-height: 1.75;
                         "
                     >
@@ -326,12 +338,7 @@ onMounted(() => {
                     </p>
                     <RouterLink
                         to="/entreprises"
-                        class="inline-block text-white font-semibold rounded-full px-6 py-3 transition hover:opacity-80"
-                        style="
-                            background: #e60f48;
-                            font-size: 16px;
-                            text-decoration: none;
-                        "
+                        class="btn btn-filled-red"
                     >
                         Découvrez nos entreprises partenaires
                     </RouterLink>
@@ -340,17 +347,19 @@ onMounted(() => {
         </section>
 
         <!-- Footer -->
-        <footer style="background: #2c4140; padding: 3.5rem 0 2.5rem">
-            <div class="max-w-6xl mx-auto px-8">
+        <footer
+            style="background: var(--default-titles); padding: 3.5rem 0 2.5rem"
+        >
+            <div class="max-w-7xl mx-auto px-8">
                 <div class="grid grid-cols-4 gap-10 mb-12">
                     <div>
                         <div class="font-extrabold text-2xl mb-1 text-white">
                             HUG
                         </div>
                         <div
+                            class="captions"
                             style="
-                                font-size: 12px;
-                                color: #93cfa9;
+                                color: var(--color-default-green);
                                 line-height: 1.6;
                             "
                         >
@@ -370,7 +379,6 @@ onMounted(() => {
                                     to="/label"
                                     class="text-white hover:opacity-70 transition"
                                     style="
-                                        font-size: 16px;
                                         text-decoration: none;
                                     "
                                     >Label CTS</RouterLink
@@ -381,7 +389,6 @@ onMounted(() => {
                                     to="/trophee"
                                     class="text-white hover:opacity-70 transition"
                                     style="
-                                        font-size: 16px;
                                         text-decoration: none;
                                     "
                                     >Trophée de la générosité</RouterLink
@@ -392,7 +399,6 @@ onMounted(() => {
                                     href="/#temoignages"
                                     class="text-white hover:opacity-70 transition"
                                     style="
-                                        font-size: 16px;
                                         text-decoration: none;
                                     "
                                     >Témoignages</a
@@ -413,7 +419,6 @@ onMounted(() => {
                                     to="/faq"
                                     class="text-white hover:opacity-70 transition"
                                     style="
-                                        font-size: 16px;
                                         text-decoration: none;
                                     "
                                     >FAQ</RouterLink
@@ -424,7 +429,6 @@ onMounted(() => {
                                     to="/contact"
                                     class="text-white hover:opacity-70 transition"
                                     style="
-                                        font-size: 16px;
                                         text-decoration: none;
                                     "
                                     >Contact</RouterLink
@@ -445,7 +449,6 @@ onMounted(() => {
                                     href="#"
                                     class="text-white hover:opacity-70 transition"
                                     style="
-                                        font-size: 16px;
                                         text-decoration: none;
                                     "
                                     >Politique de confidentialité</a
@@ -456,7 +459,6 @@ onMounted(() => {
                                     href="#"
                                     class="text-white hover:opacity-70 transition"
                                     style="
-                                        font-size: 16px;
                                         text-decoration: none;
                                     "
                                     >Conditions générales</a
@@ -471,7 +473,7 @@ onMounted(() => {
                 >
                     <p
                         class="text-center"
-                        style="font-size: 16px; color: #f2f4f3"
+                        style="color: var(--light-grey)"
                     >
                         © {{ new Date().getFullYear() }} Hôpitaux Universitaire
                         Genève. Tous droits réservés.

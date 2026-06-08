@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup>
 import { ref, computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { useCobrandStore } from "../stores/cobrand";
@@ -11,7 +11,7 @@ const entreprise = ref(null);
 const collecte = ref(null);
 const loading = ref(true);
 
-const brandColor = computed(() => cobrand.couleurPrimaire || "#e60f48");
+const brandColor = computed(() => cobrand.couleurPrimaire || "var(--color-default-red)");
 const sectionGradient = computed(() => `linear-gradient(135deg, ${brandColor.value}, #ffffff)`);
 
 onMounted(async () => {
@@ -30,7 +30,7 @@ onMounted(async () => {
 </script>
 
 <template>
-    <div class="min-h-screen bg-white" style="font-family: 'Instrument Sans', sans-serif">
+    <div class="min-h-screen bg-white">
 
         <!-- Navbar -->
         <CoNavbar :collecte="collecte" />
@@ -50,50 +50,50 @@ onMounted(async () => {
 
         <!-- Ce qu'il représente -->
         <section id="ce-quil-represente" class="bg-white py-20">
-            <div class="max-w-6xl mx-auto px-8 grid grid-cols-2 gap-16 items-center">
+            <div class="max-w-7xl mx-auto px-8 grid grid-cols-2 gap-16 items-center">
                 <div>
-                    <h2 class="font-bold mb-5" style="font-size: 32px; color: #2c4140">Ce qu'il représente</h2>
-                    <p style="font-size: 16px; color: #497371; line-height: 1.75">
+                    <h2 class="font-bold mb-5" style="font-size: 32px; color: var(--default-titles)">Ce qu'il représente</h2>
+                    <p style="color: var(--default-text); line-height: 1.75">
                         Le Label CTS est une certification honorifique conçue par les Hôpitaux Universitaires de Genève pour valoriser l'engagement citoyen de toutes les organisations partenaires. Contrairement au Trophée de la Générosité qui met en avant un palmarès restreint, ce label RSE certifie l'effort collectif et la responsabilité sociale de chaque entreprise qui organise une collecte de sang et soutient activement la santé publique genevoise.
                     </p>
                 </div>
-                <div class="flex flex-col items-center justify-center gap-4 rounded-2xl border p-12" style="border-color: #f2f4f3">
+                <div class="flex flex-col items-center justify-center gap-4 rounded-2xl border p-12" style="border-color: var(--light-grey)">
                     <div class="rounded-full border-4 flex items-center justify-center" style="width: 80px; height: 80px" :style="{ borderColor: brandColor }">
                         <span style="font-size: 32px" :style="{ color: brandColor }">♥</span>
                     </div>
                     <div class="text-center">
-                        <p class="font-black" style="font-size: 24px; color: #2c4140; letter-spacing: -0.5px">CTS</p>
-                        <p class="font-bold uppercase tracking-widest" style="font-size: 11px; color: #497371">Collecte solidaire</p>
+                        <p class="font-black" style="font-size: 24px; color: var(--default-titles); letter-spacing: -0.5px">CTS</p>
+                        <p class="font-bold uppercase tracking-widest" style="font-size: 11px; color: var(--default-text)">Collecte solidaire</p>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- Les bénéfices -->
-        <section class="bg-white py-16 border-t" style="border-color: #f2f4f3">
-            <div class="max-w-6xl mx-auto px-8">
-                <h2 class="font-bold text-center mb-12" style="font-size: 32px; color: #2c4140">Les bénéfices du label</h2>
+        <section class="bg-white py-16 border-t" style="border-color: var(--light-grey)">
+            <div class="max-w-7xl mx-auto px-8">
+                <h2 class="font-bold text-center mb-12" style="font-size: 32px; color: var(--default-titles)">Les bénéfices du label</h2>
                 <div class="grid grid-cols-3 gap-8">
                     <div class="flex flex-col items-center text-center gap-4">
-                        <div class="rounded-full flex items-center justify-center" style="width: 64px; height: 64px; background: #f2f4f3">
-                            <span class="material-symbols-outlined" style="font-size: 28px; color: #497371">group</span>
+                        <div class="rounded-full flex items-center justify-center" style="width: 64px; height: 64px; background: var(--light-grey)">
+                            <span class="material-symbols-outlined" style="font-size: 28px; color: var(--default-text)">group</span>
                         </div>
-                        <h3 class="font-bold" style="font-size: 16px; color: #2c4140">Rejoignez une communauté d'entreprises</h3>
-                        <p style="font-size: 14px; color: #497371; line-height: 1.6">Afficher votre engagement société auprès de vos collaborateurs, partenaires et clients.</p>
+                        <h3 class="font-bold" style="color: var(--default-titles)">Rejoignez une communauté d'entreprises</h3>
+                        <p style="font-size: 14px; color: var(--default-text); line-height: 1.6">Afficher votre engagement société auprès de vos collaborateurs, partenaires et clients.</p>
                     </div>
                     <div class="flex flex-col items-center text-center gap-4">
-                        <div class="rounded-full flex items-center justify-center" style="width: 64px; height: 64px; background: #f2f4f3">
-                            <span class="material-symbols-outlined" style="font-size: 28px; color: #497371">emoji_events</span>
+                        <div class="rounded-full flex items-center justify-center" style="width: 64px; height: 64px; background: var(--light-grey)">
+                            <span class="material-symbols-outlined" style="font-size: 28px; color: var(--default-text)">emoji_events</span>
                         </div>
-                        <h3 class="font-bold" style="font-size: 16px; color: #2c4140">Affichez votre engagement</h3>
-                        <p style="font-size: 14px; color: #497371; line-height: 1.6">Associez votre entreprise à une démarche citoyenne et solidaire reconnue par les HUG.</p>
+                        <h3 class="font-bold" style="color: var(--default-titles)">Affichez votre engagement</h3>
+                        <p style="font-size: 14px; color: var(--default-text); line-height: 1.6">Associez votre entreprise à une démarche citoyenne et solidaire reconnue par les HUG.</p>
                     </div>
                     <div class="flex flex-col items-center text-center gap-4">
-                        <div class="rounded-full flex items-center justify-center" style="width: 64px; height: 64px; background: #f2f4f3">
-                            <span class="material-symbols-outlined" style="font-size: 28px; color: #497371">favorite</span>
+                        <div class="rounded-full flex items-center justify-center" style="width: 64px; height: 64px; background: var(--light-grey)">
+                            <span class="material-symbols-outlined" style="font-size: 28px; color: var(--default-text)">favorite</span>
                         </div>
-                        <h3 class="font-bold" style="font-size: 16px; color: #2c4140">Un impact réel et mesurable</h3>
-                        <p style="font-size: 14px; color: #497371; line-height: 1.6">Votre mobilisation contribue directement à sauver des vies en Suisse.</p>
+                        <h3 class="font-bold" style="color: var(--default-titles)">Un impact réel et mesurable</h3>
+                        <p style="font-size: 14px; color: var(--default-text); line-height: 1.6">Votre mobilisation contribue directement à sauver des vies en Suisse.</p>
                     </div>
                 </div>
             </div>
@@ -111,10 +111,10 @@ onMounted(async () => {
 
         <!-- Comment ça marche -->
         <section class="bg-white py-20">
-            <div class="max-w-6xl mx-auto px-8 grid grid-cols-2 gap-16 items-center">
+            <div class="max-w-7xl mx-auto px-8 grid grid-cols-2 gap-16 items-center">
                 <div>
-                    <h2 class="font-bold mb-5" style="font-size: 32px; color: #2c4140">Comment ça marche ?</h2>
-                    <p class="mb-8" style="font-size: 16px; color: #497371; line-height: 1.75">
+                    <h2 class="font-bold mb-5" style="font-size: 32px; color: var(--default-titles)">Comment ça marche ?</h2>
+                    <p class="mb-8" style="color: var(--default-text); line-height: 1.75">
                         Obtenir le Label CTS est un processus simple, transparent et entièrement accompagné par nos équipes médicales. Après avoir soumis votre demande d'organisation, le CTS valide avec vous le mode opératoire et la période de collecte. Vous disposez ensuite de tous nos outils numériques et kits de communication pour mobiliser vos équipes. Le label vous est officiellement et automatiquement décerné dès la finalisation de votre événement pour une validité d'un an.
                     </p>
                     <RouterLink
@@ -126,21 +126,21 @@ onMounted(async () => {
                         S'inscrire à la collecte
                     </RouterLink>
                 </div>
-                <div class="relative rounded-2xl overflow-hidden" style="height: 300px; background: #f2f4f3">
+                <div class="relative rounded-2xl overflow-hidden" style="height: 300px; background: var(--light-grey)">
                     <img :src="'/images/thumbnail_commentcamarche.webp'" alt="" class="absolute inset-0 w-full h-full object-cover" />
                 </div>
             </div>
         </section>
 
         <!-- Rejoignez le mouvement -->
-        <section class="py-20" style="background: #f2f4f3">
-            <div class="max-w-6xl mx-auto px-8 grid grid-cols-2 gap-16 items-center">
+        <section class="py-20" style="background: var(--light-grey)">
+            <div class="max-w-7xl mx-auto px-8 grid grid-cols-2 gap-16 items-center">
                 <div class="relative rounded-2xl overflow-hidden" style="height: 300px; background: #e2e8e8">
                     <img :src="'/images/thumbnail_mouvement.webp'" alt="" class="absolute inset-0 w-full h-full object-cover" />
                 </div>
                 <div>
-                    <h2 class="font-bold mb-5" style="font-size: 32px; color: #2c4140">Rejoignez le mouvement</h2>
-                    <p class="mb-8" style="font-size: 16px; color: #497371; line-height: 1.75">
+                    <h2 class="font-bold mb-5" style="font-size: 32px; color: var(--default-titles)">Rejoignez le mouvement</h2>
+                    <p class="mb-8" style="color: var(--default-text); line-height: 1.75">
                         De la PME locale aux grands groupes bancaires et horlogers, de nombreuses entreprises du bassin genevois ont déjà intégré le don de sang dans leur culture d'entreprise. Parcourez notre annuaire public pour découvrir les organisations labellisées, visualiser leur historique de participation et mesurer l'impact concret de cette mobilisation collective.
                     </p>
                     <RouterLink
@@ -155,33 +155,33 @@ onMounted(async () => {
         </section>
 
         <!-- Footer HUG -->
-        <footer style="background: #2c4140; padding: 3.5rem 0 2.5rem">
-            <div class="max-w-6xl mx-auto px-8">
+        <footer style="background: var(--default-titles); padding: 3.5rem 0 2.5rem">
+            <div class="max-w-7xl mx-auto px-8">
                 <div class="grid grid-cols-4 gap-10 mb-12">
                     <div>
                         <div class="font-extrabold text-2xl mb-1 text-white">HUG</div>
-                        <div style="font-size: 12px; color: #93cfa9; line-height: 1.6">Hôpitaux<br />Universitaires<br />Genève</div>
+                        <div class="captions" style="color: var(--color-default-green); line-height: 1.6">Hôpitaux<br />Universitaires<br />Genève</div>
                     </div>
                     <div>
                         <p class="font-bold mb-5 text-white" style="font-size: 18px">Pages</p>
                         <ul class="space-y-3">
-                            <li><RouterLink :to="`/entreprise/${route.params.slug}`" class="text-white hover:opacity-70 transition" style="font-size: 15px; text-decoration: none">Accueil collecte</RouterLink></li>
-                            <li><RouterLink :to="`/entreprise/${route.params.slug}/label`" class="text-white hover:opacity-70 transition" style="font-size: 15px; text-decoration: none">Label CTS</RouterLink></li>
-                            <li><RouterLink :to="`/entreprise/${route.params.slug}/trophee`" class="text-white hover:opacity-70 transition" style="font-size: 15px; text-decoration: none">Trophée de la générosité</RouterLink></li>
+                            <li><RouterLink :to="`/entreprise/${route.params.slug}`" class="text-white hover:opacity-70 transition" style="text-decoration: none">Accueil collecte</RouterLink></li>
+                            <li><RouterLink :to="`/entreprise/${route.params.slug}/label`" class="text-white hover:opacity-70 transition" style="text-decoration: none">Label CTS</RouterLink></li>
+                            <li><RouterLink :to="`/entreprise/${route.params.slug}/trophee`" class="text-white hover:opacity-70 transition" style="text-decoration: none">Trophée de la générosité</RouterLink></li>
                         </ul>
                     </div>
                     <div>
                         <p class="font-bold mb-5 text-white" style="font-size: 18px">Support</p>
                         <ul class="space-y-3">
-                            <li><RouterLink to="/faq" class="text-white hover:opacity-70 transition" style="font-size: 15px; text-decoration: none">FAQ</RouterLink></li>
-                            <li><RouterLink to="/contact" class="text-white hover:opacity-70 transition" style="font-size: 15px; text-decoration: none">Contact</RouterLink></li>
+                            <li><RouterLink to="/faq" class="text-white hover:opacity-70 transition" style="text-decoration: none">FAQ</RouterLink></li>
+                            <li><RouterLink to="/contact" class="text-white hover:opacity-70 transition" style="text-decoration: none">Contact</RouterLink></li>
                         </ul>
                     </div>
                     <div>
                         <p class="font-bold mb-5 text-white" style="font-size: 18px">Mentions légales</p>
                         <ul class="space-y-3">
-                            <li><a href="#" class="text-white hover:opacity-70 transition" style="font-size: 15px; text-decoration: none">Politique de confidentialité</a></li>
-                            <li><a href="#" class="text-white hover:opacity-70 transition" style="font-size: 15px; text-decoration: none">Conditions générales</a></li>
+                            <li><a href="#" class="text-white hover:opacity-70 transition" style="text-decoration: none">Politique de confidentialité</a></li>
+                            <li><a href="#" class="text-white hover:opacity-70 transition" style="text-decoration: none">Conditions générales</a></li>
                         </ul>
                     </div>
                 </div>

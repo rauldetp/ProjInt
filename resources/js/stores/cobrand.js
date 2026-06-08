@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+﻿import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 
 const LS_KEY = 'cobrand'
@@ -19,7 +19,7 @@ export const useCobrandStore = defineStore('cobrand', () => {
     const slug = ref(saved?.slug ?? '')
 
     const gradientStyle = computed(() => {
-        if (!couleurPrimaire.value) return 'linear-gradient(135deg, #65c6c1, #93cfa9)'
+        if (!couleurPrimaire.value) return 'linear-gradient(135deg, var(--color-default-blue-59), var(--color-default-green))'
         return `linear-gradient(135deg, ${couleurPrimaire.value}30, ${couleurPrimaire.value}10)`
     })
 
@@ -27,7 +27,7 @@ export const useCobrandStore = defineStore('cobrand', () => {
 
     // Luminance perçue (0–1). Seuil 0.5 : au-dessus → fond clair → texte noir.
     const textOnBrand = computed(() => {
-        const hex = couleurPrimaire.value || '#e60f48'
+        const hex = couleurPrimaire.value || 'var(--color-default-red)'
         const r = parseInt(hex.slice(1, 3), 16)
         const g = parseInt(hex.slice(3, 5), 16)
         const b = parseInt(hex.slice(5, 7), 16)
@@ -46,7 +46,7 @@ export const useCobrandStore = defineStore('cobrand', () => {
 
     function set(entreprise) {
         // Fallback sur le rouge HUG si l'entreprise n'a pas de couleur personnalisée
-        couleurPrimaire.value = entreprise.couleur_primaire || '#e60f48'
+        couleurPrimaire.value = entreprise.couleur_primaire || 'var(--color-default-red)'
         logo.value = entreprise.logo || null
         nom.value = entreprise.nom || ''
         slug.value = entreprise.slug || ''

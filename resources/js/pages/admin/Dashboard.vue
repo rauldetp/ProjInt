@@ -1,4 +1,4 @@
-<template>
+﻿<template>
     <div class="dashboard">
         <h1 class="page-title">Vue globale</h1>
 
@@ -17,7 +17,7 @@
                     <p class="stat-label">Campagnes en cours</p>
                 </div>
                 <div class="stat-card stat-card--alert" v-bind:class="{ 'stat-card--alert-active': (stats.collectes_en_attente ?? 0) > 0 }">
-                    <p class="stat-value" :style="(stats.collectes_en_attente ?? 0) > 0 ? { color: '#e60f48' } : {}">
+                    <p class="stat-value" :style="(stats.collectes_en_attente ?? 0) > 0 ? { color: 'var(--color-default-red)' } : {}">
                         {{ stats.collectes_en_attente ?? 0 }}
                     </p>
                     <p class="stat-label">En attente de validation</p>
@@ -31,7 +31,7 @@
                     <svg viewBox="0 0 600 100" class="chart-svg">
                         <polyline
                             fill="none"
-                            stroke="#e60f48"
+                            stroke="var(--color-default-red)"
                             stroke-width="2.5"
                             stroke-linecap="round"
                             stroke-linejoin="round"
@@ -298,7 +298,7 @@ onMounted(fetchData);
 .page-title {
     font-size: 2rem;
     font-weight: 700;
-    color: #2c4140;
+    color: var(--default-titles);
     text-align: center;
     margin: 0 0 2rem;
 }
@@ -323,12 +323,12 @@ onMounted(fetchData);
 .stat-value {
     font-size: 2rem;
     font-weight: 700;
-    color: #2c4140;
+    color: var(--default-titles);
     margin: 0 0 0.25rem;
 }
 .stat-label {
     font-size: 0.8rem;
-    color: #497371;
+    color: var(--default-text);
     margin: 0;
 }
 
@@ -342,7 +342,7 @@ onMounted(fetchData);
 .chart-title {
     font-size: 1rem;
     font-weight: 600;
-    color: #2c4140;
+    color: var(--default-titles);
     text-align: center;
     margin: 0 0 1rem;
 }
@@ -357,7 +357,7 @@ onMounted(fetchData);
     display: flex;
     justify-content: space-between;
     font-size: 0.75rem;
-    color: #497371;
+    color: var(--default-text);
     margin-top: 0.5rem;
 }
 .chart-toggles {
@@ -371,14 +371,14 @@ onMounted(fetchData);
     padding: 0.35rem 1.1rem;
     font-size: 0.875rem;
     background: white;
-    color: #497371;
+    color: var(--default-text);
     cursor: pointer;
     transition: all 0.15s;
 }
 .toggle-btn.active {
-    background: #2c4140;
+    background: var(--default-titles);
     color: white;
-    border-color: #2c4140;
+    border-color: var(--default-titles);
 }
 
 /* Section headers */
@@ -392,7 +392,7 @@ onMounted(fetchData);
 .section-title {
     font-size: 1.5rem;
     font-weight: 700;
-    color: #2c4140;
+    color: var(--default-titles);
     margin: 0;
     display: flex;
     align-items: center;
@@ -418,12 +418,12 @@ onMounted(fetchData);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #497371;
+    color: var(--default-text);
     text-decoration: none;
     font-size: 0.9rem;
     transition: border-color 0.15s;
 }
-.section-link:hover { border-color: #2c4140; color: #2c4140; }
+.section-link:hover { border-color: var(--default-titles); color: var(--default-titles); }
 
 /* Cards grid */
 .cards-grid {
@@ -466,7 +466,7 @@ onMounted(fetchData);
     align-items: center;
     gap: 1rem;
     padding: 1rem 1.25rem;
-    border-bottom: 1px solid #f2f4f3;
+    border-bottom: 1px solid var(--light-grey);
     transition: background 0.12s;
 }
 .attente-row:last-child { border-bottom: none; }
@@ -477,7 +477,7 @@ onMounted(fetchData);
     border-radius: 8px;
     overflow: hidden;
     flex-shrink: 0;
-    background: #f2f4f3;
+    background: var(--light-grey);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -486,7 +486,7 @@ onMounted(fetchData);
 .attente-logo-placeholder {
     font-size: 1rem;
     font-weight: 700;
-    color: #497371;
+    color: var(--default-text);
 }
 .attente-info {
     flex: 1;
@@ -495,7 +495,7 @@ onMounted(fetchData);
 .attente-company {
     font-weight: 700;
     font-size: 0.95rem;
-    color: #2c4140;
+    color: var(--default-titles);
     margin: 0;
     white-space: nowrap;
     overflow: hidden;
@@ -519,7 +519,7 @@ onMounted(fetchData);
     display: inline-flex;
     align-items: center;
     gap: 0.3rem;
-    background: #e60f48;
+    background: var(--color-default-red);
     color: white;
     border: none;
     border-radius: 9999px;
@@ -538,12 +538,12 @@ onMounted(fetchData);
     padding: 0.45rem 1rem;
     font-size: 0.82rem;
     font-weight: 600;
-    color: #497371;
+    color: var(--default-text);
     text-decoration: none;
     transition: border-color 0.15s, color 0.15s;
     white-space: nowrap;
 }
-.btn-edit:hover { border-color: #2c4140; color: #2c4140; }
+.btn-edit:hover { border-color: var(--default-titles); color: var(--default-titles); }
 .card-top {
     display: flex;
     justify-content: space-between;
@@ -552,30 +552,30 @@ onMounted(fetchData);
 .card-company {
     font-weight: 700;
     font-size: 1rem;
-    color: #2c4140;
+    color: var(--default-titles);
     margin: 0;
 }
 .card-subtitle {
     font-size: 0.82rem;
-    color: #2c4140;
+    color: var(--default-titles);
     opacity: 0.7;
     margin: 0.05rem 0 0;
     font-style: italic;
 }
 .card-date {
     font-size: 0.8rem;
-    color: #497371;
+    color: var(--default-text);
     margin: 0.1rem 0 0;
 }
 .card-inscrits, .card-lieu {
     font-size: 0.85rem;
-    color: #497371;
+    color: var(--default-text);
     margin: 0;
 }
 .card-menu {
     background: none;
     border: none;
-    color: #497371;
+    color: var(--default-text);
     font-size: 1.25rem;
     cursor: pointer;
     padding: 0;
@@ -594,7 +594,7 @@ onMounted(fetchData);
 }
 .insc-logo {
     width: 56px; height: 56px;
-    background: #f2f4f3;
+    background: var(--light-grey);
     border-radius: 0.5rem;
     flex-shrink: 0;
     display: flex;
@@ -603,7 +603,7 @@ onMounted(fetchData);
     overflow: hidden;
 }
 .insc-logo img { width: 100%; height: 100%; object-fit: contain; }
-.insc-logo-placeholder { font-weight: 700; font-size: 1.25rem; color: #497371; }
+.insc-logo-placeholder { font-weight: 700; font-size: 1.25rem; color: var(--default-text); }
 .insc-info { flex: 1; }
 
 /* Badges */
@@ -617,7 +617,7 @@ onMounted(fetchData);
 .badge-encours    { background: #d1fae5; color: #065f46; }
 .badge-aconfirmer { background: #fee2e2; color: #991b1b; }
 .badge-avenir     { background: #fef3c7; color: #92400e; }
-.badge-complete   { background: #f2f4f3; color: #497371; }
+.badge-complete   { background: var(--light-grey); color: var(--default-text); }
 
-.loading, .error { color: #497371; padding: 2rem 0; }
+.loading, .error { color: var(--default-text); padding: 2rem 0; }
 </style>

@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup>
 import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
@@ -26,8 +26,8 @@ function isActive(path) {
 function linkStyle(path) {
     const active = isActive(path);
     return {
-        color: active ? '#e60f48' : '#2c4140',
-        fontWeight: active ? '700' : '500',
+        color: active ? 'var(--color-default-red)' : 'var(--default-titles)',
+        fontWeight: '700',
         textDecoration: 'none',
     };
 }
@@ -42,11 +42,10 @@ function handleLogout() {
 
 <template>
     <header class="hug-navbar">
-        <div class="hug-navbar-inner">
-
+        <div class="hug-navbar-inner max-w-7xl px-8">
             <!-- Brand -->
             <div class="hug-brand">
-                <RouterLink to="/" class="brand-hug">HUG</RouterLink>
+                <RouterLink to="/" class="brand-hug"><img :src="'/images/logo_hug_h_quadri.png'" alt="Logo HUG" /></RouterLink>
                 <div class="brand-sep"></div>
                 <span class="brand-sub">Don du sang</span>
             </div>
@@ -55,19 +54,15 @@ function handleLogout() {
             <nav class="hug-nav-links">
                 <RouterLink to="/label"   :style="linkStyle('/label')">Label CTS</RouterLink>
                 <RouterLink to="/trophee" :style="linkStyle('/trophee')">Trophée de la générosité</RouterLink>
-                <RouterLink :to="coinEntrepriseLink" :style="coinStyle">Coin entreprise</RouterLink>
+                <RouterLink :to="coinEntrepriseLink" :style="coinStyle">Espace entreprise</RouterLink>
                 <RouterLink to="/quiz"    :style="linkStyle('/quiz')">Quiz d'éligibilité</RouterLink>
                 <RouterLink to="/contact" :style="linkStyle('/contact')">Contact</RouterLink>
             </nav>
 
             <!-- CTA -->
-            <button v-if="showLogout && auth.isLoggedIn" class="btn-logout" @click="handleLogout">
+            <button v-if="showLogout && auth.isLoggedIn" class="btn btn-outlined-red" @click="handleLogout">
                 Déconnexion
             </button>
-            <RouterLink v-else :to="participerLink" class="btn-participer">
-                Participer
-            </RouterLink>
-
         </div>
     </header>
 </template>
@@ -75,7 +70,7 @@ function handleLogout() {
 <style scoped>
 .hug-navbar {
     background: white;
-    border-bottom: 1px solid #f2f4f3;
+    border-bottom: 1px solid var(--light-grey);
     height: 76px;
     position: sticky;
     top: 0;
@@ -83,14 +78,12 @@ function handleLogout() {
     flex-shrink: 0;
 }
 .hug-navbar-inner {
-    max-width: 1280px;
     margin: 0 auto;
-    padding: 0 2rem;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 2rem;
+    gap: 1.5rem;
 }
 
 /* Brand */
@@ -103,8 +96,12 @@ function handleLogout() {
 .brand-hug {
     font-weight: 800;
     font-size: 1.25rem;
-    color: #2c4140;
+    color: var(--default-titles);
     text-decoration: none;
+}
+.brand-hug img {
+    max-height: 2.75rem;
+    width: auto;
 }
 .brand-sep {
     width: 1px;
@@ -115,7 +112,7 @@ function handleLogout() {
 .brand-sub {
     font-size: 1rem;
     font-weight: 600;
-    color: #e60f48;
+    color: var(--color-default-red);
 }
 
 /* Nav links */
@@ -135,35 +132,6 @@ function handleLogout() {
 }
 
 /* CTA */
-.btn-participer {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #e60f48;
-    border: 2px solid #e60f48;
-    border-radius: 9999px;
-    padding: 0.4rem 1.25rem;
-    text-decoration: none;
-    transition: opacity 0.15s;
-    flex-shrink: 0;
-    white-space: nowrap;
-    background: white;
-}
-.btn-participer:hover { opacity: 0.8; }
-
-.btn-logout {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #e60f48;
-    border: 2px solid #e60f48;
-    border-radius: 9999px;
-    padding: 0.4rem 1.25rem;
-    background: none;
-    cursor: pointer;
-    flex-shrink: 0;
-    transition: opacity 0.15s;
-    font-family: inherit;
-}
-.btn-logout:hover { opacity: 0.75; }
 
 @media (max-width: 960px) {
     .hug-nav-links { display: none; }

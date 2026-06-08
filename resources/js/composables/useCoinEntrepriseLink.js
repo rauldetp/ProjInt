@@ -1,8 +1,8 @@
-import { computed } from 'vue'
+﻿import { computed } from 'vue'
 import { useAuthStore } from '../stores/auth'
 
 /**
- * Retourne le lien "Coin entreprise" adapté au contexte :
+ * Retourne le lien "Espace entreprise" adapté au contexte :
  * - Admin connecté → /admin
  * - Coordinateur connecté → /entreprise/:slug
  * - Non connecté → /login

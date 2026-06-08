@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup>
 import { ref, onMounted } from "vue";
 import HugNavbar from "../components/HugNavbar.vue";
 
@@ -14,17 +14,17 @@ onMounted(() => {
         <HugNavbar />
 
         <!-- Hero -->
-        <section style="background: linear-gradient(135deg, #65c6c1, #93cfa9); padding: 72px 0 56px">
+        <section style="background: linear-gradient(135deg, var(--color-default-blue-59), var(--color-default-green)); padding: 72px 0 56px">
             <div class="max-w-4xl mx-auto px-8">
                 <p
                     class="font-semibold mb-3 uppercase tracking-widest"
-                    style="font-size: 13px; color: #2c4140; opacity: 0.65"
+                    style="font-size: 13px; color: var(--default-titles); opacity: 0.65"
                 >
                     Hôpitaux universitaires de Genève
                 </p>
                 <h1
                     class="font-bold"
-                    style="font-size: 48px; line-height: 1.2; color: #2c4140"
+                    style="font-size: 48px; line-height: 1.2; color: var(--default-titles)"
                 >
                     Contacter les HUG
                 </h1>
@@ -40,13 +40,13 @@ onMounted(() => {
                         <!-- Adresse + téléphone -->
                         <div
                             style="
-                                border-top: 2px solid #e60f48;
+                                border-top: 2px solid var(--color-default-red);
                                 padding-top: 1.5rem;
                             "
                         >
                             <h2
                                 class="font-bold mb-6"
-                                style="font-size: 22px; color: #2c4140"
+                                style="font-size: 22px; color: var(--default-titles)"
                             >
                                 Coordonnées
                             </h2>
@@ -54,14 +54,13 @@ onMounted(() => {
                                 <div>
                                     <p
                                         class="font-semibold mb-1"
-                                        style="font-size: 14px; color: #2c4140"
+                                        style="font-size: 14px; color: var(--default-titles)"
                                     >
                                         Adresse
                                     </p>
                                     <p
                                         style="
-                                            font-size: 15px;
-                                            color: #497371;
+                                            color: var(--default-text);
                                             line-height: 1.7;
                                         "
                                     >
@@ -73,7 +72,7 @@ onMounted(() => {
                                 <div>
                                     <p
                                         class="font-semibold mb-1"
-                                        style="font-size: 14px; color: #2c4140"
+                                        style="font-size: 14px; color: var(--default-titles)"
                                     >
                                         Centrale téléphonique
                                     </p>
@@ -81,7 +80,7 @@ onMounted(() => {
                                         href="tel:+41223723311"
                                         style="
                                             font-size: 18px;
-                                            color: #e60f48;
+                                            color: var(--color-default-red);
                                             font-weight: 600;
                                             text-decoration: none;
                                         "
@@ -95,20 +94,19 @@ onMounted(() => {
                         <!-- Infos médicales -->
                         <div
                             style="
-                                border-top: 2px solid #f2f4f3;
+                                border-top: 2px solid var(--light-grey);
                                 padding-top: 1.5rem;
                             "
                         >
                             <h2
                                 class="font-bold mb-4"
-                                style="font-size: 22px; color: #2c4140"
+                                style="font-size: 22px; color: var(--default-titles)"
                             >
                                 Questions médicales
                             </h2>
                             <p
                                 style="
-                                    font-size: 15px;
-                                    color: #497371;
+                                    color: var(--default-text);
                                     line-height: 1.8;
                                 "
                             >
@@ -124,8 +122,7 @@ onMounted(() => {
                                 target="_blank"
                                 rel="noopener"
                                 style="
-                                    font-size: 15px;
-                                    color: #e60f48;
+                                    color: var(--color-default-red);
                                     text-decoration: none;
                                     font-weight: 500;
                                 "
@@ -137,21 +134,20 @@ onMounted(() => {
                         <!-- Annuaire -->
                         <div
                             style="
-                                border-top: 2px solid #f2f4f3;
+                                border-top: 2px solid var(--light-grey);
                                 padding-top: 1.5rem;
                             "
                         >
                             <h2
                                 class="font-bold mb-2"
-                                style="font-size: 22px; color: #2c4140"
+                                style="font-size: 22px; color: var(--default-titles)"
                             >
                                 Trouver un professionnel ou une professionnelle
                             </h2>
                             <p
                                 class="mb-6"
                                 style="
-                                    font-size: 15px;
-                                    color: #497371;
+                                    color: var(--default-text);
                                     line-height: 1.8;
                                 "
                             >
@@ -164,7 +160,7 @@ onMounted(() => {
                                 rel="noopener"
                                 class="inline-block text-white font-semibold rounded-full px-7 py-3 transition hover:opacity-80 uppercase tracking-wider"
                                 style="
-                                    background: #2c4140;
+                                    background: var(--default-titles);
                                     font-size: 13px;
                                     text-decoration: none;
                                 "
@@ -208,7 +204,7 @@ onMounted(() => {
                         >
                             <p
                                 class="font-semibold mb-4"
-                                style="font-size: 15px; color: #2c4140"
+                                style="color: var(--default-titles)"
                             >
                                 Ce contenu vous a-t-il été utile ?
                             </p>
@@ -218,8 +214,8 @@ onMounted(() => {
                                     class="rounded-full px-6 py-2 font-semibold transition"
                                     :style="
                                         useful === true
-                                            ? 'background:#2c4140;color:white;border:2px solid #2c4140'
-                                            : 'background:white;color:#2c4140;border:2px solid #2c4140'
+                                            ? 'background:var(--default-titles);color:white;border:2px solid var(--default-titles)'
+                                            : 'background:white;color:var(--default-titles);border:2px solid var(--default-titles)'
                                     "
                                     style="font-size: 14px; cursor: pointer"
                                 >
@@ -230,8 +226,8 @@ onMounted(() => {
                                     class="rounded-full px-6 py-2 font-semibold transition"
                                     :style="
                                         useful === false
-                                            ? 'background:#2c4140;color:white;border:2px solid #2c4140'
-                                            : 'background:white;color:#2c4140;border:2px solid #dde4e3'
+                                            ? 'background:var(--default-titles);color:white;border:2px solid var(--default-titles)'
+                                            : 'background:white;color:var(--default-titles);border:2px solid #dde4e3'
                                     "
                                     style="font-size: 14px; cursor: pointer"
                                 >
@@ -241,7 +237,7 @@ onMounted(() => {
                                     v-if="useful !== null"
                                     style="
                                         font-size: 14px;
-                                        color: #497371;
+                                        color: var(--default-text);
                                         align-self: center;
                                     "
                                     >Merci pour votre retour.</span
@@ -254,14 +250,14 @@ onMounted(() => {
                     <div class="flex flex-col gap-6">
                         <div
                             style="
-                                background: #f2f4f3;
+                                background: var(--light-grey);
                                 border-radius: 12px;
                                 padding: 1.5rem;
                             "
                         >
                             <p
                                 class="font-bold mb-4"
-                                style="font-size: 16px; color: #2c4140"
+                                style="color: var(--default-titles)"
                             >
                                 Don du sang — CTS
                             </p>
@@ -269,7 +265,7 @@ onMounted(() => {
                                 class="mb-4"
                                 style="
                                     font-size: 14px;
-                                    color: #497371;
+                                    color: var(--default-text);
                                     line-height: 1.7;
                                 "
                             >
@@ -279,26 +275,20 @@ onMounted(() => {
                             </p>
                             <RouterLink
                                 to="/login"
-                                class="inline-block font-semibold rounded-full px-5 py-2 transition hover:opacity-80"
-                                style="
-                                    background: #e60f48;
-                                    color: white;
-                                    font-size: 14px;
-                                    text-decoration: none;
-                                "
+                                class="btn btn-filled-red"
                                 >Créer un compte →</RouterLink
                             >
                         </div>
                         <div
                             style="
-                                background: #f2f4f3;
+                                background: var(--light-grey);
                                 border-radius: 12px;
                                 padding: 1.5rem;
                             "
                         >
                             <p
                                 class="font-bold mb-3"
-                                style="font-size: 16px; color: #2c4140"
+                                style="color: var(--default-titles)"
                             >
                                 Site officiel
                             </p>
@@ -308,7 +298,7 @@ onMounted(() => {
                                 rel="noopener"
                                 style="
                                     font-size: 14px;
-                                    color: #e60f48;
+                                    color: var(--color-default-red);
                                     text-decoration: none;
                                     font-weight: 500;
                                 "
@@ -322,20 +312,14 @@ onMounted(() => {
         </section>
 
         <!-- Footer -->
-        <footer style="background: #2c4140; padding: 3.5rem 0 2.5rem">
-            <div class="max-w-6xl mx-auto px-8">
+        <footer style="background: var(--default-titles); padding: 3.5rem 0 2.5rem">
+            <div class="max-w-7xl mx-auto px-8">
                 <div class="grid grid-cols-4 gap-10 mb-12">
                     <div>
                         <div class="font-extrabold text-2xl mb-1 text-white">
                             HUG
                         </div>
-                        <div
-                            style="
-                                font-size: 12px;
-                                color: #93cfa9;
-                                line-height: 1.6;
-                            "
-                        >
+                        <div class="captions" style="color: var(--color-default-green); line-height: 1.6">
                             Hôpitaux<br />Universitaires<br />Genève
                         </div>
                     </div>
@@ -352,7 +336,6 @@ onMounted(() => {
                                     to="/label"
                                     class="text-white hover:opacity-70 transition"
                                     style="
-                                        font-size: 16px;
                                         text-decoration: none;
                                     "
                                     >Label CTS</RouterLink
@@ -363,7 +346,6 @@ onMounted(() => {
                                     to="/trophee"
                                     class="text-white hover:opacity-70 transition"
                                     style="
-                                        font-size: 16px;
                                         text-decoration: none;
                                     "
                                     >Trophée de la générosité</RouterLink
@@ -384,7 +366,6 @@ onMounted(() => {
                                     href="/#faq"
                                     class="text-white hover:opacity-70 transition"
                                     style="
-                                        font-size: 16px;
                                         text-decoration: none;
                                     "
                                     >FAQ</a
@@ -395,7 +376,6 @@ onMounted(() => {
                                     to="/contact"
                                     class="text-white hover:opacity-70 transition"
                                     style="
-                                        font-size: 16px;
                                         text-decoration: none;
                                     "
                                     >Contact</RouterLink
@@ -416,7 +396,6 @@ onMounted(() => {
                                     href="#"
                                     class="text-white hover:opacity-70 transition"
                                     style="
-                                        font-size: 16px;
                                         text-decoration: none;
                                     "
                                     >Politique de confidentialité</a
@@ -427,7 +406,6 @@ onMounted(() => {
                                     href="#"
                                     class="text-white hover:opacity-70 transition"
                                     style="
-                                        font-size: 16px;
                                         text-decoration: none;
                                     "
                                     >Conditions générales</a
@@ -442,7 +420,7 @@ onMounted(() => {
                 >
                     <p
                         class="text-center"
-                        style="font-size: 16px; color: #f2f4f3"
+                        style="color: var(--light-grey)"
                     >
                         © {{ new Date().getFullYear() }} Hôpitaux Universitaires
                         Genève. Tous droits réservés.
