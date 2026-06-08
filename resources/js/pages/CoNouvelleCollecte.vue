@@ -285,7 +285,7 @@ onMounted(async () => {
                         <button
                             type="submit"
                             :disabled="submitting || !form.date_debut"
-                            style="border-radius: 9999px; padding: 0.75rem 2rem; font-size: 15px; font-weight: 600; color: white; border: none; cursor: pointer; transition: opacity 0.15s"
+                            style="border-radius: 9999px; padding: 0.75rem 2rem; font-weight: 600; color: white; border: none; cursor: pointer; transition: opacity 0.15s"
                             :style="{ background: brandColor, opacity: (submitting || !form.date_debut) ? 0.6 : 1 }"
                         >{{ submitting ? "Enregistrement…" : isEdit ? "Enregistrer les modifications" : "Envoyer la demande" }}</button>
                     </div>
@@ -341,7 +341,7 @@ onMounted(async () => {
 
         <!-- Footer simplifié -->
         <footer style="background: var(--default-titles); padding: 2.5rem 0 2rem">
-            <div class="max-w-6xl mx-auto px-8 flex items-center justify-between">
+            <div class="max-w-7xl mx-auto px-8 flex items-center justify-between">
                 <div>
                     <div class="font-extrabold text-xl text-white">HUG</div>
                     <div class="captions" style="color: var(--color-default-green)">Hôpitaux Universitaires Genève</div>

@@ -4,6 +4,14 @@ html {
     font-size: 16px;
 }
 
+/* ── Section heights ──────────────────────────────────── */
+.section-hero {
+    height: 512px;
+}
+.media-block {
+    height: 340px;
+}
+
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 @source '../**/*.blade.php';
@@ -64,6 +72,10 @@ html {
     --color-default-yellow-98: hsl(34 84% 98%);
 }
 
+.shadow-light {
+    box-shadow: 0 0 18px rgba(0,0,0,.07);
+}
+
 .captions {
     font-size: 12px;
     font-weight: 700;
@@ -71,7 +83,9 @@ html {
 
 .banner {
     position: fixed;
-    padding: 0.5rem 1rem;
+    width: calc(100% - 4rem);
+    max-width: calc(80rem - 4rem);
+    padding: 0.5rem 1.5rem;
     border-bottom-left-radius: 6px;
     border-bottom-right-radius: 6px;
     top: 76px;
@@ -84,6 +98,52 @@ html {
         var(--color-default-green)
     );
     color: var(--default-titles);
+}
+
+/* ── FAQ ──────────────────────────────────────────────── */
+.faq-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 1.5rem;
+    text-align: left;
+    font-weight: 700;
+    color: var(--default-titles);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 1rem;
+}
+.faq-btn-circle {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-left: 1rem;
+    background: white;
+    border: 1px solid var(--color-default-red);
+    transition: background 0.15s, border-color 0.15s;
+}
+.faq-btn:hover .faq-btn-circle {
+    background: var(--color-default-red-88);
+    border-color: transparent;
+}
+.faq-btn:active .faq-btn-circle {
+    background: var(--color-default-red-58);
+    border-color: transparent;
+}
+.faq-btn-icon {
+    color: var(--color-default-red);
+    font-size: 20px;
+    transition: color 0.15s;
+}
+.faq-btn:active .faq-btn-icon {
+    color: white;
 }
 
 /* ── Buttons ──────────────────────────────────────────── */
@@ -129,6 +189,100 @@ html {
 .btn-filled-red:disabled {
     background: var(--color-default-red-88);
     color: var(--color-default-red-98);
+}
+
+.btn-filled-blue {
+    background: var(--color-default-blue-59);
+    color: var(--color-default-blue-19);
+}
+.btn-filled-blue:hover  { background: var(--color-default-blue); }
+.btn-filled-blue:active { background: var(--color-default-blue-39); }
+.btn-filled-blue:focus-visible {
+    background: var(--color-default-blue-59);
+    outline: 2px solid white;
+    outline-offset: 2px;
+}
+.btn-filled-blue:disabled {
+    background: var(--color-default-blue-89);
+    color: var(--color-default-blue-59);
+}
+
+.btn-outlined-blue {
+    background: white;
+    color: var(--color-default-blue-39);
+    border-color: var(--color-default-blue-39);
+}
+.btn-outlined-blue:hover {
+    background: var(--color-default-blue-79);
+    border-color: transparent;
+}
+.btn-outlined-blue:active {
+    background: var(--color-default-blue);
+    border-color: transparent;
+    color: white;
+}
+.btn-outlined-blue:focus-visible {
+    background: white;
+    border-color: var(--color-default-blue-39);
+    outline: 2px solid var(--color-default-blue-39);
+    outline-offset: 2px;
+}
+.btn-outlined-blue:disabled {
+    background: white;
+    border-color: var(--color-default-blue-79);
+    color: var(--color-default-blue-79);
+}
+
+.btn-outlined-green {
+    background: white;
+    color: var(--color-default-green-39);
+    border-color: var(--color-default-green-39);
+}
+.btn-outlined-green:hover {
+    background: var(--color-default-green-79);
+    border-color: transparent;
+}
+.btn-outlined-green:active {
+    background: var(--color-default-green);
+    border-color: transparent;
+    color: white;
+}
+.btn-outlined-green:focus-visible {
+    background: white;
+    border-color: var(--color-default-green-39);
+    outline: 2px solid var(--color-default-green-39);
+    outline-offset: 2px;
+}
+.btn-outlined-green:disabled {
+    background: white;
+    border-color: var(--color-default-green-79);
+    color: var(--color-default-green-79);
+}
+
+.btn-outlined-red {
+    background: white;
+    color: var(--color-default-red);
+    border-color: var(--color-default-red);
+}
+.btn-outlined-red:hover {
+    background: var(--color-default-red-88);
+    border-color: transparent;
+}
+.btn-outlined-red:active {
+    background: var(--color-default-red-58);
+    border-color: transparent;
+    color: white;
+}
+.btn-outlined-red:focus-visible {
+    background: white;
+    border-color: var(--color-default-red);
+    outline: 2px solid var(--color-default-red);
+    outline-offset: 2px;
+}
+.btn-outlined-red:disabled {
+    background: white;
+    border-color: var(--color-default-red-88);
+    color: var(--color-default-red-88);
 }
 
 @font-face {

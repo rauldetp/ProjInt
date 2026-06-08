@@ -42,7 +42,7 @@ onMounted(async () => {
                 class="absolute inset-0"
                 style="background: rgba(44, 65, 64, 0.4)"
             ></div>
-            <div class="relative max-w-6xl mx-auto px-8 w-full z-10">
+            <div class="relative max-w-7xl mx-auto px-8 w-full z-10">
                 <h1
                     class="font-bold text-white leading-tight mb-5"
                     style="font-size: 48px; max-width: 640px"
@@ -74,7 +74,7 @@ onMounted(async () => {
 
         <!-- Grille des entreprises -->
         <section class="bg-white py-20">
-            <div class="max-w-6xl mx-auto px-8">
+            <div class="max-w-7xl mx-auto px-8">
                 <h2
                     class="font-bold text-center mb-12"
                     style="font-size: 24px; color: var(--default-titles)"
@@ -143,16 +143,7 @@ onMounted(async () => {
                         v-if="!showAll && entreprises.length > 18"
                         class="flex justify-center"
                     >
-                        <button
-                            @click="showAll = true"
-                            class="border-2 rounded-full px-7 py-2 font-semibold transition hover:opacity-75"
-                            style="
-                                color: var(--color-default-red);
-                                border-color: var(--color-default-red);
-                                background: white;
-                                cursor: pointer;
-                            "
-                        >
+                        <button @click="showAll = true" class="btn btn-outlined-red">
                             Voir toutes les entreprises
                         </button>
                     </div>
@@ -206,7 +197,7 @@ onMounted(async () => {
 
         <!-- Footer -->
         <footer style="background: var(--default-titles); padding: 3.5rem 0 2.5rem">
-            <div class="max-w-6xl mx-auto px-8">
+            <div class="max-w-7xl mx-auto px-8">
                 <div class="grid grid-cols-4 gap-10 mb-12">
                     <div>
                         <div class="font-extrabold text-2xl mb-1 text-white">

@@ -221,31 +221,22 @@ onMounted(() => {
                         <div
                             v-for="(item, i) in cat.items"
                             :key="cat.id + i"
-                            class="bg-white rounded-xl overflow-hidden"
+                            class="bg-white rounded-xl shadow-sm"
                         >
-                            <button
-                                @click="toggle(cat.id + i)"
-                                class="w-full flex items-center justify-between px-6 py-4 text-left font-medium transition hover:bg-[#f9fafa]"
-                                style="color: var(--default-titles)"
-                            >
+                            <button class="faq-btn" @click="toggle(cat.id + i)">
                                 {{ item.q }}
-                                <span
-                                    class="ml-4 font-bold text-xl flex-shrink-0"
-                                    style="color: var(--color-default-red)"
-                                    >{{ openFaq === cat.id + i ? "−" : "+" }}</span
-                                >
+                                <div class="faq-btn-circle">
+                                    <span class="faq-btn-icon material-symbols-outlined">
+                                        {{ openFaq === cat.id + i ? 'expand_less' : 'expand_more' }}
+                                    </span>
+                                </div>
                             </button>
-                            <div
-                                v-if="openFaq === cat.id + i"
-                                class="px-6 pb-5"
-                                style="
-                                    font-size: 15px;
-                                    color: var(--default-text);
-                                    line-height: 1.75;
-                                "
-                            >
-                                {{ item.a }}
-                            </div>
+                            <template v-if="openFaq === cat.id + i">
+                                <div class="mx-6" style="height: 1px; background: var(--light-grey)"></div>
+                                <div class="px-6 py-5" style="color: var(--default-text)">
+                                    {{ item.a }}
+                                </div>
+                            </template>
                         </div>
                     </div>
                 </div>
@@ -285,7 +276,7 @@ onMounted(() => {
 
         <!-- Footer -->
         <footer style="background: var(--default-titles); padding: 3.5rem 0 2.5rem">
-            <div class="max-w-6xl mx-auto px-8">
+            <div class="max-w-7xl mx-auto px-8">
                 <div class="grid grid-cols-4 gap-10 mb-12">
                     <div>
                         <div class="font-extrabold text-2xl mb-1 text-white">

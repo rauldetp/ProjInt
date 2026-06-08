@@ -3,6 +3,7 @@ import { ref, computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { useCobrandStore } from "../stores/cobrand";
 import CoNavbar from "../components/CoNavbar.vue";
+import QuizNavbar from "../components/QuizNavbar.vue";
 
 const route  = useRoute();
 const cobrand = useCobrandStore();
@@ -268,7 +269,8 @@ function retakeQuiz() {
     <div v-if="loading" class="state-loading">Chargement…</div>
     <div v-else class="page">
 
-        <CoNavbar :collecte="collecte" />
+        <CoNavbar v-if="step === 'intro'" :collecte="collecte" />
+        <QuizNavbar v-else :on-back="goBack" :cobrand="cobrand" />
 
         <!-- ══════════════════════════════════════════════════════
              INTRO — split screen
@@ -379,10 +381,6 @@ function retakeQuiz() {
                     </button>
                 </Transition>
 
-                <button class="btn-back" @click="goBack">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-                    Retour
-                </button>
             </div>
         </div>
 
@@ -427,8 +425,7 @@ function retakeQuiz() {
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                     </button>
 
-                    <button class="btn-back" style="margin-top: 1.25rem" @click="goBack">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+                    <button class="btn-back" style="display:none" @click="goBack">
                         Retour
                     </button>
                 </div>

@@ -26,7 +26,7 @@ onMounted(() => {
                 class="absolute inset-0"
                 style="background: rgba(44, 65, 64, 0.45)"
             ></div>
-            <div class="relative max-w-6xl mx-auto px-8 w-full z-10">
+            <div class="relative max-w-7xl mx-auto px-8 w-full z-10">
                 <h1
                     class="font-bold text-white leading-tight mb-4"
                     style="font-size: 48px"
@@ -47,7 +47,7 @@ onMounted(() => {
         <!-- Ce qu'il représente -->
         <section id="ce-quil-represente" class="bg-white py-20">
             <div
-                class="max-w-6xl mx-auto px-8 grid grid-cols-2 gap-16 items-center"
+                class="max-w-7xl mx-auto px-8 grid grid-cols-2 gap-16 items-center"
             >
                 <div>
                     <h2
@@ -89,7 +89,7 @@ onMounted(() => {
             class="bg-white py-16 border-t"
             style="border-color: var(--light-grey)"
         >
-            <div class="max-w-6xl mx-auto px-8">
+            <div class="max-w-7xl mx-auto px-8">
                 <h2
                     class="font-bold text-center mb-12"
                     style="font-size: 32px; color: var(--default-titles)"
@@ -252,7 +252,7 @@ onMounted(() => {
         <!-- Comment ça marche -->
         <section class="bg-white py-20">
             <div
-                class="max-w-6xl mx-auto px-8 grid grid-cols-2 gap-16 items-center"
+                class="max-w-7xl mx-auto px-8 grid grid-cols-2 gap-16 items-center"
             >
                 <div>
                     <h2
@@ -302,7 +302,7 @@ onMounted(() => {
         <!-- Rejoignez le mouvement -->
         <section class="py-20" style="background: var(--light-grey)">
             <div
-                class="max-w-6xl mx-auto px-8 grid grid-cols-2 gap-16 items-center"
+                class="max-w-7xl mx-auto px-8 grid grid-cols-2 gap-16 items-center"
             >
                 <div
                     class="relative rounded-2xl overflow-hidden"
@@ -350,7 +350,7 @@ onMounted(() => {
         <footer
             style="background: var(--default-titles); padding: 3.5rem 0 2.5rem"
         >
-            <div class="max-w-6xl mx-auto px-8">
+            <div class="max-w-7xl mx-auto px-8">
                 <div class="grid grid-cols-4 gap-10 mb-12">
                     <div>
                         <div class="font-extrabold text-2xl mb-1 text-white">

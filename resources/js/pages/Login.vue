@@ -154,7 +154,6 @@ async function handleRegister() {
 const inputStyle = `
     border: 1px solid #dde4e3;
     border-radius: 8px;
-    font-size: 15px;
     color: var(--default-titles);
     background: white;
     outline: none;
@@ -207,7 +206,7 @@ const selectStyle = inputStyle + `
                     <p class="font-black mb-4" style="font-size: 36px; color: var(--default-titles); line-height: 1.2">
                         Administration<br />HUG — CTS
                     </p>
-                    <p style="font-size: 15px; color: rgba(44,65,64,0.65); line-height: 1.7; max-width: 300px">
+                    <p style="color: rgba(44,65,64,0.65); line-height: 1.7; max-width: 300px">
                         Accès réservé à l'équipe du Centre de Transfusion Sanguine des Hôpitaux Universitaires de Genève.
                     </p>
                 </template>
@@ -221,7 +220,7 @@ const selectStyle = inputStyle + `
                                 { icon: 'emoji_events', text: 'Trophée de la générosité activé' },
                             ]" :key="item.text" style="display: flex; align-items: center; gap: 0.75rem">
                                 <span class="material-symbols-outlined" style="font-size: 20px; color: var(--default-titles)">{{ item.icon }}</span>
-                                <span style="font-size: 15px; color: var(--default-titles); font-weight: 600" v-html="item.text"></span>
+                                <span style="color: var(--default-titles); font-weight: 600" v-html="item.text"></span>
                             </div>
                         </div>
                         <p style="font-size: 14px; color: rgba(44,65,64,0.65); line-height: 1.6">
@@ -254,7 +253,6 @@ const selectStyle = inputStyle + `
                             >{{ s.num }}</div>
                             <span
                                 class="font-semibold"
-                                style="font-size: 15px"
                                 :style="
                                     step === s.num
                                         ? 'color: var(--default-titles)'
@@ -307,7 +305,7 @@ const selectStyle = inputStyle + `
                     <h1 class="font-bold mb-1" style="font-size: 26px; color: var(--default-titles)">
                         Connexion
                     </h1>
-                    <p class="mb-8" style="font-size: 15px; color: var(--default-text)">
+                    <p class="mb-8" style="color: var(--default-text)">
                         Accédez à votre espace entreprise.
                     </p>
 
@@ -392,7 +390,7 @@ const selectStyle = inputStyle + `
                     <h1 class="font-bold mb-1" style="font-size: 26px; color: var(--default-titles)">
                         Administration
                     </h1>
-                    <p class="mb-8" style="font-size: 15px; color: var(--default-text)">
+                    <p class="mb-8" style="color: var(--default-text)">
                         Espace réservé à l'équipe CTS des HUG.
                     </p>
 
@@ -636,7 +634,7 @@ const selectStyle = inputStyle + `
                                         v-model="couleurPrimaire"
                                         type="text"
                                         placeholder="var(--color-default-red)"
-                                        style="border: none; outline: none; font-size: 15px; color: var(--default-titles); flex: 1; font-family: monospace"
+                                        style="border: none; outline: none; color: var(--default-titles); flex: 1; font-family: monospace"
                                     />
                                 </div>
                             </div>
@@ -675,7 +673,7 @@ const selectStyle = inputStyle + `
                         <h1 class="font-bold mb-2" style="font-size: 24px; color: var(--default-titles); line-height: 1.3">
                             Votre espace a bien été créé !
                         </h1>
-                        <p style="font-size: 15px; color: var(--default-text); line-height: 1.65; margin-bottom: 2rem">
+                        <p style="color: var(--default-text); line-height: 1.65; margin-bottom: 2rem">
                             Bienvenue dans le programme <strong>Trophée de la générosité</strong>.<br />
                             Votre site co-brandé
                             <strong style="color: var(--default-titles)">{{ newEntrepriseName }}</strong>

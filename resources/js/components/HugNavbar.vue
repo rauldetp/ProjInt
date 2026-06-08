@@ -42,7 +42,7 @@ function handleLogout() {
 
 <template>
     <header class="hug-navbar">
-        <div class="hug-navbar-inner max-w-6xl">
+        <div class="hug-navbar-inner max-w-7xl px-8">
             <!-- Brand -->
             <div class="hug-brand">
                 <RouterLink to="/" class="brand-hug"><img :src="'/images/logo_hug_h_quadri.png'" alt="Logo HUG" /></RouterLink>
@@ -54,13 +54,13 @@ function handleLogout() {
             <nav class="hug-nav-links">
                 <RouterLink to="/label"   :style="linkStyle('/label')">Label CTS</RouterLink>
                 <RouterLink to="/trophee" :style="linkStyle('/trophee')">Trophée de la générosité</RouterLink>
-                <RouterLink :to="coinEntrepriseLink" :style="coinStyle">Coin entreprise</RouterLink>
+                <RouterLink :to="coinEntrepriseLink" :style="coinStyle">Espace entreprise</RouterLink>
                 <RouterLink to="/quiz"    :style="linkStyle('/quiz')">Quiz d'éligibilité</RouterLink>
                 <RouterLink to="/contact" :style="linkStyle('/contact')">Contact</RouterLink>
             </nav>
 
             <!-- CTA -->
-            <button v-if="showLogout && auth.isLoggedIn" class="btn-logout" @click="handleLogout">
+            <button v-if="showLogout && auth.isLoggedIn" class="btn btn-outlined-red" @click="handleLogout">
                 Déconnexion
             </button>
         </div>
@@ -79,7 +79,6 @@ function handleLogout() {
 }
 .hug-navbar-inner {
     margin: 0 auto;
-    padding: 0 5rem;
     height: 100%;
     display: flex;
     align-items: center;
@@ -133,35 +132,6 @@ function handleLogout() {
 }
 
 /* CTA */
-.btn-participer {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--color-default-red);
-    border: 2px solid var(--color-default-red);
-    border-radius: 9999px;
-    padding: 0.4rem 1.25rem;
-    text-decoration: none;
-    transition: opacity 0.15s;
-    flex-shrink: 0;
-    white-space: nowrap;
-    background: white;
-}
-.btn-participer:hover { opacity: 0.8; }
-
-.btn-logout {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--color-default-red);
-    border: 2px solid var(--color-default-red);
-    border-radius: 9999px;
-    padding: 0.4rem 1.25rem;
-    background: none;
-    cursor: pointer;
-    flex-shrink: 0;
-    transition: opacity 0.15s;
-    font-family: inherit;
-}
-.btn-logout:hover { opacity: 0.75; }
 
 @media (max-width: 960px) {
     .hug-nav-links { display: none; }

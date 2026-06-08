@@ -36,21 +36,21 @@ onMounted(async () => {
     <div class="min-h-screen bg-white">
         <!-- Navbar -->
         <header class="bg-white sticky top-0 z-50" style="height: 76px; border-bottom: 1px solid var(--light-grey)">
-            <div class="max-w-6xl mx-auto px-8 h-full flex items-center justify-between">
+            <div class="max-w-7xl mx-auto px-8 h-full flex items-center justify-between">
                 <div class="flex items-center gap-3">
                     <RouterLink to="/" style="text-decoration: none; font-weight: 800; font-size: 20px; color: var(--default-titles)">HUG</RouterLink>
                     <span style="color: rgba(44,65,64,0.3); font-size: 18px">|</span>
-                    <span style="font-size: 15px; font-weight: 600; color: var(--default-text)">Don du sang</span>
+                    <span style="font-weight: 600; color: var(--default-text)">Don du sang</span>
                     <template v-if="entreprise">
                         <span style="color: rgba(44,65,64,0.3); font-size: 18px">×</span>
-                        <span style="font-size: 15px; font-weight: 700" :style="{ color: brandColor }">{{ entreprise.nom }}</span>
+                        <span style="font-weight: 700" :style="{ color: brandColor }">{{ entreprise.nom }}</span>
                     </template>
                 </div>
                 <nav class="hidden md:flex items-center gap-7 text-base font-medium">
                     <RouterLink :to="`/entreprise/${route.params.slug}`" style="color: var(--default-titles); text-decoration: none" class="hover:opacity-60 transition">Accueil</RouterLink>
                     <RouterLink :to="`/entreprise/${route.params.slug}/label`" style="color: var(--default-titles); text-decoration: none" class="hover:opacity-60 transition">Label CTS</RouterLink>
                     <RouterLink :to="`/entreprise/${route.params.slug}/trophee`" style="color: var(--default-titles); text-decoration: none" class="hover:opacity-60 transition">Trophée de la générosité</RouterLink>
-                    <RouterLink :to="coinEntrepriseLink" style="color: var(--default-titles); text-decoration: none" class="hover:opacity-60 transition">Coin entreprise</RouterLink>
+                    <RouterLink :to="coinEntrepriseLink" style="color: var(--default-titles); text-decoration: none" class="hover:opacity-60 transition">Espace entreprise</RouterLink>
                 </nav>
                 <RouterLink
                     v-if="collecte"
@@ -92,7 +92,7 @@ onMounted(async () => {
                     <h2 class="font-bold mb-3" style="font-size: 22px; color: var(--default-titles)">
                         Dossier d'inscription
                     </h2>
-                    <p class="mb-8" style="font-size: 15px; color: var(--default-text); line-height: 1.7">
+                    <p class="mb-8" style="color: var(--default-text); line-height: 1.7">
                         Pour vous inscrire à la collecte de sang, veuillez remplir le formulaire d'inscription officiel des HUG. Ce document nous permet de préparer votre accueil dans les meilleures conditions.
                     </p>
                     <a
@@ -113,7 +113,7 @@ onMounted(async () => {
 
         <!-- Footer -->
         <footer style="background: var(--default-titles); padding: 3rem 0 2rem">
-            <div class="max-w-6xl mx-auto px-8 flex items-center justify-between">
+            <div class="max-w-7xl mx-auto px-8 flex items-center justify-between">
                 <div>
                     <div class="font-extrabold text-xl text-white">HUG</div>
                     <div class="captions" style="color: var(--color-default-green)">Hôpitaux Universitaires Genève</div>

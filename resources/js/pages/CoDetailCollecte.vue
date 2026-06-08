@@ -235,7 +235,7 @@ onMounted(async () => {
 
         <!-- Footer -->
         <footer style="background: var(--default-titles); padding: 2.5rem 0 2rem">
-            <div class="max-w-6xl mx-auto px-8 flex items-center justify-between">
+            <div class="max-w-7xl mx-auto px-8 flex items-center justify-between">
                 <div>
                     <div class="font-extrabold text-xl text-white">HUG</div>
                     <div class="captions" style="color: var(--color-default-green)">Hôpitaux Universitaires Genève</div>

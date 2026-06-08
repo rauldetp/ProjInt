@@ -99,7 +99,7 @@ onMounted(async () => {
                 class="absolute inset-0"
                 style="background: rgba(44, 65, 64, 0.5)"
             ></div>
-            <div class="relative max-w-6xl mx-auto px-8 w-full z-10">
+            <div class="relative max-w-7xl mx-auto px-8 w-full z-10">
                 <p
                     class="font-semibold mb-3 uppercase tracking-widest"
                     style="font-size: 13px; color: var(--color-default-green)"
@@ -153,7 +153,7 @@ onMounted(async () => {
         <!-- Une distinction qui compte -->
         <section class="bg-white py-20">
             <div
-                class="max-w-6xl mx-auto px-8 grid grid-cols-2 gap-16 items-center"
+                class="max-w-7xl mx-auto px-8 grid grid-cols-2 gap-16 items-center"
             >
                 <div>
                     <h2
@@ -247,7 +247,6 @@ onMounted(async () => {
                                 >
                                 <span
                                     style="
-                                        font-size: 15px;
                                         color: var(--default-text);
                                         line-height: 1.55;
                                     "
@@ -270,7 +269,6 @@ onMounted(async () => {
                                 >
                                 <span
                                     style="
-                                        font-size: 15px;
                                         color: var(--default-text);
                                         line-height: 1.55;
                                     "
@@ -292,7 +290,6 @@ onMounted(async () => {
                                 >
                                 <span
                                     style="
-                                        font-size: 15px;
                                         color: var(--default-text);
                                         line-height: 1.55;
                                     "
@@ -313,7 +310,6 @@ onMounted(async () => {
                                 >
                                 <span
                                     style="
-                                        font-size: 15px;
                                         color: var(--default-text);
                                         line-height: 1.55;
                                     "
@@ -328,7 +324,6 @@ onMounted(async () => {
                             to="/label"
                             class="inline-block mt-8 font-semibold rounded-full border-2 px-6 py-2 transition hover:opacity-75"
                             style="
-                                font-size: 15px;
                                 color: var(--default-titles);
                                 border-color: var(--default-titles);
                                 text-decoration: none;
@@ -372,7 +367,6 @@ onMounted(async () => {
                                 >
                                 <span
                                     style="
-                                        font-size: 15px;
                                         color: var(--default-text);
                                         line-height: 1.55;
                                     "
@@ -395,7 +389,6 @@ onMounted(async () => {
                                 >
                                 <span
                                     style="
-                                        font-size: 15px;
                                         color: var(--default-text);
                                         line-height: 1.55;
                                     "
@@ -418,7 +411,6 @@ onMounted(async () => {
                                 >
                                 <span
                                     style="
-                                        font-size: 15px;
                                         color: var(--default-text);
                                         line-height: 1.55;
                                     "
@@ -441,7 +433,6 @@ onMounted(async () => {
                                 >
                                 <span
                                     style="
-                                        font-size: 15px;
                                         color: var(--default-text);
                                         line-height: 1.55;
                                     "
@@ -457,7 +448,6 @@ onMounted(async () => {
                             to="/login"
                             class="inline-block mt-8 text-white font-semibold rounded-full px-6 py-2 transition hover:opacity-80"
                             style="
-                                font-size: 15px;
                                 background: var(--color-default-red);
                                 text-decoration: none;
                             "
@@ -470,7 +460,7 @@ onMounted(async () => {
 
         <!-- Critères d'attribution -->
         <section class="bg-white py-20">
-            <div class="max-w-6xl mx-auto px-8">
+            <div class="max-w-7xl mx-auto px-8">
                 <h2
                     class="font-bold text-center mb-4"
                     style="font-size: 32px; color: var(--default-titles)"
@@ -537,7 +527,7 @@ onMounted(async () => {
             class="py-20"
             style="background: linear-gradient(135deg, var(--color-default-blue-59), var(--color-default-green))"
         >
-            <div class="max-w-6xl mx-auto px-8">
+            <div class="max-w-7xl mx-auto px-8">
                 <h2
                     class="font-bold text-center mb-12"
                     style="font-size: 32px; color: var(--default-titles)"
@@ -554,7 +544,6 @@ onMounted(async () => {
                         <p
                             class="italic flex-1"
                             style="
-                                font-size: 15px;
                                 color: var(--default-titles);
                                 line-height: 1.7;
                             "
@@ -700,7 +689,7 @@ onMounted(async () => {
 
         <!-- Process candidature -->
         <section style="background: var(--light-grey)" class="py-20">
-            <div class="max-w-6xl mx-auto px-8">
+            <div class="max-w-7xl mx-auto px-8">
                 <h2
                     class="font-bold text-center mb-12"
                     style="font-size: 32px; color: var(--default-titles)"
@@ -729,7 +718,7 @@ onMounted(async () => {
                         </p>
                         <h3
                             class="font-bold"
-                            style="font-size: 15px; color: var(--default-titles)"
+                            style="color: var(--default-titles)"
                         >
                             {{ e.title }}
                         </h3>
@@ -796,7 +785,7 @@ onMounted(async () => {
 
         <!-- Footer -->
         <footer style="background: var(--default-titles); padding: 3.5rem 0 2.5rem">
-            <div class="max-w-6xl mx-auto px-8">
+            <div class="max-w-7xl mx-auto px-8">
                 <div class="grid grid-cols-4 gap-10 mb-12">
                     <div>
                         <div class="font-extrabold text-2xl mb-1 text-white">

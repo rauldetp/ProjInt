@@ -60,7 +60,6 @@ onMounted(() => {
                                     </p>
                                     <p
                                         style="
-                                            font-size: 15px;
                                             color: var(--default-text);
                                             line-height: 1.7;
                                         "
@@ -107,7 +106,6 @@ onMounted(() => {
                             </h2>
                             <p
                                 style="
-                                    font-size: 15px;
                                     color: var(--default-text);
                                     line-height: 1.8;
                                 "
@@ -124,7 +122,6 @@ onMounted(() => {
                                 target="_blank"
                                 rel="noopener"
                                 style="
-                                    font-size: 15px;
                                     color: var(--color-default-red);
                                     text-decoration: none;
                                     font-weight: 500;
@@ -150,7 +147,6 @@ onMounted(() => {
                             <p
                                 class="mb-6"
                                 style="
-                                    font-size: 15px;
                                     color: var(--default-text);
                                     line-height: 1.8;
                                 "
@@ -208,7 +204,7 @@ onMounted(() => {
                         >
                             <p
                                 class="font-semibold mb-4"
-                                style="font-size: 15px; color: var(--default-titles)"
+                                style="color: var(--default-titles)"
                             >
                                 Ce contenu vous a-t-il été utile ?
                             </p>
@@ -317,7 +313,7 @@ onMounted(() => {
 
         <!-- Footer -->
         <footer style="background: var(--default-titles); padding: 3.5rem 0 2.5rem">
-            <div class="max-w-6xl mx-auto px-8">
+            <div class="max-w-7xl mx-auto px-8">
                 <div class="grid grid-cols-4 gap-10 mb-12">
                     <div>
                         <div class="font-extrabold text-2xl mb-1 text-white">

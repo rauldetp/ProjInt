@@ -30,7 +30,7 @@ onMounted(async () => {
 </script>
 
 <template>
-    <div class="min-h-screen bg-white" style="font-family: 'Instrument Sans', sans-serif">
+    <div class="min-h-screen bg-white">
 
         <!-- Navbar -->
         <CoNavbar :collecte="collecte" />
@@ -50,7 +50,7 @@ onMounted(async () => {
 
         <!-- Ce qu'il représente -->
         <section id="ce-quil-represente" class="bg-white py-20">
-            <div class="max-w-6xl mx-auto px-8 grid grid-cols-2 gap-16 items-center">
+            <div class="max-w-7xl mx-auto px-8 grid grid-cols-2 gap-16 items-center">
                 <div>
                     <h2 class="font-bold mb-5" style="font-size: 32px; color: var(--default-titles)">Ce qu'il représente</h2>
                     <p style="color: var(--default-text); line-height: 1.75">
@@ -71,7 +71,7 @@ onMounted(async () => {
 
         <!-- Les bénéfices -->
         <section class="bg-white py-16 border-t" style="border-color: var(--light-grey)">
-            <div class="max-w-6xl mx-auto px-8">
+            <div class="max-w-7xl mx-auto px-8">
                 <h2 class="font-bold text-center mb-12" style="font-size: 32px; color: var(--default-titles)">Les bénéfices du label</h2>
                 <div class="grid grid-cols-3 gap-8">
                     <div class="flex flex-col items-center text-center gap-4">
@@ -111,7 +111,7 @@ onMounted(async () => {
 
         <!-- Comment ça marche -->
         <section class="bg-white py-20">
-            <div class="max-w-6xl mx-auto px-8 grid grid-cols-2 gap-16 items-center">
+            <div class="max-w-7xl mx-auto px-8 grid grid-cols-2 gap-16 items-center">
                 <div>
                     <h2 class="font-bold mb-5" style="font-size: 32px; color: var(--default-titles)">Comment ça marche ?</h2>
                     <p class="mb-8" style="color: var(--default-text); line-height: 1.75">
@@ -134,7 +134,7 @@ onMounted(async () => {
 
         <!-- Rejoignez le mouvement -->
         <section class="py-20" style="background: var(--light-grey)">
-            <div class="max-w-6xl mx-auto px-8 grid grid-cols-2 gap-16 items-center">
+            <div class="max-w-7xl mx-auto px-8 grid grid-cols-2 gap-16 items-center">
                 <div class="relative rounded-2xl overflow-hidden" style="height: 300px; background: #e2e8e8">
                     <img :src="'/images/thumbnail_mouvement.webp'" alt="" class="absolute inset-0 w-full h-full object-cover" />
                 </div>
@@ -156,7 +156,7 @@ onMounted(async () => {
 
         <!-- Footer HUG -->
         <footer style="background: var(--default-titles); padding: 3.5rem 0 2.5rem">
-            <div class="max-w-6xl mx-auto px-8">
+            <div class="max-w-7xl mx-auto px-8">
                 <div class="grid grid-cols-4 gap-10 mb-12">
                     <div>
                         <div class="font-extrabold text-2xl mb-1 text-white">HUG</div>
@@ -165,23 +165,23 @@ onMounted(async () => {
                     <div>
                         <p class="font-bold mb-5 text-white" style="font-size: 18px">Pages</p>
                         <ul class="space-y-3">
-                            <li><RouterLink :to="`/entreprise/${route.params.slug}`" class="text-white hover:opacity-70 transition" style="font-size: 15px; text-decoration: none">Accueil collecte</RouterLink></li>
-                            <li><RouterLink :to="`/entreprise/${route.params.slug}/label`" class="text-white hover:opacity-70 transition" style="font-size: 15px; text-decoration: none">Label CTS</RouterLink></li>
-                            <li><RouterLink :to="`/entreprise/${route.params.slug}/trophee`" class="text-white hover:opacity-70 transition" style="font-size: 15px; text-decoration: none">Trophée de la générosité</RouterLink></li>
+                            <li><RouterLink :to="`/entreprise/${route.params.slug}`" class="text-white hover:opacity-70 transition" style="text-decoration: none">Accueil collecte</RouterLink></li>
+                            <li><RouterLink :to="`/entreprise/${route.params.slug}/label`" class="text-white hover:opacity-70 transition" style="text-decoration: none">Label CTS</RouterLink></li>
+                            <li><RouterLink :to="`/entreprise/${route.params.slug}/trophee`" class="text-white hover:opacity-70 transition" style="text-decoration: none">Trophée de la générosité</RouterLink></li>
                         </ul>
                     </div>
                     <div>
                         <p class="font-bold mb-5 text-white" style="font-size: 18px">Support</p>
                         <ul class="space-y-3">
-                            <li><RouterLink to="/faq" class="text-white hover:opacity-70 transition" style="font-size: 15px; text-decoration: none">FAQ</RouterLink></li>
-                            <li><RouterLink to="/contact" class="text-white hover:opacity-70 transition" style="font-size: 15px; text-decoration: none">Contact</RouterLink></li>
+                            <li><RouterLink to="/faq" class="text-white hover:opacity-70 transition" style="text-decoration: none">FAQ</RouterLink></li>
+                            <li><RouterLink to="/contact" class="text-white hover:opacity-70 transition" style="text-decoration: none">Contact</RouterLink></li>
                         </ul>
                     </div>
                     <div>
                         <p class="font-bold mb-5 text-white" style="font-size: 18px">Mentions légales</p>
                         <ul class="space-y-3">
-                            <li><a href="#" class="text-white hover:opacity-70 transition" style="font-size: 15px; text-decoration: none">Politique de confidentialité</a></li>
-                            <li><a href="#" class="text-white hover:opacity-70 transition" style="font-size: 15px; text-decoration: none">Conditions générales</a></li>
+                            <li><a href="#" class="text-white hover:opacity-70 transition" style="text-decoration: none">Politique de confidentialité</a></li>
+                            <li><a href="#" class="text-white hover:opacity-70 transition" style="text-decoration: none">Conditions générales</a></li>
                         </ul>
                     </div>
                 </div>

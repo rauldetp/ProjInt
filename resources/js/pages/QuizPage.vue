@@ -2,6 +2,7 @@
 import { ref, computed, onMounted } from "vue";
 import { useAuthStore } from "../stores/auth";
 import HugNavbar from "../components/HugNavbar.vue";
+import QuizNavbar from "../components/QuizNavbar.vue";
 
 const auth = useAuthStore();
 
@@ -243,7 +244,9 @@ function retakeQuiz() {
 <template>
     <div class="page">
 
-        <HugNavbar />
+        <!-- Nav standard sur l'intro, nav quiz sur les autres étapes -->
+        <HugNavbar v-if="step === 'intro'" />
+        <QuizNavbar v-else :on-back="goBack" />
 
         <!-- ══════════════════════════════════════════════════════
              INTRO — split screen
@@ -279,7 +282,7 @@ function retakeQuiz() {
                         </div>
                     </div>
 
-                    <button class="btn-teal" @click="startQuiz">
+                    <button class="btn btn-filled-blue" @click="startQuiz">
                         Commencer le test
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                     </button>
@@ -331,24 +334,18 @@ function retakeQuiz() {
                         @click="selectAnswer(opt)"
                     >
                         <span class="opt-icon">
-                            <svg v-if="selectedAnswer === opt && isGoodAnswer(opt)" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                            <svg v-else-if="selectedAnswer === opt && !isGoodAnswer(opt)" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                            <svg v-if="opt === 'Oui'" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                            <svg v-else-if="opt === 'Non'" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                         </span>
                         {{ opt }}
                     </button>
                 </div>
 
-                <Transition name="slide-up">
-                    <button v-if="selectedAnswer" class="btn-continuer" @click="confirm">
-                        Prochaine question
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                    </button>
-                </Transition>
-
-                <button class="btn-back" @click="goBack">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-                    Retour
+                <button class="btn btn-filled-blue mb-6" :disabled="!selectedAnswer" @click="confirm">
+                    Prochaine question
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                 </button>
+
             </div>
         </div>
 
@@ -384,7 +381,7 @@ function retakeQuiz() {
                         <p class="tip-text">{{ currentInfo.tip }}</p>
                     </div>
 
-                    <button class="btn-teal" style="margin-top: 0.5rem" @click="continueFromInfo">
+                    <button class="btn btn-filled-blue" style="margin-top: 0.5rem" @click="continueFromInfo">
                         J'ai bien compris
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                     </button>
@@ -460,7 +457,7 @@ function retakeQuiz() {
                             <span class="material-symbols-outlined" style="font-size: 18px; color: #000">info</span>
                             <p>La validation finale sera effectuée sur place par l'équipe médicale.</p>
                         </div>
-                        <RouterLink :to="participerLink" class="btn-teal btn-link">
+                        <RouterLink :to="participerLink" class="btn btn-filled-blue">
                             Prendre rendez-vous
                             <span class="material-symbols-outlined" style="font-size: 18px; color: #000">calendar_month</span>
                         </RouterLink>
@@ -470,7 +467,7 @@ function retakeQuiz() {
                     <template v-else-if="resultat === 'non-eligible'">
                         <h2 class="result-title">Certains points ne sont pas éligibles.</h2>
                         <p class="result-sub">Malheureusement, sur la base de vos réponses, certains points ne remplissent pas les conditions de don adéquates.</p>
-                        <button class="btn-teal" @click="retakeQuiz">
+                        <button class="btn btn-filled-blue" @click="retakeQuiz">
                             Découvrir pourquoi
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                         </button>
@@ -484,7 +481,7 @@ function retakeQuiz() {
                             <span class="material-symbols-outlined" style="font-size: 18px; color: #000">info</span>
                             <p>Vous pouvez tout de même vous inscrire et venir rencontrer notre équipe médicale.</p>
                         </div>
-                        <RouterLink :to="participerLink" class="btn-teal btn-link">
+                        <RouterLink :to="participerLink" class="btn btn-filled-blue">
                             Prendre rendez-vous
                             <span class="material-symbols-outlined" style="font-size: 18px; color: #000">calendar_month</span>
                         </RouterLink>
@@ -502,7 +499,7 @@ function retakeQuiz() {
 
 <style scoped>
 .page {
-    font-family: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+    font-family: inherit;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -593,24 +590,7 @@ function retakeQuiz() {
 }
 
 /* ── Shared buttons ──────────────────────────────────── */
-.btn-teal {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 1rem;
-    font-weight: 600;
-    background: var(--color-default-blue-59);
-    color: var(--default-titles);
-    border: none;
-    border-radius: 9999px;
-    padding: 0.85rem 1.75rem;
-    cursor: pointer;
-    transition: opacity 0.15s;
-    font-family: inherit;
-    text-decoration: none;
-    white-space: nowrap;
-}
-.btn-teal:hover { opacity: 0.85; }
+
 .btn-link { text-decoration: none; display: inline-flex; }
 .btn-retake {
     background: none;
@@ -625,6 +605,7 @@ function retakeQuiz() {
     display: block;
 }
 .btn-retake:hover { opacity: 0.7; }
+
 
 /* ── QUIZ screen ─────────────────────────────────────── */
 .quiz-screen {
@@ -644,21 +625,25 @@ function retakeQuiz() {
     gap: 0;
 }
 .step {
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    border: 2px solid #e0e8e8;
+    border: 1.5px solid #AFBFBF;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 0.82rem;
     font-weight: 700;
-    color: #8fa8a6;
+    color: #AFBFBF;
     background: white;
     flex-shrink: 0;
     transition: background 0.3s, border-color 0.3s, color 0.3s;
 }
-.step-active,
+.step-active {
+    border-color: var(--color-default-red);
+    color: var(--color-default-red);
+    background: white;
+}
 .step-done {
     background: var(--color-default-red);
     border-color: var(--color-default-red);
@@ -667,9 +652,10 @@ function retakeQuiz() {
 .step-line {
     flex: 1;
     height: 2px;
-    background: #e0e8e8;
-    min-width: 12px;
-    max-width: 48px;
+    background: #AFBFBF;
+    min-width: 8px;
+    max-width: 32px;
+    margin: 0 5px;
     transition: background 0.3s;
 }
 .step-line-done {
@@ -741,11 +727,11 @@ function retakeQuiz() {
     font-family: inherit;
     text-align: left;
 }
-.quiz-option.opt-oui { border-color: #22c55e; color: #16a34a; }
-.quiz-option.opt-non { border-color: #ef4444; color: #dc2626; }
-.quiz-option.opt-oui.is-selected { background: #f0fdf4; }
-.quiz-option.opt-non.is-selected { background: #fff1f2; }
-.quiz-option.opt-other.is-selected { border-color: var(--default-titles); background: #f0f9f8; }
+.quiz-option.opt-oui { border-color: var(--color-default-green-39); color: var(--color-default-green-39); }
+.quiz-option.opt-non { border-color: var(--color-default-red); color: var(--color-default-red); }
+.quiz-option.opt-oui.is-selected { background: var(--color-default-green-39); border-color: var(--color-default-green-39); color: white; }
+.quiz-option.opt-non.is-selected { background: var(--color-default-red); border-color: var(--color-default-red); color: white; }
+.quiz-option.opt-other.is-selected { border-color: var(--color-default-blue-39); background: var(--color-default-blue-39); color: white; }
 .quiz-option:hover:not(.is-selected) { opacity: 0.75; }
 .opt-icon {
     width: 18px;
@@ -756,23 +742,6 @@ function retakeQuiz() {
     justify-content: center;
 }
 
-.btn-continuer {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.95rem;
-    font-weight: 600;
-    background: rgba(101,198,193,0.18);
-    color: var(--default-titles);
-    border: none;
-    border-radius: 9999px;
-    padding: 0.85rem 2rem;
-    cursor: pointer;
-    transition: background 0.15s;
-    font-family: inherit;
-    margin-bottom: 1.5rem;
-}
-.btn-continuer:hover { background: rgba(101,198,193,0.3); }
 
 .btn-back {
     display: inline-flex;

@@ -104,7 +104,7 @@ onMounted(async () => {
 
         <!-- Une distinction qui compte -->
         <section class="bg-white py-20">
-            <div class="max-w-6xl mx-auto px-8 grid grid-cols-2 gap-16 items-center">
+            <div class="max-w-7xl mx-auto px-8 grid grid-cols-2 gap-16 items-center">
                 <div>
                     <h2 class="font-bold mb-5" style="font-size: 32px; color: var(--default-titles)">Une distinction qui compte</h2>
                     <p class="mb-5" style="color: var(--default-text); line-height: 1.75">
@@ -129,9 +129,9 @@ onMounted(async () => {
                         <p class="font-bold mb-1" style="font-size: 20px; color: var(--default-titles)">Label CTS</p>
                         <p style="font-size: 13px; color: var(--default-text); margin-bottom: 2rem">Certification de participation</p>
                         <div class="flex flex-col gap-4">
-                            <div class="flex items-start gap-3"><span style="color: #c0cac9; flex-shrink: 0; margin-top: 2px; font-size: 14px">—</span><span style="font-size: 15px; color: var(--default-text); line-height: 1.55">Pour <strong style="color: var(--default-titles)">toutes les entreprises</strong> qui organisent une collecte</span></div>
-                            <div class="flex items-start gap-3"><span style="color: #c0cac9; flex-shrink: 0; margin-top: 2px; font-size: 14px">—</span><span style="font-size: 15px; color: var(--default-text); line-height: 1.55"><strong style="color: var(--default-titles)">Automatique</strong> dès la fin de la collecte</span></div>
-                            <div class="flex items-start gap-3"><span style="color: #c0cac9; flex-shrink: 0; margin-top: 2px; font-size: 14px">—</span><span style="font-size: 15px; color: var(--default-text); line-height: 1.55">Valide <strong style="color: var(--default-titles)">1 an</strong>, renouvelable</span></div>
+                            <div class="flex items-start gap-3"><span style="color: #c0cac9; flex-shrink: 0; margin-top: 2px; font-size: 14px">—</span><span style="color: var(--default-text); line-height: 1.55">Pour <strong style="color: var(--default-titles)">toutes les entreprises</strong> qui organisent une collecte</span></div>
+                            <div class="flex items-start gap-3"><span style="color: #c0cac9; flex-shrink: 0; margin-top: 2px; font-size: 14px">—</span><span style="color: var(--default-text); line-height: 1.55"><strong style="color: var(--default-titles)">Automatique</strong> dès la fin de la collecte</span></div>
+                            <div class="flex items-start gap-3"><span style="color: #c0cac9; flex-shrink: 0; margin-top: 2px; font-size: 14px">—</span><span style="color: var(--default-text); line-height: 1.55">Valide <strong style="color: var(--default-titles)">1 an</strong>, renouvelable</span></div>
                         </div>
                         <RouterLink :to="`/entreprise/${route.params.slug}/label`" class="inline-block mt-8 font-semibold rounded-full px-6 py-2 transition hover:opacity-75" :style="{ fontSize: '15px', background: brandColor, color: cobrand.textOnBrand, textDecoration: 'none' }">Découvrir le Label →</RouterLink>
                     </div>
@@ -139,9 +139,9 @@ onMounted(async () => {
                         <p class="font-bold mb-1" style="font-size: 20px; color: var(--default-titles)">Trophée de la Générosité</p>
                         <p style="font-size: 13px; color: var(--default-text); margin-bottom: 2rem">Distinction d'excellence</p>
                         <div class="flex flex-col gap-4">
-                            <div class="flex items-start gap-3"><span style="color: #c0cac9; flex-shrink: 0; margin-top: 2px; font-size: 14px">—</span><span style="font-size: 15px; color: var(--default-text); line-height: 1.55">Pour les entreprises <strong style="color: var(--default-titles)">les plus engagées</strong> de l'année</span></div>
-                            <div class="flex items-start gap-3"><span style="color: #c0cac9; flex-shrink: 0; margin-top: 2px; font-size: 14px">—</span><span style="font-size: 15px; color: var(--default-text); line-height: 1.55">Attribué par <strong style="color: var(--default-titles)">jury HUG</strong> en décembre</span></div>
-                            <div class="flex items-start gap-3"><span style="color: #c0cac9; flex-shrink: 0; margin-top: 2px; font-size: 14px">—</span><span style="font-size: 15px; color: var(--default-text); line-height: 1.55">Distinction <strong style="color: var(--default-titles)">permanente</strong> au palmarès</span></div>
+                            <div class="flex items-start gap-3"><span style="color: #c0cac9; flex-shrink: 0; margin-top: 2px; font-size: 14px">—</span><span style="color: var(--default-text); line-height: 1.55">Pour les entreprises <strong style="color: var(--default-titles)">les plus engagées</strong> de l'année</span></div>
+                            <div class="flex items-start gap-3"><span style="color: #c0cac9; flex-shrink: 0; margin-top: 2px; font-size: 14px">—</span><span style="color: var(--default-text); line-height: 1.55">Attribué par <strong style="color: var(--default-titles)">jury HUG</strong> en décembre</span></div>
+                            <div class="flex items-start gap-3"><span style="color: #c0cac9; flex-shrink: 0; margin-top: 2px; font-size: 14px">—</span><span style="color: var(--default-text); line-height: 1.55">Distinction <strong style="color: var(--default-titles)">permanente</strong> au palmarès</span></div>
                         </div>
                         <RouterLink to="/login" class="inline-block mt-8 font-semibold rounded-full px-6 py-2 transition hover:opacity-80" :style="{ fontSize: '15px', background: brandColor, color: cobrand.textOnBrand, textDecoration: 'none' }">Candidater au Trophée 2026 →</RouterLink>
                     </div>
@@ -151,7 +151,7 @@ onMounted(async () => {
 
         <!-- Critères d'attribution -->
         <section class="bg-white py-20">
-            <div class="max-w-6xl mx-auto px-8">
+            <div class="max-w-7xl mx-auto px-8">
                 <h2 class="font-bold text-center mb-4" style="font-size: 32px; color: var(--default-titles)">Comment est-il attribué ?</h2>
                 <p class="text-center mb-16 max-w-xl mx-auto" style="color: var(--default-text); line-height: 1.6">Trois critères évalués par le jury HUG pour identifier les entreprises les plus méritantes.</p>
                 <div class="grid grid-cols-3 gap-12 mb-12">
@@ -167,11 +167,11 @@ onMounted(async () => {
 
         <!-- Témoignages co-brandés -->
         <section class="py-20" :style="{ background: sectionGradient }">
-            <div class="max-w-6xl mx-auto px-8">
+            <div class="max-w-7xl mx-auto px-8">
                 <h2 class="font-bold text-center mb-12" :style="{ fontSize: '32px', color: cobrand.textOnBrand }">Ils ont reçu le Trophée</h2>
                 <div class="grid grid-cols-3 gap-6">
                     <div v-for="t in temoignages" :key="t.author" class="rounded-2xl bg-white flex flex-col gap-4" style="padding: 2rem">
-                        <p class="italic flex-1" style="font-size: 15px; color: var(--default-titles); line-height: 1.7">« {{ t.quote }} »</p>
+                        <p class="italic flex-1" style="color: var(--default-titles); line-height: 1.7">« {{ t.quote }} »</p>
                         <div class="pt-4 border-t" style="border-color: var(--light-grey)">
                             <p class="font-semibold" style="font-size: 14px; color: var(--default-titles)">{{ t.author }}</p>
                             <p style="font-size: 13px; color: var(--default-text)">{{ t.company }}</p>
@@ -215,12 +215,12 @@ onMounted(async () => {
 
         <!-- Process candidature -->
         <section style="background: var(--light-grey)" class="py-20">
-            <div class="max-w-6xl mx-auto px-8">
+            <div class="max-w-7xl mx-auto px-8">
                 <h2 class="font-bold text-center mb-12" style="font-size: 32px; color: var(--default-titles)">Comment candidater ?</h2>
                 <div class="grid grid-cols-4 gap-6">
                     <div v-for="e in etapes" :key="e.num" class="flex flex-col gap-4" :style="{ borderTop: `2px solid ${brandColor}`, paddingTop: '1.5rem' }">
                         <p class="font-black" :style="{ fontSize: '32px', color: brandColor, lineHeight: '1' }">{{ e.num }}</p>
-                        <h3 class="font-bold" style="font-size: 15px; color: var(--default-titles)">{{ e.title }}</h3>
+                        <h3 class="font-bold" style="color: var(--default-titles)">{{ e.title }}</h3>
                         <p style="font-size: 14px; color: var(--default-text); line-height: 1.65">{{ e.desc }}</p>
                     </div>
                 </div>
@@ -241,7 +241,7 @@ onMounted(async () => {
 
         <!-- Footer HUG -->
         <footer style="background: var(--default-titles); padding: 3.5rem 0 2.5rem">
-            <div class="max-w-6xl mx-auto px-8">
+            <div class="max-w-7xl mx-auto px-8">
                 <div class="grid grid-cols-4 gap-10 mb-12">
                     <div>
                         <div class="font-extrabold text-2xl mb-1 text-white">HUG</div>
@@ -250,23 +250,23 @@ onMounted(async () => {
                     <div>
                         <p class="font-bold mb-5 text-white" style="font-size: 18px">Pages</p>
                         <ul class="space-y-3">
-                            <li><RouterLink :to="`/entreprise/${route.params.slug}`" class="text-white hover:opacity-70 transition" style="font-size: 15px; text-decoration: none">Accueil collecte</RouterLink></li>
-                            <li><RouterLink :to="`/entreprise/${route.params.slug}/label`" class="text-white hover:opacity-70 transition" style="font-size: 15px; text-decoration: none">Label CTS</RouterLink></li>
-                            <li><RouterLink :to="`/entreprise/${route.params.slug}/trophee`" class="text-white hover:opacity-70 transition" style="font-size: 15px; text-decoration: none">Trophée de la générosité</RouterLink></li>
+                            <li><RouterLink :to="`/entreprise/${route.params.slug}`" class="text-white hover:opacity-70 transition" style="text-decoration: none">Accueil collecte</RouterLink></li>
+                            <li><RouterLink :to="`/entreprise/${route.params.slug}/label`" class="text-white hover:opacity-70 transition" style="text-decoration: none">Label CTS</RouterLink></li>
+                            <li><RouterLink :to="`/entreprise/${route.params.slug}/trophee`" class="text-white hover:opacity-70 transition" style="text-decoration: none">Trophée de la générosité</RouterLink></li>
                         </ul>
                     </div>
                     <div>
                         <p class="font-bold mb-5 text-white" style="font-size: 18px">Support</p>
                         <ul class="space-y-3">
-                            <li><RouterLink to="/faq" class="text-white hover:opacity-70 transition" style="font-size: 15px; text-decoration: none">FAQ</RouterLink></li>
-                            <li><RouterLink to="/contact" class="text-white hover:opacity-70 transition" style="font-size: 15px; text-decoration: none">Contact</RouterLink></li>
+                            <li><RouterLink to="/faq" class="text-white hover:opacity-70 transition" style="text-decoration: none">FAQ</RouterLink></li>
+                            <li><RouterLink to="/contact" class="text-white hover:opacity-70 transition" style="text-decoration: none">Contact</RouterLink></li>
                         </ul>
                     </div>
                     <div>
                         <p class="font-bold mb-5 text-white" style="font-size: 18px">Mentions légales</p>
                         <ul class="space-y-3">
-                            <li><a href="#" class="text-white hover:opacity-70 transition" style="font-size: 15px; text-decoration: none">Politique de confidentialité</a></li>
-                            <li><a href="#" class="text-white hover:opacity-70 transition" style="font-size: 15px; text-decoration: none">Conditions générales</a></li>
+                            <li><a href="#" class="text-white hover:opacity-70 transition" style="text-decoration: none">Politique de confidentialité</a></li>
+                            <li><a href="#" class="text-white hover:opacity-70 transition" style="text-decoration: none">Conditions générales</a></li>
                         </ul>
                     </div>
                 </div>

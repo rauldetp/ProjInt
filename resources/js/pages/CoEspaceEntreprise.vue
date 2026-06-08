@@ -173,7 +173,7 @@ onMounted(async () => {
 
             <!-- Vue globale -->
             <section style="background: var(--light-grey); padding: 2.5rem 0 3rem">
-                <div class="max-w-6xl mx-auto px-8">
+                <div class="max-w-7xl mx-auto px-8">
                     <h1 class="font-bold text-center mb-8" style="font-size: 36px; color: var(--default-titles)">Vue globale</h1>
 
                     <!-- Stats -->
@@ -223,7 +223,7 @@ onMounted(async () => {
 
             <!-- Campagnes de collectes -->
             <section style="background: white; padding: 3rem 0 4rem">
-                <div class="max-w-6xl mx-auto px-8">
+                <div class="max-w-7xl mx-auto px-8">
 
                     <!-- Header section -->
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem">
@@ -309,7 +309,7 @@ onMounted(async () => {
 
         <!-- Footer -->
         <footer style="background: var(--default-titles); padding: 3.5rem 0 2.5rem">
-            <div class="max-w-6xl mx-auto px-8">
+            <div class="max-w-7xl mx-auto px-8">
                 <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 2.5rem; margin-bottom: 3rem">
                     <div>
                         <div class="font-extrabold text-2xl mb-1 text-white">HUG</div>
@@ -318,23 +318,23 @@ onMounted(async () => {
                     <div>
                         <p class="font-bold mb-5 text-white" style="font-size: 18px">Pages</p>
                         <ul class="space-y-3">
-                            <li><RouterLink :to="`/entreprise/${route.params.slug}/label`" class="text-white hover:opacity-70 transition" style="font-size: 15px; text-decoration: none">Label CTS</RouterLink></li>
-                            <li><RouterLink :to="`/entreprise/${route.params.slug}/trophee`" class="text-white hover:opacity-70 transition" style="font-size: 15px; text-decoration: none">Trophée de la générosité</RouterLink></li>
-                            <li><RouterLink to="/entreprises" class="text-white hover:opacity-70 transition" style="font-size: 15px; text-decoration: none">Entreprises partenaires</RouterLink></li>
+                            <li><RouterLink :to="`/entreprise/${route.params.slug}/label`" class="text-white hover:opacity-70 transition" style="text-decoration: none">Label CTS</RouterLink></li>
+                            <li><RouterLink :to="`/entreprise/${route.params.slug}/trophee`" class="text-white hover:opacity-70 transition" style="text-decoration: none">Trophée de la générosité</RouterLink></li>
+                            <li><RouterLink to="/entreprises" class="text-white hover:opacity-70 transition" style="text-decoration: none">Entreprises partenaires</RouterLink></li>
                         </ul>
                     </div>
                     <div>
                         <p class="font-bold mb-5 text-white" style="font-size: 18px">Support</p>
                         <ul class="space-y-3">
-                            <li><RouterLink to="/faq" class="text-white hover:opacity-70 transition" style="font-size: 15px; text-decoration: none">FAQ</RouterLink></li>
-                            <li><RouterLink to="/contact" class="text-white hover:opacity-70 transition" style="font-size: 15px; text-decoration: none">Contact</RouterLink></li>
+                            <li><RouterLink to="/faq" class="text-white hover:opacity-70 transition" style="text-decoration: none">FAQ</RouterLink></li>
+                            <li><RouterLink to="/contact" class="text-white hover:opacity-70 transition" style="text-decoration: none">Contact</RouterLink></li>
                         </ul>
                     </div>
                     <div>
                         <p class="font-bold mb-5 text-white" style="font-size: 18px">Mentions légales</p>
                         <ul class="space-y-3">
-                            <li><a href="#" class="text-white hover:opacity-70 transition" style="font-size: 15px; text-decoration: none">Politique de confidentialité</a></li>
-                            <li><a href="#" class="text-white hover:opacity-70 transition" style="font-size: 15px; text-decoration: none">Conditions générales</a></li>
+                            <li><a href="#" class="text-white hover:opacity-70 transition" style="text-decoration: none">Politique de confidentialité</a></li>
+                            <li><a href="#" class="text-white hover:opacity-70 transition" style="text-decoration: none">Conditions générales</a></li>
                         </ul>
                     </div>
                 </div>

@@ -867,7 +867,6 @@ const dateRange = computed(() => {
     border: 2px solid;
     border-radius: 9999px;
     padding: 12px 24px;
-    font-size: 15px;
     font-weight: 600;
     background: transparent;
     text-decoration: none;

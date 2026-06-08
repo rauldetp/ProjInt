@@ -46,7 +46,7 @@ onMounted(() => {
         <HugNavbar />
         <div
             v-if="bannerVisible"
-            class="banner flex items-center justify-between"
+            class="banner flex items-center justify-between shadow-light"
          >
             <span class="captions">
                 Ce site est un projet étudiant réalisé dans un cadre
@@ -64,8 +64,8 @@ onMounted(() => {
 
         <!-- Hero -->
         <section
-            class="relative flex items-end pb-16 lg:items-center lg:pb-0"
-            style="height: 512px; background: var(--default-titles)"
+            class="section-hero relative flex items-end pb-16 lg:items-center lg:pb-0"
+            style="background: var(--default-titles)"
         >
             <img
                 :src="'/images/Hero_homepage.webp'"
@@ -77,7 +77,7 @@ onMounted(() => {
                 class="absolute inset-0"
                 style="background: rgba(44, 65, 64, 0.4)"
             ></div>
-            <div class="relative max-w-6xl mx-auto px-8 w-full z-10">
+            <div class="relative max-w-7xl mx-auto px-8 w-full z-10">
                 <h1
                     class="font-bold text-white leading-tight max-w-xl mb-6"
                     style="font-size: 48px"
@@ -104,7 +104,7 @@ onMounted(() => {
 
         <!-- Stats -->
         <section class="bg-white" style="padding: 40px 0; position: relative; z-index: 1; margin-top: -2px">
-            <div class="max-w-6xl mx-auto px-8 grid grid-cols-3 gap-4">
+            <div class="max-w-7xl mx-auto px-8 grid grid-cols-3 gap-4">
                 <div class="rounded-xl px-5 py-4" style="background: var(--light-grey)">
                     <p class="font-bold mb-1" style="font-size: 24px; color: var(--default-titles)">100+</p>
                     <p class="captions" style="color: var(--default-text)">Entreprises partenaires</p>
@@ -130,7 +130,7 @@ onMounted(() => {
                 margin-top: -2px;
             "
         >
-            <div class="max-w-6xl mx-auto px-8">
+            <div class="max-w-7xl mx-auto px-8">
                 <p
                     class="text-center font-semibold mb-8"
                     style="color: var(--default-titles)"
@@ -184,7 +184,7 @@ onMounted(() => {
 
         <!-- 3 steps -->
         <section style="background: var(--light-grey); padding: 72px 0; position: relative; z-index: 1; margin-top: -2px">
-            <div class="max-w-6xl mx-auto px-8">
+            <div class="max-w-7xl mx-auto px-8">
                 <h2
                     class="text-center font-bold mb-12"
                     style="font-size: 32px; color: var(--default-titles)"
@@ -192,83 +192,38 @@ onMounted(() => {
                     La démarche en trois étapes
                 </h2>
                 <div class="grid grid-cols-3 gap-8">
-                    <div class="bg-white rounded-2xl p-8">
-                        <div
-                            class="w-9 h-9 rounded-full flex items-center justify-center mb-5 font-bold"
-                            style="
-                                background: #fde8ef;
-                                color: var(--color-default-red);
-                                "
-                        >
-                            1
+                    <div class="bg-white rounded-xl p-8 shadow-md">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div
+                                class="w-11 h-11 rounded-full flex items-center justify-center font-bold flex-shrink-0"
+                                style="border: 1px solid var(--color-default-red); color: var(--color-default-red); background: white;"
+                            >1</div>
+                            <div class="flex-1 h-px" style="background: var(--light-grey)"></div>
                         </div>
-                        <h3
-                            class="font-bold mb-3"
-                            style="font-size: 24px; color: var(--default-titles)"
-                        >
-                            Prise de contact
-                        </h3>
-                        <p
-                            style="
-                                color: var(--default-text);
-                                line-height: 1.6;
-                            "
-                        >
-                            Notre équipe vous accompagne pour planifier votre
-                            projet selon vos besoins.
-                        </p>
+                        <h3 class="font-bold mb-3" style="font-size: 24px; color: var(--default-titles)">Prise de contact</h3>
+                        <p style="color: var(--default-text); line-height: 1.6">Notre équipe vous accompagne pour planifier votre projet selon vos besoins.</p>
                     </div>
-                    <div class="bg-white rounded-2xl p-8">
-                        <div
-                            class="w-9 h-9 rounded-full flex items-center justify-center mb-5 font-bold"
-                            style="
-                                background: #fde8ef;
-                                color: var(--color-default-red);
-                                "
-                        >
-                            2
+                    <div class="bg-white rounded-xl p-8 shadow-md">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div
+                                class="w-11 h-11 rounded-full flex items-center justify-center font-bold flex-shrink-0"
+                                style="border: 1px solid var(--color-default-red); color: var(--color-default-red); background: white;"
+                            >2</div>
+                            <div class="flex-1 h-px" style="background: var(--light-grey)"></div>
                         </div>
-                        <h3
-                            class="font-bold mb-3"
-                            style="font-size: 24px; color: var(--default-titles)"
-                        >
-                            Organisation de la collecte
-                        </h3>
-                        <p
-                            style="
-                                color: var(--default-text);
-                                line-height: 1.6;
-                            "
-                        >
-                            Nous planifions ensemble la collecte dans vos locaux
-                            et toute sécurité.
-                        </p>
+                        <h3 class="font-bold mb-3" style="font-size: 24px; color: var(--default-titles)">Organisation de la collecte</h3>
+                        <p style="color: var(--default-text); line-height: 1.6">Nous planifions ensemble la collecte dans vos locaux et toute sécurité.</p>
                     </div>
-                    <div class="bg-white rounded-2xl p-8">
-                        <div
-                            class="w-9 h-9 rounded-full flex items-center justify-center mb-5 font-bold"
-                            style="
-                                background: #fde8ef;
-                                color: var(--color-default-red);
-                                "
-                        >
-                            3
+                    <div class="bg-white rounded-xl p-8 shadow-md">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div
+                                class="w-11 h-11 rounded-full flex items-center justify-center font-bold flex-shrink-0"
+                                style="border: 1px solid var(--color-default-red); color: var(--color-default-red); background: white;"
+                            >3</div>
+                            <div class="flex-1 h-px" style="background: var(--light-grey)"></div>
                         </div>
-                        <h3
-                            class="font-bold mb-3"
-                            style="font-size: 24px; color: var(--default-titles)"
-                        >
-                            Label & Impact
-                        </h3>
-                        <p
-                            style="
-                                color: var(--default-text);
-                                line-height: 1.6;
-                            "
-                        >
-                            Nous valorisons ensemble la collecte dans vos locaux
-                            et toute sécurité.
-                        </p>
+                        <h3 class="font-bold mb-3" style="font-size: 24px; color: var(--default-titles)">Label & Impact</h3>
+                        <p style="color: var(--default-text); line-height: 1.6">Nous valorisons ensemble la collecte dans vos locaux et toute sécurité.</p>
                     </div>
                 </div>
             </div>
@@ -277,7 +232,7 @@ onMounted(() => {
         <!-- Label CTS -->
         <section id="label" class="bg-white" style="padding: 72px 0; position: relative; z-index: 1; margin-top: -2px">
             <div
-                class="max-w-6xl mx-auto px-8 grid grid-cols-2 gap-16 items-center"
+                class="max-w-7xl mx-auto px-8 grid grid-cols-2 gap-16 items-center"
             >
                 <div>
                     <h2
@@ -321,11 +276,11 @@ onMounted(() => {
         <!-- Trophy -->
         <section id="trophee" style="background: var(--light-grey); padding: 72px 0; position: relative; z-index: 1; margin-top: -2px">
             <div
-                class="max-w-6xl mx-auto px-8 grid grid-cols-2 gap-16 items-center"
+                class="max-w-7xl mx-auto px-8 grid grid-cols-2 gap-16 items-center"
             >
                 <div
-                    class="relative rounded-2xl overflow-hidden"
-                    style="height: 320px; background: var(--default-titles)"
+                    class="media-block relative rounded-2xl overflow-hidden"
+                    style="background: var(--default-titles)"
                 >
                     <img
                         :src="'/images/HomePage_TropheeGenerosite.webp'"
@@ -375,7 +330,7 @@ onMounted(() => {
 
         <!-- Moins de 500 salariés -->
         <section id="petites-entreprises" class="bg-white" style="padding: 72px 0; position: relative; z-index: 1; margin-top: -2px">
-            <div class="max-w-6xl mx-auto px-8 grid grid-cols-2 gap-16 items-center">
+            <div class="max-w-7xl mx-auto px-8 grid grid-cols-2 gap-16 items-center">
                 <div>
                     <p
                         class="captions uppercase mb-3"
@@ -411,17 +366,13 @@ onMounted(() => {
                             </div>
                         </li>
                     </ul>
-                    <a
-                        href="#contact"
-                        class="inline-block font-semibold px-6 py-3 rounded-full transition hover:opacity-80"
-                        style="border: 2px solid var(--color-default-red); color: var(--color-default-red); font-size: 15px; background: transparent"
-                    >
+                    <a href="#contact" class="btn btn-outlined-red">
                         Découvrir les aspects réglementaires
                     </a>
                 </div>
                 <div
-                    class="relative rounded-2xl overflow-hidden"
-                    style="height: 380px; background: var(--light-grey)"
+                    class="media-block relative rounded-2xl overflow-hidden"
+                    style="background: var(--light-grey)"
                 >
                     <img
                         :src="'/images/thumbnail_mouvement.webp'"
@@ -435,7 +386,7 @@ onMounted(() => {
         <!-- Témoignages -->
         <section id="temoignages" class="bg-white" style="padding: 72px 0; position: relative; z-index: 1; margin-top: -2px">
             <div
-                class="max-w-6xl mx-auto px-8 grid grid-cols-2 gap-16 items-center"
+                class="max-w-7xl mx-auto px-8 grid grid-cols-2 gap-16 items-center"
             >
                 <div>
                     <h2
@@ -468,8 +419,8 @@ onMounted(() => {
                     </p>
                 </div>
                 <div
-                    class="relative rounded-2xl overflow-hidden"
-                    style="height: 340px; background: var(--light-grey)"
+                    class="media-block relative rounded-2xl overflow-hidden"
+                    style="background: var(--light-grey)"
                 >
                     <img
                         :src="'/images/thumbnail_temoignage.webp'"
@@ -493,30 +444,22 @@ onMounted(() => {
                     <div
                         v-for="(item, i) in faqItems"
                         :key="i"
-                        class="bg-white rounded-xl overflow-hidden"
+                        class="bg-white rounded-xl shadow-sm"
                     >
-                        <button
-                            @click="toggleFaq(i)"
-                            class="w-full flex items-center justify-between px-6 py-4 text-left font-medium transition hover:bg-[#f9fafa]"
-                            style="color: var(--default-titles)"
-                        >
+                        <button class="faq-btn" @click="toggleFaq(i)">
                             {{ item.q }}
-                            <span
-                                class="ml-4 font-bold text-xl"
-                                style="color: var(--color-default-red)"
-                                >{{ openFaq === i ? "−" : "+" }}</span
-                            >
+                            <div class="faq-btn-circle">
+                                <span class="faq-btn-icon material-symbols-outlined">
+                                    {{ openFaq === i ? 'expand_less' : 'expand_more' }}
+                                </span>
+                            </div>
                         </button>
-                        <div
-                            v-if="openFaq === i"
-                            class="px-6 pb-4"
-                            style="
-                                color: var(--default-text);
-                                line-height: 1.6;
-                            "
-                        >
-                            {{ item.a }}
-                        </div>
+                        <template v-if="openFaq === i">
+                            <div class="mx-6" style="height: 1px; background: var(--light-grey)"></div>
+                            <div class="px-6 py-5" style="color: var(--default-text)">
+                                {{ item.a }}
+                            </div>
+                        </template>
                     </div>
                 </div>
                 <div class="text-center">
@@ -570,7 +513,7 @@ onMounted(() => {
 
         <!-- Footer -->
         <footer id="contact" style="background: var(--default-titles); padding: 72px 0 40px">
-            <div class="max-w-6xl mx-auto px-8">
+            <div class="max-w-7xl mx-auto px-8">
                 <div class="grid grid-cols-4 gap-10 mb-12">
                     <div>
                         <div class="font-extrabold text-2xl mb-1 text-white">

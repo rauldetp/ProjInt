@@ -23,7 +23,7 @@ const brandColor = computed(
     () => cobrand.couleurPrimaire || "var(--color-default-red)",
 );
 
-// Depuis le site coobrandé, "Coin entreprise" = espace propre à cette entreprise
+// Depuis le site coobrandé, "Espace entreprise" = espace propre à cette entreprise
 const coinEntrepriseLink = computed(() => {
     if (auth.isAdmin) return "/entreprises";
     if (auth.isCoordinateur) return `/entreprise/${slug.value}/espace`;
@@ -46,7 +46,7 @@ function linkStyle(path) {
 
 <template>
     <header class="co-navbar">
-        <div class="co-navbar-inner max-w-6xl">
+        <div class="co-navbar-inner max-w-7xl">
             <!-- Brand -->
             <div class="co-brand">
                 <RouterLink to="/" class="brand-hug"><img :src="'/images/logo_hug_h-quadri.png'" alt="Logo HUG" /> </RouterLink>
@@ -84,7 +84,7 @@ function linkStyle(path) {
                 <RouterLink
                     :to="coinEntrepriseLink"
                     :style="linkStyle(coinEntrepriseLink)"
-                    >Coin entreprise</RouterLink
+                    >Espace entreprise</RouterLink
                 >
                 <RouterLink
                     :to="`/entreprise/${slug}/quiz`"
