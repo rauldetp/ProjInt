@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup>
 import { ref, computed, onMounted } from "vue";
 import HugNavbar from "../components/HugNavbar.vue";
 
@@ -30,7 +30,7 @@ onMounted(async () => {
         <!-- Hero -->
         <section
             class="relative flex items-end pb-14 overflow-hidden"
-            style="height: 512px; background: #2c4140"
+            style="height: 512px; background: var(--default-titles)"
         >
             <img
                 :src="'/images/Hero_Cobrand.webp'"
@@ -42,7 +42,7 @@ onMounted(async () => {
                 class="absolute inset-0"
                 style="background: rgba(44, 65, 64, 0.4)"
             ></div>
-            <div class="relative max-w-7xl mx-auto px-8 w-full z-10">
+            <div class="relative max-w-6xl mx-auto px-8 w-full z-10">
                 <h1
                     class="font-bold text-white leading-tight mb-5"
                     style="font-size: 48px; max-width: 640px"
@@ -65,12 +65,7 @@ onMounted(async () => {
                 </p>
                 <RouterLink
                     to="/login"
-                    class="inline-block text-white font-semibold rounded-full px-7 py-3 transition hover:opacity-80"
-                    style="
-                        background: #e60f48;
-                        font-size: 16px;
-                        text-decoration: none;
-                    "
+                    class="btn btn-filled-red"
                 >
                     Inscrire mon entreprise →
                 </RouterLink>
@@ -79,10 +74,10 @@ onMounted(async () => {
 
         <!-- Grille des entreprises -->
         <section class="bg-white py-20">
-            <div class="max-w-7xl mx-auto px-8">
+            <div class="max-w-6xl mx-auto px-8">
                 <h2
                     class="font-bold text-center mb-12"
-                    style="font-size: 24px; color: #2c4140"
+                    style="font-size: 24px; color: var(--default-titles)"
                 >
                     Liste des entreprises partenaires
                 </h2>
@@ -91,7 +86,7 @@ onMounted(async () => {
                 <div
                     v-if="loading"
                     class="text-center py-16"
-                    style="color: #497371"
+                    style="color: var(--default-text)"
                 >
                     Chargement...
                 </div>
@@ -107,7 +102,7 @@ onMounted(async () => {
                                 class="relative overflow-hidden"
                                 style="
                                     border-radius: 12px;
-                                    background: #f2f4f3;
+                                    background: var(--light-grey);
                                     aspect-ratio: 288 / 210;
                                     display: flex;
                                     align-items: center;
@@ -128,14 +123,13 @@ onMounted(async () => {
                                             height: 52px;
                                             background: white;
                                             font-size: 22px;
-                                            color: #2c4140;
+                                            color: var(--default-titles);
                                         "
                                     >
                                         {{ e.nom.charAt(0) }}
                                     </div>
                                     <p
-                                        class="font-semibold leading-tight"
-                                        style="font-size: 12px; color: #2c4140"
+                                        class="captions leading-tight" style="color: var(--default-titles)"
                                     >
                                         {{ e.nom }}
                                     </p>
@@ -153,9 +147,8 @@ onMounted(async () => {
                             @click="showAll = true"
                             class="border-2 rounded-full px-7 py-2 font-semibold transition hover:opacity-75"
                             style="
-                                font-size: 16px;
-                                color: #e60f48;
-                                border-color: #e60f48;
+                                color: var(--color-default-red);
+                                border-color: var(--color-default-red);
                                 background: white;
                                 cursor: pointer;
                             "
@@ -168,7 +161,7 @@ onMounted(async () => {
                     <div
                         v-if="!loading && entreprises.length === 0"
                         class="text-center py-16"
-                        style="color: #497371"
+                        style="color: var(--default-text)"
                     >
                         Aucune entreprise partenaire pour le moment.
                     </div>
@@ -179,20 +172,19 @@ onMounted(async () => {
         <!-- CTA gradient -->
         <section
             class="py-20 text-center"
-            style="background: linear-gradient(135deg, #65c6c1, #93cfa9)"
+            style="background: linear-gradient(135deg, var(--color-default-blue-59), var(--color-default-green))"
         >
             <div class="max-w-2xl mx-auto px-8">
                 <h2
                     class="font-bold mb-6"
-                    style="font-size: 32px; color: #2c4140; line-height: 1.3"
+                    style="font-size: 32px; color: var(--default-titles); line-height: 1.3"
                 >
                     Rejoignez les entreprises partenaires
                 </h2>
                 <p
                     class="mb-10"
                     style="
-                        font-size: 16px;
-                        color: #2c4140;
+                        color: var(--default-titles);
                         opacity: 0.85;
                         line-height: 1.7;
                     "
@@ -205,12 +197,7 @@ onMounted(async () => {
                 </p>
                 <RouterLink
                     to="/login"
-                    class="inline-block text-white font-semibold rounded-full px-8 py-3 transition hover:opacity-80"
-                    style="
-                        background: #e60f48;
-                        font-size: 16px;
-                        text-decoration: none;
-                    "
+                    class="btn btn-filled-red"
                 >
                     Participer dès maintenant →
                 </RouterLink>
@@ -218,20 +205,14 @@ onMounted(async () => {
         </section>
 
         <!-- Footer -->
-        <footer style="background: #2c4140; padding: 3.5rem 0 2.5rem">
+        <footer style="background: var(--default-titles); padding: 3.5rem 0 2.5rem">
             <div class="max-w-6xl mx-auto px-8">
                 <div class="grid grid-cols-4 gap-10 mb-12">
                     <div>
                         <div class="font-extrabold text-2xl mb-1 text-white">
                             HUG
                         </div>
-                        <div
-                            style="
-                                font-size: 12px;
-                                color: #93cfa9;
-                                line-height: 1.6;
-                            "
-                        >
+                        <div class="captions" style="color: var(--color-default-green); line-height: 1.6">
                             Hôpitaux<br />Universitaires<br />Genève
                         </div>
                     </div>
@@ -248,7 +229,6 @@ onMounted(async () => {
                                     to="/label"
                                     class="text-white hover:opacity-70 transition"
                                     style="
-                                        font-size: 16px;
                                         text-decoration: none;
                                     "
                                     >Label CTS</RouterLink
@@ -259,7 +239,6 @@ onMounted(async () => {
                                     to="/trophee"
                                     class="text-white hover:opacity-70 transition"
                                     style="
-                                        font-size: 16px;
                                         text-decoration: none;
                                     "
                                     >Trophée de la générosité</RouterLink
@@ -280,7 +259,6 @@ onMounted(async () => {
                                     to="/faq"
                                     class="text-white hover:opacity-70 transition"
                                     style="
-                                        font-size: 16px;
                                         text-decoration: none;
                                     "
                                     >FAQ</RouterLink
@@ -291,7 +269,6 @@ onMounted(async () => {
                                     to="/contact"
                                     class="text-white hover:opacity-70 transition"
                                     style="
-                                        font-size: 16px;
                                         text-decoration: none;
                                     "
                                     >Contact</RouterLink
@@ -312,7 +289,6 @@ onMounted(async () => {
                                     href="#"
                                     class="text-white hover:opacity-70 transition"
                                     style="
-                                        font-size: 16px;
                                         text-decoration: none;
                                     "
                                     >Politique de confidentialité</a
@@ -323,7 +299,6 @@ onMounted(async () => {
                                     href="#"
                                     class="text-white hover:opacity-70 transition"
                                     style="
-                                        font-size: 16px;
                                         text-decoration: none;
                                     "
                                     >Conditions générales</a
@@ -338,7 +313,7 @@ onMounted(async () => {
                 >
                     <p
                         class="text-center"
-                        style="font-size: 16px; color: #f2f4f3"
+                        style="color: var(--light-grey)"
                     >
                         © {{ new Date().getFullYear() }} Hôpitaux Universitaire
                         Genève. Tous droits réservés.

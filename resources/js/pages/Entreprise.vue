@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup>
 import { ref, computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { useCobrandStore } from "../stores/cobrand";
@@ -34,7 +34,7 @@ onMounted(async () => {
     }
 });
 
-const brandColor = computed(() => entreprise.value.couleur_primaire || "#e60f48");
+const brandColor = computed(() => entreprise.value.couleur_primaire || "var(--color-default-red)");
 const textOnBrand = computed(() => cobrand.textOnBrand);
 const sectionGradient = computed(() => `linear-gradient(135deg, ${brandColor.value}, #ffffff)`);
 
@@ -56,7 +56,7 @@ const dateRange = computed(() => {
 
 <template>
     <div v-if="loading" class="state-center">Chargement...</div>
-    <div v-else-if="error" class="state-center" style="color: #e60f48">{{ error }}</div>
+    <div v-else-if="error" class="state-center" style="color: var(--color-default-red)">{{ error }}</div>
 
     <div v-else class="page">
 
@@ -73,7 +73,7 @@ const dateRange = computed(() => {
                     <h1 class="hero-title">
                         {{ entreprise.nom }}<br />× HUG
                     </h1>
-                    <p class="hero-date" v-if="collecte"><span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle">calendar_month</span> {{ dateRange }}</p>
+                    <p class="hero-date" v-if="collecte"><span class="material-symbols-outlined" style="vertical-align:middle">calendar_month</span> {{ dateRange }}</p>
                     <div class="hero-actions">
                         <RouterLink
                             v-if="collecte && collecte.active"
@@ -131,7 +131,7 @@ const dateRange = computed(() => {
                 <!-- Fallback card if no collecte -->
                 <div class="hero-card" v-else>
                     <p class="hero-card-title">Prochaine collecte</p>
-                    <p style="font-size: 14px; color: #497371; margin: 0 0 1rem">
+                    <p style="font-size: 14px; color: var(--default-text); margin: 0 0 1rem">
                         Aucune collecte active pour le moment. Revenez bientôt !
                     </p>
                     <RouterLink
@@ -267,7 +267,7 @@ const dateRange = computed(() => {
                 </div>
                 <div class="engagement-logo-card">
                     <div class="engagement-logo-hug">
-                        <span style="font-weight: 800; font-size: 28px; color: #2c4140">HUG</span>
+                        <span style="font-weight: 800; font-size: 28px; color: var(--default-titles)">HUG</span>
                         <span style="font-size: 24px; color: #c0cac9; margin: 0 12px">×</span>
                         <img
                             v-if="entreprise.logo"
@@ -282,7 +282,7 @@ const dateRange = computed(() => {
                         >{{ entreprise.nom }}</span>
                     </div>
                     <p class="engagement-label" v-if="label">
-                        <span class="material-symbols-outlined" style="font-size:16px; vertical-align: middle">emoji_events</span>
+                        <span class="material-symbols-outlined" style="vertical-align: middle">emoji_events</span>
                         Label CTS {{ label.date_attribution ? new Date(label.date_attribution).getFullYear() : '' }}
                     </p>
                 </div>
@@ -336,12 +336,12 @@ const dateRange = computed(() => {
     justify-content: center;
     min-height: 100vh;
     font-size: 1.1rem;
-    color: #497371;
-    font-family: 'Instrument Sans', sans-serif;
+    color: var(--default-text);
+    font-family: inherit;
 }
 
 .page {
-    font-family: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+    font-family: inherit;
     background: white;
 }
 
@@ -428,7 +428,7 @@ const dateRange = computed(() => {
 .hero-card-title {
     font-size: 1rem;
     font-weight: 700;
-    color: #2c4140;
+    color: var(--default-titles);
     margin: 0 0 1.25rem;
 }
 .hero-card-list {
@@ -444,7 +444,7 @@ const dateRange = computed(() => {
     align-items: flex-start;
     gap: 0.6rem;
     font-size: 0.9rem;
-    color: #497371;
+    color: var(--default-text);
     line-height: 1.5;
 }
 .info-icon {
@@ -505,7 +505,7 @@ const dateRange = computed(() => {
     background: none;
     border: none;
     font-size: 0.95rem;
-    color: #e60f48;
+    color: var(--color-default-red);
     cursor: pointer;
     font-weight: 600;
 }
@@ -554,7 +554,7 @@ const dateRange = computed(() => {
     width: 52px;
     height: 52px;
     border-radius: 50%;
-    background: #f2f4f3;
+    background: var(--light-grey);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -563,7 +563,7 @@ const dateRange = computed(() => {
 }
 .quiz-insight-text {
     font-size: 1rem;
-    color: #2c4140;
+    color: var(--default-titles);
     margin: 0;
     line-height: 1.5;
     font-weight: 500;
@@ -619,13 +619,13 @@ const dateRange = computed(() => {
 
 /* ── Steps ───────────────────────────────────────────── */
 .steps-section {
-    background: #f2f4f3;
+    background: var(--light-grey);
     padding: 5rem 2rem;
 }
 .steps-title {
     font-size: 2rem;
     font-weight: 700;
-    color: #2c4140;
+    color: var(--default-titles);
     text-align: center;
     margin: 0 0 2.5rem;
 }
@@ -655,12 +655,12 @@ const dateRange = computed(() => {
 .step-heading {
     font-size: 1.1rem;
     font-weight: 700;
-    color: #2c4140;
+    color: var(--default-titles);
     margin: 0 0 0.75rem;
 }
 .step-body {
     font-size: 0.9rem;
-    color: #497371;
+    color: var(--default-text);
     line-height: 1.65;
     margin: 0;
 }
@@ -688,17 +688,17 @@ const dateRange = computed(() => {
 .engagement-title {
     font-size: 2rem;
     font-weight: 700;
-    color: #2c4140;
+    color: var(--default-titles);
     margin: 0 0 1rem;
 }
 .engagement-body {
     font-size: 1rem;
-    color: #497371;
+    color: var(--default-text);
     line-height: 1.7;
     margin: 0 0 2rem;
 }
 .engagement-logo-card {
-    background: #f2f4f3;
+    background: var(--light-grey);
     border-radius: 1rem;
     padding: 3rem 2.5rem;
     display: flex;
@@ -725,7 +725,7 @@ const dateRange = computed(() => {
 .engagement-label {
     font-size: 0.85rem;
     font-weight: 600;
-    color: #497371;
+    color: var(--default-text);
     background: white;
     border-radius: 9999px;
     padding: 0.4rem 1rem;
@@ -734,7 +734,7 @@ const dateRange = computed(() => {
 
 /* ── Footer ──────────────────────────────────────────── */
 .site-footer {
-    background: #2c4140;
+    background: var(--default-titles);
     padding: 3.5rem 0 2.5rem;
 }
 .footer-inner {
@@ -757,7 +757,7 @@ const dateRange = computed(() => {
 }
 .footer-tagline {
     font-size: 0.75rem;
-    color: #93cfa9;
+    color: var(--color-default-green);
     line-height: 1.6;
     margin: 0;
 }
@@ -802,7 +802,7 @@ const dateRange = computed(() => {
 
 /* ── Moins de 500 salariés ───────────────────────────── */
 .small-co-section {
-    background: #f2f4f3;
+    background: var(--light-grey);
     padding: 72px 0;
 }
 .small-co-inner {
@@ -824,13 +824,12 @@ const dateRange = computed(() => {
 .small-co-title {
     font-size: 32px;
     font-weight: 700;
-    color: #2c4140;
+    color: var(--default-titles);
     line-height: 1.2;
     margin: 0 0 16px;
 }
 .small-co-body {
-    font-size: 16px;
-    color: #497371;
+    color: var(--default-text);
     line-height: 1.7;
     margin: 0 0 24px;
 }
@@ -853,14 +852,13 @@ const dateRange = computed(() => {
     margin-top: 2px;
 }
 .small-co-item-title {
-    font-size: 16px;
     font-weight: 600;
-    color: #2c4140;
+    color: var(--default-titles);
     margin: 0 0 4px;
 }
 .small-co-item-body {
     font-size: 14px;
-    color: #497371;
+    color: var(--default-text);
     line-height: 1.6;
     margin: 0;
 }

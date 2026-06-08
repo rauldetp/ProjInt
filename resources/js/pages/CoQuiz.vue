@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup>
 import { ref, computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { useCobrandStore } from "../stores/cobrand";
@@ -11,7 +11,7 @@ const entreprise = ref(null);
 const collecte   = ref(null);
 const loading    = ref(true);
 
-const brandColor  = computed(() => cobrand.couleurPrimaire || "#e60f48");
+const brandColor  = computed(() => cobrand.couleurPrimaire || "var(--color-default-red)");
 const textOnBrand = computed(() => cobrand.textOnBrand || "white");
 
 // ── State ────────────────────────────────────────────────────────
@@ -151,10 +151,10 @@ function isGoodForDonation(i) {
 }
 
 function getAnswerBadgeStyle(answer) {
-    if (!answer) return { background: '#f2f4f3', color: '#8fa8a6' };
+    if (!answer) return { background: 'var(--light-grey)', color: '#8fa8a6' };
     if (answer === 'Oui') return { background: '#d1fae5', color: '#065f46' };
     if (answer === 'Non') return { background: '#fee2e2', color: '#991b1b' };
-    return { background: '#f0f9f8', color: '#2c4140' };
+    return { background: '#f0f9f8', color: 'var(--default-titles)' };
 }
 
 // ── Actions ──────────────────────────────────────────────────────
@@ -463,8 +463,8 @@ function retakeQuiz() {
                     </div>
                 </div>
 
-                <div class="ready-section" :style="{ background: `linear-gradient(135deg, ${brandColor}, #93cfa9)` }">
-                    <p class="ready-title" :style="{ color: textOnBrand === 'white' ? '#2c4140' : textOnBrand }">Vous vous sentez prêt ?</p>
+                <div class="ready-section" :style="{ background: `linear-gradient(135deg, ${brandColor}, var(--color-default-green))` }">
+                    <p class="ready-title" :style="{ color: textOnBrand === 'white' ? 'var(--default-titles)' : textOnBrand }">Vous vous sentez prêt ?</p>
                     <button class="btn-ready" :style="{ background: brandColor, color: textOnBrand }" @click="showResult">
                         Voir mon résultat
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -567,11 +567,11 @@ function retakeQuiz() {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: 'Instrument Sans', sans-serif;
-    color: #497371;
+    font-family: inherit;
+    color: var(--default-text);
 }
 .page {
-    font-family: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+    font-family: inherit;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -622,13 +622,13 @@ function retakeQuiz() {
 .intro-title {
     font-size: 2.5rem;
     font-weight: 800;
-    color: #2c4140;
+    color: var(--default-titles);
     margin: 0 0 1rem;
     line-height: 1.15;
 }
 .intro-sub {
     font-size: 1rem;
-    color: #497371;
+    color: var(--default-text);
     line-height: 1.7;
     margin: 0 0 2rem;
     max-width: 380px;
@@ -640,7 +640,7 @@ function retakeQuiz() {
     margin-bottom: 2rem;
 }
 .feature-card {
-    border: 1.5px solid #f2f4f3;
+    border: 1.5px solid var(--light-grey);
     border-radius: 14px;
     padding: 1.25rem 1rem;
     display: flex;
@@ -652,7 +652,7 @@ function retakeQuiz() {
 .feature-label {
     font-size: 0.82rem;
     font-weight: 600;
-    color: #497371;
+    color: var(--default-text);
     margin: 0;
     line-height: 1.4;
 }
@@ -666,7 +666,7 @@ function retakeQuiz() {
     border-radius: 9999px;
     padding: 0.55rem 1.1rem;
     font-size: 0.88rem;
-    color: #2c4140;
+    color: var(--default-titles);
     font-weight: 500;
     margin-bottom: 1.25rem;
 }
@@ -760,7 +760,7 @@ function retakeQuiz() {
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    background: #f2f4f3;
+    background: var(--light-grey);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -774,7 +774,7 @@ function retakeQuiz() {
 .quiz-question {
     font-size: 1.9rem;
     font-weight: 800;
-    color: #2c4140;
+    color: var(--default-titles);
     margin: 0 0 2rem;
     line-height: 1.25;
     max-width: 520px;
@@ -800,7 +800,7 @@ function retakeQuiz() {
     transition: border-color 0.18s, color 0.18s;
     font-size: 1rem;
     font-weight: 600;
-    color: #2c4140;
+    color: var(--default-titles);
     font-family: inherit;
     text-align: left;
 }
@@ -808,7 +808,7 @@ function retakeQuiz() {
 .quiz-option.opt-non { border-color: #ef4444; color: #dc2626; }
 .quiz-option.opt-oui.is-selected { background: #f0fdf4; }
 .quiz-option.opt-non.is-selected { background: #fff1f2; }
-.quiz-option.opt-other.is-selected { border-color: #2c4140; background: #f0f9f8; }
+.quiz-option.opt-other.is-selected { border-color: var(--default-titles); background: #f0f9f8; }
 .quiz-option:hover:not(.is-selected) { opacity: 0.75; }
 .opt-icon {
     width: 18px;
@@ -826,7 +826,7 @@ function retakeQuiz() {
     font-size: 0.95rem;
     font-weight: 600;
     background: rgba(101,198,193,0.18);
-    color: #2c4140;
+    color: var(--default-titles);
     border: none;
     border-radius: 9999px;
     padding: 0.85rem 2rem;
@@ -867,13 +867,13 @@ function retakeQuiz() {
 .info-title {
     font-size: 2rem;
     font-weight: 800;
-    color: #2c4140;
+    color: var(--default-titles);
     margin: 0 0 0.25rem;
     line-height: 1.2;
 }
 .info-msg {
     font-size: 1rem;
-    color: #497371;
+    color: var(--default-text);
     line-height: 1.7;
     margin: 0;
     font-weight: 500;
@@ -903,10 +903,10 @@ function retakeQuiz() {
     justify-content: center;
     flex-shrink: 0;
 }
-.tip-icon { font-size: 16px; color: #000; }
+.tip-icon { color: #000; }
 .tip-text {
     font-size: 0.9rem;
-    color: #2c4140;
+    color: var(--default-titles);
     line-height: 1.6;
     margin: 0;
     font-style: italic;
@@ -925,7 +925,7 @@ function retakeQuiz() {
 .recap-title {
     font-size: 1.75rem;
     font-weight: 800;
-    color: #2c4140;
+    color: var(--default-titles);
     margin: 0 0 1.75rem;
 }
 .answers-grid {
@@ -951,7 +951,7 @@ function retakeQuiz() {
     width: 28px;
     height: 28px;
     border-radius: 50%;
-    background: #f2f4f3;
+    background: var(--light-grey);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -962,7 +962,7 @@ function retakeQuiz() {
 .check-bad  { color: #dc2626; }
 .card-question {
     font-size: 0.88rem;
-    color: #2c4140;
+    color: var(--default-titles);
     font-weight: 500;
     margin: 0;
     flex: 1;
@@ -1029,13 +1029,13 @@ function retakeQuiz() {
 .result-title {
     font-size: 2rem;
     font-weight: 800;
-    color: #2c4140;
+    color: var(--default-titles);
     margin: 0;
     line-height: 1.2;
 }
 .result-sub {
     font-size: 0.95rem;
-    color: #497371;
+    color: var(--default-text);
     line-height: 1.65;
     margin: 0;
 }
@@ -1049,7 +1049,7 @@ function retakeQuiz() {
 }
 .result-tip-card p {
     font-size: 0.9rem;
-    color: #2c4140;
+    color: var(--default-titles);
     line-height: 1.6;
     margin: 0;
     font-style: italic;

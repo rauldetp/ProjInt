@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup>
 import { ref, onMounted } from "vue";
 import HugNavbar from "../components/HugNavbar.vue";
 
@@ -43,39 +43,29 @@ onMounted(() => {
 
 <template>
     <div class="min-h-screen bg-white">
-        <!-- Sticky header = banner + navbar -->
-        <div class="sticky top-0 z-50">
-            <!-- Announcement banner (gradient) -->
-            <div
-                v-if="bannerVisible"
-                class="flex items-center justify-between px-8 py-2 text-xs"
-                style="
-                    background: linear-gradient(90deg, #65c6c1, #93cfa9);
-                    color: #2c4140;
-                "
-            >
-                <span>
-                    Ce site est un projet étudiant réalisé dans un cadre
-                    académique. Il ne représente pas une organisation
-                    officielle. Retrouvez le site officiel à
-                    <a href="#" class="underline font-semibold">cette adresse</a
-                    >.
-                </span>
-                <button
-                    @click="bannerVisible = false"
-                    class="ml-6 font-bold text-sm leading-none hover:opacity-70"
-                >
-                    ✕
-                </button>
-            </div>
-
-        </div>
         <HugNavbar />
+        <div
+            v-if="bannerVisible"
+            class="banner flex items-center justify-between"
+         >
+            <span class="captions">
+                Ce site est un projet étudiant réalisé dans un cadre
+                académique. Il ne représente pas une organisation
+                officielle. Retrouvez le site officiel à
+                <a href="https://www.hug.ch/don-du-sang" class="underline">cette adresse</a>.
+            </span>
+            <button
+                @click="bannerVisible = false"
+                class="leading-none hover:opacity-70 px-2 py-2"
+            >
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
 
         <!-- Hero -->
         <section
-            class="relative flex items-end pb-16"
-            style="height: 512px; background: #2c4140"
+            class="relative flex items-end pb-16 lg:items-center lg:pb-0"
+            style="height: 512px; background: var(--default-titles)"
         >
             <img
                 :src="'/images/Hero_homepage.webp'"
@@ -87,7 +77,7 @@ onMounted(() => {
                 class="absolute inset-0"
                 style="background: rgba(44, 65, 64, 0.4)"
             ></div>
-            <div class="relative max-w-7xl mx-auto px-8">
+            <div class="relative max-w-6xl mx-auto px-8 w-full z-10">
                 <h1
                     class="font-bold text-white leading-tight max-w-xl mb-6"
                     style="font-size: 48px"
@@ -97,8 +87,7 @@ onMounted(() => {
                 <div class="flex items-center gap-4 flex-wrap">
                     <RouterLink
                         to="/label"
-                        class="inline-block text-white text-sm font-semibold px-6 py-3 rounded-full transition hover:opacity-80"
-                        style="background: #e60f48"
+                        class="btn btn-filled-red"
                     >
                         En savoir plus
                     </RouterLink>
@@ -115,62 +104,18 @@ onMounted(() => {
 
         <!-- Stats -->
         <section class="bg-white" style="padding: 40px 0; position: relative; z-index: 1; margin-top: -2px">
-            <div
-                class="max-w-5xl mx-auto px-8 grid grid-cols-3 gap-8 text-center"
-            >
-                <div>
-                    <p
-                        class="font-bold"
-                        style="font-size: 24px; color: #2c4140"
-                    >
-                        100+
-                    </p>
-                    <p
-                        style="
-                            font-size: 12px;
-                            color: #2c4140;
-                            font-weight: 600;
-                            margin-top: 4px;
-                        "
-                    >
-                        Entreprises partenaires
-                    </p>
+            <div class="max-w-6xl mx-auto px-8 grid grid-cols-3 gap-4">
+                <div class="rounded-xl px-5 py-4" style="background: var(--light-grey)">
+                    <p class="font-bold mb-1" style="font-size: 24px; color: var(--default-titles)">100+</p>
+                    <p class="captions" style="color: var(--default-text)">Entreprises partenaires</p>
                 </div>
-                <div>
-                    <p
-                        class="font-bold"
-                        style="font-size: 24px; color: #2c4140"
-                    >
-                        653
-                    </p>
-                    <p
-                        style="
-                            font-size: 12px;
-                            color: #2c4140;
-                            font-weight: 600;
-                            margin-top: 4px;
-                        "
-                    >
-                        Collectes organisées
-                    </p>
+                <div class="rounded-xl px-5 py-4" style="background: var(--light-grey)">
+                    <p class="font-bold mb-1" style="font-size: 24px; color: var(--default-titles)">653</p>
+                    <p class="captions" style="color: var(--default-text)">Collectes organisées</p>
                 </div>
-                <div>
-                    <p
-                        class="font-bold"
-                        style="font-size: 24px; color: #2c4140"
-                    >
-                        1000+
-                    </p>
-                    <p
-                        style="
-                            font-size: 12px;
-                            color: #2c4140;
-                            font-weight: 600;
-                            margin-top: 4px;
-                        "
-                    >
-                        Patients bénéficiaires
-                    </p>
+                <div class="rounded-xl px-5 py-4" style="background: var(--light-grey)">
+                    <p class="font-bold mb-1" style="font-size: 24px; color: var(--default-titles)">1000+</p>
+                    <p class="captions" style="color: var(--default-text)">Patients bénéficiaires</p>
                 </div>
             </div>
         </section>
@@ -178,7 +123,7 @@ onMounted(() => {
         <!-- Partners strip (gradient) -->
         <section
             style="
-                background: linear-gradient(90deg, #65c6c1, #93cfa9);
+                background: linear-gradient(90deg, var(--color-default-blue-59), var(--color-default-green));
                 padding: 48px 0;
                 position: relative;
                 z-index: 1;
@@ -188,49 +133,49 @@ onMounted(() => {
             <div class="max-w-6xl mx-auto px-8">
                 <p
                     class="text-center font-semibold mb-8"
-                    style="color: #2c4140; font-size: 16px"
+                    style="color: var(--default-titles)"
                 >
                     Nos partenaires
                 </p>
                 <div class="flex items-center justify-center gap-12 flex-wrap">
                     <span
                         class="font-bold text-lg"
-                        style="color: #2c4140; opacity: 0.65"
+                        style="color: var(--default-titles); opacity: 0.65"
                         >ROLEX</span
                     >
                     <span
                         class="font-bold text-lg"
-                        style="color: #2c4140; opacity: 0.65"
+                        style="color: var(--default-titles); opacity: 0.65"
                         >BCGE</span
                     >
                     <span
                         class="font-bold text-lg"
-                        style="color: #2c4140; opacity: 0.65"
+                        style="color: var(--default-titles); opacity: 0.65"
                         >Nestlé</span
                     >
                     <span
                         class="font-bold text-lg"
-                        style="color: #2c4140; opacity: 0.65"
+                        style="color: var(--default-titles); opacity: 0.65"
                         >logitech</span
                     >
                     <span
                         class="font-bold text-lg"
-                        style="color: #2c4140; opacity: 0.65"
+                        style="color: var(--default-titles); opacity: 0.65"
                         >ROLEX</span
                     >
                     <span
                         class="font-bold text-lg"
-                        style="color: #2c4140; opacity: 0.65"
+                        style="color: var(--default-titles); opacity: 0.65"
                         >BCGE</span
                     >
                     <span
                         class="font-bold text-lg"
-                        style="color: #2c4140; opacity: 0.65"
+                        style="color: var(--default-titles); opacity: 0.65"
                         >Nestlé</span
                     >
                     <span
                         class="font-bold text-lg"
-                        style="color: #2c4140; opacity: 0.65"
+                        style="color: var(--default-titles); opacity: 0.65"
                         >logitech</span
                     >
                 </div>
@@ -238,11 +183,11 @@ onMounted(() => {
         </section>
 
         <!-- 3 steps -->
-        <section style="background: #f2f4f3; padding: 72px 0; position: relative; z-index: 1; margin-top: -2px">
+        <section style="background: var(--light-grey); padding: 72px 0; position: relative; z-index: 1; margin-top: -2px">
             <div class="max-w-6xl mx-auto px-8">
                 <h2
                     class="text-center font-bold mb-12"
-                    style="font-size: 32px; color: #2c4140"
+                    style="font-size: 32px; color: var(--default-titles)"
                 >
                     La démarche en trois étapes
                 </h2>
@@ -252,22 +197,20 @@ onMounted(() => {
                             class="w-9 h-9 rounded-full flex items-center justify-center mb-5 font-bold"
                             style="
                                 background: #fde8ef;
-                                color: #e60f48;
-                                font-size: 16px;
-                            "
+                                color: var(--color-default-red);
+                                "
                         >
                             1
                         </div>
                         <h3
                             class="font-bold mb-3"
-                            style="font-size: 24px; color: #2c4140"
+                            style="font-size: 24px; color: var(--default-titles)"
                         >
                             Prise de contact
                         </h3>
                         <p
                             style="
-                                font-size: 16px;
-                                color: #497371;
+                                color: var(--default-text);
                                 line-height: 1.6;
                             "
                         >
@@ -280,22 +223,20 @@ onMounted(() => {
                             class="w-9 h-9 rounded-full flex items-center justify-center mb-5 font-bold"
                             style="
                                 background: #fde8ef;
-                                color: #e60f48;
-                                font-size: 16px;
-                            "
+                                color: var(--color-default-red);
+                                "
                         >
                             2
                         </div>
                         <h3
                             class="font-bold mb-3"
-                            style="font-size: 24px; color: #2c4140"
+                            style="font-size: 24px; color: var(--default-titles)"
                         >
                             Organisation de la collecte
                         </h3>
                         <p
                             style="
-                                font-size: 16px;
-                                color: #497371;
+                                color: var(--default-text);
                                 line-height: 1.6;
                             "
                         >
@@ -308,22 +249,20 @@ onMounted(() => {
                             class="w-9 h-9 rounded-full flex items-center justify-center mb-5 font-bold"
                             style="
                                 background: #fde8ef;
-                                color: #e60f48;
-                                font-size: 16px;
-                            "
+                                color: var(--color-default-red);
+                                "
                         >
                             3
                         </div>
                         <h3
                             class="font-bold mb-3"
-                            style="font-size: 24px; color: #2c4140"
+                            style="font-size: 24px; color: var(--default-titles)"
                         >
                             Label & Impact
                         </h3>
                         <p
                             style="
-                                font-size: 16px;
-                                color: #497371;
+                                color: var(--default-text);
                                 line-height: 1.6;
                             "
                         >
@@ -343,15 +282,14 @@ onMounted(() => {
                 <div>
                     <h2
                         class="font-bold mb-4"
-                        style="font-size: 32px; color: #2c4140"
+                        style="font-size: 32px; color: var(--default-titles)"
                     >
                         Label CTS
                     </h2>
                     <p
                         class="mb-8 max-w-md"
                         style="
-                            font-size: 16px;
-                            color: #497371;
+                            color: var(--default-text);
                             line-height: 1.7;
                         "
                     >
@@ -363,52 +301,31 @@ onMounted(() => {
                     </p>
                     <a
                         href="#contact"
-                        class="inline-block text-white font-semibold px-6 py-3 rounded-full transition hover:opacity-80"
-                        style="background: #e60f48; font-size: 16px"
+                        class="btn btn-filled-red"
                     >
                         En savoir plus
                     </a>
                 </div>
                 <div
-                    class="flex flex-col items-center justify-center gap-4 rounded-2xl border p-12"
-                    style="border-color: #f2f4f3"
+                    class="flex flex-col items-center justify-center gap-4 rounded-2xl p-12"
+                    style="background-color: var(--light-grey)"
                 >
-                    <div
-                        class="rounded-full border-4 flex items-center justify-center"
-                        style="width: 80px; height: 80px; border-color: #e60f48"
-                    >
-                        <span style="color: #e60f48; font-size: 32px">♥</span>
-                    </div>
-                    <div class="text-center">
-                        <p
-                            class="font-black"
-                            style="
-                                font-size: 24px;
-                                color: #2c4140;
-                                letter-spacing: -0.5px;
-                            "
-                        >
-                            CTS
-                        </p>
-                        <p
-                            class="font-bold uppercase tracking-widest"
-                            style="font-size: 11px; color: #497371"
-                        >
-                            Collecte solidaire
-                        </p>
-                    </div>
+                    <img
+                        :src="'/images/logo_labelCTS_red.png'"
+                        alt="Label CTS"
+                    />
                 </div>
             </div>
         </section>
 
         <!-- Trophy -->
-        <section id="trophee" style="background: #f2f4f3; padding: 72px 0; position: relative; z-index: 1; margin-top: -2px">
+        <section id="trophee" style="background: var(--light-grey); padding: 72px 0; position: relative; z-index: 1; margin-top: -2px">
             <div
                 class="max-w-6xl mx-auto px-8 grid grid-cols-2 gap-16 items-center"
             >
                 <div
                     class="relative rounded-2xl overflow-hidden"
-                    style="height: 320px; background: #2c4140"
+                    style="height: 320px; background: var(--default-titles)"
                 >
                     <img
                         :src="'/images/HomePage_TropheeGenerosite.webp'"
@@ -430,15 +347,14 @@ onMounted(() => {
                 <div>
                     <h2
                         class="font-bold mb-4"
-                        style="font-size: 32px; color: #2c4140"
+                        style="font-size: 32px; color: var(--default-titles)"
                     >
                         Trophée de la générosité
                     </h2>
                     <p
                         class="mb-8 max-w-md"
                         style="
-                            font-size: 16px;
-                            color: #497371;
+                            color: var(--default-text);
                             line-height: 1.7;
                         "
                     >
@@ -449,8 +365,7 @@ onMounted(() => {
                     </p>
                     <a
                         href="#"
-                        class="inline-block text-white font-semibold px-6 py-3 rounded-full transition hover:opacity-80"
-                        style="background: #e60f48; font-size: 16px"
+                        class="btn btn-filled-red"
                     >
                         Découvrir le trophée
                     </a>
@@ -463,50 +378,50 @@ onMounted(() => {
             <div class="max-w-6xl mx-auto px-8 grid grid-cols-2 gap-16 items-center">
                 <div>
                     <p
-                        class="font-bold uppercase mb-3"
-                        style="font-size: 12px; letter-spacing: 2px; color: #e60f48"
+                        class="captions uppercase mb-3"
+                        style="letter-spacing: 2px; color: var(--color-default-red)"
                     >
                         Toutes les entreprises peuvent agir
                     </p>
                     <h2
                         class="font-bold mb-4"
-                        style="font-size: 32px; color: #2c4140; line-height: 1.2"
+                        style="font-size: 32px; color: var(--default-titles); line-height: 1.2"
                     >
                         Votre entreprise compte<br />moins de 500 salariés ?
                     </h2>
                     <p
                         class="mb-6 max-w-md"
-                        style="font-size: 16px; color: #497371; line-height: 1.7"
+                        style="color: var(--default-text); line-height: 1.7"
                     >
                         Découvrez nos solutions adaptées pour organiser le don du sang, même sans espace dédié dans vos locaux.
                     </p>
                     <ul class="mb-8" style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 16px">
                         <li style="display: flex; align-items: flex-start; gap: 12px">
-                            <span class="material-symbols-outlined" style="color: #e60f48; font-size: 22px; flex-shrink: 0; margin-top: 2px">local_hospital</span>
+                            <span class="material-symbols-outlined" style="color: var(--color-default-red); font-size: 22px; flex-shrink: 0; margin-top: 2px">local_hospital</span>
                             <div>
-                                <p class="font-semibold" style="font-size: 16px; color: #2c4140; margin: 0 0 4px">Aux HUG</p>
-                                <p style="font-size: 14px; color: #497371; margin: 0; line-height: 1.6">Vos collaborateurs se rendent directement au Centre de Transfusion Sanguine des HUG. Simple, encadré et sans organisation logistique.</p>
+                                <p class="font-semibold" style="color: var(--default-titles); margin: 0 0 4px">Aux HUG</p>
+                                <p style="font-size: 14px; color: var(--default-text); margin: 0; line-height: 1.6">Vos collaborateurs se rendent directement au Centre de Transfusion Sanguine des HUG. Simple, encadré et sans organisation logistique.</p>
                             </div>
                         </li>
                         <li style="display: flex; align-items: flex-start; gap: 12px">
-                            <span class="material-symbols-outlined" style="color: #e60f48; font-size: 22px; flex-shrink: 0; margin-top: 2px">location_city</span>
+                            <span class="material-symbols-outlined" style="color: var(--color-default-red); font-size: 22px; flex-shrink: 0; margin-top: 2px">location_city</span>
                             <div>
-                                <p class="font-semibold" style="font-size: 16px; color: #2c4140; margin: 0 0 4px">Dans votre commune</p>
-                                <p style="font-size: 14px; color: #497371; margin: 0; line-height: 1.6">Rejoignez une collecte mobile organisée dans votre région. Nous vous informons des prochaines dates à proximité.</p>
+                                <p class="font-semibold" style="color: var(--default-titles); margin: 0 0 4px">Dans votre commune</p>
+                                <p style="font-size: 14px; color: var(--default-text); margin: 0; line-height: 1.6">Rejoignez une collecte mobile organisée dans votre région. Nous vous informons des prochaines dates à proximité.</p>
                             </div>
                         </li>
                     </ul>
                     <a
                         href="#contact"
                         class="inline-block font-semibold px-6 py-3 rounded-full transition hover:opacity-80"
-                        style="border: 2px solid #e60f48; color: #e60f48; font-size: 15px; background: transparent"
+                        style="border: 2px solid var(--color-default-red); color: var(--color-default-red); font-size: 15px; background: transparent"
                     >
                         Découvrir les aspects réglementaires
                     </a>
                 </div>
                 <div
                     class="relative rounded-2xl overflow-hidden"
-                    style="height: 380px; background: #f2f4f3"
+                    style="height: 380px; background: var(--light-grey)"
                 >
                     <img
                         :src="'/images/thumbnail_mouvement.webp'"
@@ -525,15 +440,14 @@ onMounted(() => {
                 <div>
                     <h2
                         class="font-bold mb-8"
-                        style="font-size: 32px; color: #2c4140"
+                        style="font-size: 32px; color: var(--default-titles)"
                     >
                         Témoignages
                     </h2>
                     <blockquote
                         class="mb-4"
                         style="
-                            font-size: 16px;
-                            color: #497371;
+                            color: var(--default-text);
                             line-height: 1.7;
                             font-style: italic;
                         "
@@ -547,7 +461,7 @@ onMounted(() => {
                     </blockquote>
                     <p
                         class="font-semibold"
-                        style="font-size: 14px; color: #2c4140"
+                        style="font-size: 14px; color: var(--default-titles)"
                     >
                         Sophia M., Responsable RH, groupe industriel de 1 200
                         collaborateurs
@@ -555,7 +469,7 @@ onMounted(() => {
                 </div>
                 <div
                     class="relative rounded-2xl overflow-hidden"
-                    style="height: 340px; background: #f2f4f3"
+                    style="height: 340px; background: var(--light-grey)"
                 >
                     <img
                         :src="'/images/thumbnail_temoignage.webp'"
@@ -567,11 +481,11 @@ onMounted(() => {
         </section>
 
         <!-- FAQ -->
-        <section id="faq" style="background: #f2f4f3; padding: 72px 0; position: relative; z-index: 1; margin-top: -2px">
+        <section id="faq" style="background: var(--light-grey); padding: 72px 0; position: relative; z-index: 1; margin-top: -2px">
             <div class="max-w-3xl mx-auto px-8">
                 <h2
                     class="text-center font-bold mb-10"
-                    style="font-size: 32px; color: #2c4140"
+                    style="font-size: 32px; color: var(--default-titles)"
                 >
                     Des questions ?
                 </h2>
@@ -584,12 +498,12 @@ onMounted(() => {
                         <button
                             @click="toggleFaq(i)"
                             class="w-full flex items-center justify-between px-6 py-4 text-left font-medium transition hover:bg-[#f9fafa]"
-                            style="font-size: 16px; color: #2c4140"
+                            style="color: var(--default-titles)"
                         >
                             {{ item.q }}
                             <span
                                 class="ml-4 font-bold text-xl"
-                                style="color: #e60f48"
+                                style="color: var(--color-default-red)"
                                 >{{ openFaq === i ? "−" : "+" }}</span
                             >
                         </button>
@@ -597,8 +511,7 @@ onMounted(() => {
                             v-if="openFaq === i"
                             class="px-6 pb-4"
                             style="
-                                font-size: 16px;
-                                color: #497371;
+                                color: var(--default-text);
                                 line-height: 1.6;
                             "
                         >
@@ -609,8 +522,7 @@ onMounted(() => {
                 <div class="text-center">
                     <RouterLink
                         to="/faq"
-                        class="inline-block text-white font-semibold px-6 py-3 rounded-full transition hover:opacity-80"
-                        style="background: #e60f48; font-size: 16px; text-decoration: none"
+                        class="btn btn-filled-red"
                     >
                         Vers la FAQ complète →
                     </RouterLink>
@@ -621,7 +533,7 @@ onMounted(() => {
         <!-- CTA bottom (gradient) -->
         <section
             style="
-                background: linear-gradient(90deg, #65c6c1, #93cfa9);
+                background: linear-gradient(90deg, var(--color-default-blue-59), var(--color-default-green));
                 padding: 72px 0;
                 position: relative;
                 z-index: 1;
@@ -631,15 +543,14 @@ onMounted(() => {
             <div class="max-w-2xl mx-auto px-8 text-center">
                 <h2
                     class="font-bold mb-4"
-                    style="font-size: 32px; color: #2c4140"
+                    style="font-size: 32px; color: var(--default-titles)"
                 >
                     Rejoignez les entreprises partenaires
                 </h2>
                 <p
                     class="mb-8"
                     style="
-                        font-size: 16px;
-                        color: #2c4140;
+                        color: var(--default-titles);
                         opacity: 0.75;
                         line-height: 1.7;
                     "
@@ -651,28 +562,21 @@ onMounted(() => {
                 </p>
         <RouterLink
             to="/entreprises"
-            class="inline-flex items-center gap-2 text-white font-semibold px-7 py-3 rounded-full transition hover:opacity-80"
-            style="background: #e60f48; font-size: 16px; text-decoration: none"
+            class="btn btn-filled-red"
         >
             Découvrez nos entreprises partenaires →
         </RouterLink>            </div>
         </section>
 
         <!-- Footer -->
-        <footer id="contact" style="background: #2c4140; padding: 72px 0 40px">
+        <footer id="contact" style="background: var(--default-titles); padding: 72px 0 40px">
             <div class="max-w-6xl mx-auto px-8">
                 <div class="grid grid-cols-4 gap-10 mb-12">
                     <div>
                         <div class="font-extrabold text-2xl mb-1 text-white">
                             HUG
                         </div>
-                        <div
-                            style="
-                                font-size: 12px;
-                                color: #93cfa9;
-                                line-height: 1.6;
-                            "
-                        >
+                        <div class="captions" style="color: var(--color-default-green); line-height: 1.6">
                             Hôpitaux<br />Universitaires<br />Genève
                         </div>
                     </div>
@@ -685,7 +589,7 @@ onMounted(() => {
                         </p>
                         <ul class="space-y-3">
                             <li>
-                                <li><RouterLink to="/label" class="text-white hover:opacity-70 transition" style="font-size:16px; text-decoration:none;">Label CTS</RouterLink></li>
+                                <li><RouterLink to="/label" class="text-white hover:opacity-70 transition" style="text-decoration:none;">Label CTS</RouterLink></li>
                             </li>
                             <li>
                                 <a
@@ -717,7 +621,7 @@ onMounted(() => {
                                 <RouterLink
                                     to="/faq"
                                     class="text-white hover:opacity-70 transition"
-                                    style="font-size: 16px; text-decoration: none"
+                                    style="text-decoration: none"
                                     >FAQ</RouterLink
                                 >
                             </li>
@@ -725,7 +629,7 @@ onMounted(() => {
                                 <RouterLink
                                     to="/contact"
                                     class="text-white hover:opacity-70 transition"
-                                    style="font-size: 16px; text-decoration: none"
+                                    style="text-decoration: none"
                                     >Contact</RouterLink
                                 >
                             </li>
@@ -764,7 +668,7 @@ onMounted(() => {
                 >
                     <p
                         class="text-center"
-                        style="font-size: 16px; color: #f2f4f3"
+                        style="color: var(--light-grey)"
                     >
                         © {{ new Date().getFullYear() }} Hôpitaux Universitaire
                         Genève. Tous droits réservés.

@@ -1,4 +1,4 @@
-<template>
+﻿<template>
     <div class="dashboard">
         <h1 class="page-title">Vue globale</h1>
 
@@ -27,7 +27,7 @@
                     <svg viewBox="0 0 600 100" class="chart-svg">
                         <polyline
                             fill="none"
-                            stroke="#e60f48"
+                            stroke="var(--color-default-red)"
                             stroke-width="2"
                             points="0,60 60,40 120,55 180,30 240,50 300,20 360,40 420,15 480,35 540,25 600,40"
                         />
@@ -240,7 +240,7 @@ onMounted(async () => {
 .page-title {
     font-size: 2rem;
     font-weight: 700;
-    color: #2c4140;
+    color: var(--default-titles);
     text-align: center;
     margin: 0 0 2rem;
 }
@@ -262,12 +262,12 @@ onMounted(async () => {
 .stat-value {
     font-size: 2rem;
     font-weight: 700;
-    color: #2c4140;
+    color: var(--default-titles);
     margin: 0 0 0.25rem;
 }
 .stat-label {
     font-size: 0.8rem;
-    color: #497371;
+    color: var(--default-text);
     margin: 0;
 }
 
@@ -283,7 +283,7 @@ onMounted(async () => {
 .chart-title {
     font-size: 1rem;
     font-weight: 600;
-    color: #2c4140;
+    color: var(--default-titles);
     text-align: center;
     margin: 0 0 1rem;
 }
@@ -301,7 +301,7 @@ onMounted(async () => {
     display: flex;
     justify-content: space-between;
     font-size: 0.75rem;
-    color: #497371;
+    color: var(--default-text);
     margin-top: 0.5rem;
 }
 .chart-toggles {
@@ -315,14 +315,14 @@ onMounted(async () => {
     padding: 0.35rem 1.1rem;
     font-size: 0.875rem;
     background: white;
-    color: #497371;
+    color: var(--default-text);
     cursor: pointer;
     transition: all 0.15s;
 }
 .toggle-btn.active {
-    background: #2c4140;
+    background: var(--default-titles);
     color: white;
-    border-color: #2c4140;
+    border-color: var(--default-titles);
 }
 
 .section-header {
@@ -334,14 +334,14 @@ onMounted(async () => {
 .section-title {
     font-size: 1.5rem;
     font-weight: 700;
-    color: #2c4140;
+    color: var(--default-titles);
     margin: 0;
 }
 .btn-nouvelle-collecte {
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    background: #2c4140;
+    background: var(--default-titles);
     color: white;
     border: none;
     border-radius: 9999px;
@@ -376,18 +376,18 @@ onMounted(async () => {
 .card-company {
     font-weight: 700;
     font-size: 1rem;
-    color: #2c4140;
+    color: var(--default-titles);
     margin: 0;
 }
 .card-date {
     font-size: 0.8rem;
-    color: #497371;
+    color: var(--default-text);
     margin: 0.1rem 0 0;
 }
 .card-inscrits,
 .card-lieu {
     font-size: 0.85rem;
-    color: #497371;
+    color: var(--default-text);
     margin: 0;
 }
 .card-menu-wrap {
@@ -396,7 +396,7 @@ onMounted(async () => {
 .card-menu {
     background: none;
     border: none;
-    color: #497371;
+    color: var(--default-text);
     font-size: 1.25rem;
     cursor: pointer;
     padding: 0 4px;
@@ -406,7 +406,7 @@ onMounted(async () => {
     transition: background 0.15s;
 }
 .card-menu:hover {
-    background: #f2f4f3;
+    background: var(--light-grey);
 }
 .card-dropdown {
     position: absolute;
@@ -415,7 +415,7 @@ onMounted(async () => {
     background: white;
     border-radius: 0.6rem;
     box-shadow: 0 4px 20px rgba(44, 65, 64, 0.14);
-    border: 1px solid #f2f4f3;
+    border: 1px solid var(--light-grey);
     min-width: 148px;
     z-index: 100;
     overflow: hidden;
@@ -429,7 +429,7 @@ onMounted(async () => {
     background: none;
     border: none;
     font-size: 0.875rem;
-    color: #2c4140;
+    color: var(--default-titles);
     cursor: pointer;
     font-family: inherit;
     text-align: left;
@@ -439,7 +439,7 @@ onMounted(async () => {
     background: #f9fafb;
 }
 .card-dropdown button.danger {
-    color: #e60f48;
+    color: var(--color-default-red);
 }
 .card-dropdown button.danger:hover {
     background: #fff1f4;
@@ -465,14 +465,14 @@ onMounted(async () => {
     color: #92400e;
 }
 .badge-complete {
-    background: #f2f4f3;
-    color: #497371;
+    background: var(--light-grey);
+    color: var(--default-text);
 }
 
 .empty,
 .loading,
 .error {
-    color: #497371;
+    color: var(--default-text);
     padding: 2rem 0;
 }
 </style>

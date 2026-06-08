@@ -1,4 +1,8 @@
-@import 'tailwindcss';
+@import "tailwindcss";
+
+html {
+    font-size: 16px;
+}
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
@@ -6,6 +10,137 @@
 @source '../**/*.js';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans:
+        "CooperHewitt", ui-sans-serif, system-ui, sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+        "Noto Color Emoji";
+    --white: #fff;
+    --light-grey: #f2f4f3;
+    --default-text: #497371;
+    --default-titles: #2c4140;
+
+    --color-default-red-8: hsl(344 88% 8%);
+    --color-default-red-18: hsl(344 88% 18%);
+    --color-default-red-28: hsl(344 88% 28%);
+    --color-default-red-38: hsl(344 88% 38%);
+    --color-default-red: hsl(344 88% 48%);
+    --color-default-red-58: hsl(344 88% 58%);
+    --color-default-red-68: hsl(344 88% 68%);
+    --color-default-red-78: hsl(344 88% 78%);
+    --color-default-red-88: hsl(344 88% 88%);
+    --color-default-red-98: hsl(344 88% 98%);
+
+    --color-default-green-9: hsl(142 39% 9%);
+    --color-default-green-19: hsl(142 39% 19%);
+    --color-default-green-29: hsl(142 39% 29%);
+    --color-default-green-39: hsl(142 39% 39%);
+    --color-default-green-49: hsl(142 39% 49%);
+    --color-default-green-59: hsl(142 39% 59%);
+    --color-default-green: hsl(142 39% 69%);
+    --color-default-green-79: hsl(142 39% 79%);
+    --color-default-green-89: hsl(142 39% 89%);
+    --color-default-green-99: hsl(142 39% 99%);
+
+    --color-default-blue-9: hsl(177 46% 9%);
+    --color-default-blue-19: hsl(177 46% 19%);
+    --color-default-blue-29: hsl(177 46% 29%);
+    --color-default-blue-39: hsl(177 46% 39%);
+    --color-default-blue: hsl(177 46% 49%);
+    --color-default-blue-59: hsl(177 46% 59%);
+    --color-default-blue-69: hsl(177 46% 69%);
+    --color-default-blue-79: hsl(177 46% 79%);
+    --color-default-blue-89: hsl(177 46% 89%);
+    --color-default-blue-99: hsl(177 46% 99%);
+
+    --color-default-yellow-10: hsl(34 84% 10%);
+    --color-default-yellow-20: hsl(34 84% 20%);
+    --color-default-yellow-30: hsl(34 84% 30%);
+    --color-default-yellow-40: hsl(34 84% 40%);
+    --color-default-yellow: hsl(34 84% 50%);
+    --color-default-yellow-60: hsl(34 84% 60%);
+    --color-default-yellow-70: hsl(34 84% 70%);
+    --color-default-yellow-80: hsl(34 84% 80%);
+    --color-default-yellow-90: hsl(34 84% 90%);
+    --color-default-yellow-98: hsl(34 84% 98%);
+}
+
+.captions {
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.banner {
+    position: fixed;
+    padding: 0.5rem 1rem;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    top: 76px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 40;
+    background: linear-gradient(
+        90deg,
+        var(--color-default-blue-59),
+        var(--color-default-green)
+    );
+    color: var(--default-titles);
+}
+
+/* ── Buttons ──────────────────────────────────────────── */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    border: 2px solid transparent;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition:
+        background 0.15s,
+        color 0.15s,
+        border-color 0.15s;
+    white-space: nowrap;
+    font-family: inherit;
+}
+.btn:disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.btn-filled-red {
+    background: var(--color-default-red);
+    color: white;
+}
+.btn-filled-red:hover {
+    background: var(--color-default-red-38);
+}
+.btn-filled-red:active {
+    background: var(--color-default-red-28);
+}
+.btn-filled-red:focus-visible {
+    background: var(--color-default-red);
+    outline: 2px solid white;
+    outline-offset: 2px;
+}
+.btn-filled-red:disabled {
+    background: var(--color-default-red-88);
+    color: var(--color-default-red-98);
+}
+
+@font-face {
+    font-family: "CooperHewitt";
+    src: url("../fonts/CooperHewitt-Book.woff") format("woff");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "CooperHewitt";
+    src: url("../fonts/CooperHewitt-Medium.woff") format("woff");
+    font-weight: 700;
+    font-style: normal;
 }

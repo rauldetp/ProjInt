@@ -1,4 +1,4 @@
-<template>
+﻿<template>
     <div class="layout">
         <!-- Top Nav -->
         <HugNavbar :show-logout="true" />
@@ -89,13 +89,13 @@ const auth = useAuthStore();
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background: #f2f4f3;
-    font-family: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
+    background: var(--light-grey);
+    font-family: inherit;
 }
 
 .admin-subnav {
     background: white;
-    border-bottom: 1px solid #f2f4f3;
+    border-bottom: 1px solid var(--light-grey);
     position: sticky;
     top: 76px;
     z-index: 49;
@@ -111,19 +111,19 @@ const auth = useAuthStore();
 .admin-subnav a {
     font-size: 0.875rem;
     font-weight: 500;
-    color: #497371;
+    color: var(--default-text);
     text-decoration: none;
     padding: 0.6rem 1.25rem;
     border-bottom: 2px solid transparent;
     transition: color 0.15s, border-color 0.15s;
 }
 .admin-subnav a:hover {
-    color: #2c4140;
+    color: var(--default-titles);
 }
 .admin-subnav a.subnav-active {
-    color: #e60f48;
+    color: var(--color-default-red);
     font-weight: 600;
-    border-bottom-color: #e60f48;
+    border-bottom-color: var(--color-default-red);
 }
 
 .main-content {
@@ -136,7 +136,7 @@ const auth = useAuthStore();
 
 /* Footer */
 .site-footer {
-    background: #2c4140;
+    background: var(--default-titles);
     padding: 3.5rem 0 2.5rem;
 }
 .footer-inner {
@@ -159,7 +159,7 @@ const auth = useAuthStore();
 }
 .footer-tagline {
     font-size: 0.75rem;
-    color: #93cfa9;
+    color: var(--color-default-green);
     line-height: 1.6;
     margin: 0;
 }
@@ -193,7 +193,7 @@ const auth = useAuthStore();
 }
 .footer-copy p {
     font-size: 1rem;
-    color: #f2f4f3;
+    color: var(--light-grey);
     margin: 0;
 }
 </style>

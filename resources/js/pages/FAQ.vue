@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup>
 import { ref, onMounted } from "vue";
 import HugNavbar from "../components/HugNavbar.vue";
 const openFaq = ref(null);
@@ -167,24 +167,24 @@ onMounted(() => {
         <HugNavbar />
 
         <!-- Hero -->
-        <section style="background: linear-gradient(135deg, #65c6c1, #93cfa9); padding: 64px 0 52px">
+        <section style="background: linear-gradient(135deg, var(--color-default-blue-59), var(--color-default-green)); padding: 64px 0 52px">
             <div class="max-w-4xl mx-auto px-8">
                 <p
                     class="font-semibold mb-3 uppercase tracking-widest"
-                    style="font-size: 13px; color: #2c4140; opacity: 0.65"
+                    style="font-size: 13px; color: var(--default-titles); opacity: 0.65"
                 >
                     Aide & support
                 </p>
                 <h1
                     class="font-bold mb-4"
-                    style="font-size: 48px; line-height: 1.2; color: #2c4140"
+                    style="font-size: 48px; line-height: 1.2; color: var(--default-titles)"
                 >
                     Foire aux questions
                 </h1>
                 <p
                     style="
                         font-size: 17px;
-                        color: #2c4140;
+                        color: var(--default-titles);
                         opacity: 0.75;
                         line-height: 1.6;
                         max-width: 520px;
@@ -197,20 +197,20 @@ onMounted(() => {
         </section>
 
         <!-- FAQ contenu -->
-        <section class="py-16" style="background: #f2f4f3">
+        <section class="py-16" style="background: var(--light-grey)">
             <div class="max-w-3xl mx-auto px-8 flex flex-col gap-14">
                 <div v-for="cat in categories" :key="cat.id">
                     <!-- Titre catégorie -->
                     <div
                         class="mb-6"
                         style="
-                            border-top: 2px solid #e60f48;
+                            border-top: 2px solid var(--color-default-red);
                             padding-top: 1.25rem;
                         "
                     >
                         <h2
                             class="font-bold"
-                            style="font-size: 22px; color: #2c4140"
+                            style="font-size: 22px; color: var(--default-titles)"
                         >
                             {{ cat.title }}
                         </h2>
@@ -226,12 +226,12 @@ onMounted(() => {
                             <button
                                 @click="toggle(cat.id + i)"
                                 class="w-full flex items-center justify-between px-6 py-4 text-left font-medium transition hover:bg-[#f9fafa]"
-                                style="font-size: 16px; color: #2c4140"
+                                style="color: var(--default-titles)"
                             >
                                 {{ item.q }}
                                 <span
                                     class="ml-4 font-bold text-xl flex-shrink-0"
-                                    style="color: #e60f48"
+                                    style="color: var(--color-default-red)"
                                     >{{ openFaq === cat.id + i ? "−" : "+" }}</span
                                 >
                             </button>
@@ -240,7 +240,7 @@ onMounted(() => {
                                 class="px-6 pb-5"
                                 style="
                                     font-size: 15px;
-                                    color: #497371;
+                                    color: var(--default-text);
                                     line-height: 1.75;
                                 "
                             >
@@ -255,18 +255,18 @@ onMounted(() => {
         <!-- CTA contact -->
         <section
             class="py-16 text-center"
-            style="background: linear-gradient(135deg, #65c6c1, #93cfa9)"
+            style="background: linear-gradient(135deg, var(--color-default-blue-59), var(--color-default-green))"
         >
             <div class="max-w-xl mx-auto px-8">
                 <h2
                     class="font-bold mb-3"
-                    style="font-size: 28px; color: #2c4140"
+                    style="font-size: 28px; color: var(--default-titles)"
                 >
                     Vous n'avez pas trouvé votre réponse ?
                 </h2>
                 <p
                     class="mb-8"
-                    style="font-size: 16px; color: #2c4140; opacity: 0.8"
+                    style="color: var(--default-titles); opacity: 0.8"
                 >
                     Notre équipe répond à toutes vos questions.
                 </p>
@@ -274,8 +274,7 @@ onMounted(() => {
                     to="/contact"
                     class="inline-block text-white font-semibold rounded-full px-7 py-3 transition hover:opacity-80"
                     style="
-                        background: #2c4140;
-                        font-size: 16px;
+                        background: var(--default-titles);
                         text-decoration: none;
                     "
                 >
@@ -285,20 +284,14 @@ onMounted(() => {
         </section>
 
         <!-- Footer -->
-        <footer style="background: #2c4140; padding: 3.5rem 0 2.5rem">
+        <footer style="background: var(--default-titles); padding: 3.5rem 0 2.5rem">
             <div class="max-w-6xl mx-auto px-8">
                 <div class="grid grid-cols-4 gap-10 mb-12">
                     <div>
                         <div class="font-extrabold text-2xl mb-1 text-white">
                             HUG
                         </div>
-                        <div
-                            style="
-                                font-size: 12px;
-                                color: #93cfa9;
-                                line-height: 1.6;
-                            "
-                        >
+                        <div class="captions" style="color: var(--color-default-green); line-height: 1.6">
                             Hôpitaux<br />Universitaires<br />Genève
                         </div>
                     </div>
@@ -314,7 +307,7 @@ onMounted(() => {
                                 <RouterLink
                                     to="/label"
                                     class="text-white hover:opacity-70 transition"
-                                    style="font-size: 16px; text-decoration: none"
+                                    style="text-decoration: none"
                                     >Label CTS</RouterLink
                                 >
                             </li>
@@ -322,7 +315,7 @@ onMounted(() => {
                                 <RouterLink
                                     to="/trophee"
                                     class="text-white hover:opacity-70 transition"
-                                    style="font-size: 16px; text-decoration: none"
+                                    style="text-decoration: none"
                                     >Trophée de la générosité</RouterLink
                                 >
                             </li>
@@ -340,7 +333,7 @@ onMounted(() => {
                                 <RouterLink
                                     to="/faq"
                                     class="text-white hover:opacity-70 transition"
-                                    style="font-size: 16px; text-decoration: none"
+                                    style="text-decoration: none"
                                     >FAQ</RouterLink
                                 >
                             </li>
@@ -348,7 +341,7 @@ onMounted(() => {
                                 <RouterLink
                                     to="/contact"
                                     class="text-white hover:opacity-70 transition"
-                                    style="font-size: 16px; text-decoration: none"
+                                    style="text-decoration: none"
                                     >Contact</RouterLink
                                 >
                             </li>
@@ -366,7 +359,7 @@ onMounted(() => {
                                 <a
                                     href="#"
                                     class="text-white hover:opacity-70 transition"
-                                    style="font-size: 16px; text-decoration: none"
+                                    style="text-decoration: none"
                                     >Politique de confidentialité</a
                                 >
                             </li>
@@ -374,7 +367,7 @@ onMounted(() => {
                                 <a
                                     href="#"
                                     class="text-white hover:opacity-70 transition"
-                                    style="font-size: 16px; text-decoration: none"
+                                    style="text-decoration: none"
                                     >Conditions générales</a
                                 >
                             </li>
@@ -387,7 +380,7 @@ onMounted(() => {
                 >
                     <p
                         class="text-center"
-                        style="font-size: 16px; color: #f2f4f3"
+                        style="color: var(--light-grey)"
                     >
                         © {{ new Date().getFullYear() }} Hôpitaux Universitaires
                         Genève. Tous droits réservés.

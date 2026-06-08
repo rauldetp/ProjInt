@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup>
 import { ref, onMounted } from "vue";
 import HugNavbar from "../components/HugNavbar.vue";
 
@@ -87,7 +87,7 @@ onMounted(async () => {
         <!-- Hero -->
         <section
             class="relative flex items-end pb-14 overflow-hidden"
-            style="height: 460px; background: #2c4140"
+            style="height: 460px; background: var(--default-titles)"
         >
             <img
                 :src="'/images/HomePage_TropheeGenerosite.webp'"
@@ -99,10 +99,10 @@ onMounted(async () => {
                 class="absolute inset-0"
                 style="background: rgba(44, 65, 64, 0.5)"
             ></div>
-            <div class="relative max-w-7xl mx-auto px-8 w-full z-10">
+            <div class="relative max-w-6xl mx-auto px-8 w-full z-10">
                 <p
                     class="font-semibold mb-3 uppercase tracking-widest"
-                    style="font-size: 13px; color: #93cfa9"
+                    style="font-size: 13px; color: var(--color-default-green)"
                 >
                     Depuis 2008
                 </p>
@@ -121,8 +121,7 @@ onMounted(async () => {
                 </p>
                 <RouterLink
                     to="/login"
-                    class="inline-block text-white font-semibold rounded-full px-7 py-3 transition hover:opacity-80"
-                    style="background: #e60f48; font-size: 16px; text-decoration: none"
+                    class="btn btn-filled-red"
                 >
                     Candidater pour 2026 →
                 </RouterLink>
@@ -130,69 +129,20 @@ onMounted(async () => {
         </section>
 
         <!-- Stats -->
-        <section style="background: #f2f4f3" class="py-16">
+        <section class="bg-white py-16">
             <div class="max-w-4xl mx-auto px-8">
-                <div class="grid grid-cols-3 gap-8 text-center">
-                    <div>
-                        <p
-                            class="font-black mb-2"
-                            style="
-                                font-size: 48px;
-                                color: #2c4140;
-                                line-height: 1;
-                            "
-                        >
-                            2008
-                        </p>
-                        <p
-                            style="
-                                font-size: 14px;
-                                color: #497371;
-                                line-height: 1.5;
-                            "
-                        >
-                            La distinction existe<br />depuis plus de 15 ans
-                        </p>
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="rounded-xl px-5 py-4" style="background: var(--light-grey)">
+                        <p class="font-black mb-2" style="font-size: 48px; color: var(--default-titles); line-height: 1">2008</p>
+                        <p style="font-size: 14px; color: var(--default-text); line-height: 1.5">La distinction existe<br />depuis plus de 15 ans</p>
                     </div>
-                    <div>
-                        <p
-                            class="font-black mb-2"
-                            style="
-                                font-size: 48px;
-                                color: #2c4140;
-                                line-height: 1;
-                            "
-                        >
-                            10%
-                        </p>
-                        <p
-                            style="
-                                font-size: 14px;
-                                color: #497371;
-                                line-height: 1.5;
-                            "
-                        >
-                            des dons proviennent<br />des entreprises
-                        </p>
+                    <div class="rounded-xl px-5 py-4" style="background: var(--light-grey)">
+                        <p class="font-black mb-2" style="font-size: 48px; color: var(--default-titles); line-height: 1">10%</p>
+                        <p style="font-size: 14px; color: var(--default-text); line-height: 1.5">des dons proviennent<br />des entreprises</p>
                     </div>
-                    <div>
-                        <p
-                            class="font-black mb-2"
-                            style="
-                                font-size: 48px;
-                                color: #2c4140;
-                                line-height: 1;
-                            "
-                        >
-                            +30
-                        </p>
-                        <p
-                            style="
-                                font-size: 14px;
-                                color: #497371;
-                                line-height: 1.5;
-                            "
-                        >
+                    <div class="rounded-xl px-5 py-4" style="background: var(--light-grey)">
+                        <p class="font-black mb-2" style="font-size: 48px; color: var(--default-titles); line-height: 1">+30</p>
+                        <p style="font-size: 14px; color: var(--default-text); line-height: 1.5">
                             entreprises candidates<br />chaque année
                         </p>
                     </div>
@@ -208,15 +158,14 @@ onMounted(async () => {
                 <div>
                     <h2
                         class="font-bold mb-5"
-                        style="font-size: 32px; color: #2c4140"
+                        style="font-size: 32px; color: var(--default-titles)"
                     >
                         Une distinction qui compte
                     </h2>
                     <p
                         class="mb-5"
                         style="
-                            font-size: 16px;
-                            color: #497371;
+                            color: var(--default-text);
                             line-height: 1.75;
                         "
                     >
@@ -230,8 +179,7 @@ onMounted(async () => {
                     </p>
                     <p
                         style="
-                            font-size: 16px;
-                            color: #497371;
+                            color: var(--default-text);
                             line-height: 1.75;
                         "
                     >
@@ -243,7 +191,7 @@ onMounted(async () => {
                 </div>
                 <div
                     class="relative rounded-2xl overflow-hidden"
-                    style="height: 320px; background: #f2f4f3"
+                    style="height: 320px; background: var(--light-grey)"
                 >
                     <img
                         :src="'/images/thumbnail_trophee.webp'"
@@ -255,11 +203,11 @@ onMounted(async () => {
         </section>
 
         <!-- Label vs Trophée -->
-        <section style="background: #f2f4f3" class="py-20">
+        <section style="background: var(--light-grey)" class="py-20">
             <div class="max-w-5xl mx-auto px-8">
                 <h2
                     class="font-bold text-center mb-14"
-                    style="font-size: 32px; color: #2c4140"
+                    style="font-size: 32px; color: var(--default-titles)"
                 >
                     Label CTS ou Trophée — quelle différence ?
                 </h2>
@@ -267,20 +215,20 @@ onMounted(async () => {
                     <!-- Label CTS -->
                     <div
                         style="
-                            border-top: 2px solid #497371;
+                            border-top: 2px solid var(--default-text);
                             padding-top: 1.5rem;
                         "
                     >
                         <p
                             class="font-bold mb-1"
-                            style="font-size: 20px; color: #2c4140"
+                            style="font-size: 20px; color: var(--default-titles)"
                         >
                             Label CTS
                         </p>
                         <p
                             style="
                                 font-size: 13px;
-                                color: #497371;
+                                color: var(--default-text);
                                 margin-bottom: 2rem;
                             "
                         >
@@ -300,11 +248,11 @@ onMounted(async () => {
                                 <span
                                     style="
                                         font-size: 15px;
-                                        color: #497371;
+                                        color: var(--default-text);
                                         line-height: 1.55;
                                     "
                                     >Pour
-                                    <strong style="color: #2c4140"
+                                    <strong style="color: var(--default-titles)"
                                         >toutes les entreprises</strong
                                     >
                                     qui organisent une collecte</span
@@ -323,10 +271,10 @@ onMounted(async () => {
                                 <span
                                     style="
                                         font-size: 15px;
-                                        color: #497371;
+                                        color: var(--default-text);
                                         line-height: 1.55;
                                     "
-                                    ><strong style="color: #2c4140"
+                                    ><strong style="color: var(--default-titles)"
                                         >Automatique</strong
                                     >
                                     dès la fin de la collecte</span
@@ -345,11 +293,11 @@ onMounted(async () => {
                                 <span
                                     style="
                                         font-size: 15px;
-                                        color: #497371;
+                                        color: var(--default-text);
                                         line-height: 1.55;
                                     "
                                     >Valide
-                                    <strong style="color: #2c4140">1 an</strong
+                                    <strong style="color: var(--default-titles)">1 an</strong
                                     >, renouvelable</span
                                 >
                             </div>
@@ -366,11 +314,11 @@ onMounted(async () => {
                                 <span
                                     style="
                                         font-size: 15px;
-                                        color: #497371;
+                                        color: var(--default-text);
                                         line-height: 1.55;
                                     "
                                     >Certifie votre
-                                    <strong style="color: #2c4140"
+                                    <strong style="color: var(--default-titles)"
                                         >engagement citoyen</strong
                                     ></span
                                 >
@@ -381,8 +329,8 @@ onMounted(async () => {
                             class="inline-block mt-8 font-semibold rounded-full border-2 px-6 py-2 transition hover:opacity-75"
                             style="
                                 font-size: 15px;
-                                color: #2c4140;
-                                border-color: #2c4140;
+                                color: var(--default-titles);
+                                border-color: var(--default-titles);
                                 text-decoration: none;
                             "
                             >Découvrir le Label →</RouterLink
@@ -392,20 +340,20 @@ onMounted(async () => {
                     <!-- Trophée -->
                     <div
                         style="
-                            border-top: 2px solid #2c4140;
+                            border-top: 2px solid var(--default-titles);
                             padding-top: 1.5rem;
                         "
                     >
                         <p
                             class="font-bold mb-1"
-                            style="font-size: 20px; color: #2c4140"
+                            style="font-size: 20px; color: var(--default-titles)"
                         >
                             Trophée de la Générosité
                         </p>
                         <p
                             style="
                                 font-size: 13px;
-                                color: #497371;
+                                color: var(--default-text);
                                 margin-bottom: 2rem;
                             "
                         >
@@ -425,11 +373,11 @@ onMounted(async () => {
                                 <span
                                     style="
                                         font-size: 15px;
-                                        color: #497371;
+                                        color: var(--default-text);
                                         line-height: 1.55;
                                     "
                                     >Pour les entreprises
-                                    <strong style="color: #2c4140"
+                                    <strong style="color: var(--default-titles)"
                                         >les plus engagées</strong
                                     >
                                     de l'année</span
@@ -448,11 +396,11 @@ onMounted(async () => {
                                 <span
                                     style="
                                         font-size: 15px;
-                                        color: #497371;
+                                        color: var(--default-text);
                                         line-height: 1.55;
                                     "
                                     >Attribué par
-                                    <strong style="color: #2c4140"
+                                    <strong style="color: var(--default-titles)"
                                         >jury HUG</strong
                                     >
                                     en décembre</span
@@ -471,11 +419,11 @@ onMounted(async () => {
                                 <span
                                     style="
                                         font-size: 15px;
-                                        color: #497371;
+                                        color: var(--default-text);
                                         line-height: 1.55;
                                     "
                                     >Distinction
-                                    <strong style="color: #2c4140"
+                                    <strong style="color: var(--default-titles)"
                                         >permanente</strong
                                     >
                                     au palmarès</span
@@ -494,11 +442,11 @@ onMounted(async () => {
                                 <span
                                     style="
                                         font-size: 15px;
-                                        color: #497371;
+                                        color: var(--default-text);
                                         line-height: 1.55;
                                     "
                                     >Récompense
-                                    <strong style="color: #2c4140"
+                                    <strong style="color: var(--default-titles)"
                                         >l'excellence</strong
                                     >
                                     et la régularité</span
@@ -510,7 +458,7 @@ onMounted(async () => {
                             class="inline-block mt-8 text-white font-semibold rounded-full px-6 py-2 transition hover:opacity-80"
                             style="
                                 font-size: 15px;
-                                background: #e60f48;
+                                background: var(--color-default-red);
                                 text-decoration: none;
                             "
                             >Candidater au Trophée 2026 →</RouterLink
@@ -525,13 +473,13 @@ onMounted(async () => {
             <div class="max-w-6xl mx-auto px-8">
                 <h2
                     class="font-bold text-center mb-4"
-                    style="font-size: 32px; color: #2c4140"
+                    style="font-size: 32px; color: var(--default-titles)"
                 >
                     Comment est-il attribué ?
                 </h2>
                 <p
                     class="text-center mb-16 max-w-xl mx-auto"
-                    style="font-size: 16px; color: #497371; line-height: 1.6"
+                    style="color: var(--default-text); line-height: 1.6"
                 >
                     Trois critères évalués par le jury HUG pour identifier les
                     entreprises les plus méritantes.
@@ -542,7 +490,7 @@ onMounted(async () => {
                         :key="c.title"
                         class="flex flex-col gap-3"
                         style="
-                            border-left: 2px solid #e60f48;
+                            border-left: 2px solid var(--color-default-red);
                             padding-left: 1.5rem;
                         "
                     >
@@ -550,7 +498,7 @@ onMounted(async () => {
                             class="font-black"
                             style="
                                 font-size: 28px;
-                                color: #e60f48;
+                                color: var(--color-default-red);
                                 line-height: 1;
                             "
                         >
@@ -558,14 +506,14 @@ onMounted(async () => {
                         </p>
                         <h3
                             class="font-bold"
-                            style="font-size: 17px; color: #2c4140"
+                            style="font-size: 17px; color: var(--default-titles)"
                         >
                             {{ c.title }}
                         </h3>
                         <p
                             style="
                                 font-size: 14px;
-                                color: #497371;
+                                color: var(--default-text);
                                 line-height: 1.7;
                             "
                         >
@@ -575,7 +523,7 @@ onMounted(async () => {
                 </div>
                 <p
                     class="text-center italic"
-                    style="font-size: 14px; color: #497371"
+                    style="font-size: 14px; color: var(--default-text)"
                 >
                     Le jury HUG se réunit chaque année en décembre pour
                     délibérer et annoncer le ou les lauréats lors d'une
@@ -587,12 +535,12 @@ onMounted(async () => {
         <!-- Témoignages -->
         <section
             class="py-20"
-            style="background: linear-gradient(135deg, #65c6c1, #93cfa9)"
+            style="background: linear-gradient(135deg, var(--color-default-blue-59), var(--color-default-green))"
         >
             <div class="max-w-6xl mx-auto px-8">
                 <h2
                     class="font-bold text-center mb-12"
-                    style="font-size: 32px; color: #2c4140"
+                    style="font-size: 32px; color: var(--default-titles)"
                 >
                     Ils ont reçu le Trophée
                 </h2>
@@ -607,7 +555,7 @@ onMounted(async () => {
                             class="italic flex-1"
                             style="
                                 font-size: 15px;
-                                color: #2c4140;
+                                color: var(--default-titles);
                                 line-height: 1.7;
                             "
                         >
@@ -615,25 +563,18 @@ onMounted(async () => {
                         </p>
                         <div
                             class="pt-4 border-t"
-                            style="border-color: #f2f4f3"
+                            style="border-color: var(--light-grey)"
                         >
                             <p
                                 class="font-semibold"
-                                style="font-size: 14px; color: #2c4140"
+                                style="font-size: 14px; color: var(--default-titles)"
                             >
                                 {{ t.author }}
                             </p>
-                            <p style="font-size: 13px; color: #497371">
+                            <p style="font-size: 13px; color: var(--default-text)">
                                 {{ t.company }}
                             </p>
-                            <p
-                                class="font-semibold"
-                                style="
-                                    font-size: 12px;
-                                    color: #93cfa9;
-                                    margin-top: 6px;
-                                "
-                            >
+                            <p class="captions" style="color: var(--color-default-green); margin-top: 6px">
                                 {{ t.annee }}
                             </p>
                         </div>
@@ -647,13 +588,13 @@ onMounted(async () => {
             <div class="max-w-4xl mx-auto px-8">
                 <h2
                     class="font-bold text-center mb-4"
-                    style="font-size: 32px; color: #2c4140"
+                    style="font-size: 32px; color: var(--default-titles)"
                 >
                     Palmarès des lauréats
                 </h2>
                 <p
                     class="text-center mb-12"
-                    style="font-size: 16px; color: #497371"
+                    style="color: var(--default-text)"
                 >
                     Depuis la création du Trophée, ces entreprises se sont
                     distinguées par leur engagement exceptionnel.
@@ -662,7 +603,7 @@ onMounted(async () => {
                 <div
                     v-if="palmaresLoading"
                     class="text-center py-8"
-                    style="color: #497371"
+                    style="color: var(--default-text)"
                 >
                     Chargement...
                 </div>
@@ -670,24 +611,16 @@ onMounted(async () => {
                 <template v-else>
                     <div
                         class="flex items-center gap-6 py-5 border-b"
-                        style="border-color: #f2f4f3"
+                        style="border-color: var(--light-grey)"
                     >
                         <span
                             class="font-black flex-shrink-0"
-                            style="font-size: 20px; color: #2c4140; width: 56px"
+                            style="font-size: 20px; color: var(--default-titles); width: 56px"
                             >2026</span
                         >
-                        <span
-                            style="
-                                font-size: 12px;
-                                font-weight: 600;
-                                background: #fef3c7;
-                                color: #92400e;
-                                padding: 2px 10px;
-                            "
-                            >À venir</span
+                        <span class="captions" style="background: #fef3c7; color: #92400e; padding: 2px 10px">À venir</span
                         >
-                        <span style="font-size: 14px; color: #497371"
+                        <span style="font-size: 14px; color: var(--default-text)"
                             >Cérémonie décembre 2026</span
                         >
                     </div>
@@ -697,13 +630,13 @@ onMounted(async () => {
                             v-for="annee in palmares"
                             :key="annee.annee"
                             class="flex items-center gap-6 py-5 border-b"
-                            style="border-color: #f2f4f3"
+                            style="border-color: var(--light-grey)"
                         >
                             <span
                                 class="font-black flex-shrink-0"
                                 style="
                                     font-size: 20px;
-                                    color: #2c4140;
+                                    color: var(--default-titles);
                                     width: 56px;
                                 "
                                 >{{ annee.annee }}</span
@@ -715,8 +648,8 @@ onMounted(async () => {
                                     style="
                                         font-size: 13px;
                                         font-weight: 600;
-                                        background: #f2f4f3;
-                                        color: #2c4140;
+                                        background: var(--light-grey);
+                                        color: var(--default-titles);
                                         padding: 3px 12px;
                                     "
                                     >{{ l.entreprise }}</span
@@ -732,13 +665,13 @@ onMounted(async () => {
                             ]"
                             :key="y"
                             class="flex items-center gap-6 py-5 border-b"
-                            style="border-color: #f2f4f3"
+                            style="border-color: var(--light-grey)"
                         >
                             <span
                                 class="font-black flex-shrink-0"
                                 style="
                                     font-size: 20px;
-                                    color: #2c4140;
+                                    color: var(--default-titles);
                                     width: 56px;
                                 "
                                 >{{ y }}</span
@@ -766,11 +699,11 @@ onMounted(async () => {
         </section>
 
         <!-- Process candidature -->
-        <section style="background: #f2f4f3" class="py-20">
+        <section style="background: var(--light-grey)" class="py-20">
             <div class="max-w-6xl mx-auto px-8">
                 <h2
                     class="font-bold text-center mb-12"
-                    style="font-size: 32px; color: #2c4140"
+                    style="font-size: 32px; color: var(--default-titles)"
                 >
                     Comment candidater ?
                 </h2>
@@ -780,7 +713,7 @@ onMounted(async () => {
                         :key="e.num"
                         class="flex flex-col gap-4"
                         style="
-                            border-top: 2px solid #e60f48;
+                            border-top: 2px solid var(--color-default-red);
                             padding-top: 1.5rem;
                         "
                     >
@@ -788,7 +721,7 @@ onMounted(async () => {
                             class="font-black"
                             style="
                                 font-size: 32px;
-                                color: #e60f48;
+                                color: var(--color-default-red);
                                 line-height: 1;
                             "
                         >
@@ -796,14 +729,14 @@ onMounted(async () => {
                         </p>
                         <h3
                             class="font-bold"
-                            style="font-size: 15px; color: #2c4140"
+                            style="font-size: 15px; color: var(--default-titles)"
                         >
                             {{ e.title }}
                         </h3>
                         <p
                             style="
                                 font-size: 14px;
-                                color: #497371;
+                                color: var(--default-text);
                                 line-height: 1.65;
                             "
                         >
@@ -817,12 +750,12 @@ onMounted(async () => {
         <!-- CTA final -->
         <section
             class="py-20 text-center"
-            style="background: linear-gradient(135deg, #65c6c1, #93cfa9)"
+            style="background: linear-gradient(135deg, var(--color-default-blue-59), var(--color-default-green))"
         >
             <div class="max-w-2xl mx-auto px-8">
                 <h2
                     class="font-bold mb-4"
-                    style="font-size: 36px; color: #2c4140; line-height: 1.25"
+                    style="font-size: 36px; color: var(--default-titles); line-height: 1.25"
                 >
                     Votre entreprise mérite<br />d'être reconnue.
                 </h2>
@@ -830,7 +763,7 @@ onMounted(async () => {
                     class="mb-10"
                     style="
                         font-size: 17px;
-                        color: #2c4140;
+                        color: var(--default-titles);
                         opacity: 0.8;
                         line-height: 1.6;
                     "
@@ -841,12 +774,7 @@ onMounted(async () => {
                 <div class="flex items-center justify-center gap-4 flex-wrap">
                     <RouterLink
                         to="/login"
-                        class="inline-block text-white font-semibold rounded-full px-8 py-3 transition hover:opacity-80"
-                        style="
-                            background: #e60f48;
-                            font-size: 16px;
-                            text-decoration: none;
-                        "
+                        class="btn btn-filled-red"
                     >
                         Candidater au Trophée 2026
                     </RouterLink>
@@ -854,9 +782,8 @@ onMounted(async () => {
                         to="/label"
                         class="inline-block font-semibold rounded-full px-8 py-3 border-2 transition hover:opacity-75"
                         style="
-                            color: #2c4140;
-                            border-color: #2c4140;
-                            font-size: 16px;
+                            color: var(--default-titles);
+                            border-color: var(--default-titles);
                             text-decoration: none;
                             background: transparent;
                         "
@@ -868,20 +795,14 @@ onMounted(async () => {
         </section>
 
         <!-- Footer -->
-        <footer style="background: #2c4140; padding: 3.5rem 0 2.5rem">
+        <footer style="background: var(--default-titles); padding: 3.5rem 0 2.5rem">
             <div class="max-w-6xl mx-auto px-8">
                 <div class="grid grid-cols-4 gap-10 mb-12">
                     <div>
                         <div class="font-extrabold text-2xl mb-1 text-white">
                             HUG
                         </div>
-                        <div
-                            style="
-                                font-size: 12px;
-                                color: #93cfa9;
-                                line-height: 1.6;
-                            "
-                        >
+                        <div class="captions" style="color: var(--color-default-green); line-height: 1.6">
                             Hôpitaux<br />Universitaires<br />Genève
                         </div>
                     </div>
@@ -898,7 +819,6 @@ onMounted(async () => {
                                     to="/label"
                                     class="text-white hover:opacity-70 transition"
                                     style="
-                                        font-size: 16px;
                                         text-decoration: none;
                                     "
                                     >Label CTS</RouterLink
@@ -909,7 +829,6 @@ onMounted(async () => {
                                     to="/trophee"
                                     class="text-white hover:opacity-70 transition"
                                     style="
-                                        font-size: 16px;
                                         text-decoration: none;
                                     "
                                     >Trophée de la générosité</RouterLink
@@ -930,7 +849,6 @@ onMounted(async () => {
                                     to="/faq"
                                     class="text-white hover:opacity-70 transition"
                                     style="
-                                        font-size: 16px;
                                         text-decoration: none;
                                     "
                                     >FAQ</RouterLink
@@ -941,7 +859,6 @@ onMounted(async () => {
                                     to="/contact"
                                     class="text-white hover:opacity-70 transition"
                                     style="
-                                        font-size: 16px;
                                         text-decoration: none;
                                     "
                                     >Contact</RouterLink
@@ -962,7 +879,6 @@ onMounted(async () => {
                                     href="#"
                                     class="text-white hover:opacity-70 transition"
                                     style="
-                                        font-size: 16px;
                                         text-decoration: none;
                                     "
                                     >Politique de confidentialité</a
@@ -973,7 +889,6 @@ onMounted(async () => {
                                     href="#"
                                     class="text-white hover:opacity-70 transition"
                                     style="
-                                        font-size: 16px;
                                         text-decoration: none;
                                     "
                                     >Conditions générales</a
@@ -988,7 +903,7 @@ onMounted(async () => {
                 >
                     <p
                         class="text-center"
-                        style="font-size: 16px; color: #f2f4f3"
+                        style="color: var(--light-grey)"
                     >
                         © {{ new Date().getFullYear() }} Hôpitaux Universitaire
                         Genève. Tous droits réservés.

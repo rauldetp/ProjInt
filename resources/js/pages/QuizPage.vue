@@ -1,12 +1,12 @@
-<script setup>
+﻿<script setup>
 import { ref, computed, onMounted } from "vue";
 import { useAuthStore } from "../stores/auth";
 import HugNavbar from "../components/HugNavbar.vue";
 
 const auth = useAuthStore();
 
-const BRAND = "#e60f48";
-const TEAL  = "#65c6c1";
+const BRAND = "var(--color-default-red)";
+const TEAL  = "var(--color-default-blue-59)";
 const COOKIE_RESULT  = "quizResult_hug";
 const COOKIE_ANSWERS = "quizAnswers_hug";
 const COOKIE_DAYS    = 7;
@@ -134,10 +134,10 @@ function isGoodForDonation(i) {
 }
 
 function getAnswerBadgeStyle(answer) {
-    if (!answer) return { background: '#f2f4f3', color: '#8fa8a6' };
+    if (!answer) return { background: 'var(--light-grey)', color: '#8fa8a6' };
     if (answer === 'Oui') return { background: '#d1fae5', color: '#065f46' };
     if (answer === 'Non') return { background: '#fee2e2', color: '#991b1b' };
-    return { background: '#f0f9f8', color: '#2c4140' };
+    return { background: '#f0f9f8', color: 'var(--default-titles)' };
 }
 
 // ── Actions ──────────────────────────────────────────────────────
@@ -527,7 +527,7 @@ function retakeQuiz() {
     width: 320px;
     height: 320px;
     border-radius: 50%;
-    background: #f2f4f3;
+    background: var(--light-grey);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -554,13 +554,13 @@ function retakeQuiz() {
 .intro-title {
     font-size: 2.5rem;
     font-weight: 800;
-    color: #2c4140;
+    color: var(--default-titles);
     margin: 0 0 1rem;
     line-height: 1.15;
 }
 .intro-sub {
     font-size: 1rem;
-    color: #497371;
+    color: var(--default-text);
     line-height: 1.7;
     margin: 0 0 2rem;
     max-width: 380px;
@@ -572,7 +572,7 @@ function retakeQuiz() {
     margin-bottom: 2rem;
 }
 .feature-card {
-    border: 1.5px solid #f2f4f3;
+    border: 1.5px solid var(--light-grey);
     border-radius: 14px;
     padding: 1.25rem 1rem;
     display: flex;
@@ -587,7 +587,7 @@ function retakeQuiz() {
 .feature-label {
     font-size: 0.82rem;
     font-weight: 600;
-    color: #497371;
+    color: var(--default-text);
     margin: 0;
     line-height: 1.4;
 }
@@ -599,8 +599,8 @@ function retakeQuiz() {
     gap: 0.5rem;
     font-size: 1rem;
     font-weight: 600;
-    background: #65c6c1;
-    color: #2c4140;
+    background: var(--color-default-blue-59);
+    color: var(--default-titles);
     border: none;
     border-radius: 9999px;
     padding: 0.85rem 1.75rem;
@@ -660,8 +660,8 @@ function retakeQuiz() {
 }
 .step-active,
 .step-done {
-    background: #e60f48;
-    border-color: #e60f48;
+    background: var(--color-default-red);
+    border-color: var(--color-default-red);
     color: white;
 }
 .step-line {
@@ -673,7 +673,7 @@ function retakeQuiz() {
     transition: background 0.3s;
 }
 .step-line-done {
-    background: #e60f48;
+    background: var(--color-default-red);
 }
 
 .quiz-inner {
@@ -692,7 +692,7 @@ function retakeQuiz() {
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    background: #f2f4f3;
+    background: var(--light-grey);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -711,7 +711,7 @@ function retakeQuiz() {
 .quiz-question {
     font-size: 1.9rem;
     font-weight: 800;
-    color: #2c4140;
+    color: var(--default-titles);
     margin: 0 0 2rem;
     line-height: 1.25;
     max-width: 520px;
@@ -737,7 +737,7 @@ function retakeQuiz() {
     transition: border-color 0.18s, color 0.18s, box-shadow 0.18s;
     font-size: 1rem;
     font-weight: 600;
-    color: #2c4140;
+    color: var(--default-titles);
     font-family: inherit;
     text-align: left;
 }
@@ -745,7 +745,7 @@ function retakeQuiz() {
 .quiz-option.opt-non { border-color: #ef4444; color: #dc2626; }
 .quiz-option.opt-oui.is-selected { background: #f0fdf4; }
 .quiz-option.opt-non.is-selected { background: #fff1f2; }
-.quiz-option.opt-other.is-selected { border-color: #2c4140; background: #f0f9f8; }
+.quiz-option.opt-other.is-selected { border-color: var(--default-titles); background: #f0f9f8; }
 .quiz-option:hover:not(.is-selected) { opacity: 0.75; }
 .opt-icon {
     width: 18px;
@@ -763,7 +763,7 @@ function retakeQuiz() {
     font-size: 0.95rem;
     font-weight: 600;
     background: rgba(101,198,193,0.18);
-    color: #2c4140;
+    color: var(--default-titles);
     border: none;
     border-radius: 9999px;
     padding: 0.85rem 2rem;
@@ -804,13 +804,13 @@ function retakeQuiz() {
 .info-title {
     font-size: 2rem;
     font-weight: 800;
-    color: #2c4140;
+    color: var(--default-titles);
     margin: 0 0 0.25rem;
     line-height: 1.2;
 }
 .info-msg {
     font-size: 1rem;
-    color: #497371;
+    color: var(--default-text);
     line-height: 1.7;
     margin: 0;
     font-weight: 500;
@@ -842,12 +842,11 @@ function retakeQuiz() {
     flex-shrink: 0;
 }
 .tip-icon {
-    font-size: 16px;
     color: #000;
 }
 .tip-text {
     font-size: 0.9rem;
-    color: #2c4140;
+    color: var(--default-titles);
     line-height: 1.6;
     margin: 0;
     font-style: italic;
@@ -866,7 +865,7 @@ function retakeQuiz() {
 .recap-title {
     font-size: 1.75rem;
     font-weight: 800;
-    color: #2c4140;
+    color: var(--default-titles);
     margin: 0 0 1.75rem;
 }
 .answers-grid {
@@ -893,7 +892,7 @@ function retakeQuiz() {
     width: 28px;
     height: 28px;
     border-radius: 50%;
-    background: #f2f4f3;
+    background: var(--light-grey);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -904,7 +903,7 @@ function retakeQuiz() {
 .check-bad  { color: #dc2626; }
 .card-question {
     font-size: 0.88rem;
-    color: #2c4140;
+    color: var(--default-titles);
     font-weight: 500;
     margin: 0;
     flex: 1;
@@ -939,12 +938,12 @@ function retakeQuiz() {
     margin-top: 3rem;
     padding: 3.5rem 2rem;
     text-align: center;
-    background: linear-gradient(135deg, #65c6c1, #93cfa9);
+    background: linear-gradient(135deg, var(--color-default-blue-59), var(--color-default-green));
 }
 .ready-title {
     font-size: 2rem;
     font-weight: 800;
-    color: #2c4140;
+    color: var(--default-titles);
     margin: 0 0 1.75rem;
 }
 .btn-ready {
@@ -953,7 +952,7 @@ function retakeQuiz() {
     gap: 0.5rem;
     font-size: 1rem;
     font-weight: 700;
-    background: #e60f48;
+    background: var(--color-default-red);
     color: white;
     border: none;
     border-radius: 9999px;
@@ -975,13 +974,13 @@ function retakeQuiz() {
 .result-title {
     font-size: 2rem;
     font-weight: 800;
-    color: #2c4140;
+    color: var(--default-titles);
     margin: 0;
     line-height: 1.2;
 }
 .result-sub {
     font-size: 0.95rem;
-    color: #497371;
+    color: var(--default-text);
     line-height: 1.65;
     margin: 0;
 }
@@ -995,7 +994,7 @@ function retakeQuiz() {
 }
 .result-tip-card p {
     font-size: 0.9rem;
-    color: #2c4140;
+    color: var(--default-titles);
     line-height: 1.6;
     margin: 0;
     font-style: italic;

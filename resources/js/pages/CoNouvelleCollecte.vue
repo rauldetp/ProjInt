@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup>
 import { ref, computed, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useCobrandStore } from "../stores/cobrand";
@@ -18,7 +18,7 @@ const submitError = ref(null);
 const editId      = computed(() => route.query.edit ? parseInt(route.query.edit) : null);
 const isEdit      = computed(() => !!editId.value);
 
-const brandColor = computed(() => cobrand.couleurPrimaire || "#e60f48");
+const brandColor = computed(() => cobrand.couleurPrimaire || "var(--color-default-red)");
 
 /* ── Form state ─────────────────────────────────────────────── */
 const form = ref({
@@ -130,33 +130,33 @@ onMounted(async () => {
 </script>
 
 <template>
-    <div class="min-h-screen bg-white" style="font-family: 'Instrument Sans', sans-serif">
+    <div class="min-h-screen bg-white">
 
         <CoNavbar :collecte="collecte" />
 
         <!-- Form content -->
-        <section style="background: #f2f4f3; min-height: calc(100vh - 76px - 180px); padding: 3rem 0 5rem">
+        <section style="background: var(--light-grey); min-height: calc(100vh - 76px - 180px); padding: 3rem 0 5rem">
             <div class="max-w-3xl mx-auto px-8">
-                <h1 class="font-bold mb-8" style="font-size: 32px; color: #2c4140">{{ isEdit ? "Modifier la collecte" : "Créer une nouvelle collecte" }}</h1>
+                <h1 class="font-bold mb-8" style="font-size: 32px; color: var(--default-titles)">{{ isEdit ? "Modifier la collecte" : "Créer une nouvelle collecte" }}</h1>
 
                 <form @submit.prevent="submitForm" style="display: flex; flex-direction: column; gap: 1.5rem">
 
                     <!-- Ligne 1: Nom entreprise + Titre -->
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem">
                         <div>
-                            <label style="font-size: 12px; font-weight: 600; color: #497371; display: block; margin-bottom: 0.4rem">Nom de l'entreprise</label>
-                            <div style="background: #e8edec; border-radius: 8px; padding: 0.75rem 1rem; font-size: 14px; color: #497371; border: 1px solid #dce5e4">
+                            <label class="captions" style="color: var(--default-text); display: block; margin-bottom: 0.4rem">Nom de l'entreprise</label>
+                            <div style="background: #e8edec; border-radius: 8px; padding: 0.75rem 1rem; font-size: 14px; color: var(--default-text); border: 1px solid #dce5e4">
                                 {{ cobrand.nom || entreprise?.nom || "—" }}
                             </div>
                         </div>
                         <div>
-                            <label for="titre" style="font-size: 12px; font-weight: 600; color: #497371; display: block; margin-bottom: 0.4rem">Titre de la collecte</label>
+                            <label for="titre" class="captions" style="color: var(--default-text); display: block; margin-bottom: 0.4rem">Titre de la collecte</label>
                             <input
                                 id="titre"
                                 v-model="form.titre"
                                 type="text"
                                 placeholder="ex : Collecte de printemps"
-                                style="width: 100%; border-radius: 8px; padding: 0.75rem 1rem; font-size: 14px; color: #2c4140; border: 1px solid #dce5e4; background: white; outline: none; box-sizing: border-box"
+                                style="width: 100%; border-radius: 8px; padding: 0.75rem 1rem; font-size: 14px; color: var(--default-titles); border: 1px solid #dce5e4; background: white; outline: none; box-sizing: border-box"
                             />
                         </div>
                     </div>
@@ -164,31 +164,31 @@ onMounted(async () => {
                     <!-- Ligne 2: Dates -->
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem">
                         <div>
-                            <label for="date_debut" style="font-size: 12px; font-weight: 600; color: #497371; display: block; margin-bottom: 0.4rem">Date de début</label>
+                            <label for="date_debut" class="captions" style="color: var(--default-text); display: block; margin-bottom: 0.4rem">Date de début</label>
                             <input
                                 id="date_debut"
                                 v-model="form.date_debut"
                                 type="date"
                                 required
-                                style="width: 100%; border-radius: 8px; padding: 0.75rem 1rem; font-size: 14px; color: #2c4140; border: 1px solid #dce5e4; background: white; outline: none; box-sizing: border-box"
+                                style="width: 100%; border-radius: 8px; padding: 0.75rem 1rem; font-size: 14px; color: var(--default-titles); border: 1px solid #dce5e4; background: white; outline: none; box-sizing: border-box"
                             />
                         </div>
                         <div>
-                            <label for="date_fin" style="font-size: 12px; font-weight: 600; color: #497371; display: block; margin-bottom: 0.4rem">Date de fin</label>
+                            <label for="date_fin" class="captions" style="color: var(--default-text); display: block; margin-bottom: 0.4rem">Date de fin</label>
                             <input
                                 id="date_fin"
                                 v-model="form.date_fin"
                                 type="date"
-                                style="width: 100%; border-radius: 8px; padding: 0.75rem 1rem; font-size: 14px; color: #2c4140; border: 1px solid #dce5e4; background: white; outline: none; box-sizing: border-box"
+                                style="width: 100%; border-radius: 8px; padding: 0.75rem 1rem; font-size: 14px; color: var(--default-titles); border: 1px solid #dce5e4; background: white; outline: none; box-sizing: border-box"
                             />
                         </div>
                     </div>
 
                     <!-- Lieu de la campagne -->
                     <div>
-                        <p style="font-size: 12px; font-weight: 600; color: #497371; margin: 0 0 0.75rem">Lieu de la campagne</p>
+                        <p class="captions" style="color: var(--default-text); margin: 0 0 0.75rem">Lieu de la campagne</p>
                         <div style="display: flex; flex-direction: column; gap: 0.6rem">
-                            <label style="display: flex; align-items: center; gap: 0.6rem; cursor: pointer; font-size: 14px; color: #2c4140">
+                            <label style="display: flex; align-items: center; gap: 0.6rem; cursor: pointer; font-size: 14px; color: var(--default-titles)">
                                 <input
                                     type="radio"
                                     v-model="form.sur_site"
@@ -197,7 +197,7 @@ onMounted(async () => {
                                 />
                                 En entreprise
                             </label>
-                            <label style="display: flex; align-items: center; gap: 0.6rem; cursor: pointer; font-size: 14px; color: #2c4140">
+                            <label style="display: flex; align-items: center; gap: 0.6rem; cursor: pointer; font-size: 14px; color: var(--default-titles)">
                                 <input
                                     type="radio"
                                     v-model="form.sur_site"
@@ -211,44 +211,44 @@ onMounted(async () => {
 
                     <!-- Adresse (si en entreprise) -->
                     <div v-if="form.sur_site">
-                        <label for="lieu" style="font-size: 12px; font-weight: 600; color: #497371; display: block; margin-bottom: 0.4rem">Adresse de la collecte</label>
+                        <label for="lieu" class="captions" style="color: var(--default-text); display: block; margin-bottom: 0.4rem">Adresse de la collecte</label>
                         <input
                             id="lieu"
                             v-model="form.lieu"
                             type="text"
                             placeholder="ex : Salle A, Rue de la Paix 1, 1211 Genève"
-                            style="width: 100%; border-radius: 8px; padding: 0.75rem 1rem; font-size: 14px; color: #2c4140; border: 1px solid #dce5e4; background: white; outline: none; box-sizing: border-box"
+                            style="width: 100%; border-radius: 8px; padding: 0.75rem 1rem; font-size: 14px; color: var(--default-titles); border: 1px solid #dce5e4; background: white; outline: none; box-sizing: border-box"
                         />
                     </div>
 
                     <!-- Horaires + Objectif -->
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem">
                         <div>
-                            <label for="horaires" style="font-size: 12px; font-weight: 600; color: #497371; display: block; margin-bottom: 0.4rem">Horaires</label>
+                            <label for="horaires" class="captions" style="color: var(--default-text); display: block; margin-bottom: 0.4rem">Horaires</label>
                             <input
                                 id="horaires"
                                 v-model="form.horaires"
                                 type="text"
                                 placeholder="ex : 09:00 – 17:00"
-                                style="width: 100%; border-radius: 8px; padding: 0.75rem 1rem; font-size: 14px; color: #2c4140; border: 1px solid #dce5e4; background: white; outline: none; box-sizing: border-box"
+                                style="width: 100%; border-radius: 8px; padding: 0.75rem 1rem; font-size: 14px; color: var(--default-titles); border: 1px solid #dce5e4; background: white; outline: none; box-sizing: border-box"
                             />
                         </div>
                         <div>
-                            <label for="objectif" style="font-size: 12px; font-weight: 600; color: #497371; display: block; margin-bottom: 0.4rem">Objectif de dons</label>
+                            <label for="objectif" class="captions" style="color: var(--default-text); display: block; margin-bottom: 0.4rem">Objectif de dons</label>
                             <input
                                 id="objectif"
                                 v-model="form.objectif_dons"
                                 type="number"
                                 min="1"
                                 placeholder="ex : 40"
-                                style="width: 100%; border-radius: 8px; padding: 0.75rem 1rem; font-size: 14px; color: #2c4140; border: 1px solid #dce5e4; background: white; outline: none; box-sizing: border-box"
+                                style="width: 100%; border-radius: 8px; padding: 0.75rem 1rem; font-size: 14px; color: var(--default-titles); border: 1px solid #dce5e4; background: white; outline: none; box-sizing: border-box"
                             />
                         </div>
                     </div>
 
                     <!-- Nombre d'employés -->
                     <div>
-                        <label for="nb_employes" style="font-size: 12px; font-weight: 600; color: #497371; display: block; margin-bottom: 0.4rem">
+                        <label for="nb_employes" class="captions" style="color: var(--default-text); display: block; margin-bottom: 0.4rem">
                             Nombre d'employés dans l'entreprise
                         </label>
                         <input
@@ -257,19 +257,19 @@ onMounted(async () => {
                             type="number"
                             min="1"
                             placeholder="ex : 250"
-                            style="width: 100%; max-width: 200px; border-radius: 8px; padding: 0.75rem 1rem; font-size: 14px; color: #2c4140; border: 1px solid #dce5e4; background: white; outline: none; box-sizing: border-box"
+                            style="width: 100%; max-width: 200px; border-radius: 8px; padding: 0.75rem 1rem; font-size: 14px; color: var(--default-titles); border: 1px solid #dce5e4; background: white; outline: none; box-sizing: border-box"
                         />
                     </div>
 
                     <!-- Participation et confidentialité -->
                     <div>
-                        <p style="font-size: 12px; font-weight: 600; color: #497371; margin: 0 0 0.75rem">Participation et confidentialité</p>
+                        <p class="captions" style="color: var(--default-text); margin: 0 0 0.75rem">Participation et confidentialité</p>
                         <div style="display: flex; flex-direction: column; gap: 0.75rem">
-                            <label style="display: flex; align-items: flex-start; gap: 0.6rem; cursor: pointer; font-size: 14px; color: #2c4140; line-height: 1.5">
+                            <label style="display: flex; align-items: flex-start; gap: 0.6rem; cursor: pointer; font-size: 14px; color: var(--default-titles); line-height: 1.5">
                                 <input type="checkbox" v-model="acceptPublication" style="width: 16px; height: 16px; margin-top: 2px; flex-shrink: 0" />
                                 J'accepte que ma collecte puisse être publiée en tant qu'exemple sur le site web.
                             </label>
-                            <label style="display: flex; align-items: flex-start; gap: 0.6rem; cursor: pointer; font-size: 14px; color: #2c4140; line-height: 1.5">
+                            <label style="display: flex; align-items: flex-start; gap: 0.6rem; cursor: pointer; font-size: 14px; color: var(--default-titles); line-height: 1.5">
                                 <input type="checkbox" v-model="acceptTrophee" style="width: 16px; height: 16px; margin-top: 2px; flex-shrink: 0" />
                                 J'accepte de participer au
                                 <RouterLink :to="`/entreprise/${route.params.slug}/trophee`" :style="{ color: brandColor }" style="text-decoration: underline">Trophée de la Générosité</RouterLink>.
@@ -278,7 +278,7 @@ onMounted(async () => {
                     </div>
 
                     <!-- Error -->
-                    <p v-if="submitError" style="font-size: 14px; color: #e60f48; margin: 0">{{ submitError }}</p>
+                    <p v-if="submitError" style="font-size: 14px; color: var(--color-default-red); margin: 0">{{ submitError }}</p>
 
                     <!-- Submit -->
                     <div>
@@ -340,11 +340,11 @@ onMounted(async () => {
         </Transition>
 
         <!-- Footer simplifié -->
-        <footer style="background: #2c4140; padding: 2.5rem 0 2rem">
+        <footer style="background: var(--default-titles); padding: 2.5rem 0 2rem">
             <div class="max-w-6xl mx-auto px-8 flex items-center justify-between">
                 <div>
                     <div class="font-extrabold text-xl text-white">HUG</div>
-                    <div style="font-size: 12px; color: #93cfa9">Hôpitaux Universitaires Genève</div>
+                    <div class="captions" style="color: var(--color-default-green)">Hôpitaux Universitaires Genève</div>
                 </div>
                 <p style="font-size: 13px; color: rgba(242,244,243,0.4)">
                     © {{ new Date().getFullYear() }} Hôpitaux Universitaires Genève
@@ -388,7 +388,7 @@ onMounted(async () => {
 .overlay-lead {
     font-size: 0.95rem;
     font-weight: 700;
-    color: #2c4140;
+    color: var(--default-titles);
     margin: 0 0 0.6rem;
 }
 .overlay-solution {
@@ -398,17 +398,17 @@ onMounted(async () => {
     margin: 1rem 0 0.4rem;
 }
 .overlay-bullet {
-    color: #e60f48;
+    color: var(--color-default-red);
     font-size: 1.2rem;
     line-height: 1;
 }
 .overlay-solution strong {
     font-size: 0.95rem;
-    color: #2c4140;
+    color: var(--default-titles);
 }
 .overlay-text {
     font-size: 0.875rem;
-    color: #2c4140;
+    color: var(--default-titles);
     line-height: 1.65;
     margin: 0;
 }
@@ -418,12 +418,12 @@ onMounted(async () => {
     display: block;
     width: 100%;
     margin-top: 1.75rem;
-    border: 2px solid #e60f48;
+    border: 2px solid var(--color-default-red);
     border-radius: 9999px;
     padding: 0.75rem 1.5rem;
     font-size: 0.8rem;
     font-weight: 800;
-    color: #e60f48;
+    color: var(--color-default-red);
     text-align: center;
     text-decoration: none;
     letter-spacing: 0.04em;
@@ -431,7 +431,7 @@ onMounted(async () => {
     box-sizing: border-box;
 }
 .overlay-btn-reglementaire:hover {
-    background: #e60f48;
+    background: var(--color-default-red);
     color: white;
 }
 .overlay-btn-continue {

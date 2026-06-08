@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup>
 import { ref, computed, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useCobrandStore } from "../stores/cobrand";
@@ -15,7 +15,7 @@ const entreprise = ref(null);
 const loading   = ref(true);
 const error     = ref(null);
 
-const brandColor  = computed(() => cobrand.couleurPrimaire || "#e60f48");
+const brandColor  = computed(() => cobrand.couleurPrimaire || "var(--color-default-red)");
 const textOnBrand = computed(() => cobrand.textOnBrand);
 
 function formatDate(d) {
@@ -39,7 +39,7 @@ function badgeStyle(c) {
     if (l === "En cours")    return { background: "#d1fae5", color: "#065f46" };
     if (l === "À confirmer") return { background: "#fee2e2", color: "#991b1b" };
     if (l === "À venir")     return { background: "#fef3c7", color: "#92400e" };
-    return { background: "#f2f4f3", color: "#497371" };
+    return { background: "var(--light-grey)", color: "var(--default-text)" };
 }
 
 onMounted(async () => {
@@ -67,21 +67,21 @@ onMounted(async () => {
 </script>
 
 <template>
-    <div class="min-h-screen bg-white" style="font-family: 'Instrument Sans', sans-serif">
+    <div class="min-h-screen bg-white">
 
         <CoNavbar :collecte="collecte?.active ? collecte : null" />
 
-        <div v-if="loading" class="flex items-center justify-center py-20" style="color: #497371">Chargement…</div>
-        <div v-else-if="error" class="flex items-center justify-center py-20" style="color: #e60f48">{{ error }}</div>
+        <div v-if="loading" class="flex items-center justify-center py-20" style="color: var(--default-text)">Chargement…</div>
+        <div v-else-if="error" class="flex items-center justify-center py-20" style="color: var(--color-default-red)">{{ error }}</div>
 
         <template v-else>
-            <section style="background: #f2f4f3; min-height: calc(100vh - 76px - 160px); padding: 3rem 0 5rem">
+            <section style="background: var(--light-grey); min-height: calc(100vh - 76px - 160px); padding: 3rem 0 5rem">
                 <div class="max-w-3xl mx-auto px-8">
 
                     <!-- Back -->
                     <button
                         @click="router.push(`/entreprise/${route.params.slug}/espace`)"
-                        style="display: inline-flex; align-items: center; gap: 6px; background: none; border: none; color: #497371; font-size: 14px; cursor: pointer; padding: 0; margin-bottom: 2rem; font-family: inherit"
+                        style="display: inline-flex; align-items: center; gap: 6px; background: none; border: none; color: var(--default-text); font-size: 14px; cursor: pointer; padding: 0; margin-bottom: 2rem; font-family: inherit"
                     >
                         <span class="material-symbols-outlined" style="font-size: 18px">arrow_back</span>
                         Retour à l'espace entreprise
@@ -90,10 +90,10 @@ onMounted(async () => {
                     <!-- Header collecte -->
                     <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem">
                         <div>
-                            <h1 class="font-bold" style="font-size: 30px; color: #2c4140; margin: 0 0 6px">
+                            <h1 class="font-bold" style="font-size: 30px; color: var(--default-titles); margin: 0 0 6px">
                                 {{ collecte.titre || entreprise?.nom }}
                             </h1>
-                            <p style="font-size: 14px; color: #497371; margin: 0">
+                            <p style="font-size: 14px; color: var(--default-text); margin: 0">
                                 {{ formatDate(collecte.date_debut) }}
                                 <template v-if="collecte.date_fin && collecte.date_fin !== collecte.date_debut">
                                     → {{ formatDate(collecte.date_fin) }}
@@ -108,7 +108,7 @@ onMounted(async () => {
 
                     <!-- Infos pratiques -->
                     <div style="background: white; border-radius: 14px; padding: 2rem; margin-bottom: 1.5rem">
-                        <p class="font-bold" style="font-size: 16px; color: #2c4140; margin: 0 0 1.25rem">
+                        <p class="font-bold" style="color: var(--default-titles); margin: 0 0 1.25rem">
                             <span class="material-symbols-outlined" style="font-size: 18px; vertical-align: middle; margin-right: 6px">info</span>
                             Informations pratiques
                         </p>
@@ -170,7 +170,7 @@ onMounted(async () => {
 
                     <!-- Recommandations -->
                     <div style="background: white; border-radius: 14px; padding: 2rem; margin-bottom: 1.5rem">
-                        <p class="font-bold" style="font-size: 16px; color: #2c4140; margin: 0 0 1.25rem">
+                        <p class="font-bold" style="color: var(--default-titles); margin: 0 0 1.25rem">
                             <span class="material-symbols-outlined" style="font-size: 18px; vertical-align: middle; margin-right: 6px">health_and_safety</span>
                             Recommandations avant le don
                         </p>
@@ -209,7 +209,7 @@ onMounted(async () => {
                             target="_blank"
                             rel="noopener"
                             class="btn-contact"
-                            style="background: white; color: #2c4140"
+                            style="background: white; color: var(--default-titles)"
                         >
                             Contacter le CTS
                             <span class="material-symbols-outlined" style="font-size: 16px">open_in_new</span>
@@ -220,9 +220,9 @@ onMounted(async () => {
                     <div v-if="auth.isCoordinateur" style="margin-top: 2rem; display: flex; justify-content: flex-end">
                         <button
                             @click="router.push(`/entreprise/${route.params.slug}/nouvelle-collecte?edit=${collecte.id}`)"
-                            style="display: inline-flex; align-items: center; gap: 6px; border-radius: 9999px; padding: 0.6rem 1.4rem; font-size: 14px; font-weight: 600; cursor: pointer; border: 2px solid #2c4140; background: white; color: #2c4140; font-family: inherit; transition: background 0.15s, color 0.15s"
-                            onmouseover="this.style.background='#2c4140';this.style.color='white'"
-                            onmouseout="this.style.background='white';this.style.color='#2c4140'"
+                            style="display: inline-flex; align-items: center; gap: 6px; border-radius: 9999px; padding: 0.6rem 1.4rem; font-size: 14px; font-weight: 600; cursor: pointer; border: 2px solid var(--default-titles); background: white; color: var(--default-titles); font-family: inherit; transition: background 0.15s, color 0.15s"
+                            onmouseover="this.style.background='var(--default-titles)';this.style.color='white'"
+                            onmouseout="this.style.background='white';this.style.color='var(--default-titles)'"
                         >
                             <span class="material-symbols-outlined" style="font-size: 16px">edit</span>
                             Modifier cette collecte
@@ -234,11 +234,11 @@ onMounted(async () => {
         </template>
 
         <!-- Footer -->
-        <footer style="background: #2c4140; padding: 2.5rem 0 2rem">
+        <footer style="background: var(--default-titles); padding: 2.5rem 0 2rem">
             <div class="max-w-6xl mx-auto px-8 flex items-center justify-between">
                 <div>
                     <div class="font-extrabold text-xl text-white">HUG</div>
-                    <div style="font-size: 12px; color: #93cfa9">Hôpitaux Universitaires Genève</div>
+                    <div class="captions" style="color: var(--color-default-green)">Hôpitaux Universitaires Genève</div>
                 </div>
                 <p style="font-size: 13px; color: rgba(242,244,243,0.4)">
                     © {{ new Date().getFullYear() }} Hôpitaux Universitaires Genève
@@ -262,14 +262,14 @@ onMounted(async () => {
 .info-label {
     font-size: 11px;
     font-weight: 600;
-    color: #497371;
+    color: var(--default-text);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     margin: 0 0 2px;
 }
 .info-value {
     font-size: 14px;
-    color: #2c4140;
+    color: var(--default-titles);
     font-weight: 600;
     margin: 0;
 }
@@ -277,7 +277,7 @@ onMounted(async () => {
 .reco-subtitle {
     font-size: 13px;
     font-weight: 700;
-    color: #497371;
+    color: var(--default-text);
     text-transform: uppercase;
     letter-spacing: 0.06em;
     margin: 0 0 1rem;
@@ -295,7 +295,7 @@ onMounted(async () => {
     align-items: flex-start;
     gap: 10px;
     font-size: 14px;
-    color: #497371;
+    color: var(--default-text);
     line-height: 1.65;
 }
 .reco-icon {
@@ -310,7 +310,6 @@ onMounted(async () => {
     gap: 8px;
     border-radius: 9999px;
     padding: 0.85rem 2rem;
-    font-size: 16px;
     font-weight: 700;
     text-decoration: none;
     border: none;

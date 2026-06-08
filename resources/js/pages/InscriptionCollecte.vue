@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup>
 import { ref, computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { useCobrandStore } from "../stores/cobrand";
@@ -12,7 +12,7 @@ const entreprise = ref(null);
 const collecte = ref(null);
 const loading = ref(true);
 
-const brandColor = computed(() => cobrand.couleurPrimaire || "#e60f48");
+const brandColor = computed(() => cobrand.couleurPrimaire || "var(--color-default-red)");
 const heroGradient = computed(() => `linear-gradient(135deg, ${brandColor.value}, #ffffff)`);
 
 onMounted(async () => {
@@ -33,24 +33,24 @@ onMounted(async () => {
 </script>
 
 <template>
-    <div class="min-h-screen bg-white" style="font-family: 'Instrument Sans', sans-serif">
+    <div class="min-h-screen bg-white">
         <!-- Navbar -->
-        <header class="bg-white sticky top-0 z-50" style="height: 76px; border-bottom: 1px solid #f2f4f3">
-            <div class="max-w-7xl mx-auto px-8 h-full flex items-center justify-between">
+        <header class="bg-white sticky top-0 z-50" style="height: 76px; border-bottom: 1px solid var(--light-grey)">
+            <div class="max-w-6xl mx-auto px-8 h-full flex items-center justify-between">
                 <div class="flex items-center gap-3">
-                    <RouterLink to="/" style="text-decoration: none; font-weight: 800; font-size: 20px; color: #2c4140">HUG</RouterLink>
+                    <RouterLink to="/" style="text-decoration: none; font-weight: 800; font-size: 20px; color: var(--default-titles)">HUG</RouterLink>
                     <span style="color: rgba(44,65,64,0.3); font-size: 18px">|</span>
-                    <span style="font-size: 15px; font-weight: 600; color: #497371">Don du sang</span>
+                    <span style="font-size: 15px; font-weight: 600; color: var(--default-text)">Don du sang</span>
                     <template v-if="entreprise">
                         <span style="color: rgba(44,65,64,0.3); font-size: 18px">×</span>
                         <span style="font-size: 15px; font-weight: 700" :style="{ color: brandColor }">{{ entreprise.nom }}</span>
                     </template>
                 </div>
                 <nav class="hidden md:flex items-center gap-7 text-base font-medium">
-                    <RouterLink :to="`/entreprise/${route.params.slug}`" style="color: #2c4140; text-decoration: none" class="hover:opacity-60 transition">Accueil</RouterLink>
-                    <RouterLink :to="`/entreprise/${route.params.slug}/label`" style="color: #2c4140; text-decoration: none" class="hover:opacity-60 transition">Label CTS</RouterLink>
-                    <RouterLink :to="`/entreprise/${route.params.slug}/trophee`" style="color: #2c4140; text-decoration: none" class="hover:opacity-60 transition">Trophée de la générosité</RouterLink>
-                    <RouterLink :to="coinEntrepriseLink" style="color: #2c4140; text-decoration: none" class="hover:opacity-60 transition">Coin entreprise</RouterLink>
+                    <RouterLink :to="`/entreprise/${route.params.slug}`" style="color: var(--default-titles); text-decoration: none" class="hover:opacity-60 transition">Accueil</RouterLink>
+                    <RouterLink :to="`/entreprise/${route.params.slug}/label`" style="color: var(--default-titles); text-decoration: none" class="hover:opacity-60 transition">Label CTS</RouterLink>
+                    <RouterLink :to="`/entreprise/${route.params.slug}/trophee`" style="color: var(--default-titles); text-decoration: none" class="hover:opacity-60 transition">Trophée de la générosité</RouterLink>
+                    <RouterLink :to="coinEntrepriseLink" style="color: var(--default-titles); text-decoration: none" class="hover:opacity-60 transition">Coin entreprise</RouterLink>
                 </nav>
                 <RouterLink
                     v-if="collecte"
@@ -79,7 +79,7 @@ onMounted(async () => {
         </section>
 
         <!-- Contenu -->
-        <section class="py-20" style="background: #f2f4f3">
+        <section class="py-20" style="background: var(--light-grey)">
             <div class="max-w-xl mx-auto px-8 text-center">
                 <div style="background: white; border-radius: 16px; padding: 3rem 2.5rem">
                     <div
@@ -89,10 +89,10 @@ onMounted(async () => {
                     >
                         <span class="material-symbols-outlined" style="font-size: 28px">assignment</span>
                     </div>
-                    <h2 class="font-bold mb-3" style="font-size: 22px; color: #2c4140">
+                    <h2 class="font-bold mb-3" style="font-size: 22px; color: var(--default-titles)">
                         Dossier d'inscription
                     </h2>
-                    <p class="mb-8" style="font-size: 15px; color: #497371; line-height: 1.7">
+                    <p class="mb-8" style="font-size: 15px; color: var(--default-text); line-height: 1.7">
                         Pour vous inscrire à la collecte de sang, veuillez remplir le formulaire d'inscription officiel des HUG. Ce document nous permet de préparer votre accueil dans les meilleures conditions.
                     </p>
                     <a
@@ -112,11 +112,11 @@ onMounted(async () => {
         </section>
 
         <!-- Footer -->
-        <footer style="background: #2c4140; padding: 3rem 0 2rem">
+        <footer style="background: var(--default-titles); padding: 3rem 0 2rem">
             <div class="max-w-6xl mx-auto px-8 flex items-center justify-between">
                 <div>
                     <div class="font-extrabold text-xl text-white">HUG</div>
-                    <div style="font-size: 12px; color: #93cfa9">Hôpitaux Universitaires Genève</div>
+                    <div class="captions" style="color: var(--color-default-green)">Hôpitaux Universitaires Genève</div>
                 </div>
                 <p style="font-size: 13px; color: rgba(242,244,243,0.4)">
                     © {{ new Date().getFullYear() }} Hôpitaux Universitaires Genève
