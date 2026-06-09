@@ -4,6 +4,7 @@ import { useRoute, useRouter } from "vue-router";
 import { useCobrandStore } from "../stores/cobrand";
 import { useAuthStore } from "../stores/auth";
 import CoNavbar from "../components/CoNavbar.vue";
+import Footer from "../components/Footer.vue";
 
 const route  = useRoute();
 const router = useRouter();
@@ -137,7 +138,7 @@ onMounted(async () => {
         <!-- Form content -->
         <section style="background: var(--light-grey); min-height: calc(100vh - 76px - 180px); padding: 3rem 0 5rem">
             <div class="max-w-3xl mx-auto px-8">
-                <h1 class="font-bold mb-8" style="font-size: 32px; color: var(--default-titles)">{{ isEdit ? "Modifier la collecte" : "Créer une nouvelle collecte" }}</h1>
+                <h1 class="font-bold mb-8 text-black">{{ isEdit ? "Modifier la collecte" : "Créer une nouvelle collecte" }}</h1>
 
                 <form @submit.prevent="submitForm" style="display: flex; flex-direction: column; gap: 1.5rem">
 
@@ -145,7 +146,7 @@ onMounted(async () => {
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem">
                         <div>
                             <label class="captions" style="color: var(--default-text); display: block; margin-bottom: 0.4rem">Nom de l'entreprise</label>
-                            <div style="background: #e8edec; border-radius: 8px; padding: 0.75rem 1rem; font-size: 14px; color: var(--default-text); border: 1px solid #dce5e4">
+                            <div style="background: #e8edec; border-radius: 8px; padding: 0.75rem 1rem; color: var(--default-text); border: 1px solid #dce5e4">
                                 {{ cobrand.nom || entreprise?.nom || "—" }}
                             </div>
                         </div>
@@ -156,7 +157,7 @@ onMounted(async () => {
                                 v-model="form.titre"
                                 type="text"
                                 placeholder="ex : Collecte de printemps"
-                                style="width: 100%; border-radius: 8px; padding: 0.75rem 1rem; font-size: 14px; color: var(--default-titles); border: 1px solid #dce5e4; background: white; outline: none; box-sizing: border-box"
+                                style="width: 100%; border-radius: 8px; padding: 0.75rem 1rem; color: var(--default-titles); border: 1px solid #dce5e4; background: white; outline: none; box-sizing: border-box"
                             />
                         </div>
                     </div>
@@ -170,7 +171,7 @@ onMounted(async () => {
                                 v-model="form.date_debut"
                                 type="date"
                                 required
-                                style="width: 100%; border-radius: 8px; padding: 0.75rem 1rem; font-size: 14px; color: var(--default-titles); border: 1px solid #dce5e4; background: white; outline: none; box-sizing: border-box"
+                                style="width: 100%; border-radius: 8px; padding: 0.75rem 1rem; color: var(--default-titles); border: 1px solid #dce5e4; background: white; outline: none; box-sizing: border-box"
                             />
                         </div>
                         <div>
@@ -179,7 +180,7 @@ onMounted(async () => {
                                 id="date_fin"
                                 v-model="form.date_fin"
                                 type="date"
-                                style="width: 100%; border-radius: 8px; padding: 0.75rem 1rem; font-size: 14px; color: var(--default-titles); border: 1px solid #dce5e4; background: white; outline: none; box-sizing: border-box"
+                                style="width: 100%; border-radius: 8px; padding: 0.75rem 1rem; color: var(--default-titles); border: 1px solid #dce5e4; background: white; outline: none; box-sizing: border-box"
                             />
                         </div>
                     </div>
@@ -188,7 +189,7 @@ onMounted(async () => {
                     <div>
                         <p class="captions" style="color: var(--default-text); margin: 0 0 0.75rem">Lieu de la campagne</p>
                         <div style="display: flex; flex-direction: column; gap: 0.6rem">
-                            <label style="display: flex; align-items: center; gap: 0.6rem; cursor: pointer; font-size: 14px; color: var(--default-titles)">
+                            <label style="display: flex; align-items: center; gap: 0.6rem; cursor: pointer; color: var(--default-titles)">
                                 <input
                                     type="radio"
                                     v-model="form.sur_site"
@@ -197,7 +198,7 @@ onMounted(async () => {
                                 />
                                 En entreprise
                             </label>
-                            <label style="display: flex; align-items: center; gap: 0.6rem; cursor: pointer; font-size: 14px; color: var(--default-titles)">
+                            <label style="display: flex; align-items: center; gap: 0.6rem; cursor: pointer; color: var(--default-titles)">
                                 <input
                                     type="radio"
                                     v-model="form.sur_site"
@@ -217,7 +218,7 @@ onMounted(async () => {
                             v-model="form.lieu"
                             type="text"
                             placeholder="ex : Salle A, Rue de la Paix 1, 1211 Genève"
-                            style="width: 100%; border-radius: 8px; padding: 0.75rem 1rem; font-size: 14px; color: var(--default-titles); border: 1px solid #dce5e4; background: white; outline: none; box-sizing: border-box"
+                            style="width: 100%; border-radius: 8px; padding: 0.75rem 1rem; color: var(--default-titles); border: 1px solid #dce5e4; background: white; outline: none; box-sizing: border-box"
                         />
                     </div>
 
@@ -230,7 +231,7 @@ onMounted(async () => {
                                 v-model="form.horaires"
                                 type="text"
                                 placeholder="ex : 09:00 – 17:00"
-                                style="width: 100%; border-radius: 8px; padding: 0.75rem 1rem; font-size: 14px; color: var(--default-titles); border: 1px solid #dce5e4; background: white; outline: none; box-sizing: border-box"
+                                style="width: 100%; border-radius: 8px; padding: 0.75rem 1rem; color: var(--default-titles); border: 1px solid #dce5e4; background: white; outline: none; box-sizing: border-box"
                             />
                         </div>
                         <div>
@@ -241,7 +242,7 @@ onMounted(async () => {
                                 type="number"
                                 min="1"
                                 placeholder="ex : 40"
-                                style="width: 100%; border-radius: 8px; padding: 0.75rem 1rem; font-size: 14px; color: var(--default-titles); border: 1px solid #dce5e4; background: white; outline: none; box-sizing: border-box"
+                                style="width: 100%; border-radius: 8px; padding: 0.75rem 1rem; color: var(--default-titles); border: 1px solid #dce5e4; background: white; outline: none; box-sizing: border-box"
                             />
                         </div>
                     </div>
@@ -257,7 +258,7 @@ onMounted(async () => {
                             type="number"
                             min="1"
                             placeholder="ex : 250"
-                            style="width: 100%; max-width: 200px; border-radius: 8px; padding: 0.75rem 1rem; font-size: 14px; color: var(--default-titles); border: 1px solid #dce5e4; background: white; outline: none; box-sizing: border-box"
+                            style="width: 100%; max-width: 200px; border-radius: 8px; padding: 0.75rem 1rem; color: var(--default-titles); border: 1px solid #dce5e4; background: white; outline: none; box-sizing: border-box"
                         />
                     </div>
 
@@ -265,11 +266,11 @@ onMounted(async () => {
                     <div>
                         <p class="captions" style="color: var(--default-text); margin: 0 0 0.75rem">Participation et confidentialité</p>
                         <div style="display: flex; flex-direction: column; gap: 0.75rem">
-                            <label style="display: flex; align-items: flex-start; gap: 0.6rem; cursor: pointer; font-size: 14px; color: var(--default-titles); line-height: 1.5">
+                            <label style="display: flex; align-items: flex-start; gap: 0.6rem; cursor: pointer; color: var(--default-titles); line-height: 1.5">
                                 <input type="checkbox" v-model="acceptPublication" style="width: 16px; height: 16px; margin-top: 2px; flex-shrink: 0" />
                                 J'accepte que ma collecte puisse être publiée en tant qu'exemple sur le site web.
                             </label>
-                            <label style="display: flex; align-items: flex-start; gap: 0.6rem; cursor: pointer; font-size: 14px; color: var(--default-titles); line-height: 1.5">
+                            <label style="display: flex; align-items: flex-start; gap: 0.6rem; cursor: pointer; color: var(--default-titles); line-height: 1.5">
                                 <input type="checkbox" v-model="acceptTrophee" style="width: 16px; height: 16px; margin-top: 2px; flex-shrink: 0" />
                                 J'accepte de participer au
                                 <RouterLink :to="`/entreprise/${route.params.slug}/trophee`" :style="{ color: brandColor }" style="text-decoration: underline">Trophée de la Générosité</RouterLink>.
@@ -278,7 +279,7 @@ onMounted(async () => {
                     </div>
 
                     <!-- Error -->
-                    <p v-if="submitError" style="font-size: 14px; color: var(--color-default-red); margin: 0">{{ submitError }}</p>
+                    <p v-if="submitError" style="color: var(--color-default-red); margin: 0">{{ submitError }}</p>
 
                     <!-- Submit -->
                     <div>
@@ -340,17 +341,7 @@ onMounted(async () => {
         </Transition>
 
         <!-- Footer simplifié -->
-        <footer style="background: var(--default-titles); padding: 2.5rem 0 2rem">
-            <div class="max-w-7xl mx-auto px-8 flex items-center justify-between">
-                <div>
-                    <div class="font-extrabold text-xl text-white">HUG</div>
-                    <div class="captions" style="color: var(--color-default-green)">Hôpitaux Universitaires Genève</div>
-                </div>
-                <p style="font-size: 13px; color: rgba(242,244,243,0.4)">
-                    © {{ new Date().getFullYear() }} Hôpitaux Universitaires Genève
-                </p>
-            </div>
-        </footer>
+        <Footer compact />
     </div>
 </template>
 

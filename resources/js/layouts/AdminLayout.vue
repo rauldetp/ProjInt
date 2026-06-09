@@ -35,11 +35,7 @@
                                 <RouterLink
                                     to="/label"
                                     class="hover:opacity-70 transition"
-                                    style="
-                                        font-size: 1rem;
-                                        color: white;
-                                        text-decoration: none;
-                                    "
+                                    style="color: white; text-decoration: none"
                                     >Label CTS</RouterLink
                                 >
                             </li>

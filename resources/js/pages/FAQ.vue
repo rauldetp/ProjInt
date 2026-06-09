@@ -1,6 +1,7 @@
 ﻿<script setup>
 import { ref, onMounted } from "vue";
 import HugNavbar from "../components/HugNavbar.vue";
+import Footer from "../components/Footer.vue";
 const openFaq = ref(null);
 
 function toggle(id) {
@@ -167,28 +168,22 @@ onMounted(() => {
         <HugNavbar />
 
         <!-- Hero -->
-        <section style="background: linear-gradient(135deg, var(--color-default-blue-59), var(--color-default-green)); padding: 64px 0 52px">
+        <section class="bg-gradient py-20">
             <div class="max-w-4xl mx-auto px-8">
                 <p
                     class="font-semibold mb-3 uppercase tracking-widest"
-                    style="font-size: 13px; color: var(--default-titles); opacity: 0.65"
+                    style="color: var(--default-titles); opacity: 0.65"
                 >
                     Aide & support
                 </p>
                 <h1
-                    class="font-bold mb-4"
-                    style="font-size: 48px; line-height: 1.2; color: var(--default-titles)"
+                    class="font-bold mb-4 text-black"
+                    style="line-height: 1.2"
                 >
                     Foire aux questions
                 </h1>
                 <p
-                    style="
-                        font-size: 17px;
-                        color: var(--default-titles);
-                        opacity: 0.75;
-                        line-height: 1.6;
-                        max-width: 520px;
-                    "
+                    style="color: var(--default-titles); opacity: 0.75; line-height: 1.6; max-width: 520px"
                 >
                     Tout ce que vous devez savoir sur le don du sang et sur
                     l'organisation de collectes en entreprise.
@@ -197,7 +192,7 @@ onMounted(() => {
         </section>
 
         <!-- FAQ contenu -->
-        <section class="py-16" style="background: var(--light-grey)">
+        <section class="py-20 bg-light-grey">
             <div class="max-w-3xl mx-auto px-8 flex flex-col gap-14">
                 <div v-for="cat in categories" :key="cat.id">
                     <!-- Titre catégorie -->
@@ -209,8 +204,7 @@ onMounted(() => {
                         "
                     >
                         <h2
-                            class="font-bold"
-                            style="font-size: 22px; color: var(--default-titles)"
+                            class="font-bold text-black"
                         >
                             {{ cat.title }}
                         </h2>
@@ -245,13 +239,11 @@ onMounted(() => {
 
         <!-- CTA contact -->
         <section
-            class="py-16 text-center"
-            style="background: linear-gradient(135deg, var(--color-default-blue-59), var(--color-default-green))"
+            class="py-20 text-center bg-gradient"
         >
             <div class="max-w-xl mx-auto px-8">
                 <h2
-                    class="font-bold mb-3"
-                    style="font-size: 28px; color: var(--default-titles)"
+                    class="font-bold mb-3 text-black"
                 >
                     Vous n'avez pas trouvé votre réponse ?
                 </h2>
@@ -275,109 +267,6 @@ onMounted(() => {
         </section>
 
         <!-- Footer -->
-        <footer style="background: var(--default-titles); padding: 3.5rem 0 2.5rem">
-            <div class="max-w-7xl mx-auto px-8">
-                <div class="grid grid-cols-4 gap-10 mb-12">
-                    <div>
-                        <div class="font-extrabold text-2xl mb-1 text-white">
-                            HUG
-                        </div>
-                        <div class="captions" style="color: var(--color-default-green); line-height: 1.6">
-                            Hôpitaux<br />Universitaires<br />Genève
-                        </div>
-                    </div>
-                    <div>
-                        <p
-                            class="font-bold mb-5 text-white"
-                            style="font-size: 24px"
-                        >
-                            Pages
-                        </p>
-                        <ul class="space-y-3">
-                            <li>
-                                <RouterLink
-                                    to="/label"
-                                    class="text-white hover:opacity-70 transition"
-                                    style="text-decoration: none"
-                                    >Label CTS</RouterLink
-                                >
-                            </li>
-                            <li>
-                                <RouterLink
-                                    to="/trophee"
-                                    class="text-white hover:opacity-70 transition"
-                                    style="text-decoration: none"
-                                    >Trophée de la générosité</RouterLink
-                                >
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
-                        <p
-                            class="font-bold mb-5 text-white"
-                            style="font-size: 24px"
-                        >
-                            Support
-                        </p>
-                        <ul class="space-y-3">
-                            <li>
-                                <RouterLink
-                                    to="/faq"
-                                    class="text-white hover:opacity-70 transition"
-                                    style="text-decoration: none"
-                                    >FAQ</RouterLink
-                                >
-                            </li>
-                            <li>
-                                <RouterLink
-                                    to="/contact"
-                                    class="text-white hover:opacity-70 transition"
-                                    style="text-decoration: none"
-                                    >Contact</RouterLink
-                                >
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
-                        <p
-                            class="font-bold mb-5 text-white"
-                            style="font-size: 24px"
-                        >
-                            Mentions légales
-                        </p>
-                        <ul class="space-y-3">
-                            <li>
-                                <a
-                                    href="#"
-                                    class="text-white hover:opacity-70 transition"
-                                    style="text-decoration: none"
-                                    >Politique de confidentialité</a
-                                >
-                            </li>
-                            <li>
-                                <a
-                                    href="#"
-                                    class="text-white hover:opacity-70 transition"
-                                    style="text-decoration: none"
-                                    >Conditions générales</a
-                                >
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div
-                    class="border-t pt-6"
-                    style="border-color: rgba(242, 244, 243, 0.15)"
-                >
-                    <p
-                        class="text-center"
-                        style="color: var(--light-grey)"
-                    >
-                        © {{ new Date().getFullYear() }} Hôpitaux Universitaires
-                        Genève. Tous droits réservés.
-                    </p>
-                </div>
-            </div>
-        </footer>
+        <Footer />
     </div>
 </template>

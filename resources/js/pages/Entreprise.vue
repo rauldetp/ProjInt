@@ -131,7 +131,7 @@ const dateRange = computed(() => {
                 <!-- Fallback card if no collecte -->
                 <div class="hero-card" v-else>
                     <p class="hero-card-title">Prochaine collecte</p>
-                    <p style="font-size: 14px; color: var(--default-text); margin: 0 0 1rem">
+                    <p style="color: var(--default-text); margin: 0 0 1rem">
                         Aucune collecte active pour le moment. Revenez bientôt !
                     </p>
                     <RouterLink

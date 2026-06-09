@@ -3,6 +3,7 @@ import { ref, computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { useCobrandStore } from "../stores/cobrand";
 import { useCoinEntrepriseLink } from "../composables/useCoinEntrepriseLink";
+import Footer from "../components/Footer.vue";
 
 const route = useRoute();
 const cobrand = useCobrandStore();
@@ -38,7 +39,7 @@ onMounted(async () => {
         <header class="bg-white sticky top-0 z-50" style="height: 76px; border-bottom: 1px solid var(--light-grey)">
             <div class="max-w-7xl mx-auto px-8 h-full flex items-center justify-between">
                 <div class="flex items-center gap-3">
-                    <RouterLink to="/" style="text-decoration: none; font-weight: 800; font-size: 20px; color: var(--default-titles)">HUG</RouterLink>
+                    <RouterLink to="/" style="text-decoration: none; font-weight: 800; color: var(--default-titles)">HUG</RouterLink>
                     <span style="color: rgba(44,65,64,0.3); font-size: 18px">|</span>
                     <span style="font-weight: 600; color: var(--default-text)">Don du sang</span>
                     <template v-if="entreprise">
@@ -69,7 +70,7 @@ onMounted(async () => {
                 <p class="font-semibold mb-3 uppercase tracking-widest" :style="{ fontSize: '13px', color: cobrand.textOnBrand, opacity: 0.75 }">
                     {{ entreprise?.nom ?? 'Entreprise' }} × HUG
                 </p>
-                <h1 class="font-bold mb-4" :style="{ color: cobrand.textOnBrand, fontSize: '42px', lineHeight: '1.2' }">
+                <h1 class="font-bold mb-4 text-black" :style="{ color: cobrand.textOnBrand, fontSize: '42px', lineHeight: '1.2' }">
                     S'inscrire à la collecte de sang
                 </h1>
                 <p :style="{ fontSize: '17px', color: cobrand.textOnBrand, opacity: 0.85, lineHeight: '1.6' }">
@@ -89,7 +90,7 @@ onMounted(async () => {
                     >
                         <span class="material-symbols-outlined" style="font-size: 28px">assignment</span>
                     </div>
-                    <h2 class="font-bold mb-3" style="font-size: 22px; color: var(--default-titles)">
+                    <h2 class="font-bold mb-3 text-black">
                         Dossier d'inscription
                     </h2>
                     <p class="mb-8" style="color: var(--default-text); line-height: 1.7">
@@ -104,7 +105,7 @@ onMounted(async () => {
                     >
                         Accéder au formulaire →
                     </a>
-                    <p class="mt-5" style="font-size: 12px; color: #c0cac9">
+                    <p class="mt-5" style="color: #c0cac9">
                         Vous serez redirigé vers le site officiel des HUG.
                     </p>
                 </div>
@@ -112,16 +113,6 @@ onMounted(async () => {
         </section>
 
         <!-- Footer -->
-        <footer style="background: var(--default-titles); padding: 3rem 0 2rem">
-            <div class="max-w-7xl mx-auto px-8 flex items-center justify-between">
-                <div>
-                    <div class="font-extrabold text-xl text-white">HUG</div>
-                    <div class="captions" style="color: var(--color-default-green)">Hôpitaux Universitaires Genève</div>
-                </div>
-                <p style="font-size: 13px; color: rgba(242,244,243,0.4)">
-                    © {{ new Date().getFullYear() }} Hôpitaux Universitaires Genève
-                </p>
-            </div>
-        </footer>
+        <Footer compact />
     </div>
 </template>

@@ -10,7 +10,7 @@ defineProps({
         <div class="quiz-navbar-inner">
             <div class="quiz-nav-left">
                 <button class="quiz-nav-back" @click="onBack" aria-label="Retour">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+                    <span class="material-symbols-outlined">arrow_back</span>
                 </button>
                 <div class="quiz-nav-avatar">
                     <img :src="'/images/courage/Mascotte_default.png'" alt="Courage" class="quiz-nav-avatar-img" />
@@ -89,8 +89,8 @@ defineProps({
     transform: translateY(8px);
 }
 .quiz-nav-title {
+    color: var(--color-default-red);
     font-weight: 700;
-    color: var(--default-titles);
 }
 .quiz-nav-logos {
     display: flex;

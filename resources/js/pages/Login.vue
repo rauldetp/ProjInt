@@ -195,7 +195,7 @@ const selectStyle = inputStyle + `
 
             <div>
                 <template v-if="mode === 'login'">
-                    <p class="font-black mb-4" style="font-size: 40px; color: var(--default-titles); line-height: 1.2">
+                    <p class="font-black mb-4" style="color: var(--default-titles); line-height: 1.2">
                         Ensemble,<br />sauvons des vies.
                     </p>
                     <p style="color: rgba(44,65,64,0.7); line-height: 1.7; max-width: 340px">
@@ -203,7 +203,7 @@ const selectStyle = inputStyle + `
                     </p>
                 </template>
                 <template v-else-if="mode === 'admin'">
-                    <p class="font-black mb-4" style="font-size: 36px; color: var(--default-titles); line-height: 1.2">
+                    <p class="font-black mb-4" style="color: var(--default-titles); line-height: 1.2">
                         Administration<br />HUG — CTS
                     </p>
                     <p style="color: rgba(44,65,64,0.65); line-height: 1.7; max-width: 300px">
@@ -223,7 +223,7 @@ const selectStyle = inputStyle + `
                                 <span style="color: var(--default-titles); font-weight: 600" v-html="item.text"></span>
                             </div>
                         </div>
-                        <p style="font-size: 14px; color: rgba(44,65,64,0.65); line-height: 1.6">
+                        <p style="color: rgba(44,65,64,0.65); line-height: 1.6">
                             Notre équipe du CTS vous recontactera sous 48h pour organiser votre première campagne de collecte.
                         </p>
                     </div>
@@ -242,7 +242,7 @@ const selectStyle = inputStyle + `
                         >
                             <div
                                 class="flex items-center justify-center rounded-full font-bold flex-shrink-0"
-                                style="width: 32px; height: 32px; font-size: 14px"
+                                style="width: 32px; height: 32px"
                                 :style="
                                     step === s.num
                                         ? 'background: var(--color-default-red); color: white'
@@ -263,14 +263,14 @@ const selectStyle = inputStyle + `
                             >{{ s.label }}</span>
                         </div>
                     </div>
-                    <p style="font-size: 14px; color: rgba(44,65,64,0.65); line-height: 1.6; max-width: 300px">
+                    <p style="color: rgba(44,65,64,0.65); line-height: 1.6; max-width: 300px">
                         Remplissez ce formulaire et notre équipe vous recontacte sous 48h pour organiser votre première campagne.
                     </p>
                 </template>
             </div>
 
             <div>
-                <p style="font-size: 13px; color: rgba(44,65,64,0.45)">
+                <p style="color: rgba(44,65,64,0.45)">
                     © {{ new Date().getFullYear() }} Hôpitaux Universitaires Genève
                 </p>
             </div>
@@ -295,14 +295,14 @@ const selectStyle = inputStyle + `
                 <div
                     v-if="errorMsg && mode !== 'success'"
                     class="mb-5 px-4 py-3 rounded-lg"
-                    style="background: #fee2e2; color: #991b1b; font-size: 14px"
+                    style="background: #fee2e2; color: #991b1b"
                 >
                     {{ errorMsg }}
                 </div>
 
                 <!-- ══════════════════ CONNEXION ══════════════════ -->
                 <template v-if="mode === 'login'">
-                    <h1 class="font-bold mb-1" style="font-size: 26px; color: var(--default-titles)">
+                    <h1 class="font-bold mb-1 text-black">
                         Connexion
                     </h1>
                     <p class="mb-8" style="color: var(--default-text)">
@@ -311,7 +311,7 @@ const selectStyle = inputStyle + `
 
                     <form @submit.prevent="handleLogin" class="flex flex-col gap-5">
                         <div>
-                            <label class="block font-semibold mb-1" style="font-size: 14px; color: var(--default-titles)">
+                            <label class="block font-semibold mb-1" style="color: var(--default-titles)">
                                 Adresse email
                             </label>
                             <input
@@ -323,7 +323,7 @@ const selectStyle = inputStyle + `
                             />
                         </div>
                         <div>
-                            <label class="block font-semibold mb-1" style="font-size: 14px; color: var(--default-titles)">
+                            <label class="block font-semibold mb-1" style="color: var(--default-titles)">
                                 Mot de passe
                             </label>
                             <input
@@ -382,12 +382,12 @@ const selectStyle = inputStyle + `
                     <button
                         @click="backToLogin"
                         class="flex items-center gap-2 mb-6 transition hover:opacity-60"
-                        style="background: none; border: none; cursor: pointer; padding: 0; color: var(--default-text); font-size: 14px"
+                        style="background: none; border: none; cursor: pointer; padding: 0; color: var(--default-text)"
                     >
                         ← Retour
                     </button>
 
-                    <h1 class="font-bold mb-1" style="font-size: 26px; color: var(--default-titles)">
+                    <h1 class="font-bold mb-1 text-black">
                         Administration
                     </h1>
                     <p class="mb-8" style="color: var(--default-text)">
@@ -396,7 +396,7 @@ const selectStyle = inputStyle + `
 
                     <form @submit.prevent="handleLogin" class="flex flex-col gap-5">
                         <div>
-                            <label class="block font-semibold mb-1" style="font-size: 14px; color: var(--default-titles)">
+                            <label class="block font-semibold mb-1" style="color: var(--default-titles)">
                                 Adresse email
                             </label>
                             <input
@@ -408,7 +408,7 @@ const selectStyle = inputStyle + `
                             />
                         </div>
                         <div>
-                            <label class="block font-semibold mb-1" style="font-size: 14px; color: var(--default-titles)">
+                            <label class="block font-semibold mb-1" style="color: var(--default-titles)">
                                 Mot de passe
                             </label>
                             <input
@@ -437,7 +437,7 @@ const selectStyle = inputStyle + `
                     <button
                         @click="step > 1 ? step-- : backToLogin()"
                         class="flex items-center gap-2 mb-6 transition hover:opacity-60"
-                        style="background: none; border: none; cursor: pointer; padding: 0; color: var(--default-text); font-size: 14px"
+                        style="background: none; border: none; cursor: pointer; padding: 0; color: var(--default-text)"
                     >
                         ← {{ step > 1 ? 'Étape précédente' : 'Retour à la connexion' }}
                     </button>
@@ -454,10 +454,10 @@ const selectStyle = inputStyle + `
 
                     <!-- ── Étape 1 : Votre entreprise ── -->
                     <template v-if="step === 1">
-                        <h1 class="font-bold mb-1" style="font-size: 24px; color: var(--default-titles)">
+                        <h1 class="font-bold mb-1 text-black">
                             Parlez-nous de votre entreprise
                         </h1>
-                        <p class="mb-7" style="font-size: 14px; color: var(--default-text); line-height: 1.6">
+                        <p class="mb-7" style="color: var(--default-text); line-height: 1.6">
                             Ces informations permettent au CTS de configurer la page de votre future entreprise.
                         </p>
 
@@ -465,13 +465,13 @@ const selectStyle = inputStyle + `
                             <!-- Nom + Taille -->
                             <div class="grid grid-cols-2 gap-3">
                                 <div class="col-span-2">
-                                    <label class="block font-semibold mb-1" style="font-size: 13px; color: var(--default-titles)">
+                                    <label class="block font-semibold mb-1" style="color: var(--default-titles)">
                                         Nom de l'entreprise <span style="color:var(--color-default-red)">*</span>
                                     </label>
                                     <input v-model="entreprise" type="text" required placeholder="Ma Société SA" :style="inputStyle" />
                                 </div>
                                 <div>
-                                    <label class="block font-semibold mb-1" style="font-size: 13px; color: var(--default-titles)">
+                                    <label class="block font-semibold mb-1" style="color: var(--default-titles)">
                                         Secteur d'activité
                                     </label>
                                     <select
@@ -485,7 +485,7 @@ const selectStyle = inputStyle + `
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="block font-semibold mb-1" style="font-size: 13px; color: var(--default-titles)">
+                                    <label class="block font-semibold mb-1" style="color: var(--default-titles)">
                                         Nombre d'employés
                                     </label>
                                     <input v-model="nbEmployes" type="number" min="1" placeholder="ex. 250" :style="inputStyle" />
@@ -494,7 +494,7 @@ const selectStyle = inputStyle + `
 
                             <!-- Adresse -->
                             <div>
-                                <label class="block font-semibold mb-1" style="font-size: 13px; color: var(--default-titles)">
+                                <label class="block font-semibold mb-1" style="color: var(--default-titles)">
                                     Adresse
                                 </label>
                                 <input v-model="adresse" type="text" placeholder="Rue de la Paix 12" :style="inputStyle" />
@@ -503,13 +503,13 @@ const selectStyle = inputStyle + `
                             <!-- Ville + NPA -->
                             <div class="grid grid-cols-2 gap-3">
                                 <div>
-                                    <label class="block font-semibold mb-1" style="font-size: 13px; color: var(--default-titles)">
+                                    <label class="block font-semibold mb-1" style="color: var(--default-titles)">
                                         Ville
                                     </label>
                                     <input v-model="ville" type="text" placeholder="Genève" :style="inputStyle" />
                                 </div>
                                 <div>
-                                    <label class="block font-semibold mb-1" style="font-size: 13px; color: var(--default-titles)">
+                                    <label class="block font-semibold mb-1" style="color: var(--default-titles)">
                                         Code postal
                                     </label>
                                     <input v-model="npa" type="text" placeholder="1200" :style="inputStyle" />
@@ -528,41 +528,41 @@ const selectStyle = inputStyle + `
 
                     <!-- ── Étape 2 : Votre profil ── -->
                     <template v-if="step === 2">
-                        <h1 class="font-bold mb-1" style="font-size: 24px; color: var(--default-titles)">
+                        <h1 class="font-bold mb-1 text-black">
                             Parlez-nous de vous
                         </h1>
-                        <p class="mb-7" style="font-size: 14px; color: var(--default-text); line-height: 1.6">
+                        <p class="mb-7" style="color: var(--default-text); line-height: 1.6">
                             En tant que coordinateur principal, vous ferez le lien entre les HUG et votre entreprise.
                         </p>
 
                         <div class="flex flex-col gap-4">
                             <div class="grid grid-cols-2 gap-3">
                                 <div class="col-span-2">
-                                    <label class="block font-semibold mb-1" style="font-size: 13px; color: var(--default-titles)">
+                                    <label class="block font-semibold mb-1" style="color: var(--default-titles)">
                                         Nom et prénom <span style="color:var(--color-default-red)">*</span>
                                     </label>
                                     <input v-model="name" type="text" required placeholder="Prénom Nom" :style="inputStyle" />
                                 </div>
                                 <div>
-                                    <label class="block font-semibold mb-1" style="font-size: 13px; color: var(--default-titles)">
+                                    <label class="block font-semibold mb-1" style="color: var(--default-titles)">
                                         Poste
                                     </label>
                                     <input v-model="poste" type="text" placeholder="Responsable RH" :style="inputStyle" />
                                 </div>
                                 <div>
-                                    <label class="block font-semibold mb-1" style="font-size: 13px; color: var(--default-titles)">
+                                    <label class="block font-semibold mb-1" style="color: var(--default-titles)">
                                         Téléphone
                                     </label>
                                     <input v-model="telephone" type="tel" placeholder="+41 79 000 00 00" :style="inputStyle" />
                                 </div>
                                 <div class="col-span-2">
-                                    <label class="block font-semibold mb-1" style="font-size: 13px; color: var(--default-titles)">
+                                    <label class="block font-semibold mb-1" style="color: var(--default-titles)">
                                         Email professionnel <span style="color:var(--color-default-red)">*</span>
                                     </label>
                                     <input v-model="emailReg" type="email" required placeholder="vous@entreprise.com" :style="inputStyle" />
                                 </div>
                                 <div class="col-span-2">
-                                    <label class="block font-semibold mb-1" style="font-size: 13px; color: var(--default-titles)">
+                                    <label class="block font-semibold mb-1" style="color: var(--default-titles)">
                                         Mot de passe <span style="color:var(--color-default-red)">*</span>
                                     </label>
                                     <input v-model="passwordReg" type="password" required placeholder="8 caractères minimum" :style="inputStyle" />
@@ -581,17 +581,17 @@ const selectStyle = inputStyle + `
 
                     <!-- ── Étape 3 : Apparence ── -->
                     <template v-if="step === 3">
-                        <h1 class="font-bold mb-1" style="font-size: 24px; color: var(--default-titles)">
+                        <h1 class="font-bold mb-1 text-black">
                             Informations graphiques
                         </h1>
-                        <p class="mb-7" style="font-size: 14px; color: var(--default-text); line-height: 1.6">
+                        <p class="mb-7" style="color: var(--default-text); line-height: 1.6">
                             Ces éléments visuels personnalisent votre interface et vos kits de communication. <span style="color: #c0cac9">(optionnel)</span>
                         </p>
 
                         <div class="flex flex-col gap-5">
                             <!-- Logo -->
                             <div>
-                                <label class="block font-semibold mb-1" style="font-size: 13px; color: var(--default-titles)">
+                                <label class="block font-semibold mb-1" style="color: var(--default-titles)">
                                     Logo
                                 </label>
                                 <div
@@ -603,7 +603,7 @@ const selectStyle = inputStyle + `
                                     </span>
                                     <label
                                         class="font-semibold rounded-full px-4 py-1 transition hover:opacity-75 cursor-pointer"
-                                        style="background: var(--light-grey); color: var(--default-titles); font-size: 13px; white-space: nowrap"
+                                        style="background: var(--light-grey); color: var(--default-titles); white-space: nowrap"
                                     >
                                         Parcourir
                                         <input
@@ -618,7 +618,7 @@ const selectStyle = inputStyle + `
 
                             <!-- Couleur principale -->
                             <div>
-                                <label class="block font-semibold mb-1" style="font-size: 13px; color: var(--default-titles)">
+                                <label class="block font-semibold mb-1" style="color: var(--default-titles)">
                                     Couleur principale
                                 </label>
                                 <div
@@ -650,7 +650,7 @@ const selectStyle = inputStyle + `
                             {{ loading ? "Création de votre espace…" : "Créer mon espace entreprise" }}
                         </button>
 
-                        <p class="text-center mt-5" style="font-size: 13px; color: #c0cac9; line-height: 1.6">
+                        <p class="text-center mt-5" style="color: #c0cac9; line-height: 1.6">
                             En créant un compte vous acceptez que vos données soient utilisées dans le cadre du programme de don du sang des HUG.
                         </p>
                     </template>
@@ -670,7 +670,7 @@ const selectStyle = inputStyle + `
                             <span class="material-symbols-outlined" style="font-size: 36px; color: #16a34a">check_circle</span>
                         </div>
 
-                        <h1 class="font-bold mb-2" style="font-size: 24px; color: var(--default-titles); line-height: 1.3">
+                        <h1 class="font-bold mb-2 text-black" style="line-height: 1.3">
                             Votre espace a bien été créé !
                         </h1>
                         <p style="color: var(--default-text); line-height: 1.65; margin-bottom: 2rem">
@@ -709,7 +709,7 @@ const selectStyle = inputStyle + `
                             <span class="material-symbols-outlined" style="font-size: 18px; vertical-align: middle; margin-left: 4px">arrow_forward</span>
                         </button>
 
-                        <p style="font-size: 13px; color: #c0cac9">
+                        <p style="color: #c0cac9">
                             Vous pouvez fermer cette page et y revenir à tout moment depuis<br />
                             <span style="color: var(--default-text); font-weight: 600">hug.ch/entreprise/{{ newSlug }}</span>
                         </p>

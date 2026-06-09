@@ -63,14 +63,19 @@
 html {
     font-size: 16px;
     line-height: 1.5;
+    color: var(--default-text);
 }
 
-.bg-light-grey{
+.bg-light-grey {
     background-color: var(--light-grey);
 }
 
-.bg-gradient{
-    background: linear-gradient(var(--color-default-blue-59), var(--color-default-green-69));
+.bg-gradient {
+    background: linear-gradient(
+        -136deg,
+        var(--color-default-blue-59),
+        var(--color-default-green)
+    );
 }
 
 /* ── Marquee ──────────────────────────────────────────── */
@@ -92,6 +97,13 @@ html {
     padding-right: 4rem; /* gap reproduit à la jointure des 2 groupes */
     flex-shrink: 0;
 }
+
+.img-marquee {
+ max-width: 9rem;
+ height: auto;
+ max-height: 7rem;
+}
+
 .marquee-track:hover .marquee-inner {
     animation-play-state: paused;
 }
@@ -104,17 +116,38 @@ html {
     }
 }
 
-.text-display {
+.text-black {
+    color: var(--default-titles);
+}
+
+h1,h2,h3 {
+    font-weight: 700;
+}
+
+h1,
+blockquote {
     font-size: clamp(2rem, 3.75vw, 3rem);
     line-height: 1.3;
 }
-.text-h2 {
+h2 {
     font-size: clamp(1.5rem, 2.5vw, 2rem);
     line-height: 1.3;
 }
-.text-h3 {
+h3 {
     font-size: clamp(1.125rem, 1.875vw, 1.5rem);
-    line-height: 1.3;
+    line-height: 1.5;
+}
+
+.feature-icon, .tip-icon {
+    font-size: 1.5rem;
+    padding: 1rem;
+    border-radius: 9999px;
+    background-color: var(--white);
+    color: var(--color-default-red);
+}
+
+.tip-card {
+    background: var(--color-default-green-79);
 }
 
 .section-hero {
@@ -145,12 +178,16 @@ html {
     left: 50%;
     transform: translateX(-50%);
     z-index: 40;
-    background: linear-gradient(
-        90deg,
-        var(--color-default-blue-59),
-        var(--color-default-green)
-    );
     color: var(--default-titles);
+}
+
+.circle-icon {
+    width: 10rem;
+    height: 10rem;
+    span {
+        font-size: 5rem;
+        color: var(--color-default-red);
+    }
 }
 
 /* ── FAQ ──────────────────────────────────────────────── */
@@ -267,7 +304,7 @@ html {
 }
 
 .btn-outlined-blue {
-    background: white;
+    background: transparent;
     color: var(--color-default-blue-39);
     border-color: var(--color-default-blue-39);
 }
@@ -278,22 +315,22 @@ html {
 .btn-outlined-blue:active {
     background: var(--color-default-blue);
     border-color: transparent;
-    color: white;
+    color: transparente;
 }
 .btn-outlined-blue:focus-visible {
-    background: white;
+    background: transparent;
     border-color: var(--color-default-blue-39);
     outline: 2px solid var(--color-default-blue-39);
     outline-offset: 2px;
 }
 .btn-outlined-blue:disabled {
-    background: white;
+    background: transparent;
     border-color: var(--color-default-blue-79);
     color: var(--color-default-blue-79);
 }
 
 .btn-outlined-green {
-    background: white;
+    background: transparent;
     color: var(--color-default-green-39);
     border-color: var(--color-default-green-39);
 }
@@ -307,19 +344,19 @@ html {
     color: white;
 }
 .btn-outlined-green:focus-visible {
-    background: white;
+    background: transparent;
     border-color: var(--color-default-green-39);
     outline: 2px solid var(--color-default-green-39);
     outline-offset: 2px;
 }
 .btn-outlined-green:disabled {
-    background: white;
+    background: transparent;
     border-color: var(--color-default-green-79);
     color: var(--color-default-green-79);
 }
 
 .btn-outlined-red {
-    background: white;
+    background: transparent;
     color: var(--color-default-red);
     border-color: var(--color-default-red);
 }
@@ -333,15 +370,37 @@ html {
     color: white;
 }
 .btn-outlined-red:focus-visible {
-    background: white;
+    background: transparent;
     border-color: var(--color-default-red);
     outline: 2px solid var(--color-default-red);
     outline-offset: 2px;
 }
 .btn-outlined-red:disabled {
-    background: white;
+    background: transparent;
     border-color: var(--color-default-red-88);
     color: var(--color-default-red-88);
+}
+
+/* État sélectionné (utilisé par les options du quiz) */
+.btn-outlined-green.is-selected {
+    background: var(--color-default-green-39);
+    border-color: transparent;
+    color: white;
+}
+.btn-outlined-red.is-selected {
+    background: var(--color-default-red);
+    border-color: transparent;
+    color: white;
+}
+.btn-outlined-blue.is-selected {
+    background: var(--color-default-blue-39);
+    border-color: transparent;
+    color: white;
+}
+
+/* Options du quiz : contenu aligné à gauche */
+.quiz-options .btn {
+    justify-content: flex-start;
 }
 
 @font-face {

@@ -1,6 +1,6 @@
 <template>
   <div class="quiz">
-    <h1>Puis-je donner mon sang ?</h1>
+    <h1 class="text-black">Puis-je donner mon sang ?</h1>
 
     <p>Question {{ currentQuestion + 1 }} / {{ questions.length }}</p>
     <p class="question">{{ questions[currentQuestion] }}</p>

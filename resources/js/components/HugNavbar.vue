@@ -53,7 +53,7 @@ function handleLogout() {
             <!-- Links -->
             <nav class="hug-nav-links">
                 <RouterLink to="/label"   :style="linkStyle('/label')">Label CTS</RouterLink>
-                <RouterLink to="/trophee" :style="linkStyle('/trophee')">Trophée de la générosité</RouterLink>
+                <RouterLink to="/trophee" :style="linkStyle('/trophee')">Trophée de la Générosité</RouterLink>
                 <RouterLink :to="coinEntrepriseLink" :style="coinStyle">Espace entreprise</RouterLink>
                 <RouterLink to="/quiz"    :style="linkStyle('/quiz')">Quiz d'éligibilité</RouterLink>
                 <RouterLink to="/contact" :style="linkStyle('/contact')">Contact</RouterLink>
@@ -106,8 +106,8 @@ function handleLogout() {
 .brand-sep {
     width: 1px;
     height: 20px;
-    background: rgba(44, 65, 64, 0.3);
-    margin: 0 0.25rem;
+    background: var(--default-text);
+    margin: 0 0.2rem;
 }
 .brand-sub {
     font-size: 1rem;
