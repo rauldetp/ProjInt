@@ -4,6 +4,7 @@ import { useRoute, useRouter } from "vue-router";
 import { useCobrandStore } from "../stores/cobrand";
 import { useAuthStore } from "../stores/auth";
 import CoNavbar from "../components/CoNavbar.vue";
+import Footer from "../components/Footer.vue";
 
 const route  = useRoute();
 const router = useRouter();
@@ -308,42 +309,6 @@ onMounted(async () => {
         </template>
 
         <!-- Footer -->
-        <footer style="background: var(--default-titles); padding: 3.5rem 0 2.5rem">
-            <div class="max-w-7xl mx-auto px-8">
-                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 2.5rem; margin-bottom: 3rem">
-                    <div>
-                        <div class="font-extrabold text-2xl mb-1 text-white">HUG</div>
-                        <div class="captions" style="color: var(--color-default-green); line-height: 1.6">Hôpitaux<br />Universitaires<br />Genève</div>
-                    </div>
-                    <div>
-                        <p class="font-bold mb-5 text-white">Pages</p>
-                        <ul class="space-y-3">
-                            <li><RouterLink :to="`/entreprise/${route.params.slug}/label`" class="text-white hover:opacity-70 transition" style="text-decoration: none">Label CTS</RouterLink></li>
-                            <li><RouterLink :to="`/entreprise/${route.params.slug}/trophee`" class="text-white hover:opacity-70 transition" style="text-decoration: none">Trophée de la générosité</RouterLink></li>
-                            <li><RouterLink to="/entreprises" class="text-white hover:opacity-70 transition" style="text-decoration: none">Entreprises partenaires</RouterLink></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <p class="font-bold mb-5 text-white">Support</p>
-                        <ul class="space-y-3">
-                            <li><RouterLink to="/faq" class="text-white hover:opacity-70 transition" style="text-decoration: none">FAQ</RouterLink></li>
-                            <li><RouterLink to="/contact" class="text-white hover:opacity-70 transition" style="text-decoration: none">Contact</RouterLink></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <p class="font-bold mb-5 text-white">Mentions légales</p>
-                        <ul class="space-y-3">
-                            <li><a href="#" class="text-white hover:opacity-70 transition" style="text-decoration: none">Politique de confidentialité</a></li>
-                            <li><a href="#" class="text-white hover:opacity-70 transition" style="text-decoration: none">Conditions générales</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="border-t pt-6" style="border-color: rgba(242,244,243,0.15)">
-                    <p class="text-center" style="color: rgba(242,244,243,0.5)">
-                        © {{ new Date().getFullYear() }} Hôpitaux Universitaires Genève. Tous droits réservés.
-                    </p>
-                </div>
-            </div>
-        </footer>
+        <Footer :slug="route.params.slug" />
     </div>
 </template>

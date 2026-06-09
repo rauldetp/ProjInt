@@ -1,6 +1,7 @@
 ﻿<script setup>
 import { onMounted } from "vue";
 import HugNavbar from "../components/HugNavbar.vue";
+import Footer from "../components/Footer.vue";
 
 onMounted(() => {
     document.title = "Label CTS — HUG";
@@ -13,8 +14,8 @@ onMounted(() => {
 
         <!-- Hero -->
         <section
-            class="relative flex items-end pb-14 overflow-hidden"
-            style="height: 420px; background: var(--default-titles)"
+            class="section-hero relative flex items-end pb-16 lg:items-center lg:pb-0"
+            style="background: var(--default-titles)"
         >
             <img
                 :src="'/images/Hero_labelCTS.webp'"
@@ -27,19 +28,19 @@ onMounted(() => {
                 style="background: rgba(44, 65, 64, 0.45)"
             ></div>
             <div class="relative max-w-7xl mx-auto px-8 w-full z-10">
-                <h1
-                    class="font-bold text-white leading-tight mb-4"
-                >
-                    Notre Label CTS
-                </h1>
-                <p
-                    class="text-white mb-6 max-w-lg"
-                    style="opacity: 0.9; line-height: 1.6"
-                >
-                    Le label CTS des HUG récompense les entreprises qui
-                    s'engagent concrètement pour le don du sang et la
-                    solidarité.
-                </p>
+                <div class="max-w-4xl">
+                    <h1 class="font-bold text-white leading-tight mb-4">
+                        Notre Label CTS
+                    </h1>
+                    <p
+                        class="text-white mb-6 max-w-lg"
+                        style="opacity: 0.9; line-height: 1.6"
+                    >
+                        Le label CTS des HUG récompense les entreprises qui
+                        s'engagent concrètement pour le don du sang et la
+                        solidarité.
+                    </p>
+                </div>
             </div>
         </section>
 
@@ -49,9 +50,7 @@ onMounted(() => {
                 class="max-w-7xl mx-auto px-8 grid grid-cols-2 gap-16 items-center"
             >
                 <div>
-                    <h2
-                        class="font-bold mb-5 text-black"
-                    >
+                    <h2 class="font-bold mb-5 text-black">
                         Ce qu'il représente
                     </h2>
                     <p style="color: var(--default-text); line-height: 1.75">
@@ -82,9 +81,7 @@ onMounted(() => {
             style="border-color: var(--light-grey)"
         >
             <div class="max-w-7xl mx-auto px-8">
-                <h2
-                    class="font-bold text-center mb-12 text-black"
-                >
+                <h2 class="font-bold text-center mb-12 text-black">
                     Les bénéfices du label
                 </h2>
                 <div class="grid grid-cols-3 gap-8">
@@ -92,14 +89,9 @@ onMounted(() => {
                         <div
                             class="circle-icon rounded-full bg-light-grey flex items-center justify-center"
                         >
-                            <span
-                                class="material-symbols-outlined"
-                                >group</span
-                            >
+                            <span class="material-symbols-outlined">group</span>
                         </div>
-                        <h3
-                            class="font-bold text-black"
-                                                   >
+                        <h3 class="font-bold text-black">
                             Rejoignez une communauté d'entreprises
                         </h3>
                         <p>
@@ -111,14 +103,11 @@ onMounted(() => {
                         <div
                             class="circle-icon rounded-full bg-light-grey flex items-center justify-center"
                         >
-                            <span
-                                class="material-symbols-outlined"
+                            <span class="material-symbols-outlined"
                                 >emoji_events</span
                             >
                         </div>
-                        <h3
-                            class="font-bold text-black"
-                                                   >
+                        <h3 class="font-bold text-black">
                             Affichez votre engagement
                         </h3>
                         <p>
@@ -130,14 +119,11 @@ onMounted(() => {
                         <div
                             class="circle-icon rounded-full bg-light-grey flex items-center justify-center"
                         >
-                            <span
-                                class="material-symbols-outlined"
+                            <span class="material-symbols-outlined"
                                 >favorite</span
                             >
                         </div>
-                        <h3
-                            class="font-bold text-black"
-                                                   >
+                        <h3 class="font-bold text-black">
                             Un impact réel et mesurable
                         </h3>
                         <p>
@@ -150,11 +136,9 @@ onMounted(() => {
         </section>
 
         <!-- Quote gradient -->
-        <section
-            class="py-20 text-center bg-gradient"
-        >
+        <section class="py-20 text-center bg-gradient">
             <div class="max-w-7xl mx-auto px-8">
-                <blockquote class="font-bold mb-4">
+                <blockquote class="font-bold mb-4 text-black">
                     « Une initiative simple, qui a fédéré toute notre équipe
                     autour d'une cause qui compte vraiment. »
                 </blockquote>
@@ -168,9 +152,7 @@ onMounted(() => {
                 class="max-w-7xl mx-auto px-8 grid grid-cols-2 gap-16 items-center"
             >
                 <div>
-                    <h2
-                        class="font-bold mb-5 text-black"
-                                           >
+                    <h2 class="font-bold mb-5 text-black">
                         Comment ça marche ?
                     </h2>
                     <p
@@ -221,9 +203,7 @@ onMounted(() => {
                     />
                 </div>
                 <div>
-                    <h2
-                        class="font-bold mb-5 text-black"
-                    >
+                    <h2 class="font-bold mb-5 text-black">
                         Rejoignez le mouvement
                     </h2>
                     <p
@@ -246,119 +226,6 @@ onMounted(() => {
         </section>
 
         <!-- Footer -->
-        <footer
-            style="background: var(--default-titles); padding: 3.5rem 0 2.5rem"
-        >
-            <div class="max-w-7xl mx-auto px-8">
-                <div class="grid grid-cols-4 gap-10 mb-12">
-                    <div>
-                        <div class="font-extrabold text-2xl mb-1 text-white">
-                            HUG
-                        </div>
-                        <div
-                            class="captions"
-                            style="
-                                color: var(--color-default-green);
-                                line-height: 1.6;
-                            "
-                        >
-                            Hôpitaux<br />Universitaires<br />Genève
-                        </div>
-                    </div>
-                    <div>
-                        <p
-                            class="font-bold mb-5 text-white"
-                        >
-                            Pages
-                        </p>
-                        <ul class="space-y-3">
-                            <li>
-                                <RouterLink
-                                    to="/label"
-                                    class="text-white hover:opacity-70 transition"
-                                    style="text-decoration: none"
-                                    >Label CTS</RouterLink
-                                >
-                            </li>
-                            <li>
-                                <RouterLink
-                                    to="/trophee"
-                                    class="text-white hover:opacity-70 transition"
-                                    style="text-decoration: none"
-                                    >Trophée de la générosité</RouterLink
-                                >
-                            </li>
-                            <li>
-                                <a
-                                    href="/#temoignages"
-                                    class="text-white hover:opacity-70 transition"
-                                    style="text-decoration: none"
-                                    >Témoignages</a
-                                >
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
-                        <p
-                            class="font-bold mb-5 text-white"
-                        >
-                            Support
-                        </p>
-                        <ul class="space-y-3">
-                            <li>
-                                <RouterLink
-                                    to="/faq"
-                                    class="text-white hover:opacity-70 transition"
-                                    style="text-decoration: none"
-                                    >FAQ</RouterLink
-                                >
-                            </li>
-                            <li>
-                                <RouterLink
-                                    to="/contact"
-                                    class="text-white hover:opacity-70 transition"
-                                    style="text-decoration: none"
-                                    >Contact</RouterLink
-                                >
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
-                        <p
-                            class="font-bold mb-5 text-white"
-                        >
-                            Mentions légales
-                        </p>
-                        <ul class="space-y-3">
-                            <li>
-                                <a
-                                    href="#"
-                                    class="text-white hover:opacity-70 transition"
-                                    style="text-decoration: none"
-                                    >Politique de confidentialité</a
-                                >
-                            </li>
-                            <li>
-                                <a
-                                    href="#"
-                                    class="text-white hover:opacity-70 transition"
-                                    style="text-decoration: none"
-                                    >Conditions générales</a
-                                >
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div
-                    class="border-t pt-6"
-                    style="border-color: rgba(242, 244, 243, 0.15)"
-                >
-                    <p class="text-center" style="color: var(--light-grey)">
-                        © {{ new Date().getFullYear() }} Hôpitaux Universitaire
-                        Genève. Tous droits réservés.
-                    </p>
-                </div>
-            </div>
-        </footer>
+        <Footer />
     </div>
 </template>

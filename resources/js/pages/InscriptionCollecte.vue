@@ -3,6 +3,7 @@ import { ref, computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { useCobrandStore } from "../stores/cobrand";
 import { useCoinEntrepriseLink } from "../composables/useCoinEntrepriseLink";
+import Footer from "../components/Footer.vue";
 
 const route = useRoute();
 const cobrand = useCobrandStore();
@@ -112,16 +113,6 @@ onMounted(async () => {
         </section>
 
         <!-- Footer -->
-        <footer style="background: var(--default-titles); padding: 3rem 0 2rem">
-            <div class="max-w-7xl mx-auto px-8 flex items-center justify-between">
-                <div>
-                    <div class="font-extrabold text-xl text-white">HUG</div>
-                    <div class="captions" style="color: var(--color-default-green)">Hôpitaux Universitaires Genève</div>
-                </div>
-                <p style="color: rgba(242,244,243,0.4)">
-                    © {{ new Date().getFullYear() }} Hôpitaux Universitaires Genève
-                </p>
-            </div>
-        </footer>
+        <Footer compact />
     </div>
 </template>

@@ -1,6 +1,7 @@
 ﻿<script setup>
 import { ref, onMounted } from "vue";
 import HugNavbar from "../components/HugNavbar.vue";
+import Footer from "../components/Footer.vue";
 
 const bannerVisible = ref(true);
 const openFaq = ref(null);
@@ -166,7 +167,7 @@ onMounted(() => {
                             <div class="flex-1 h-px" style="background: var(--light-grey)"></div>
                         </div>
                         <h3 class="font-bold mb-3 text-black">Prise de contact</h3>
-                        <p style="color: var(--default-text); line-height: 1.6">Notre équipe vous accompagne pour planifier votre projet selon vos besoins.</p>
+                        <p>Notre équipe vous accompagne pour planifier votre projet selon vos besoins.</p>
                     </div>
                     <div class="bg-white rounded-xl p-8 shadow-light">
                         <div class="flex items-center gap-4 mb-6">
@@ -177,7 +178,7 @@ onMounted(() => {
                             <div class="flex-1 h-px" style="background: var(--light-grey)"></div>
                         </div>
                         <h3 class="font-bold mb-3 text-black">Organisation de la collecte</h3>
-                        <p style="color: var(--default-text); line-height: 1.6">Nous planifions ensemble la collecte dans vos locaux et toute sécurité.</p>
+                        <p>Nous planifions ensemble la collecte dans vos locaux et toute sécurité.</p>
                     </div>
                     <div class="bg-white rounded-xl p-8 shadow-light">
                         <div class="flex items-center gap-4 mb-6">
@@ -188,7 +189,7 @@ onMounted(() => {
                             <div class="flex-1 h-px" style="background: var(--light-grey)"></div>
                         </div>
                         <h3 class="font-bold mb-3 text-black">Label & Impact</h3>
-                        <p style="color: var(--default-text); line-height: 1.6">Nous valorisons ensemble la collecte dans vos locaux et toute sécurité.</p>
+                        <p>Nous valorisons ensemble la collecte dans vos locaux et toute sécurité.</p>
                     </div>
                 </div>
             </div>
@@ -207,10 +208,6 @@ onMounted(() => {
                     </h2>
                     <p
                         class="mb-8 max-w-md"
-                        style="
-                            color: var(--default-text);
-                            line-height: 1.7;
-                        "
                     >
                         Une reconnaissance officielle décernée annuellement par
                         les HUG pour valoriser l'ensemble des organisations
@@ -404,105 +401,6 @@ onMounted(() => {
         </section>
 
         <!-- Footer -->
-        <footer id="contact" style="background: var(--default-titles); padding: 72px 0 40px">
-            <div class="max-w-7xl mx-auto px-8">
-                <div class="grid grid-cols-4 gap-10 mb-12">
-                    <div>
-                        <div class="font-extrabold text-2xl mb-1 text-white">
-                            HUG
-                        </div>
-                        <div class="captions" style="color: var(--color-default-green); line-height: 1.6">
-                            Hôpitaux<br />Universitaires<br />Genève
-                        </div>
-                    </div>
-                    <div>
-                        <p
-                            class="font-bold mb-5 text-white"
-                        >
-                            Pages
-                        </p>
-                        <ul class="space-y-3">
-                            <li>
-                                <li><RouterLink to="/label" class="text-white hover:opacity-70 transition" style="text-decoration:none;">Label CTS</RouterLink></li>
-                            </li>
-                            <li>
-                                <a
-                                    href="#trophee"
-                                    class="text-white hover:opacity-70 transition"
-                                    >Trophée de la générosité</a
-                                >
-                            </li>
-                            <li>
-                                <a
-                                    href="#temoignages"
-                                    class="text-white hover:opacity-70 transition"
-                                    >Témoignages</a
-                                >
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
-                        <p
-                            class="font-bold mb-5 text-white"
-                        >
-                            Support
-                        </p>
-                        <ul class="space-y-3">
-                            <li>
-                                <RouterLink
-                                    to="/faq"
-                                    class="text-white hover:opacity-70 transition"
-                                    style="text-decoration: none"
-                                    >FAQ</RouterLink
-                                >
-                            </li>
-                            <li>
-                                <RouterLink
-                                    to="/contact"
-                                    class="text-white hover:opacity-70 transition"
-                                    style="text-decoration: none"
-                                    >Contact</RouterLink
-                                >
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
-                        <p
-                            class="font-bold mb-5 text-white"
-                        >
-                            Mentions légales
-                        </p>
-                        <ul class="space-y-3">
-                            <li>
-                                <a
-                                    href="#"
-                                    class="text-white hover:opacity-70 transition"
-                                    >Politique de confidentialité</a
-                                >
-                            </li>
-                            <li>
-                                <a
-                                    href="#"
-                                    class="text-white hover:opacity-70 transition"
-                                    >Conditions générales</a
-                                >
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div
-                    class="border-t pt-6"
-                    style="border-color: rgba(242, 244, 243, 0.15)"
-                >
-                    <p
-                        class="text-center"
-                        style="color: var(--light-grey)"
-                    >
-                        © {{ new Date().getFullYear() }} Hôpitaux Universitaire
-                        Genève. Tous droits réservés.
-                    </p>
-                </div>
-            </div>
-        </footer>
+        <Footer />
     </div>
 </template>

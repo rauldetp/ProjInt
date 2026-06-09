@@ -1,30 +1,10 @@
 ﻿<script setup>
 import { ref, onMounted } from "vue";
 import HugNavbar from "../components/HugNavbar.vue";
+import Footer from "../components/Footer.vue";
 
 const palmares = ref([]);
 const palmaresLoading = ref(true);
-
-const temoignages = [
-    {
-        quote: "Recevoir le Trophée de la Générosité a été un moment de fierté collective pour toute notre équipe. Ça a renforcé notre culture d'entreprise autour de valeurs concrètes.",
-        author: "Marc D., Directeur RH",
-        company: "Banque Pictet & Cie",
-        annee: "Lauréat 2010",
-    },
-    {
-        quote: "Nous organisons des collectes depuis 2009. Le Trophée nous a donné une visibilité supplémentaire et a motivé encore plus de collaborateurs à franchir le pas.",
-        author: "Christine L., Responsable RSE",
-        company: "Centrale de Compensation",
-        annee: "Lauréate 2009 et 2010",
-    },
-    {
-        quote: "Ce trophée, c'est la preuve que des gestes simples peuvent avoir un impact énorme. 1 don = jusqu'à 3 vies sauvées. Notre équipe en est fière chaque jour.",
-        author: "Antoine R., CEO",
-        company: "Groupe horloger genevois",
-        annee: "Lauréat 2024",
-    },
-];
 
 const criteres = [
     {
@@ -86,8 +66,8 @@ onMounted(async () => {
 
         <!-- Hero -->
         <section
-            class="relative flex items-end pb-14 overflow-hidden"
-            style="height: 460px; background: var(--default-titles)"
+            class="section-hero relative flex items-end pb-16 lg:items-center lg:pb-0"
+            style="background: var(--default-titles)"
         >
             <img
                 :src="'/images/HomePage_TropheeGenerosite.webp'"
@@ -100,91 +80,67 @@ onMounted(async () => {
                 style="background: rgba(44, 65, 64, 0.5)"
             ></div>
             <div class="relative max-w-7xl mx-auto px-8 w-full z-10">
-                <p
-                    class="font-semibold mb-3 uppercase tracking-widest"
-                    style="color: var(--color-default-green)"
-                >
-                    Depuis 2008
-                </p>
-                <h1
-                    class="font-bold text-white leading-tight mb-4"
-                >
-                    Le Trophée<br />de la Générosité
-                </h1>
-                <p
-                    class="text-white mb-8 max-w-xl"
-                    style="opacity: 0.9; line-height: 1.6"
-                >
-                    La distinction annuelle qui récompense les entreprises
-                    genevoises les plus engagées pour le don du sang.
-                </p>
-                <RouterLink
-                    to="/login"
-                    class="btn btn-filled-red"
-                >
-                    Candidater pour 2026 →
-                </RouterLink>
-            </div>
-        </section>
-
-        <!-- Stats -->
-        <section class="bg-white py-16">
-            <div class="max-w-4xl mx-auto px-8">
-                <div class="grid grid-cols-3 gap-4">
-                    <div class="rounded-xl px-5 py-4" style="background: var(--light-grey)">
-                        <p class="font-black mb-2" style="color: var(--default-titles); line-height: 1">2008</p>
-                        <p style="color: var(--default-text); line-height: 1.5">La distinction existe<br />depuis plus de 15 ans</p>
-                    </div>
-                    <div class="rounded-xl px-5 py-4" style="background: var(--light-grey)">
-                        <p class="font-black mb-2" style="color: var(--default-titles); line-height: 1">10%</p>
-                        <p style="color: var(--default-text); line-height: 1.5">des dons proviennent<br />des entreprises</p>
-                    </div>
-                    <div class="rounded-xl px-5 py-4" style="background: var(--light-grey)">
-                        <p class="font-black mb-2" style="color: var(--default-titles); line-height: 1">+30</p>
-                        <p style="color: var(--default-text); line-height: 1.5">
-                            entreprises candidates<br />chaque année
-                        </p>
-                    </div>
+                <div class="max-w-4xl">
+                    <h1 class="font-bold text-white leading-tight mb-4">
+                        Le Trophée de la Générosité
+                    </h1>
+                    <h3 class="text-white">
+                        La distinction annuelle qui récompense les entreprises
+                        genevoises les plus engagées pour le don du sang.
+                    </h3>
                 </div>
             </div>
         </section>
 
-        <!-- Une distinction qui compte -->
-        <section class="bg-white py-20">
+        <!-- Stats -->
+        <section class="bg-white py-10">
+            <div class="max-w-4xl mx-auto px-8 grid grid-cols-3 gap-4">
+                <div class="rounded-xl px-5 py-4 bg-light-grey">
+                    <h2 class="font-bold mb-1">2008</h2>
+                    <p class="captions">
+                        La distinction existe depuis plus de 15 ans
+                    </p>
+                </div>
+                <div class="rounded-xl px-5 py-4 bg-light-grey">
+                    <h2 class="font-bold mb-1">10%</h2>
+                    <p class="captions">des dons proviennent des entreprises</p>
+                </div>
+                <div class="rounded-xl px-5 py-4 bg-light-grey">
+                    <h2 class="font-bold mb-1">+30</h2>
+                    <p class="captions">
+                        entreprises se présentent chaque année
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Qu'est-ce que c'est ? -->
+        <section class="bg-light-grey py-20">
             <div
                 class="max-w-7xl mx-auto px-8 grid grid-cols-2 gap-16 items-center"
             >
                 <div>
-                    <h2
-                        class="font-bold mb-5 text-black"
-                    >
-                        Une distinction qui compte
+                    <h2 class="font-bold mb-5 text-black">
+                        Qu'est-ce que c'est ?
                     </h2>
-                    <p
-                        class="mb-5"
-                        style="
-                            color: var(--default-text);
-                            line-height: 1.75;
-                        "
-                    >
-                        Créé en 2008 par les Hôpitaux Universitaires de Genève,
-                        le Trophée de la Générosité est la plus haute
-                        distinction décernée aux entreprises partenaires du
-                        Centre de Transfusion Sanguine. Il récompense chaque
-                        année les organisations qui se sont le plus distinguées
-                        par leur taux de participation, leur mobilisation
-                        interne et leur régularité d'engagement.
+                    <p class="mb-5">
+                        Le Trophée de la générosité est né d'une conviction
+                        simple : les entreprises qui s'engagent pour le don de
+                        sang méritent d'être reconnues. Chaque collaborateur qui
+                        donne son sang représente un geste anonyme, discret,
+                        mais dont l'impact est immédiat et concret. En
+                        mobilisant leurs équipes autour de cette cause,
+                        certaines entreprises vont plus loin que la simple
+                        participation.
                     </p>
-                    <p
-                        style="
-                            color: var(--default-text);
-                            line-height: 1.75;
-                        "
-                    >
-                        Attribué par un jury constitué de membres des HUG, le
-                        Trophée n'est pas une simple récompense — c'est une
-                        reconnaissance officielle de l'impact concret que votre
-                        entreprise a eu sur la santé publique genevoise.
+                    <p>
+                        Elles font du don de sang une valeur partagée, un moment
+                        de cohésion, une façon d'ancrer leur responsabilité
+                        citoyenne dans le quotidien. Le Trophée de la générosité
+                        est là pour célébrer ces entreprises-là. Celles qui ne
+                        se contentent pas de cocher une case RSE, mais qui
+                        créent une culture du don durable au sein de leurs
+                        équipes.
                     </p>
                 </div>
                 <div
@@ -200,367 +156,74 @@ onMounted(async () => {
             </div>
         </section>
 
-        <!-- Label vs Trophée -->
-        <section class="py-20 bg-light-grey">
-            <div class="max-w-5xl mx-auto px-8">
-                <h2
-                    class="font-bold text-center mb-14 text-black"
-                >
-                    Label CTS ou Trophée — quelle différence ?
-                </h2>
-                <div class="grid grid-cols-2 gap-16">
-                    <!-- Label CTS -->
-                    <div
-                        style="
-                            border-top: 2px solid var(--default-text);
-                            padding-top: 1.5rem;
-                        "
-                    >
-                        <p
-                            class="font-bold mb-1"
-                            style="color: var(--default-titles)"
-                        >
-                            Label CTS
-                        </p>
-                        <p
-                            style="color: var(--default-text); margin-bottom: 2rem"
-                        >
-                            Certification de participation
-                        </p>
-                        <div class="flex flex-col gap-4">
-                            <div class="flex items-start gap-3">
-                                <span
-                                    style="
-                                        color: #c0cac9;
-                                        flex-shrink: 0;
-                                        margin-top: 2px;
-                                        font-size: 14px;
-                                    "
-                                    >—</span
-                                >
-                                <span
-                                    style="
-                                        color: var(--default-text);
-                                        line-height: 1.55;
-                                    "
-                                    >Pour
-                                    <strong style="color: var(--default-titles)"
-                                        >toutes les entreprises</strong
-                                    >
-                                    qui organisent une collecte</span
-                                >
-                            </div>
-                            <div class="flex items-start gap-3">
-                                <span
-                                    style="
-                                        color: #c0cac9;
-                                        flex-shrink: 0;
-                                        margin-top: 2px;
-                                        font-size: 14px;
-                                    "
-                                    >—</span
-                                >
-                                <span
-                                    style="
-                                        color: var(--default-text);
-                                        line-height: 1.55;
-                                    "
-                                    ><strong style="color: var(--default-titles)"
-                                        >Automatique</strong
-                                    >
-                                    dès la fin de la collecte</span
-                                >
-                            </div>
-                            <div class="flex items-start gap-3">
-                                <span
-                                    style="
-                                        color: #c0cac9;
-                                        flex-shrink: 0;
-                                        margin-top: 2px;
-                                        font-size: 14px;
-                                    "
-                                    >—</span
-                                >
-                                <span
-                                    style="
-                                        color: var(--default-text);
-                                        line-height: 1.55;
-                                    "
-                                    >Valide
-                                    <strong style="color: var(--default-titles)">1 an</strong
-                                    >, renouvelable</span
-                                >
-                            </div>
-                            <div class="flex items-start gap-3">
-                                <span
-                                    style="
-                                        color: #c0cac9;
-                                        flex-shrink: 0;
-                                        margin-top: 2px;
-                                        font-size: 14px;
-                                    "
-                                    >—</span
-                                >
-                                <span
-                                    style="
-                                        color: var(--default-text);
-                                        line-height: 1.55;
-                                    "
-                                    >Certifie votre
-                                    <strong style="color: var(--default-titles)"
-                                        >engagement citoyen</strong
-                                    ></span
-                                >
-                            </div>
-                        </div>
-                        <RouterLink
-                            to="/label"
-                            class="inline-block mt-8 font-semibold rounded-full border-2 px-6 py-2 transition hover:opacity-75"
-                            style="
-                                color: var(--default-titles);
-                                border-color: var(--default-titles);
-                                text-decoration: none;
-                            "
-                            >Découvrir le Label →</RouterLink
-                        >
-                    </div>
-
-                    <!-- Trophée -->
-                    <div
-                        style="
-                            border-top: 2px solid var(--default-titles);
-                            padding-top: 1.5rem;
-                        "
-                    >
-                        <p
-                            class="font-bold mb-1"
-                            style="color: var(--default-titles)"
-                        >
-                            Trophée de la Générosité
-                        </p>
-                        <p
-                            style="color: var(--default-text); margin-bottom: 2rem"
-                        >
-                            Distinction d'excellence
-                        </p>
-                        <div class="flex flex-col gap-4">
-                            <div class="flex items-start gap-3">
-                                <span
-                                    style="
-                                        color: #c0cac9;
-                                        flex-shrink: 0;
-                                        margin-top: 2px;
-                                        font-size: 14px;
-                                    "
-                                    >—</span
-                                >
-                                <span
-                                    style="
-                                        color: var(--default-text);
-                                        line-height: 1.55;
-                                    "
-                                    >Pour les entreprises
-                                    <strong style="color: var(--default-titles)"
-                                        >les plus engagées</strong
-                                    >
-                                    de l'année</span
-                                >
-                            </div>
-                            <div class="flex items-start gap-3">
-                                <span
-                                    style="
-                                        color: #c0cac9;
-                                        flex-shrink: 0;
-                                        margin-top: 2px;
-                                        font-size: 14px;
-                                    "
-                                    >—</span
-                                >
-                                <span
-                                    style="
-                                        color: var(--default-text);
-                                        line-height: 1.55;
-                                    "
-                                    >Attribué par
-                                    <strong style="color: var(--default-titles)"
-                                        >jury HUG</strong
-                                    >
-                                    en décembre</span
-                                >
-                            </div>
-                            <div class="flex items-start gap-3">
-                                <span
-                                    style="
-                                        color: #c0cac9;
-                                        flex-shrink: 0;
-                                        margin-top: 2px;
-                                        font-size: 14px;
-                                    "
-                                    >—</span
-                                >
-                                <span
-                                    style="
-                                        color: var(--default-text);
-                                        line-height: 1.55;
-                                    "
-                                    >Distinction
-                                    <strong style="color: var(--default-titles)"
-                                        >permanente</strong
-                                    >
-                                    au palmarès</span
-                                >
-                            </div>
-                            <div class="flex items-start gap-3">
-                                <span
-                                    style="
-                                        color: #c0cac9;
-                                        flex-shrink: 0;
-                                        margin-top: 2px;
-                                        font-size: 14px;
-                                    "
-                                    >—</span
-                                >
-                                <span
-                                    style="
-                                        color: var(--default-text);
-                                        line-height: 1.55;
-                                    "
-                                    >Récompense
-                                    <strong style="color: var(--default-titles)"
-                                        >l'excellence</strong
-                                    >
-                                    et la régularité</span
-                                >
-                            </div>
-                        </div>
-                        <RouterLink
-                            to="/login"
-                            class="inline-block mt-8 text-white font-semibold rounded-full px-6 py-2 transition hover:opacity-80"
-                            style="
-                                background: var(--color-default-red);
-                                text-decoration: none;
-                            "
-                            >Candidater au Trophée 2026 →</RouterLink
-                        >
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Critères d'attribution -->
+        <!-- Qu'est-ce que c'est ? -->
         <section class="bg-white py-20">
-            <div class="max-w-7xl mx-auto px-8">
-                <h2
-                    class="font-bold text-center mb-4 text-black"
-                >
-                    Comment est-il attribué ?
-                </h2>
-                <p
-                    class="text-center mb-16 max-w-xl mx-auto"
-                    style="color: var(--default-text); line-height: 1.6"
-                >
-                    Trois critères évalués par le jury HUG pour identifier les
-                    entreprises les plus méritantes.
-                </p>
-                <div class="grid grid-cols-3 gap-12 mb-12">
-                    <div
-                        v-for="c in criteres"
-                        :key="c.title"
-                        class="flex flex-col gap-3"
-                        style="
-                            border-left: 2px solid var(--color-default-red);
-                            padding-left: 1.5rem;
-                        "
-                    >
-                        <p
-                            class="font-black"
-                            style="color: var(--color-default-red); line-height: 1"
-                        >
-                            {{ c.num }}
-                        </p>
-                        <h3
-                            class="font-bold text-black"
-                        >
-                            {{ c.title }}
-                        </h3>
-                        <p
-                            style="color: var(--default-text); line-height: 1.7"
-                        >
-                            {{ c.desc }}
-                        </p>
-                    </div>
+            <div
+                class="max-w-7xl mx-auto px-8 grid grid-cols-2 gap-16 items-center"
+            >
+                <div>
+                    <h2 class="font-bold mb-5 text-black">
+                        Édition 2026 — Lauréat : Groupe Mercier SA
+                    </h2>
+                    <p>
+                        Avec trois collectes organisées en une année et un taux
+                        de participation de 34% parmi ses collaborateurs, le
+                        Groupe Mercier SA s'est imposé comme un exemple
+                        d'engagement collectif. Un résultat qui a permis de
+                        collecter plus de 180 poches de sang, contribuant
+                        directement aux besoins du canton.
+                    </p>
                 </div>
-                <p
-                    class="text-center italic"
-                    style="color: var(--default-text)"
+                <div
+                    class="relative rounded-2xl overflow-hidden"
+                    style="height: 320px; background: var(--light-grey)"
                 >
-                    Le jury HUG se réunit chaque année en décembre pour
-                    délibérer et annoncer le ou les lauréats lors d'une
-                    cérémonie officielle.
-                </p>
+                    <img
+                        :src="'/images/thumbnail_winner.webp'"
+                        alt="Gagnant du trophée 2026"
+                        class="absolute inset-0 w-full h-full object-cover"
+                    />
+                </div>
             </div>
         </section>
 
-        <!-- Témoignages -->
-        <section
-            class="py-20 bg-gradient"
+<section
+        class="bg-gradient py-20"
         >
-            <div class="max-w-7xl mx-auto px-8">
+            <div class="max-w-2xl mx-auto px-8 text-center">
                 <h2
-                    class="font-bold text-center mb-12 text-black"
+                    class="font-bold mb-4 text-black"
                 >
-                    Ils ont reçu le Trophée
+                    Rejoignez les entreprises partenaires
                 </h2>
-                <div class="grid grid-cols-3 gap-6">
-                    <div
-                        v-for="t in temoignages"
-                        :key="t.author"
-                        class="rounded-2xl bg-white flex flex-col gap-4"
-                        style="padding: 2rem"
-                    >
-                        <p
-                            class="italic flex-1"
-                            style="
-                                color: var(--default-titles);
-                                line-height: 1.7;
-                            "
-                        >
-                            « {{ t.quote }} »
-                        </p>
-                        <div
-                            class="pt-4 border-t"
-                            style="border-color: var(--light-grey)"
-                        >
-                            <p
-                                class="font-semibold"
-                                style="color: var(--default-titles)"
-                            >
-                                {{ t.author }}
-                            </p>
-                            <p style="color: var(--default-text)">
-                                {{ t.company }}
-                            </p>
-                            <p class="captions" style="color: var(--color-default-green); margin-top: 6px">
-                                {{ t.annee }}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                <p
+                    class="mb-8"
+                    style="
+                        color: var(--default-titles);
+                        opacity: 0.75;
+                        line-height: 1.7;
+                    "
+                >
+                    Devenez un acteur majeur de la santé publique genevoise.
+                    Offrez à vos équipes la possibilité de sauver des vies sous
+                    tous les toits du travail, tout en valorisant l'impact et la
+                    solidarité de votre culture d'entreprise.
+                </p>
+        <RouterLink
+            to="/entreprises"
+            class="btn btn-filled-red"
+        >
+            Découvrez nos entreprises partenaires →
+        </RouterLink>            </div>
         </section>
 
         <!-- Palmarès -->
         <section class="bg-white py-20">
             <div class="max-w-4xl mx-auto px-8">
-                <h2
-                    class="font-bold text-center mb-4 text-black"
-                >
+                <h2 class="font-bold text-center mb-4 text-black">
                     Palmarès des lauréats
                 </h2>
-                <p
-                    class="text-center mb-12"
-                    style="color: var(--default-text)"
-                >
+                <p class="text-center mb-12" style="color: var(--default-text)">
                     Depuis la création du Trophée, ces entreprises se sont
                     distinguées par leur engagement exceptionnel.
                 </p>
@@ -580,12 +243,24 @@ onMounted(async () => {
                     >
                         <span
                             class="font-black flex-shrink-0"
-                            style="font-size: 20px; color: var(--default-titles); width: 56px"
+                            style="
+                                font-size: 20px;
+                                color: var(--default-titles);
+                                width: 56px;
+                            "
                             >2026</span
                         >
-                        <span class="captions" style="background: #fef3c7; color: #92400e; padding: 2px 10px">À venir</span
+                        <span
+                            class="captions"
+                            style="
+                                background: #fef3c7;
+                                color: #92400e;
+                                padding: 2px 10px;
+                            "
+                            >À venir</span
                         >
-                        <span style="font-size: 14px; color: var(--default-text)"
+                        <span
+                            style="font-size: 14px; color: var(--default-text)"
                             >Cérémonie décembre 2026</span
                         >
                     </div>
@@ -653,10 +328,7 @@ onMounted(async () => {
                     </template>
                 </template>
 
-                <p
-                    class="mt-8 text-center italic"
-                    style="color: #c0cac9"
-                >
+                <p class="mt-8 text-center italic" style="color: #c0cac9">
                     * Les données historiques seront complétées en collaboration
                     avec le CTS des HUG.
                 </p>
@@ -666,9 +338,7 @@ onMounted(async () => {
         <!-- Process candidature -->
         <section class="py-20 bg-light-grey">
             <div class="max-w-7xl mx-auto px-8">
-                <h2
-                    class="font-bold text-center mb-12 text-black"
-                >
+                <h2 class="font-bold text-center mb-12 text-black">
                     Comment candidater ?
                 </h2>
                 <div class="grid grid-cols-4 gap-6">
@@ -683,17 +353,21 @@ onMounted(async () => {
                     >
                         <p
                             class="font-black"
-                            style="color: var(--color-default-red); line-height: 1"
+                            style="
+                                color: var(--color-default-red);
+                                line-height: 1;
+                            "
                         >
                             {{ e.num }}
                         </p>
-                        <h3
-                            class="font-bold text-black"
-                        >
+                        <h3 class="font-bold text-black">
                             {{ e.title }}
                         </h3>
                         <p
-                            style="color: var(--default-text); line-height: 1.65"
+                            style="
+                                color: var(--default-text);
+                                line-height: 1.65;
+                            "
                         >
                             {{ e.desc }}
                         </p>
@@ -703,28 +377,24 @@ onMounted(async () => {
         </section>
 
         <!-- CTA final -->
-        <section
-            class="py-20 text-center bg-gradient"
-        >
+        <section class="py-20 text-center bg-gradient">
             <div class="max-w-2xl mx-auto px-8">
-                <h2
-                    class="font-bold mb-4 text-black"
-                    style="line-height: 1.25"
-                >
+                <h2 class="font-bold mb-4 text-black" style="line-height: 1.25">
                     Votre entreprise mérite<br />d'être reconnue.
                 </h2>
                 <p
                     class="mb-10"
-                    style="color: var(--default-titles); opacity: 0.8; line-height: 1.6"
+                    style="
+                        color: var(--default-titles);
+                        opacity: 0.8;
+                        line-height: 1.6;
+                    "
                 >
                     Rejoignez les entreprises qui font la différence pour la
                     santé publique genevoise.
                 </p>
                 <div class="flex items-center justify-center gap-4 flex-wrap">
-                    <RouterLink
-                        to="/login"
-                        class="btn btn-filled-red"
-                    >
+                    <RouterLink to="/login" class="btn btn-filled-red">
                         Candidater au Trophée 2026
                     </RouterLink>
                     <RouterLink
@@ -744,118 +414,6 @@ onMounted(async () => {
         </section>
 
         <!-- Footer -->
-        <footer style="background: var(--default-titles); padding: 3.5rem 0 2.5rem">
-            <div class="max-w-7xl mx-auto px-8">
-                <div class="grid grid-cols-4 gap-10 mb-12">
-                    <div>
-                        <div class="font-extrabold text-2xl mb-1 text-white">
-                            HUG
-                        </div>
-                        <div class="captions" style="color: var(--color-default-green); line-height: 1.6">
-                            Hôpitaux<br />Universitaires<br />Genève
-                        </div>
-                    </div>
-                    <div>
-                        <p
-                            class="font-bold mb-5 text-white"
-                        >
-                            Pages
-                        </p>
-                        <ul class="space-y-3">
-                            <li>
-                                <RouterLink
-                                    to="/label"
-                                    class="text-white hover:opacity-70 transition"
-                                    style="
-                                        text-decoration: none;
-                                    "
-                                    >Label CTS</RouterLink
-                                >
-                            </li>
-                            <li>
-                                <RouterLink
-                                    to="/trophee"
-                                    class="text-white hover:opacity-70 transition"
-                                    style="
-                                        text-decoration: none;
-                                    "
-                                    >Trophée de la générosité</RouterLink
-                                >
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
-                        <p
-                            class="font-bold mb-5 text-white"
-                        >
-                            Support
-                        </p>
-                        <ul class="space-y-3">
-                            <li>
-                                <RouterLink
-                                    to="/faq"
-                                    class="text-white hover:opacity-70 transition"
-                                    style="
-                                        text-decoration: none;
-                                    "
-                                    >FAQ</RouterLink
-                                >
-                            </li>
-                            <li>
-                                <RouterLink
-                                    to="/contact"
-                                    class="text-white hover:opacity-70 transition"
-                                    style="
-                                        text-decoration: none;
-                                    "
-                                    >Contact</RouterLink
-                                >
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
-                        <p
-                            class="font-bold mb-5 text-white"
-                        >
-                            Mentions légales
-                        </p>
-                        <ul class="space-y-3">
-                            <li>
-                                <a
-                                    href="#"
-                                    class="text-white hover:opacity-70 transition"
-                                    style="
-                                        text-decoration: none;
-                                    "
-                                    >Politique de confidentialité</a
-                                >
-                            </li>
-                            <li>
-                                <a
-                                    href="#"
-                                    class="text-white hover:opacity-70 transition"
-                                    style="
-                                        text-decoration: none;
-                                    "
-                                    >Conditions générales</a
-                                >
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div
-                    class="border-t pt-6"
-                    style="border-color: rgba(242, 244, 243, 0.15)"
-                >
-                    <p
-                        class="text-center"
-                        style="color: var(--light-grey)"
-                    >
-                        © {{ new Date().getFullYear() }} Hôpitaux Universitaire
-                        Genève. Tous droits réservés.
-                    </p>
-                </div>
-            </div>
-        </footer>
+        <Footer />
     </div>
 </template>

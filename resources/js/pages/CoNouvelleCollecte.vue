@@ -4,6 +4,7 @@ import { useRoute, useRouter } from "vue-router";
 import { useCobrandStore } from "../stores/cobrand";
 import { useAuthStore } from "../stores/auth";
 import CoNavbar from "../components/CoNavbar.vue";
+import Footer from "../components/Footer.vue";
 
 const route  = useRoute();
 const router = useRouter();
@@ -340,17 +341,7 @@ onMounted(async () => {
         </Transition>
 
         <!-- Footer simplifié -->
-        <footer style="background: var(--default-titles); padding: 2.5rem 0 2rem">
-            <div class="max-w-7xl mx-auto px-8 flex items-center justify-between">
-                <div>
-                    <div class="font-extrabold text-xl text-white">HUG</div>
-                    <div class="captions" style="color: var(--color-default-green)">Hôpitaux Universitaires Genève</div>
-                </div>
-                <p style="color: rgba(242,244,243,0.4)">
-                    © {{ new Date().getFullYear() }} Hôpitaux Universitaires Genève
-                </p>
-            </div>
-        </footer>
+        <Footer compact />
     </div>
 </template>
 

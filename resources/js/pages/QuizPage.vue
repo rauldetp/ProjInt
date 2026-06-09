@@ -333,7 +333,8 @@ function retakeQuiz() {
         <!-- ══════════════════════════════════════════════════════
              INTRO — split screen
         ═══════════════════════════════════════════════════════ -->
-        <div v-if="step === 'intro'" class="split-screen">
+        <Transition name="slide" mode="out-in">
+        <div v-if="step === 'intro'" class="split-screen" key="intro">
             <div class="mascotte-col">
                 <div class="mascotte-circle">
                     <img
@@ -394,7 +395,7 @@ function retakeQuiz() {
         <!-- ══════════════════════════════════════════════════════
              QUESTION
         ═══════════════════════════════════════════════════════ -->
-        <div v-else-if="step === 'quiz'" class="quiz-screen">
+        <div v-else-if="step === 'quiz'" class="quiz-screen" :key="'quiz-' + currentQ">
             <!-- Progress steps -->
             <div class="progress-steps">
                 <template v-for="(_, i) in questions" :key="i">
@@ -489,7 +490,7 @@ function retakeQuiz() {
         <!-- ══════════════════════════════════════════════════════
              SLIDE INFO — split screen
         ═══════════════════════════════════════════════════════ -->
-        <div v-else-if="step === 'info'" class="split-screen">
+        <div v-else-if="step === 'info'" class="split-screen" key="info">
             <div class="mascotte-col mascotte-col-full">
                 <img
                     :src="'/images/courage/Mascotte_insight.png'"
@@ -542,7 +543,7 @@ function retakeQuiz() {
         <!-- ══════════════════════════════════════════════════════
              RECAP DES RÉPONSES
         ═══════════════════════════════════════════════════════ -->
-        <div v-else-if="step === 'recap'" class="recap-screen">
+        <div v-else-if="step === 'recap'" class="recap-screen" key="recap">
             <div class="recap-inner">
                 <h2 class="recap-title">Réponses données</h2>
 
@@ -627,7 +628,7 @@ function retakeQuiz() {
         <!-- ══════════════════════════════════════════════════════
              RÉSULTAT — split screen
         ═══════════════════════════════════════════════════════ -->
-        <div v-else-if="step === 'result'" class="split-screen">
+        <div v-else-if="step === 'result'" class="split-screen" key="result">
             <div class="mascotte-col">
                 <div class="mascotte-circle">
                     <img
@@ -735,6 +736,7 @@ function retakeQuiz() {
                 </div>
             </div>
         </div>
+        </Transition>
     </div>
 </template>
 
@@ -745,6 +747,23 @@ function retakeQuiz() {
     display: flex;
     flex-direction: column;
     background: white;
+    overflow-x: hidden;
+}
+
+/* Transition slide entre écrans et questions */
+.slide-enter-active,
+.slide-leave-active {
+    transition:
+        opacity 0.25s ease,
+        transform 0.25s ease;
+}
+.slide-enter-from {
+    opacity: 0;
+    transform: translateX(30px);
+}
+.slide-leave-to {
+    opacity: 0;
+    transform: translateX(-30px);
 }
 
 /* ── Split screen ────────────────────────────────────── */
