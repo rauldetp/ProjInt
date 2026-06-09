@@ -12,7 +12,7 @@ export function useCoinEntrepriseLink() {
 
     const coinEntrepriseLink = computed(() => {
         if (auth.isAdmin) return '/admin'
-        if (auth.isCoordinateur) return '/coordinateur'
+        if (auth.isCoordinateur) return auth.entrepriseSlug ? `/entreprise/${auth.entrepriseSlug}/coordinateur` : '/coordinateur'
         return '/login'
     })
 

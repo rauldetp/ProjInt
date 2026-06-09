@@ -26,7 +26,7 @@ const brandColor = computed(
 // Depuis le site coobrandé, "Espace entreprise" = espace propre à cette entreprise
 const coinEntrepriseLink = computed(() => {
     if (auth.isAdmin) return "/admin";
-    if (auth.isCoordinateur) return `/entreprise/${slug.value}/espace`;
+    if (auth.isCoordinateur) return `/entreprise/${slug.value}/coordinateur`;
     return "/login";
 });
 
@@ -38,7 +38,7 @@ function linkStyle(path) {
     const active = isActive(path);
     return {
         color: active ? brandColor.value : "var(--default-titles)",
-        fontWeight: active ? "700" : "400",
+        fontWeight: "700",
         textDecoration: "none",
     };
 }
@@ -90,14 +90,6 @@ function linkStyle(path) {
 
             <!-- CTA -->
             <div class="co-navbar-actions">
-                <RouterLink
-                    v-if="collecte?.active"
-                    :to="`/entreprise/${slug}/inscription`"
-                    class="btn"
-                    :style="{ color: brandColor, borderColor: brandColor }"
-                >
-                    S'inscrire à la collecte
-                </RouterLink>
                 <button
                     class="btn"
                     :style="{ color: brandColor, borderColor: brandColor }"

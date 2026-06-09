@@ -103,7 +103,9 @@ async function handleLogin() {
         if (auth.isAdmin) router.push("/admin");
         else if (auth.isCoordinateur) {
             const slug = auth.entrepriseSlug;
-            router.push(slug ? `/entreprise/${slug}` : "/coordinateur");
+            router.push(
+                slug ? `/entreprise/${slug}/coordinateur` : "/coordinateur",
+            );
         } else router.push("/");
     } catch (e) {
         errorMsg.value = "Email ou mot de passe incorrect.";
