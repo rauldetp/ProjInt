@@ -394,7 +394,7 @@ onMounted(() => {
                     solidarité de votre culture d'entreprise.
                 </p>
         <RouterLink
-            to="/entreprises"
+            to="/label"
             class="btn btn-filled-red"
         >
             Découvrez nos entreprises partenaires →

@@ -145,7 +145,7 @@ onMounted(async () => {
                         De la PME locale aux grands groupes bancaires et horlogers, de nombreuses entreprises du bassin genevois ont déjà intégré le don de sang dans leur culture d'entreprise. Parcourez notre annuaire public pour découvrir les organisations labellisées, visualiser leur historique de participation et mesurer l'impact concret de cette mobilisation collective.
                     </p>
                     <RouterLink
-                        to="/entreprises"
+                        to="/label"
                         class="inline-block font-semibold rounded-full px-6 py-3 transition hover:opacity-80"
                         :style="{ background: brandColor, color: cobrand.textOnBrand, fontSize: '16px', textDecoration: 'none' }"
                     >

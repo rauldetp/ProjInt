@@ -34,7 +34,7 @@ const currentInfo = ref(null);
 const resultat = ref(null);
 
 const participerLink = computed(() => {
-    if (auth.isAdmin) return "/entreprises";
+    if (auth.isAdmin) return "/admin";
     if (auth.isCoordinateur && auth.entrepriseSlug)
         return `/entreprise/${auth.entrepriseSlug}`;
     return "/login";

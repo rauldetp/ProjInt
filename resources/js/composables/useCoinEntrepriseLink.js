@@ -11,7 +11,7 @@ export function useCoinEntrepriseLink() {
     const auth = useAuthStore()
 
     const coinEntrepriseLink = computed(() => {
-        if (auth.isAdmin) return '/entreprises'
+        if (auth.isAdmin) return '/admin'
         if (auth.isCoordinateur) return '/coordinateur'
         return '/login'
     })

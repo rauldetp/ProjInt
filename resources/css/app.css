@@ -12,6 +12,7 @@
         "Noto Color Emoji";
     --white: #fff;
     --light-grey: #f2f4f3;
+    --grey: #AFBFBF;
     --default-text: #497371;
     --default-titles: #2c4140;
 
@@ -165,6 +166,10 @@ h3 {
     font-size: 12px;
     font-weight: 700;
     line-height: 1.4;
+}
+
+label.captions{
+    color: var(--default-titles)
 }
 
 .banner {
@@ -401,6 +406,35 @@ h3 {
 /* Options du quiz : contenu aligné à gauche */
 .quiz-options .btn {
     justify-content: flex-start;
+}
+
+/* ── Forms ────────────────────────────────────────────── */
+.form-input {
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid var(--white);
+    border-radius: 9999px;
+    background: white;
+    color: var(--default-titles);
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.15s;
+}
+
+textarea.form-input{
+    border-radius: 20px;
+}
+.form-input:focus {
+    border-color: var(--grey);
+}   
+.form-select {
+    appearance: none;
+    padding-right: 36px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23497371' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+    cursor: pointer;
 }
 
 @font-face {

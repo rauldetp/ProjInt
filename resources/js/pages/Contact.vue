@@ -1,9 +1,50 @@
-﻿<script setup>
+<script setup>
 import { ref, onMounted } from "vue";
 import HugNavbar from "../components/HugNavbar.vue";
 import Footer from "../components/Footer.vue";
 
-const useful = ref(null);
+const form = ref({
+    nom: "",
+    prenom: "",
+    entreprise: "",
+    email: "",
+    sujet: "",
+    message: "",
+});
+const loading = ref(false);
+const sent = ref(false);
+const errorMsg = ref("");
+
+async function submit() {
+    loading.value = true;
+    errorMsg.value = "";
+    try {
+        const res = await fetch("/api/contact", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
+            body: JSON.stringify(form.value),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) {
+            const msgs = data.errors
+                ? Object.values(data.errors).flat().join(" ")
+                : data.message || "Une erreur est survenue lors de l'envoi.";
+            throw new Error(msgs);
+        }
+        sent.value = true;
+    } catch (e) {
+        errorMsg.value = e.message;
+    } finally {
+        loading.value = false;
+    }
+}
+
+function scrollToForm() {
+    document.getElementById("form")?.scrollIntoView({ behavior: "smooth" });
+}
 
 onMounted(() => {
     document.title = "Contact — HUG Don du sang";
@@ -15,279 +56,162 @@ onMounted(() => {
         <HugNavbar />
 
         <!-- Hero -->
-        <section class="bg-gradient py-20">
-            <div class="max-w-4xl mx-auto px-8">
-                <p
-                    class="font-semibold mb-3 uppercase tracking-widest"
-                    style="color: var(--default-titles); opacity: 0.65"
-                >
-                    Hôpitaux universitaires de Genève
+        <section
+            class="section-hero relative flex items-end pb-16 overflow-hidden"
+        >
+            <img
+                :src="'/images/hero_contact.webp'"
+                alt=""
+                class="absolute inset-0 w-full h-full object-cover"
+            />
+            <div
+                class="absolute inset-0"
+                style="background: rgba(44, 65, 64, 0.55)"
+            ></div>
+            <div class="relative max-w-7xl mx-auto px-8 w-full z-10">
+                <h1 class="font-bold text-white mb-4">Contactez-nous</h1>
+                <p class="text-white mb-2 max-w-xl">
+                    Une question sur le Label CTS, le trophée de la Générosité ou
+                    l'organisation d'une collecte ?
                 </p>
-                <h1
-                    class="font-bold text-black"
-                    style="line-height: 1.2"
+                <p class="text-white mb-8 max-w-xl">
+                    Notre équipe est là pour vous accompagner.
+                </p>
+                <button
+                    type="button"
+                    class="btn btn-filled-red"
+                    @click="scrollToForm"
                 >
-                    Contacter les HUG
-                </h1>
+                    Nous écrire
+                    <span class="material-symbols-outlined">arrow_forward</span>
+                </button>
             </div>
         </section>
 
-        <!-- Contenu principal -->
-        <section class="py-16">
-            <div class="max-w-4xl mx-auto px-8">
-                <div class="grid grid-cols-3 gap-14">
-                    <!-- Colonne principale -->
-                    <div class="col-span-2 flex flex-col gap-12">
-                        <!-- Adresse + téléphone -->
-                        <div
-                            style="
-                                border-top: 2px solid var(--color-default-red);
-                                padding-top: 1.5rem;
-                            "
-                        >
-                            <h2
-                                class="font-bold mb-6 text-black"
-                            >
-                                Coordonnées
-                            </h2>
-                            <div class="flex flex-col gap-5">
-                                <div>
-                                    <p
-                                        class="font-semibold mb-1"
-                                        style="color: var(--default-titles)"
-                                    >
-                                        Adresse
-                                    </p>
-                                    <p
-                                        style="
-                                            color: var(--default-text);
-                                            line-height: 1.7;
-                                        "
-                                    >
-                                        Rue Gabrielle-Perret-Gentil 4<br />
-                                        1205 Genève<br />
-                                        1211 Genève 14
-                                    </p>
-                                </div>
-                                <div>
-                                    <p
-                                        class="font-semibold mb-1"
-                                        style="color: var(--default-titles)"
-                                    >
-                                        Centrale téléphonique
-                                    </p>
-                                    <a
-                                        href="tel:+41223723311"
-                                        style="color: var(--color-default-red); font-weight: 600; text-decoration: none"
-                                        class="hover:opacity-75 transition"
-                                        >+41 (0)22 372 33 11</a
-                                    >
-                                </div>
-                            </div>
-                        </div>
+        <!-- Formulaire -->
+        <section id="form" class="bg-light-grey py-20">
+            <div class="max-w-3xl mx-auto px-8">
+                <h2 class="font-bold mb-10 text-black">
+                    Envoyez-nous un message
+                </h2>
 
-                        <!-- Infos médicales -->
-                        <div
-                            style="
-                                border-top: 2px solid var(--light-grey);
-                                padding-top: 1.5rem;
-                            "
-                        >
-                            <h2
-                                class="font-bold mb-4 text-black"
-                            >
-                                Questions médicales
-                            </h2>
-                            <p
-                                style="
-                                    color: var(--default-text);
-                                    line-height: 1.8;
-                                "
-                            >
-                                Pour toute question médicale ou information
-                                personnelle relative à la santé, nous vous
-                                invitons à contacter votre médecin ou le corps
-                                médical concerné. Vous trouverez la liste
-                                complète de nos structures médicales ainsi que
-                                leurs coordonnées sur la page suivante :
-                            </p>
-                            <a
-                                href="https://www.hug.ch/liste-structures-medicales"
-                                target="_blank"
-                                rel="noopener"
-                                style="
-                                    color: var(--color-default-red);
-                                    text-decoration: none;
-                                    font-weight: 500;
-                                "
-                                class="inline-block mt-3 hover:opacity-75 transition"
-                                >www.hug.ch/liste-structures-medicales →</a
-                            >
-                        </div>
-
-                        <!-- Annuaire -->
-                        <div
-                            style="
-                                border-top: 2px solid var(--light-grey);
-                                padding-top: 1.5rem;
-                            "
-                        >
-                            <h2
-                                class="font-bold mb-2 text-black"
-                            >
-                                Trouver un professionnel ou une professionnelle
-                            </h2>
-                            <p
-                                class="mb-6"
-                                style="
-                                    color: var(--default-text);
-                                    line-height: 1.8;
-                                "
-                            >
-                                Consultez l'annuaire des HUG pour trouver les
-                                coordonnées de nos professionnels de santé.
-                            </p>
-                            <a
-                                href="https://www.hug.ch/annuaire"
-                                target="_blank"
-                                rel="noopener"
-                                class="inline-block text-white font-semibold rounded-full px-7 py-3 transition hover:opacity-80 uppercase tracking-wider"
-                                style="background: var(--default-titles); text-decoration: none"
-                                >Accéder à l'annuaire des HUG →</a
-                            >
-                        </div>
-
-                        <!-- Urgences -->
-                        <div
-                            style="
-                                background: #fef3c7;
-                                border-left: 3px solid #f59e0b;
-                                padding: 1.25rem 1.5rem;
-                                border-radius: 0 8px 8px 0;
-                            "
-                        >
-                            <p
-                                style="color: #92400e; line-height: 1.75"
-                            >
-                                <strong>En cas d'urgence vitale</strong>, nous
-                                vous encourageons à composer le
-                                <strong>144</strong>.<br />
-                                Pour les situations non vitales ou en cas
-                                d'indisponibilité de votre médecin traitant,
-                                vous pouvez appeler la Centrale Santé Genève
-                                (CeSaGe) au
-                                <strong>0800 116 117</strong>.
-                            </p>
-                        </div>
-
-                        <!-- Ce contenu vous a-t-il été utile ? -->
-                        <div
-                            style="
-                                border-top: 1px solid #dde4e3;
-                                padding-top: 1.5rem;
-                            "
-                        >
-                            <p
-                                class="font-semibold mb-4"
-                                style="color: var(--default-titles)"
-                            >
-                                Ce contenu vous a-t-il été utile ?
-                            </p>
-                            <div class="flex gap-3">
-                                <button
-                                    @click="useful = true"
-                                    class="rounded-full px-6 py-2 font-semibold transition"
-                                    :style="
-                                        useful === true
-                                            ? 'background:var(--default-titles);color:white;border:2px solid var(--default-titles)'
-                                            : 'background:white;color:var(--default-titles);border:2px solid var(--default-titles)'
-                                    "
-                                    style="cursor: pointer"
-                                >
-                                    Oui
-                                </button>
-                                <button
-                                    @click="useful = false"
-                                    class="rounded-full px-6 py-2 font-semibold transition"
-                                    :style="
-                                        useful === false
-                                            ? 'background:var(--default-titles);color:white;border:2px solid var(--default-titles)'
-                                            : 'background:white;color:var(--default-titles);border:2px solid #dde4e3'
-                                    "
-                                    style="cursor: pointer"
-                                >
-                                    Non
-                                </button>
-                                <span
-                                    v-if="useful !== null"
-                                    style="
-                                        font-size: 14px;
-                                        color: var(--default-text);
-                                        align-self: center;
-                                    "
-                                    >Merci pour votre retour.</span
-                                >
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Colonne latérale -->
-                    <div class="flex flex-col gap-6">
-                        <div
-                            style="
-                                background: var(--light-grey);
-                                border-radius: 12px;
-                                padding: 1.5rem;
-                            "
-                        >
-                            <p
-                                class="font-bold mb-4"
-                                style="color: var(--default-titles)"
-                            >
-                                Don du sang — CTS
-                            </p>
-                            <p
-                                class="mb-4"
-                                style="color: var(--default-text); line-height: 1.7"
-                            >
-                                Pour toute question relative aux collectes en
-                                entreprise et au programme Trophée de la
-                                Générosité.
-                            </p>
-                            <RouterLink
-                                to="/login"
-                                class="btn btn-filled-red"
-                                >Créer un compte →</RouterLink
-                            >
-                        </div>
-                        <div
-                            style="
-                                background: var(--light-grey);
-                                border-radius: 12px;
-                                padding: 1.5rem;
-                            "
-                        >
-                            <p
-                                class="font-bold mb-3"
-                                style="color: var(--default-titles)"
-                            >
-                                Site officiel
-                            </p>
-                            <a
-                                href="https://www.hug.ch"
-                                target="_blank"
-                                rel="noopener"
-                                style="color: var(--color-default-red); text-decoration: none; font-weight: 500"
-                                class="hover:opacity-75 transition"
-                                >www.hug.ch →</a
-                            >
-                        </div>
-                    </div>
+                <!-- Confirmation -->
+                <div
+                    v-if="sent"
+                    class="bg-white rounded-2xl p-10 text-center shadow-light"
+                >
+                    <span
+                        class="material-symbols-outlined mb-4"
+                        style="font-size: 48px; color: var(--color-default-green-39)"
+                        >check_circle</span
+                    >
+                    <h3 class="font-bold mb-2 text-black">Message envoyé !</h3>
+                    <p style="color: var(--default-text)">
+                        Merci, notre équipe vous recontactera dans les meilleurs
+                        délais.
+                    </p>
                 </div>
+
+                <!-- Formulaire -->
+                <form v-else @submit.prevent="submit">
+                    <div
+                        v-if="errorMsg"
+                        class="mb-6 px-4 py-3 rounded-lg"
+                        style="background: #fee2e2; color: #991b1b"
+                    >
+                        {{ errorMsg }}
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-x-6 gap-y-5 mb-5">
+                        <div>
+                            <label class="captions block mb-2">Nom</label>
+                            <input
+                                v-model="form.nom"
+                                type="text"
+                                class="form-input"
+                            />
+                        </div>
+                        <div>
+                            <label class="captions block mb-2">
+                                Prénom
+                                <span style="color: var(--color-default-red)"
+                                    >*</span
+                                >
+                            </label>
+                            <input
+                                v-model="form.prenom"
+                                type="text"
+                                required
+                                class="form-input"
+                            />
+                        </div>
+                        <div>
+                            <label class="captions block mb-2">Entreprise</label>
+                            <input
+                                v-model="form.entreprise"
+                                type="text"
+                                class="form-input"
+                            />
+                        </div>
+                        <div>
+                            <label class="captions block mb-2">
+                                Email
+                                <span style="color: var(--color-default-red)"
+                                    >*</span
+                                >
+                            </label>
+                            <input
+                                v-model="form.email"
+                                type="email"
+                                required
+                                class="form-input"
+                            />
+                        </div>
+                        <div>
+                            <label class="captions block mb-2">
+                                Sujet
+                                <span style="color: var(--color-default-red)"
+                                    >*</span
+                                >
+                            </label>
+                            <select
+                                v-model="form.sujet"
+                                required
+                                class="form-input form-select"
+                            >
+                                <option value="">Choisir…</option>
+                                <option>Label CTS</option>
+                                <option>Trophée de la Générosité</option>
+                                <option>Organisation d'une collecte</option>
+                                <option>Autre</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <label class="captions block mb-2">Message</label>
+                        <textarea
+                            v-model="form.message"
+                            rows="6"
+                            required
+                            class="form-input"
+                        ></textarea>
+                    </div>
+
+                    <button
+                        type="submit"
+                        :disabled="loading"
+                        class="btn btn-filled-red"
+                    >
+                        {{ loading ? "Envoi…" : "Envoyer le message" }}
+                        <span class="material-symbols-outlined"
+                            >arrow_forward</span
+                        >
+                    </button>
+                </form>
             </div>
         </section>
 
-        <!-- Footer -->
         <Footer />
     </div>
 </template>

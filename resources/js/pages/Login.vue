@@ -10,7 +10,7 @@ const mode = ref("login"); // 'login' | 'register' | 'admin' | 'success'
 const step = ref(1); // 1 | 2 | 3
 
 // --- Succès inscription ---
-const newSlug          = ref("");
+const newSlug = ref("");
 const newEntrepriseName = ref("");
 
 // --- Connexion ---
@@ -78,12 +78,17 @@ function nextStep() {
         }
     }
     if (step.value === 2) {
-        if (!name.value.trim() || !emailReg.value.trim() || !passwordReg.value.trim()) {
+        if (
+            !name.value.trim() ||
+            !emailReg.value.trim() ||
+            !passwordReg.value.trim()
+        ) {
             errorMsg.value = "Veuillez remplir tous les champs obligatoires.";
             return;
         }
         if (passwordReg.value.length < 8) {
-            errorMsg.value = "Le mot de passe doit contenir au moins 8 caractères.";
+            errorMsg.value =
+                "Le mot de passe doit contenir au moins 8 caractères.";
             return;
         }
     }
@@ -112,19 +117,20 @@ async function handleRegister() {
     errorMsg.value = "";
     try {
         const formData = new FormData();
-        formData.append("name",             name.value);
-        formData.append("email",            emailReg.value);
-        formData.append("password",         passwordReg.value);
-        formData.append("entreprise",       entreprise.value);
-        if (telephone.value)    formData.append("telephone",        telephone.value);
-        if (adresse.value)      formData.append("adresse",          adresse.value);
-        if (ville.value)        formData.append("ville",            ville.value);
-        if (npa.value)          formData.append("npa",              npa.value);
-        if (domaine.value)      formData.append("domaine",          domaine.value);
-        if (nbEmployes.value)   formData.append("nb_employes",      nbEmployes.value);
-        if (poste.value)        formData.append("poste",            poste.value);
-        if (couleurPrimaire.value) formData.append("couleur_primaire", couleurPrimaire.value);
-        if (logoFile.value)     formData.append("logo",             logoFile.value);
+        formData.append("name", name.value);
+        formData.append("email", emailReg.value);
+        formData.append("password", passwordReg.value);
+        formData.append("entreprise", entreprise.value);
+        if (telephone.value) formData.append("telephone", telephone.value);
+        if (adresse.value) formData.append("adresse", adresse.value);
+        if (ville.value) formData.append("ville", ville.value);
+        if (npa.value) formData.append("npa", npa.value);
+        if (domaine.value) formData.append("domaine", domaine.value);
+        if (nbEmployes.value) formData.append("nb_employes", nbEmployes.value);
+        if (poste.value) formData.append("poste", poste.value);
+        if (couleurPrimaire.value)
+            formData.append("couleur_primaire", couleurPrimaire.value);
+        if (logoFile.value) formData.append("logo", logoFile.value);
 
         const res = await fetch("/api/register", {
             method: "POST",
@@ -141,7 +147,7 @@ async function handleRegister() {
         auth.token = data.token;
         localStorage.setItem("token", data.token);
         await auth.fetchMe();
-        newSlug.value           = data.slug;
+        newSlug.value = data.slug;
         newEntrepriseName.value = entreprise.value;
         mode.value = "success";
     } catch (e) {
@@ -151,35 +157,22 @@ async function handleRegister() {
     }
 }
 
-const inputStyle = `
-    border: 1px solid #dde4e3;
-    border-radius: 8px;
-    color: var(--default-titles);
-    background: white;
-    outline: none;
-    width: 100%;
-    padding: 10px 14px;
-    font-family: inherit;
-    transition: border-color 0.15s;
-`;
-
-const selectStyle = inputStyle + `
-    appearance: none;
-    background-repeat: no-repeat;
-    background-position: right 12px center;
-    padding-right: 32px;
-`;
 </script>
 
 <template>
-    <div
-        class="min-h-screen flex"
-        style="background: var(--light-grey)"
-    >
+    <div class="min-h-screen flex" style="background: var(--light-grey)">
         <!-- Panneau gauche -->
         <div
             class="hidden lg:flex flex-col justify-between px-14 py-12"
-            style="width: 42%; background: linear-gradient(135deg, var(--color-default-blue-59), var(--color-default-green)); flex-shrink: 0"
+            style="
+                width: 42%;
+                background: linear-gradient(
+                    135deg,
+                    var(--color-default-blue-59),
+                    var(--color-default-green)
+                );
+                flex-shrink: 0;
+            "
         >
             <div>
                 <RouterLink
@@ -187,91 +180,29 @@ const selectStyle = inputStyle + `
                     style="text-decoration: none"
                     class="flex items-center gap-2"
                 >
-                    <span class="font-extrabold text-xl" style="color: var(--default-titles)">HUG</span>
-                    <div class="w-px h-5 mx-1" style="background: rgba(44,65,64,0.3)"></div>
-                    <span class="text-base font-semibold" style="color: var(--default-titles)">Don du sang</span>
+                    <div class="hug-brand">
+                        <div class="brand-hug"
+                            ><img
+                                :src="'/images/LOG HUG_H_NEGATIF fond transparent.png'"
+                                alt="Logo HUG"
+                        /></div>
+                    </div>
+                    <div
+                        class="w-px h-5 mx-1"
+                        style="background: white"
+                    ></div>
+                    <span
+                        class="text-base font-semibold"
+                        style="color: white"
+                        >Don du sang</span
+                    >
                 </RouterLink>
             </div>
 
             <div>
-                <template v-if="mode === 'login'">
-                    <p class="font-black mb-4" style="color: var(--default-titles); line-height: 1.2">
-                        Ensemble,<br />sauvons des vies.
-                    </p>
-                    <p style="color: rgba(44,65,64,0.7); line-height: 1.7; max-width: 340px">
-                        Rejoignez les entreprises genevoises engagées pour le don du sang et donnez un impact concret à votre politique RSE.
-                    </p>
-                </template>
-                <template v-else-if="mode === 'admin'">
-                    <p class="font-black mb-4" style="color: var(--default-titles); line-height: 1.2">
-                        Administration<br />HUG — CTS
-                    </p>
-                    <p style="color: rgba(44,65,64,0.65); line-height: 1.7; max-width: 300px">
-                        Accès réservé à l'équipe du Centre de Transfusion Sanguine des Hôpitaux Universitaires de Genève.
-                    </p>
-                </template>
-                <template v-else-if="mode === 'success'">
-                    <div style="display: flex; flex-direction: column; gap: 1.5rem; max-width: 320px">
-                        <div style="display: flex; flex-direction: column; gap: 0.5rem">
-                            <div v-for="item in [
-                                { icon: 'check_circle', text: 'Espace co-brandé créé' },
-                                { icon: 'palette', text: 'Logo &amp; couleurs configurés' },
-                                { icon: 'group', text: 'Page quiz personnalisée' },
-                                { icon: 'emoji_events', text: 'Trophée de la générosité activé' },
-                            ]" :key="item.text" style="display: flex; align-items: center; gap: 0.75rem">
-                                <span class="material-symbols-outlined" style="font-size: 20px; color: var(--default-titles)">{{ item.icon }}</span>
-                                <span style="color: var(--default-titles); font-weight: 600" v-html="item.text"></span>
-                            </div>
-                        </div>
-                        <p style="color: rgba(44,65,64,0.65); line-height: 1.6">
-                            Notre équipe du CTS vous recontactera sous 48h pour organiser votre première campagne de collecte.
-                        </p>
-                    </div>
-                </template>
-                <template v-else>
-                    <!-- Étapes -->
-                    <div class="flex flex-col gap-5 mb-10">
-                        <div
-                            v-for="s in [
-                                { num: 1, label: 'Votre entreprise' },
-                                { num: 2, label: 'Votre profil' },
-                                { num: 3, label: 'Apparence' },
-                            ]"
-                            :key="s.num"
-                            class="flex items-center gap-4"
-                        >
-                            <div
-                                class="flex items-center justify-center rounded-full font-bold flex-shrink-0"
-                                style="width: 32px; height: 32px"
-                                :style="
-                                    step === s.num
-                                        ? 'background: var(--color-default-red); color: white'
-                                        : step > s.num
-                                        ? 'background: var(--default-titles); color: white'
-                                        : 'background: rgba(44,65,64,0.15); color: rgba(44,65,64,0.4)'
-                                "
-                            >{{ s.num }}</div>
-                            <span
-                                class="font-semibold"
-                                :style="
-                                    step === s.num
-                                        ? 'color: var(--default-titles)'
-                                        : step > s.num
-                                        ? 'color: var(--default-titles)'
-                                        : 'color: rgba(44,65,64,0.4)'
-                                "
-                            >{{ s.label }}</span>
-                        </div>
-                    </div>
-                    <p style="color: rgba(44,65,64,0.65); line-height: 1.6; max-width: 300px">
-                        Remplissez ce formulaire et notre équipe vous recontacte sous 48h pour organiser votre première campagne.
-                    </p>
-                </template>
-            </div>
-
-            <div>
-                <p style="color: rgba(44,65,64,0.45)">
-                    © {{ new Date().getFullYear() }} Hôpitaux Universitaires Genève
+                <p style="color: white">
+                    © {{ new Date().getFullYear() }} Hôpitaux Universitaires
+                    Genève
                 </p>
             </div>
         </div>
@@ -279,16 +210,26 @@ const selectStyle = inputStyle + `
         <!-- Panneau droit -->
         <div class="flex-1 flex items-center justify-center px-6 py-12">
             <div class="w-full" style="max-width: 480px">
-
                 <!-- Logo mobile -->
                 <RouterLink
                     to="/"
                     class="lg:hidden flex items-center gap-2 mb-10"
                     style="text-decoration: none"
                 >
-                    <span class="font-extrabold text-xl" style="color: var(--default-titles)">HUG</span>
-                    <div class="w-px h-5 mx-1" style="background: rgba(44,65,64,0.3)"></div>
-                    <span class="text-base font-semibold" style="color: var(--color-default-red)">Don du sang</span>
+                    <span
+                        class="font-extrabold text-xl"
+                        style="color: var(--default-titles)"
+                        >HUG</span
+                    >
+                    <div
+                        class="w-px h-5 mx-1"
+                        style="background: rgba(44, 65, 64, 0.3)"
+                    ></div>
+                    <span
+                        class="text-base font-semibold"
+                        style="color: var(--color-default-red)"
+                        >Don du sang</span
+                    >
                 </RouterLink>
 
                 <!-- Erreur -->
@@ -302,16 +243,19 @@ const selectStyle = inputStyle + `
 
                 <!-- ══════════════════ CONNEXION ══════════════════ -->
                 <template v-if="mode === 'login'">
-                    <h1 class="font-bold mb-1 text-black">
-                        Connexion
-                    </h1>
+                    <h1 class="font-bold mb-1 text-black">Connexion</h1>
                     <p class="mb-8" style="color: var(--default-text)">
                         Accédez à votre espace entreprise.
                     </p>
 
-                    <form @submit.prevent="handleLogin" class="flex flex-col gap-5">
+                    <form
+                        @submit.prevent="handleLogin"
+                        class="flex flex-col gap-5"
+                    >
                         <div>
-                            <label class="block font-semibold mb-1" style="color: var(--default-titles)">
+                            <label
+                                class="captions mb-3"
+                            >
                                 Adresse email
                             </label>
                             <input
@@ -319,11 +263,13 @@ const selectStyle = inputStyle + `
                                 type="email"
                                 required
                                 placeholder="vous@entreprise.com"
-                                :style="inputStyle"
+                                class="form-input"
                             />
                         </div>
                         <div>
-                            <label class="block font-semibold mb-1" style="color: var(--default-titles)">
+                            <label
+                                class="captions mb-3"
+                            >
                                 Mot de passe
                             </label>
                             <input
@@ -331,15 +277,21 @@ const selectStyle = inputStyle + `
                                 type="password"
                                 required
                                 placeholder="••••••••"
-                                :style="inputStyle"
+                                class="form-input"
                             />
                         </div>
                         <button
                             type="submit"
                             :disabled="loading"
                             class="btn btn-filled-red w-full"
-                            style="border: none; cursor: pointer; margin-top: 4px"
-                            :style="loading ? 'opacity:0.6;cursor:not-allowed' : ''"
+                            style="
+                                border: none;
+                                cursor: pointer;
+                                margin-top: 4px;
+                            "
+                            :style="
+                                loading ? 'opacity:0.6;cursor:not-allowed' : ''
+                            "
                         >
                             {{ loading ? "Connexion…" : "Se connecter" }}
                         </button>
@@ -347,20 +299,27 @@ const selectStyle = inputStyle + `
 
                     <!-- Séparateur -->
                     <div class="flex items-center gap-4 my-7">
-                        <div class="flex-1" style="height: 1px; background: #dde4e3"></div>
-                        <span style="font-size: 13px; color: #c0cac9; white-space: nowrap">Pas encore partenaire ?</span>
-                        <div class="flex-1" style="height: 1px; background: #dde4e3"></div>
+                        <div
+                            class="flex-1"
+                            style="height: 1px; background: #dde4e3"
+                        ></div>
+                        <span
+                            style="
+                                font-size: 13px;
+                                color: #c0cac9;
+                                white-space: nowrap;
+                            "
+                            >Pas encore partenaire ?</span
+                        >
+                        <div
+                            class="flex-1"
+                            style="height: 1px; background: #dde4e3"
+                        ></div>
                     </div>
 
                     <button
                         @click="startRegister"
-                        class="w-full font-semibold rounded-full py-3 transition hover:opacity-75"
-                        style="
-                            background: white;
-                            border: 2px solid var(--default-titles);
-                            color: var(--default-titles);
-                            cursor: pointer;
-                        "
+                        class="btn btn-outlined-red w-full"
                     >
                         Rejoindre le programme →
                     </button>
@@ -370,7 +329,14 @@ const selectStyle = inputStyle + `
                         <button
                             @click="switchToAdmin"
                             class="captions hover:opacity-70 transition"
-                            style="background: none; border: none; cursor: pointer; color: #c0cac9; text-decoration: underline; text-underline-offset: 3px"
+                            style="
+                                background: none;
+                                border: none;
+                                cursor: pointer;
+                                color: #c0cac9;
+                                text-decoration: underline;
+                                text-underline-offset: 3px;
+                            "
                         >
                             Accès administrateur
                         </button>
@@ -379,24 +345,19 @@ const selectStyle = inputStyle + `
 
                 <!-- ══════════════════ ADMIN ══════════════════ -->
                 <template v-if="mode === 'admin'">
-                    <button
-                        @click="backToLogin"
-                        class="flex items-center gap-2 mb-6 transition hover:opacity-60"
-                        style="background: none; border: none; cursor: pointer; padding: 0; color: var(--default-text)"
-                    >
-                        ← Retour
-                    </button>
-
-                    <h1 class="font-bold mb-1 text-black">
-                        Administration
-                    </h1>
+                    <h1 class="font-bold mb-1 text-black">Administration</h1>
                     <p class="mb-8" style="color: var(--default-text)">
                         Espace réservé à l'équipe CTS des HUG.
                     </p>
 
-                    <form @submit.prevent="handleLogin" class="flex flex-col gap-5">
+                    <form
+                        @submit.prevent="handleLogin"
+                        class="flex flex-col gap-5"
+                    >
                         <div>
-                            <label class="block font-semibold mb-1" style="color: var(--default-titles)">
+                            <label
+                                class="captions mb-3"
+                            >
                                 Adresse email
                             </label>
                             <input
@@ -404,11 +365,13 @@ const selectStyle = inputStyle + `
                                 type="email"
                                 required
                                 placeholder="admin@cts-hug.ch"
-                                :style="inputStyle"
+                                class="form-input"
                             />
                         </div>
                         <div>
-                            <label class="block font-semibold mb-1" style="color: var(--default-titles)">
+                            <label
+                                class="captions mb-3"
+                            >
                                 Mot de passe
                             </label>
                             <input
@@ -416,103 +379,173 @@ const selectStyle = inputStyle + `
                                 type="password"
                                 required
                                 placeholder="••••••••"
-                                :style="inputStyle"
+                                class="form-input"
                             />
                         </div>
                         <button
                             type="submit"
                             :disabled="loading"
-                            class="w-full text-white font-semibold rounded-full py-3 transition hover:opacity-80"
-                            style="background: var(--default-titles); border: none; cursor: pointer; margin-top: 4px"
-                            :style="loading ? 'opacity:0.6;cursor:not-allowed' : ''"
+                            class="btn btn-filled-blue w-full"
                         >
                             {{ loading ? "Connexion…" : "Accéder au panneau" }}
                         </button>
                     </form>
+
+                    <!-- Bouton retour (bas) -->
+                    <button
+                        @click="backToLogin"
+                        class="flex items-center gap-2 mt-6 transition hover:opacity-60"
+                        style="
+                            background: none;
+                            border: none;
+                            cursor: pointer;
+                            padding: 0;
+                            color: var(--default-text);
+                        "
+                    >
+                        ← Retour
+                    </button>
                 </template>
 
                 <!-- ══════════════════ INSCRIPTION ══════════════════ -->
                 <template v-else-if="mode === 'register'">
-                    <!-- Header étape -->
-                    <button
-                        @click="step > 1 ? step-- : backToLogin()"
-                        class="flex items-center gap-2 mb-6 transition hover:opacity-60"
-                        style="background: none; border: none; cursor: pointer; padding: 0; color: var(--default-text)"
-                    >
-                        ← {{ step > 1 ? 'Étape précédente' : 'Retour à la connexion' }}
-                    </button>
-
-                    <!-- Indicateur d'étapes mobile -->
-                    <div class="lg:hidden flex items-center gap-2 mb-6">
-                        <div
-                            v-for="s in 3"
-                            :key="s"
-                            class="h-1 rounded-full flex-1 transition-all"
-                            :style="s <= step ? 'background: var(--color-default-red)' : 'background: #dde4e3'"
-                        ></div>
+                    <!-- Barre de progression (style quiz) -->
+                    <div class="progress-steps mb-8">
+                        <template v-for="s in 3" :key="s">
+                            <div
+                                class="step"
+                                :class="{
+                                    'step-done': s < step,
+                                    'step-active': s === step,
+                                }"
+                            >
+                                {{ s }}
+                            </div>
+                            <div
+                                v-if="s < 3"
+                                class="step-line"
+                                :class="{ 'step-line-done': s < step }"
+                            ></div>
+                        </template>
                     </div>
+
+                    <Transition name="slide" mode="out-in">
+                    <div :key="step">
 
                     <!-- ── Étape 1 : Votre entreprise ── -->
                     <template v-if="step === 1">
                         <h1 class="font-bold mb-1 text-black">
                             Parlez-nous de votre entreprise
                         </h1>
-                        <p class="mb-7" style="color: var(--default-text); line-height: 1.6">
-                            Ces informations permettent au CTS de configurer la page de votre future entreprise.
+                        <p
+                            class="mb-7"
+                            style="color: var(--default-text); line-height: 1.6"
+                        >
+                            Ces informations permettent au CTS de configurer la
+                            page de votre future entreprise.
                         </p>
 
                         <div class="flex flex-col gap-4">
                             <!-- Nom + Taille -->
                             <div class="grid grid-cols-2 gap-3">
                                 <div class="col-span-2">
-                                    <label class="block font-semibold mb-1" style="color: var(--default-titles)">
-                                        Nom de l'entreprise <span style="color:var(--color-default-red)">*</span>
+                                    <label
+                                        class="captions mb-3"
+                                    >
+                                        Nom de l'entreprise
+                                        <span
+                                            style="
+                                                color: var(--color-default-red);
+                                            "
+                                            >*</span
+                                        >
                                     </label>
-                                    <input v-model="entreprise" type="text" required placeholder="Ma Société SA" :style="inputStyle" />
+                                    <input
+                                        v-model="entreprise"
+                                        type="text"
+                                        required
+                                        placeholder="Ma Société SA"
+                                        class="form-input"
+                                    />
                                 </div>
                                 <div>
-                                    <label class="block font-semibold mb-1" style="color: var(--default-titles)">
+                                    <label
+                                        class="captions mb-3"
+                                    >
                                         Secteur d'activité
                                     </label>
                                     <select
                                         v-model="domaine"
-                                        :style="selectStyle"
+                                        class="form-input form-select"
                                     >
                                         <option value="">Choisir…</option>
-                                        <option v-for="opt in domaineOptions" :key="opt.value" :value="opt.value">
+                                        <option
+                                            v-for="opt in domaineOptions"
+                                            :key="opt.value"
+                                            :value="opt.value"
+                                        >
                                             {{ opt.label }}
                                         </option>
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="block font-semibold mb-1" style="color: var(--default-titles)">
+                                    <label
+                                        class="captions mb-3"
+                                    >
                                         Nombre d'employés
                                     </label>
-                                    <input v-model="nbEmployes" type="number" min="1" placeholder="ex. 250" :style="inputStyle" />
+                                    <input
+                                        v-model="nbEmployes"
+                                        type="number"
+                                        min="1"
+                                        placeholder="ex. 250"
+                                        class="form-input"
+                                    />
                                 </div>
                             </div>
 
                             <!-- Adresse -->
                             <div>
-                                <label class="block font-semibold mb-1" style="color: var(--default-titles)">
+                                <label
+                                    class="captions mb-3"
+                                >
                                     Adresse
                                 </label>
-                                <input v-model="adresse" type="text" placeholder="Rue de la Paix 12" :style="inputStyle" />
+                                <input
+                                    v-model="adresse"
+                                    type="text"
+                                    placeholder="Rue de la Paix 12"
+                                    class="form-input"
+                                />
                             </div>
 
                             <!-- Ville + NPA -->
                             <div class="grid grid-cols-2 gap-3">
                                 <div>
-                                    <label class="block font-semibold mb-1" style="color: var(--default-titles)">
+                                    <label
+                                        class="captions mb-3"
+                                    >
                                         Ville
                                     </label>
-                                    <input v-model="ville" type="text" placeholder="Genève" :style="inputStyle" />
+                                    <input
+                                        v-model="ville"
+                                        type="text"
+                                        placeholder="Genève"
+                                        class="form-input"
+                                    />
                                 </div>
                                 <div>
-                                    <label class="block font-semibold mb-1" style="color: var(--default-titles)">
+                                    <label
+                                        class="captions mb-3"
+                                    >
                                         Code postal
                                     </label>
-                                    <input v-model="npa" type="text" placeholder="1200" :style="inputStyle" />
+                                    <input
+                                        v-model="npa"
+                                        type="text"
+                                        placeholder="1200"
+                                        class="form-input"
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -531,41 +564,101 @@ const selectStyle = inputStyle + `
                         <h1 class="font-bold mb-1 text-black">
                             Parlez-nous de vous
                         </h1>
-                        <p class="mb-7" style="color: var(--default-text); line-height: 1.6">
-                            En tant que coordinateur principal, vous ferez le lien entre les HUG et votre entreprise.
+                        <p
+                            class="mb-7"
+                            style="color: var(--default-text); line-height: 1.6"
+                        >
+                            En tant que coordinateur principal, vous ferez le
+                            lien entre les HUG et votre entreprise.
                         </p>
 
                         <div class="flex flex-col gap-4">
                             <div class="grid grid-cols-2 gap-3">
                                 <div class="col-span-2">
-                                    <label class="block font-semibold mb-1" style="color: var(--default-titles)">
-                                        Nom et prénom <span style="color:var(--color-default-red)">*</span>
+                                    <label
+                                        class="captions mb-3"
+                                    >
+                                        Nom et prénom
+                                        <span
+                                            style="
+                                                color: var(--color-default-red);
+                                            "
+                                            >*</span
+                                        >
                                     </label>
-                                    <input v-model="name" type="text" required placeholder="Prénom Nom" :style="inputStyle" />
+                                    <input
+                                        v-model="name"
+                                        type="text"
+                                        required
+                                        placeholder="Prénom Nom"
+                                        class="form-input"
+                                    />
                                 </div>
                                 <div>
-                                    <label class="block font-semibold mb-1" style="color: var(--default-titles)">
+                                    <label
+                                        class="captions mb-3"
+                                    >
                                         Poste
                                     </label>
-                                    <input v-model="poste" type="text" placeholder="Responsable RH" :style="inputStyle" />
+                                    <input
+                                        v-model="poste"
+                                        type="text"
+                                        placeholder="Responsable RH"
+                                        class="form-input"
+                                    />
                                 </div>
                                 <div>
-                                    <label class="block font-semibold mb-1" style="color: var(--default-titles)">
+                                    <label
+                                        class="captions mb-3"
+                                    >
                                         Téléphone
                                     </label>
-                                    <input v-model="telephone" type="tel" placeholder="+41 79 000 00 00" :style="inputStyle" />
+                                    <input
+                                        v-model="telephone"
+                                        type="tel"
+                                        placeholder="+41 79 000 00 00"
+                                        class="form-input"
+                                    />
                                 </div>
                                 <div class="col-span-2">
-                                    <label class="block font-semibold mb-1" style="color: var(--default-titles)">
-                                        Email professionnel <span style="color:var(--color-default-red)">*</span>
+                                    <label
+                                        class="captions mb-3"
+                                    >
+                                        Email professionnel
+                                        <span
+                                            style="
+                                                color: var(--color-default-red);
+                                            "
+                                            >*</span
+                                        >
                                     </label>
-                                    <input v-model="emailReg" type="email" required placeholder="vous@entreprise.com" :style="inputStyle" />
+                                    <input
+                                        v-model="emailReg"
+                                        type="email"
+                                        required
+                                        placeholder="vous@entreprise.com"
+                                        class="form-input"
+                                    />
                                 </div>
                                 <div class="col-span-2">
-                                    <label class="block font-semibold mb-1" style="color: var(--default-titles)">
-                                        Mot de passe <span style="color:var(--color-default-red)">*</span>
+                                    <label
+                                        class="captions mb-3"
+                                    >
+                                        Mot de passe
+                                        <span
+                                            style="
+                                                color: var(--color-default-red);
+                                            "
+                                            >*</span
+                                        >
                                     </label>
-                                    <input v-model="passwordReg" type="password" required placeholder="8 caractères minimum" :style="inputStyle" />
+                                    <input
+                                        v-model="passwordReg"
+                                        type="password"
+                                        required
+                                        placeholder="8 caractères minimum"
+                                        class="form-input"
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -584,33 +677,63 @@ const selectStyle = inputStyle + `
                         <h1 class="font-bold mb-1 text-black">
                             Informations graphiques
                         </h1>
-                        <p class="mb-7" style="color: var(--default-text); line-height: 1.6">
-                            Ces éléments visuels personnalisent votre interface et vos kits de communication. <span style="color: #c0cac9">(optionnel)</span>
+                        <p
+                            class="mb-7"
+                            style="color: var(--default-text); line-height: 1.6"
+                        >
+                            Ces éléments visuels personnalisent votre interface
+                            et vos kits de communication.
+                            <span style="color: #c0cac9">(optionnel)</span>
                         </p>
 
                         <div class="flex flex-col gap-5">
                             <!-- Logo -->
                             <div>
-                                <label class="block font-semibold mb-1" style="color: var(--default-titles)">
+                                <label
+                                    class="captions mb-3"
+                                >
                                     Logo
                                 </label>
                                 <div
                                     class="flex items-center gap-3"
-                                    style="border: 1px solid #dde4e3; border-radius: 8px; padding: 10px 14px; background: white"
+                                    style="
+                                        border: 1px solid #dde4e3;
+                                        border-radius: 8px;
+                                        padding: 10px 14px;
+                                        background: white;
+                                    "
                                 >
-                                    <span style="font-size: 14px; color: #c0cac9; flex: 1">
-                                        {{ logoFile ? logoFile.name : '.jpg, .png, .svg' }}
+                                    <span
+                                        style="
+                                            font-size: 14px;
+                                            color: #c0cac9;
+                                            flex: 1;
+                                        "
+                                    >
+                                        {{
+                                            logoFile
+                                                ? logoFile.name
+                                                : ".jpg, .png, .svg"
+                                        }}
                                     </span>
                                     <label
                                         class="font-semibold rounded-full px-4 py-1 transition hover:opacity-75 cursor-pointer"
-                                        style="background: var(--light-grey); color: var(--default-titles); white-space: nowrap"
+                                        style="
+                                            background: var(--light-grey);
+                                            color: var(--default-titles);
+                                            white-space: nowrap;
+                                        "
                                     >
                                         Parcourir
                                         <input
                                             type="file"
                                             accept=".jpg,.jpeg,.png,.svg"
                                             class="hidden"
-                                            @change="e => logoFile = e.target.files[0]"
+                                            @change="
+                                                (e) =>
+                                                    (logoFile =
+                                                        e.target.files[0])
+                                            "
                                         />
                                     </label>
                                 </div>
@@ -618,23 +741,44 @@ const selectStyle = inputStyle + `
 
                             <!-- Couleur principale -->
                             <div>
-                                <label class="block font-semibold mb-1" style="color: var(--default-titles)">
+                                <label
+                                    class="captions mb-3"
+                                >
                                     Couleur principale
                                 </label>
                                 <div
                                     class="flex items-center gap-3"
-                                    style="border: 1px solid #dde4e3; border-radius: 8px; padding: 10px 14px; background: white"
+                                    style="
+                                        border: 1px solid #dde4e3;
+                                        border-radius: 8px;
+                                        padding: 10px 14px;
+                                        background: white;
+                                    "
                                 >
                                     <input
                                         v-model="couleurPrimaire"
                                         type="color"
-                                        style="width: 28px; height: 28px; border: none; padding: 0; cursor: pointer; background: none; border-radius: 4px"
+                                        style="
+                                            width: 28px;
+                                            height: 28px;
+                                            border: none;
+                                            padding: 0;
+                                            cursor: pointer;
+                                            background: none;
+                                            border-radius: 4px;
+                                        "
                                     />
                                     <input
                                         v-model="couleurPrimaire"
                                         type="text"
                                         placeholder="var(--color-default-red)"
-                                        style="border: none; outline: none; color: var(--default-titles); flex: 1; font-family: monospace"
+                                        style="
+                                            border: none;
+                                            outline: none;
+                                            color: var(--default-titles);
+                                            flex: 1;
+                                            font-family: monospace;
+                                        "
                                     />
                                 </div>
                             </div>
@@ -645,15 +789,49 @@ const selectStyle = inputStyle + `
                             :disabled="loading"
                             class="btn btn-filled-red w-full mt-7"
                             style="border: none; cursor: pointer"
-                            :style="loading ? 'opacity:0.6;cursor:not-allowed' : ''"
+                            :style="
+                                loading ? 'opacity:0.6;cursor:not-allowed' : ''
+                            "
                         >
-                            {{ loading ? "Création de votre espace…" : "Créer mon espace entreprise" }}
+                            {{
+                                loading
+                                    ? "Création de votre espace…"
+                                    : "Créer mon espace entreprise"
+                            }}
                         </button>
 
-                        <p class="text-center mt-5" style="color: #c0cac9; line-height: 1.6">
-                            En créant un compte vous acceptez que vos données soient utilisées dans le cadre du programme de don du sang des HUG.
+                        <p
+                            class="text-center mt-5"
+                            style="color: #c0cac9; line-height: 1.6"
+                        >
+                            En créant un compte vous acceptez que vos données
+                            soient utilisées dans le cadre du programme de don
+                            du sang des HUG.
                         </p>
                     </template>
+
+                    </div>
+                    </Transition>
+
+                    <!-- Bouton retour (bas) -->
+                    <button
+                        @click="step > 1 ? step-- : backToLogin()"
+                        class="flex items-center gap-2 mt-6 transition hover:opacity-60"
+                        style="
+                            background: none;
+                            border: none;
+                            cursor: pointer;
+                            padding: 0;
+                            color: var(--default-text);
+                        "
+                    >
+                        ←
+                        {{
+                            step > 1
+                                ? "Étape précédente"
+                                : "Retour à la connexion"
+                        }}
+                    </button>
                 </template>
 
                 <!-- ══════════════════ SUCCÈS ══════════════════ -->
@@ -662,61 +840,219 @@ const selectStyle = inputStyle + `
                         <!-- Icône succès -->
                         <div
                             style="
-                                width: 72px; height: 72px; border-radius: 50%;
-                                background: #d1fae5; display: flex; align-items: center;
-                                justify-content: center; margin: 0 auto 1.5rem;
+                                width: 72px;
+                                height: 72px;
+                                border-radius: 50%;
+                                background: #d1fae5;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                margin: 0 auto 1.5rem;
                             "
                         >
-                            <span class="material-symbols-outlined" style="font-size: 36px; color: #16a34a">check_circle</span>
+                            <span
+                                class="material-symbols-outlined"
+                                style="font-size: 36px; color: #16a34a"
+                                >check_circle</span
+                            >
                         </div>
 
-                        <h1 class="font-bold mb-2 text-black" style="line-height: 1.3">
+                        <h1
+                            class="font-bold mb-2 text-black"
+                            style="line-height: 1.3"
+                        >
                             Votre espace a bien été créé !
                         </h1>
-                        <p style="color: var(--default-text); line-height: 1.65; margin-bottom: 2rem">
-                            Bienvenue dans le programme <strong>Trophée de la générosité</strong>.<br />
+                        <p
+                            style="
+                                color: var(--default-text);
+                                line-height: 1.65;
+                                margin-bottom: 2rem;
+                            "
+                        >
+                            Bienvenue dans le programme
+                            <strong>Trophée de la générosité</strong>.<br />
                             Votre site co-brandé
-                            <strong style="color: var(--default-titles)">{{ newEntrepriseName }}</strong>
+                            <strong style="color: var(--default-titles)">{{
+                                newEntrepriseName
+                            }}</strong>
                             est prêt.
                         </p>
 
                         <!-- Récap -->
                         <div
                             style="
-                                background: var(--light-grey); border-radius: 14px; padding: 1.25rem 1.5rem;
-                                margin-bottom: 2rem; text-align: left; display: flex; flex-direction: column; gap: 0.75rem
+                                background: var(--light-grey);
+                                border-radius: 14px;
+                                padding: 1.25rem 1.5rem;
+                                margin-bottom: 2rem;
+                                text-align: left;
+                                display: flex;
+                                flex-direction: column;
+                                gap: 0.75rem;
                             "
                         >
-                            <div v-for="item in [
-                                { icon: 'language',      text: 'Site co-brandé avec vos couleurs' },
-                                { icon: 'quiz',          text: 'Quiz d\'éligibilité personnalisé' },
-                                { icon: 'emoji_events',  text: 'Trophée de la générosité activé' },
-                                { icon: 'support_agent', text: 'Équipe CTS notifiée sous 48h' },
-                            ]" :key="item.text"
-                                style="display: flex; align-items: center; gap: 0.75rem"
+                            <div
+                                v-for="item in [
+                                    {
+                                        icon: 'language',
+                                        text: 'Site co-brandé avec vos couleurs',
+                                    },
+                                    {
+                                        icon: 'quiz',
+                                        text: 'Quiz d\'éligibilité personnalisé',
+                                    },
+                                    {
+                                        icon: 'emoji_events',
+                                        text: 'Trophée de la générosité activé',
+                                    },
+                                    {
+                                        icon: 'support_agent',
+                                        text: 'Équipe CTS notifiée sous 48h',
+                                    },
+                                ]"
+                                :key="item.text"
+                                style="
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 0.75rem;
+                                "
                             >
-                                <span class="material-symbols-outlined" style="font-size: 18px; color: var(--color-default-blue-59)">{{ item.icon }}</span>
-                                <span style="font-size: 14px; color: var(--default-titles); font-weight: 500">{{ item.text }}</span>
+                                <span
+                                    class="material-symbols-outlined"
+                                    style="
+                                        font-size: 18px;
+                                        color: var(--color-default-blue-59);
+                                    "
+                                    >{{ item.icon }}</span
+                                >
+                                <span
+                                    style="
+                                        font-size: 14px;
+                                        color: var(--default-titles);
+                                        font-weight: 500;
+                                    "
+                                    >{{ item.text }}</span
+                                >
                             </div>
                         </div>
 
                         <button
                             @click="router.push(`/entreprise/${newSlug}`)"
                             class="btn btn-filled-red w-full"
-                            style="border: none; cursor: pointer; margin-bottom: 1rem"
+                            style="
+                                border: none;
+                                cursor: pointer;
+                                margin-bottom: 1rem;
+                            "
                         >
                             Accéder à mon espace
-                            <span class="material-symbols-outlined" style="font-size: 18px; vertical-align: middle; margin-left: 4px">arrow_forward</span>
+                            <span
+                                class="material-symbols-outlined"
+                                style="
+                                    font-size: 18px;
+                                    vertical-align: middle;
+                                    margin-left: 4px;
+                                "
+                                >arrow_forward</span
+                            >
                         </button>
 
                         <p style="color: #c0cac9">
-                            Vous pouvez fermer cette page et y revenir à tout moment depuis<br />
-                            <span style="color: var(--default-text); font-weight: 600">hug.ch/entreprise/{{ newSlug }}</span>
+                            Vous pouvez fermer cette page et y revenir à tout
+                            moment depuis<br />
+                            <span
+                                style="
+                                    color: var(--default-text);
+                                    font-weight: 600;
+                                "
+                                >hug.ch/entreprise/{{ newSlug }}</span
+                            >
                         </p>
                     </div>
                 </template>
-
             </div>
         </div>
     </div>
 </template>
+
+<style scoped>
+.hug-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+}
+.brand-hug {
+    font-weight: 800;
+    font-size: 1.25rem;
+    color: var(--default-titles);
+    text-decoration: none;
+}
+.brand-hug img {
+    max-height: 2.75rem;
+    width: auto;
+}
+
+/* Barre de progression (style quiz) */
+.progress-steps {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+}
+.step {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1.5px solid #afbfbf;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #afbfbf;
+    background: white;
+    flex-shrink: 0;
+    transition:
+        background 0.3s,
+        border-color 0.3s,
+        color 0.3s;
+}
+.step-active {
+    border-color: var(--color-default-red);
+    color: var(--color-default-red);
+    background: white;
+}
+.step-done {
+    background: var(--color-default-red);
+    border-color: var(--color-default-red);
+    color: white;
+}
+.step-line {
+    flex: 1;
+    height: 2px;
+    background: #afbfbf;
+    margin: 0 8px;
+    transition: background 0.3s;
+}
+.step-line-done {
+    background: var(--color-default-red);
+}
+
+/* Transition slide entre étapes (comme le quiz) */
+.slide-enter-active,
+.slide-leave-active {
+    transition:
+        opacity 0.25s ease,
+        transform 0.25s ease;
+}
+.slide-enter-from {
+    opacity: 0;
+    transform: translateX(30px);
+}
+.slide-leave-to {
+    opacity: 0;
+    transform: translateX(-30px);
+}
+</style>
