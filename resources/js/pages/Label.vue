@@ -29,13 +29,12 @@ onMounted(() => {
             <div class="relative max-w-7xl mx-auto px-8 w-full z-10">
                 <h1
                     class="font-bold text-white leading-tight mb-4"
-                    style="font-size: 48px"
                 >
                     Notre Label CTS
                 </h1>
                 <p
                     class="text-white mb-6 max-w-lg"
-                    style="font-size: 18px; opacity: 0.9; line-height: 1.6"
+                    style="opacity: 0.9; line-height: 1.6"
                 >
                     Le label CTS des HUG récompense les entreprises qui
                     s'engagent concrètement pour le don du sang et la
@@ -45,23 +44,17 @@ onMounted(() => {
         </section>
 
         <!-- Ce qu'il représente -->
-        <section id="ce-quil-represente" class="bg-white py-20">
+        <section id="ce-quil-represente" class="bg-light-grey py-20">
             <div
                 class="max-w-7xl mx-auto px-8 grid grid-cols-2 gap-16 items-center"
             >
                 <div>
                     <h2
-                        class="font-bold mb-5"
-                        style="font-size: 32px; color: var(--default-titles)"
+                        class="font-bold mb-5 text-black"
                     >
                         Ce qu'il représente
                     </h2>
-                    <p
-                        style="
-                            color: var(--default-text);
-                            line-height: 1.75;
-                        "
-                    >
+                    <p style="color: var(--default-text); line-height: 1.75">
                         Le Label CTS est une certification honorifique conçue
                         par les Hôpitaux Universitaires de Genève pour valoriser
                         l'engagement citoyen de toutes les organisations
@@ -73,8 +66,7 @@ onMounted(() => {
                     </p>
                 </div>
                 <div
-                    class="flex flex-col items-center justify-center gap-4 rounded-2xl p-12"
-                    style="background-color: var(--light-grey)"
+                    class="bg-white flex flex-col items-center justify-center gap-4 rounded-2xl p-12"
                 >
                     <img
                         :src="'/images/logo_labelCTS_red.png'"
@@ -86,124 +78,69 @@ onMounted(() => {
 
         <!-- Les bénéfices -->
         <section
-            class="bg-white py-16 border-t"
+            class="bg-white py-20 border-t"
             style="border-color: var(--light-grey)"
         >
             <div class="max-w-7xl mx-auto px-8">
                 <h2
-                    class="font-bold text-center mb-12"
-                    style="font-size: 32px; color: var(--default-titles)"
+                    class="font-bold text-center mb-12 text-black"
                 >
                     Les bénéfices du label
                 </h2>
                 <div class="grid grid-cols-3 gap-8">
                     <div class="flex flex-col items-center text-center gap-4">
                         <div
-                            class="rounded-full flex items-center justify-center"
-                            style="
-                                width: 64px;
-                                height: 64px;
-                                background: var(--light-grey);
-                            "
+                            class="circle-icon rounded-full bg-light-grey flex items-center justify-center"
                         >
                             <span
                                 class="material-symbols-outlined"
-                                style="
-                                    font-size: 28px;
-                                    color: var(--default-text);
-                                "
                                 >group</span
                             >
                         </div>
                         <h3
-                            class="font-bold"
-                            style="
-                                color: var(--default-titles);
-                            "
-                        >
+                            class="font-bold text-black"
+                                                   >
                             Rejoignez une communauté d'entreprises
                         </h3>
-                        <p
-                            style="
-                                font-size: 14px;
-                                color: var(--default-text);
-                                line-height: 1.6;
-                            "
-                        >
+                        <p>
                             Afficher votre engagement société auprès de vos
                             collaborateurs, partenaires et clients.
                         </p>
                     </div>
                     <div class="flex flex-col items-center text-center gap-4">
                         <div
-                            class="rounded-full flex items-center justify-center"
-                            style="
-                                width: 64px;
-                                height: 64px;
-                                background: var(--light-grey);
-                            "
+                            class="circle-icon rounded-full bg-light-grey flex items-center justify-center"
                         >
                             <span
                                 class="material-symbols-outlined"
-                                style="
-                                    font-size: 28px;
-                                    color: var(--default-text);
-                                "
                                 >emoji_events</span
                             >
                         </div>
                         <h3
-                            class="font-bold"
-                            style="
-                                color: var(--default-titles);
-                            "
-                        >
+                            class="font-bold text-black"
+                                                   >
                             Affichez votre engagement
                         </h3>
-                        <p
-                            style="
-                                font-size: 14px;
-                                color: var(--default-text);
-                                line-height: 1.6;
-                            "
-                        >
+                        <p>
                             Associez votre entreprise à une démarche citoyenne
                             et solidaire reconnue par les HUG.
                         </p>
                     </div>
                     <div class="flex flex-col items-center text-center gap-4">
                         <div
-                            class="rounded-full flex items-center justify-center"
-                            style="
-                                width: 64px;
-                                height: 64px;
-                                background: var(--light-grey);
-                            "
+                            class="circle-icon rounded-full bg-light-grey flex items-center justify-center"
                         >
                             <span
                                 class="material-symbols-outlined"
-                                style="
-                                    font-size: 28px;
-                                    color: var(--default-text);
-                                "
                                 >favorite</span
                             >
                         </div>
                         <h3
-                            class="font-bold"
-                            style="
-                                color: var(--default-titles);
-                            "
-                        >
+                            class="font-bold text-black"
+                                                   >
                             Un impact réel et mesurable
                         </h3>
-                        <p
-                            style="
-                                font-size: 14px;
-                                color: var(--default-text);
-                                line-height: 1.6;
-                            "
-                        >
+                        <p>
                             Votre mobilisation contribue directement à sauver
                             des vies en Suisse.
                         </p>
@@ -214,38 +151,14 @@ onMounted(() => {
 
         <!-- Quote gradient -->
         <section
-            class="py-20 text-center"
-            style="
-                background: linear-gradient(
-                    135deg,
-                    var(--color-default-blue-59),
-                    var(--color-default-green)
-                );
-            "
+            class="py-20 text-center bg-gradient"
         >
-            <div class="max-w-3xl mx-auto px-8">
-                <blockquote
-                    class="font-bold mb-4"
-                    style="
-                        font-size: 28px;
-                        color: var(--default-titles);
-                        line-height: 1.45;
-                        font-style: italic;
-                    "
-                >
+            <div class="max-w-7xl mx-auto px-8">
+                <blockquote class="font-bold mb-4">
                     « Une initiative simple, qui a fédéré toute notre équipe
                     autour d'une cause qui compte vraiment. »
                 </blockquote>
-                <p
-                    class="font-semibold"
-                    style="
-                        font-size: 14px;
-                        color: var(--default-titles);
-                        opacity: 0.75;
-                    "
-                >
-                    Sophie M., Responsable RH, Nestlé SA
-                </p>
+                <p>Sophie M., Responsable RH, Nestlé SA</p>
             </div>
         </section>
 
@@ -256,17 +169,13 @@ onMounted(() => {
             >
                 <div>
                     <h2
-                        class="font-bold mb-5"
-                        style="font-size: 32px; color: var(--default-titles)"
-                    >
+                        class="font-bold mb-5 text-black"
+                                           >
                         Comment ça marche ?
                     </h2>
                     <p
                         class="mb-8"
-                        style="
-                            color: var(--default-text);
-                            line-height: 1.75;
-                        "
+                        style="color: var(--default-text); line-height: 1.75"
                     >
                         Obtenir le Label CTS est un processus simple,
                         transparent et entièrement accompagné par nos équipes
@@ -279,10 +188,7 @@ onMounted(() => {
                         finalisation de votre événement pour une validité d'un
                         an.
                     </p>
-                    <RouterLink
-                        to="/login"
-                        class="btn btn-filled-red"
-                    >
+                    <RouterLink to="/login" class="btn btn-filled-red">
                         Inscrire mon entreprise
                     </RouterLink>
                 </div>
@@ -300,7 +206,7 @@ onMounted(() => {
         </section>
 
         <!-- Rejoignez le mouvement -->
-        <section class="py-20" style="background: var(--light-grey)">
+        <section class="py-20 bg-light-grey">
             <div
                 class="max-w-7xl mx-auto px-8 grid grid-cols-2 gap-16 items-center"
             >
@@ -316,17 +222,13 @@ onMounted(() => {
                 </div>
                 <div>
                     <h2
-                        class="font-bold mb-5"
-                        style="font-size: 32px; color: var(--default-titles)"
+                        class="font-bold mb-5 text-black"
                     >
                         Rejoignez le mouvement
                     </h2>
                     <p
                         class="mb-8"
-                        style="
-                            color: var(--default-text);
-                            line-height: 1.75;
-                        "
+                        style="color: var(--default-text); line-height: 1.75"
                     >
                         De la PME locale aux grands groupes bancaires et
                         horlogers, de nombreuses entreprises du bassin genevois
@@ -336,10 +238,7 @@ onMounted(() => {
                         historique de participation et mesurer l'impact concret
                         de cette mobilisation collective.
                     </p>
-                    <RouterLink
-                        to="/entreprises"
-                        class="btn btn-filled-red"
-                    >
+                    <RouterLink to="/entreprises" class="btn btn-filled-red">
                         Découvrez nos entreprises partenaires
                     </RouterLink>
                 </div>
@@ -369,7 +268,6 @@ onMounted(() => {
                     <div>
                         <p
                             class="font-bold mb-5 text-white"
-                            style="font-size: 24px"
                         >
                             Pages
                         </p>
@@ -378,9 +276,7 @@ onMounted(() => {
                                 <RouterLink
                                     to="/label"
                                     class="text-white hover:opacity-70 transition"
-                                    style="
-                                        text-decoration: none;
-                                    "
+                                    style="text-decoration: none"
                                     >Label CTS</RouterLink
                                 >
                             </li>
@@ -388,9 +284,7 @@ onMounted(() => {
                                 <RouterLink
                                     to="/trophee"
                                     class="text-white hover:opacity-70 transition"
-                                    style="
-                                        text-decoration: none;
-                                    "
+                                    style="text-decoration: none"
                                     >Trophée de la générosité</RouterLink
                                 >
                             </li>
@@ -398,9 +292,7 @@ onMounted(() => {
                                 <a
                                     href="/#temoignages"
                                     class="text-white hover:opacity-70 transition"
-                                    style="
-                                        text-decoration: none;
-                                    "
+                                    style="text-decoration: none"
                                     >Témoignages</a
                                 >
                             </li>
@@ -409,7 +301,6 @@ onMounted(() => {
                     <div>
                         <p
                             class="font-bold mb-5 text-white"
-                            style="font-size: 24px"
                         >
                             Support
                         </p>
@@ -418,9 +309,7 @@ onMounted(() => {
                                 <RouterLink
                                     to="/faq"
                                     class="text-white hover:opacity-70 transition"
-                                    style="
-                                        text-decoration: none;
-                                    "
+                                    style="text-decoration: none"
                                     >FAQ</RouterLink
                                 >
                             </li>
@@ -428,9 +317,7 @@ onMounted(() => {
                                 <RouterLink
                                     to="/contact"
                                     class="text-white hover:opacity-70 transition"
-                                    style="
-                                        text-decoration: none;
-                                    "
+                                    style="text-decoration: none"
                                     >Contact</RouterLink
                                 >
                             </li>
@@ -439,7 +326,6 @@ onMounted(() => {
                     <div>
                         <p
                             class="font-bold mb-5 text-white"
-                            style="font-size: 24px"
                         >
                             Mentions légales
                         </p>
@@ -448,9 +334,7 @@ onMounted(() => {
                                 <a
                                     href="#"
                                     class="text-white hover:opacity-70 transition"
-                                    style="
-                                        text-decoration: none;
-                                    "
+                                    style="text-decoration: none"
                                     >Politique de confidentialité</a
                                 >
                             </li>
@@ -458,9 +342,7 @@ onMounted(() => {
                                 <a
                                     href="#"
                                     class="text-white hover:opacity-70 transition"
-                                    style="
-                                        text-decoration: none;
-                                    "
+                                    style="text-decoration: none"
                                     >Conditions générales</a
                                 >
                             </li>
@@ -471,10 +353,7 @@ onMounted(() => {
                     class="border-t pt-6"
                     style="border-color: rgba(242, 244, 243, 0.15)"
                 >
-                    <p
-                        class="text-center"
-                        style="color: var(--light-grey)"
-                    >
+                    <p class="text-center" style="color: var(--light-grey)">
                         © {{ new Date().getFullYear() }} Hôpitaux Universitaire
                         Genève. Tous droits réservés.
                     </p>

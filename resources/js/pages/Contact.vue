@@ -14,17 +14,17 @@ onMounted(() => {
         <HugNavbar />
 
         <!-- Hero -->
-        <section style="background: linear-gradient(135deg, var(--color-default-blue-59), var(--color-default-green)); padding: 72px 0 56px">
+        <section class="bg-gradient py-20">
             <div class="max-w-4xl mx-auto px-8">
                 <p
                     class="font-semibold mb-3 uppercase tracking-widest"
-                    style="font-size: 13px; color: var(--default-titles); opacity: 0.65"
+                    style="color: var(--default-titles); opacity: 0.65"
                 >
                     Hôpitaux universitaires de Genève
                 </p>
                 <h1
-                    class="font-bold"
-                    style="font-size: 48px; line-height: 1.2; color: var(--default-titles)"
+                    class="font-bold text-black"
+                    style="line-height: 1.2"
                 >
                     Contacter les HUG
                 </h1>
@@ -45,8 +45,7 @@ onMounted(() => {
                             "
                         >
                             <h2
-                                class="font-bold mb-6"
-                                style="font-size: 22px; color: var(--default-titles)"
+                                class="font-bold mb-6 text-black"
                             >
                                 Coordonnées
                             </h2>
@@ -54,7 +53,7 @@ onMounted(() => {
                                 <div>
                                     <p
                                         class="font-semibold mb-1"
-                                        style="font-size: 14px; color: var(--default-titles)"
+                                        style="color: var(--default-titles)"
                                     >
                                         Adresse
                                     </p>
@@ -72,18 +71,13 @@ onMounted(() => {
                                 <div>
                                     <p
                                         class="font-semibold mb-1"
-                                        style="font-size: 14px; color: var(--default-titles)"
+                                        style="color: var(--default-titles)"
                                     >
                                         Centrale téléphonique
                                     </p>
                                     <a
                                         href="tel:+41223723311"
-                                        style="
-                                            font-size: 18px;
-                                            color: var(--color-default-red);
-                                            font-weight: 600;
-                                            text-decoration: none;
-                                        "
+                                        style="color: var(--color-default-red); font-weight: 600; text-decoration: none"
                                         class="hover:opacity-75 transition"
                                         >+41 (0)22 372 33 11</a
                                     >
@@ -99,8 +93,7 @@ onMounted(() => {
                             "
                         >
                             <h2
-                                class="font-bold mb-4"
-                                style="font-size: 22px; color: var(--default-titles)"
+                                class="font-bold mb-4 text-black"
                             >
                                 Questions médicales
                             </h2>
@@ -139,8 +132,7 @@ onMounted(() => {
                             "
                         >
                             <h2
-                                class="font-bold mb-2"
-                                style="font-size: 22px; color: var(--default-titles)"
+                                class="font-bold mb-2 text-black"
                             >
                                 Trouver un professionnel ou une professionnelle
                             </h2>
@@ -159,11 +151,7 @@ onMounted(() => {
                                 target="_blank"
                                 rel="noopener"
                                 class="inline-block text-white font-semibold rounded-full px-7 py-3 transition hover:opacity-80 uppercase tracking-wider"
-                                style="
-                                    background: var(--default-titles);
-                                    font-size: 13px;
-                                    text-decoration: none;
-                                "
+                                style="background: var(--default-titles); text-decoration: none"
                                 >Accéder à l'annuaire des HUG →</a
                             >
                         </div>
@@ -178,11 +166,7 @@ onMounted(() => {
                             "
                         >
                             <p
-                                style="
-                                    font-size: 14px;
-                                    color: #92400e;
-                                    line-height: 1.75;
-                                "
+                                style="color: #92400e; line-height: 1.75"
                             >
                                 <strong>En cas d'urgence vitale</strong>, nous
                                 vous encourageons à composer le
@@ -217,7 +201,7 @@ onMounted(() => {
                                             ? 'background:var(--default-titles);color:white;border:2px solid var(--default-titles)'
                                             : 'background:white;color:var(--default-titles);border:2px solid var(--default-titles)'
                                     "
-                                    style="font-size: 14px; cursor: pointer"
+                                    style="cursor: pointer"
                                 >
                                     Oui
                                 </button>
@@ -229,7 +213,7 @@ onMounted(() => {
                                             ? 'background:var(--default-titles);color:white;border:2px solid var(--default-titles)'
                                             : 'background:white;color:var(--default-titles);border:2px solid #dde4e3'
                                     "
-                                    style="font-size: 14px; cursor: pointer"
+                                    style="cursor: pointer"
                                 >
                                     Non
                                 </button>
@@ -263,11 +247,7 @@ onMounted(() => {
                             </p>
                             <p
                                 class="mb-4"
-                                style="
-                                    font-size: 14px;
-                                    color: var(--default-text);
-                                    line-height: 1.7;
-                                "
+                                style="color: var(--default-text); line-height: 1.7"
                             >
                                 Pour toute question relative aux collectes en
                                 entreprise et au programme Trophée de la
@@ -296,12 +276,7 @@ onMounted(() => {
                                 href="https://www.hug.ch"
                                 target="_blank"
                                 rel="noopener"
-                                style="
-                                    font-size: 14px;
-                                    color: var(--color-default-red);
-                                    text-decoration: none;
-                                    font-weight: 500;
-                                "
+                                style="color: var(--color-default-red); text-decoration: none; font-weight: 500"
                                 class="hover:opacity-75 transition"
                                 >www.hug.ch →</a
                             >
@@ -326,7 +301,6 @@ onMounted(() => {
                     <div>
                         <p
                             class="font-bold mb-5 text-white"
-                            style="font-size: 24px"
                         >
                             Pages
                         </p>
@@ -356,7 +330,6 @@ onMounted(() => {
                     <div>
                         <p
                             class="font-bold mb-5 text-white"
-                            style="font-size: 24px"
                         >
                             Support
                         </p>
@@ -386,7 +359,6 @@ onMounted(() => {
                     <div>
                         <p
                             class="font-bold mb-5 text-white"
-                            style="font-size: 24px"
                         >
                             Mentions légales
                         </p>

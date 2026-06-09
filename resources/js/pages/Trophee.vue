@@ -102,19 +102,18 @@ onMounted(async () => {
             <div class="relative max-w-7xl mx-auto px-8 w-full z-10">
                 <p
                     class="font-semibold mb-3 uppercase tracking-widest"
-                    style="font-size: 13px; color: var(--color-default-green)"
+                    style="color: var(--color-default-green)"
                 >
                     Depuis 2008
                 </p>
                 <h1
                     class="font-bold text-white leading-tight mb-4"
-                    style="font-size: 52px"
                 >
                     Le Trophée<br />de la Générosité
                 </h1>
                 <p
                     class="text-white mb-8 max-w-xl"
-                    style="font-size: 18px; opacity: 0.9; line-height: 1.6"
+                    style="opacity: 0.9; line-height: 1.6"
                 >
                     La distinction annuelle qui récompense les entreprises
                     genevoises les plus engagées pour le don du sang.
@@ -133,16 +132,16 @@ onMounted(async () => {
             <div class="max-w-4xl mx-auto px-8">
                 <div class="grid grid-cols-3 gap-4">
                     <div class="rounded-xl px-5 py-4" style="background: var(--light-grey)">
-                        <p class="font-black mb-2" style="font-size: 48px; color: var(--default-titles); line-height: 1">2008</p>
-                        <p style="font-size: 14px; color: var(--default-text); line-height: 1.5">La distinction existe<br />depuis plus de 15 ans</p>
+                        <p class="font-black mb-2" style="color: var(--default-titles); line-height: 1">2008</p>
+                        <p style="color: var(--default-text); line-height: 1.5">La distinction existe<br />depuis plus de 15 ans</p>
                     </div>
                     <div class="rounded-xl px-5 py-4" style="background: var(--light-grey)">
-                        <p class="font-black mb-2" style="font-size: 48px; color: var(--default-titles); line-height: 1">10%</p>
-                        <p style="font-size: 14px; color: var(--default-text); line-height: 1.5">des dons proviennent<br />des entreprises</p>
+                        <p class="font-black mb-2" style="color: var(--default-titles); line-height: 1">10%</p>
+                        <p style="color: var(--default-text); line-height: 1.5">des dons proviennent<br />des entreprises</p>
                     </div>
                     <div class="rounded-xl px-5 py-4" style="background: var(--light-grey)">
-                        <p class="font-black mb-2" style="font-size: 48px; color: var(--default-titles); line-height: 1">+30</p>
-                        <p style="font-size: 14px; color: var(--default-text); line-height: 1.5">
+                        <p class="font-black mb-2" style="color: var(--default-titles); line-height: 1">+30</p>
+                        <p style="color: var(--default-text); line-height: 1.5">
                             entreprises candidates<br />chaque année
                         </p>
                     </div>
@@ -157,8 +156,7 @@ onMounted(async () => {
             >
                 <div>
                     <h2
-                        class="font-bold mb-5"
-                        style="font-size: 32px; color: var(--default-titles)"
+                        class="font-bold mb-5 text-black"
                     >
                         Une distinction qui compte
                     </h2>
@@ -203,11 +201,10 @@ onMounted(async () => {
         </section>
 
         <!-- Label vs Trophée -->
-        <section style="background: var(--light-grey)" class="py-20">
+        <section class="py-20 bg-light-grey">
             <div class="max-w-5xl mx-auto px-8">
                 <h2
-                    class="font-bold text-center mb-14"
-                    style="font-size: 32px; color: var(--default-titles)"
+                    class="font-bold text-center mb-14 text-black"
                 >
                     Label CTS ou Trophée — quelle différence ?
                 </h2>
@@ -221,16 +218,12 @@ onMounted(async () => {
                     >
                         <p
                             class="font-bold mb-1"
-                            style="font-size: 20px; color: var(--default-titles)"
+                            style="color: var(--default-titles)"
                         >
                             Label CTS
                         </p>
                         <p
-                            style="
-                                font-size: 13px;
-                                color: var(--default-text);
-                                margin-bottom: 2rem;
-                            "
+                            style="color: var(--default-text); margin-bottom: 2rem"
                         >
                             Certification de participation
                         </p>
@@ -341,16 +334,12 @@ onMounted(async () => {
                     >
                         <p
                             class="font-bold mb-1"
-                            style="font-size: 20px; color: var(--default-titles)"
+                            style="color: var(--default-titles)"
                         >
                             Trophée de la Générosité
                         </p>
                         <p
-                            style="
-                                font-size: 13px;
-                                color: var(--default-text);
-                                margin-bottom: 2rem;
-                            "
+                            style="color: var(--default-text); margin-bottom: 2rem"
                         >
                             Distinction d'excellence
                         </p>
@@ -462,8 +451,7 @@ onMounted(async () => {
         <section class="bg-white py-20">
             <div class="max-w-7xl mx-auto px-8">
                 <h2
-                    class="font-bold text-center mb-4"
-                    style="font-size: 32px; color: var(--default-titles)"
+                    class="font-bold text-center mb-4 text-black"
                 >
                     Comment est-il attribué ?
                 </h2>
@@ -486,26 +474,17 @@ onMounted(async () => {
                     >
                         <p
                             class="font-black"
-                            style="
-                                font-size: 28px;
-                                color: var(--color-default-red);
-                                line-height: 1;
-                            "
+                            style="color: var(--color-default-red); line-height: 1"
                         >
                             {{ c.num }}
                         </p>
                         <h3
-                            class="font-bold"
-                            style="font-size: 17px; color: var(--default-titles)"
+                            class="font-bold text-black"
                         >
                             {{ c.title }}
                         </h3>
                         <p
-                            style="
-                                font-size: 14px;
-                                color: var(--default-text);
-                                line-height: 1.7;
-                            "
+                            style="color: var(--default-text); line-height: 1.7"
                         >
                             {{ c.desc }}
                         </p>
@@ -513,7 +492,7 @@ onMounted(async () => {
                 </div>
                 <p
                     class="text-center italic"
-                    style="font-size: 14px; color: var(--default-text)"
+                    style="color: var(--default-text)"
                 >
                     Le jury HUG se réunit chaque année en décembre pour
                     délibérer et annoncer le ou les lauréats lors d'une
@@ -524,13 +503,11 @@ onMounted(async () => {
 
         <!-- Témoignages -->
         <section
-            class="py-20"
-            style="background: linear-gradient(135deg, var(--color-default-blue-59), var(--color-default-green))"
+            class="py-20 bg-gradient"
         >
             <div class="max-w-7xl mx-auto px-8">
                 <h2
-                    class="font-bold text-center mb-12"
-                    style="font-size: 32px; color: var(--default-titles)"
+                    class="font-bold text-center mb-12 text-black"
                 >
                     Ils ont reçu le Trophée
                 </h2>
@@ -556,11 +533,11 @@ onMounted(async () => {
                         >
                             <p
                                 class="font-semibold"
-                                style="font-size: 14px; color: var(--default-titles)"
+                                style="color: var(--default-titles)"
                             >
                                 {{ t.author }}
                             </p>
-                            <p style="font-size: 13px; color: var(--default-text)">
+                            <p style="color: var(--default-text)">
                                 {{ t.company }}
                             </p>
                             <p class="captions" style="color: var(--color-default-green); margin-top: 6px">
@@ -576,8 +553,7 @@ onMounted(async () => {
         <section class="bg-white py-20">
             <div class="max-w-4xl mx-auto px-8">
                 <h2
-                    class="font-bold text-center mb-4"
-                    style="font-size: 32px; color: var(--default-titles)"
+                    class="font-bold text-center mb-4 text-black"
                 >
                     Palmarès des lauréats
                 </h2>
@@ -679,7 +655,7 @@ onMounted(async () => {
 
                 <p
                     class="mt-8 text-center italic"
-                    style="font-size: 13px; color: #c0cac9"
+                    style="color: #c0cac9"
                 >
                     * Les données historiques seront complétées en collaboration
                     avec le CTS des HUG.
@@ -688,11 +664,10 @@ onMounted(async () => {
         </section>
 
         <!-- Process candidature -->
-        <section style="background: var(--light-grey)" class="py-20">
+        <section class="py-20 bg-light-grey">
             <div class="max-w-7xl mx-auto px-8">
                 <h2
-                    class="font-bold text-center mb-12"
-                    style="font-size: 32px; color: var(--default-titles)"
+                    class="font-bold text-center mb-12 text-black"
                 >
                     Comment candidater ?
                 </h2>
@@ -708,26 +683,17 @@ onMounted(async () => {
                     >
                         <p
                             class="font-black"
-                            style="
-                                font-size: 32px;
-                                color: var(--color-default-red);
-                                line-height: 1;
-                            "
+                            style="color: var(--color-default-red); line-height: 1"
                         >
                             {{ e.num }}
                         </p>
                         <h3
-                            class="font-bold"
-                            style="color: var(--default-titles)"
+                            class="font-bold text-black"
                         >
                             {{ e.title }}
                         </h3>
                         <p
-                            style="
-                                font-size: 14px;
-                                color: var(--default-text);
-                                line-height: 1.65;
-                            "
+                            style="color: var(--default-text); line-height: 1.65"
                         >
                             {{ e.desc }}
                         </p>
@@ -738,24 +704,18 @@ onMounted(async () => {
 
         <!-- CTA final -->
         <section
-            class="py-20 text-center"
-            style="background: linear-gradient(135deg, var(--color-default-blue-59), var(--color-default-green))"
+            class="py-20 text-center bg-gradient"
         >
             <div class="max-w-2xl mx-auto px-8">
                 <h2
-                    class="font-bold mb-4"
-                    style="font-size: 36px; color: var(--default-titles); line-height: 1.25"
+                    class="font-bold mb-4 text-black"
+                    style="line-height: 1.25"
                 >
                     Votre entreprise mérite<br />d'être reconnue.
                 </h2>
                 <p
                     class="mb-10"
-                    style="
-                        font-size: 17px;
-                        color: var(--default-titles);
-                        opacity: 0.8;
-                        line-height: 1.6;
-                    "
+                    style="color: var(--default-titles); opacity: 0.8; line-height: 1.6"
                 >
                     Rejoignez les entreprises qui font la différence pour la
                     santé publique genevoise.
@@ -798,7 +758,6 @@ onMounted(async () => {
                     <div>
                         <p
                             class="font-bold mb-5 text-white"
-                            style="font-size: 24px"
                         >
                             Pages
                         </p>
@@ -828,7 +787,6 @@ onMounted(async () => {
                     <div>
                         <p
                             class="font-bold mb-5 text-white"
-                            style="font-size: 24px"
                         >
                             Support
                         </p>
@@ -858,7 +816,6 @@ onMounted(async () => {
                     <div>
                         <p
                             class="font-bold mb-5 text-white"
-                            style="font-size: 24px"
                         >
                             Mentions légales
                         </p>

@@ -81,7 +81,7 @@ onMounted(async () => {
                     <!-- Back -->
                     <button
                         @click="router.push(`/entreprise/${route.params.slug}/espace`)"
-                        style="display: inline-flex; align-items: center; gap: 6px; background: none; border: none; color: var(--default-text); font-size: 14px; cursor: pointer; padding: 0; margin-bottom: 2rem; font-family: inherit"
+                        style="display: inline-flex; align-items: center; gap: 6px; background: none; border: none; color: var(--default-text); cursor: pointer; padding: 0; margin-bottom: 2rem; font-family: inherit"
                     >
                         <span class="material-symbols-outlined" style="font-size: 18px">arrow_back</span>
                         Retour à l'espace entreprise
@@ -90,10 +90,10 @@ onMounted(async () => {
                     <!-- Header collecte -->
                     <div style="display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem">
                         <div>
-                            <h1 class="font-bold" style="font-size: 30px; color: var(--default-titles); margin: 0 0 6px">
+                            <h1 class="font-bold text-black" style="margin: 0 0 6px">
                                 {{ collecte.titre || entreprise?.nom }}
                             </h1>
-                            <p style="font-size: 14px; color: var(--default-text); margin: 0">
+                            <p style="color: var(--default-text); margin: 0">
                                 {{ formatDate(collecte.date_debut) }}
                                 <template v-if="collecte.date_fin && collecte.date_fin !== collecte.date_debut">
                                     → {{ formatDate(collecte.date_fin) }}
@@ -220,7 +220,7 @@ onMounted(async () => {
                     <div v-if="auth.isCoordinateur" style="margin-top: 2rem; display: flex; justify-content: flex-end">
                         <button
                             @click="router.push(`/entreprise/${route.params.slug}/nouvelle-collecte?edit=${collecte.id}`)"
-                            style="display: inline-flex; align-items: center; gap: 6px; border-radius: 9999px; padding: 0.6rem 1.4rem; font-size: 14px; font-weight: 600; cursor: pointer; border: 2px solid var(--default-titles); background: white; color: var(--default-titles); font-family: inherit; transition: background 0.15s, color 0.15s"
+                            style="display: inline-flex; align-items: center; gap: 6px; border-radius: 9999px; padding: 0.6rem 1.4rem; font-weight: 600; cursor: pointer; border: 2px solid var(--default-titles); background: white; color: var(--default-titles); font-family: inherit; transition: background 0.15s, color 0.15s"
                             onmouseover="this.style.background='var(--default-titles)';this.style.color='white'"
                             onmouseout="this.style.background='white';this.style.color='var(--default-titles)'"
                         >
@@ -240,7 +240,7 @@ onMounted(async () => {
                     <div class="font-extrabold text-xl text-white">HUG</div>
                     <div class="captions" style="color: var(--color-default-green)">Hôpitaux Universitaires Genève</div>
                 </div>
-                <p style="font-size: 13px; color: rgba(242,244,243,0.4)">
+                <p style="color: rgba(242,244,243,0.4)">
                     © {{ new Date().getFullYear() }} Hôpitaux Universitaires Genève
                 </p>
             </div>

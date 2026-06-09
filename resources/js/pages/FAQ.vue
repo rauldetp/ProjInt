@@ -167,28 +167,22 @@ onMounted(() => {
         <HugNavbar />
 
         <!-- Hero -->
-        <section style="background: linear-gradient(135deg, var(--color-default-blue-59), var(--color-default-green)); padding: 64px 0 52px">
+        <section class="bg-gradient py-20">
             <div class="max-w-4xl mx-auto px-8">
                 <p
                     class="font-semibold mb-3 uppercase tracking-widest"
-                    style="font-size: 13px; color: var(--default-titles); opacity: 0.65"
+                    style="color: var(--default-titles); opacity: 0.65"
                 >
                     Aide & support
                 </p>
                 <h1
-                    class="font-bold mb-4"
-                    style="font-size: 48px; line-height: 1.2; color: var(--default-titles)"
+                    class="font-bold mb-4 text-black"
+                    style="line-height: 1.2"
                 >
                     Foire aux questions
                 </h1>
                 <p
-                    style="
-                        font-size: 17px;
-                        color: var(--default-titles);
-                        opacity: 0.75;
-                        line-height: 1.6;
-                        max-width: 520px;
-                    "
+                    style="color: var(--default-titles); opacity: 0.75; line-height: 1.6; max-width: 520px"
                 >
                     Tout ce que vous devez savoir sur le don du sang et sur
                     l'organisation de collectes en entreprise.
@@ -197,7 +191,7 @@ onMounted(() => {
         </section>
 
         <!-- FAQ contenu -->
-        <section class="py-16" style="background: var(--light-grey)">
+        <section class="py-20 bg-light-grey">
             <div class="max-w-3xl mx-auto px-8 flex flex-col gap-14">
                 <div v-for="cat in categories" :key="cat.id">
                     <!-- Titre catégorie -->
@@ -209,8 +203,7 @@ onMounted(() => {
                         "
                     >
                         <h2
-                            class="font-bold"
-                            style="font-size: 22px; color: var(--default-titles)"
+                            class="font-bold text-black"
                         >
                             {{ cat.title }}
                         </h2>
@@ -245,13 +238,11 @@ onMounted(() => {
 
         <!-- CTA contact -->
         <section
-            class="py-16 text-center"
-            style="background: linear-gradient(135deg, var(--color-default-blue-59), var(--color-default-green))"
+            class="py-20 text-center bg-gradient"
         >
             <div class="max-w-xl mx-auto px-8">
                 <h2
-                    class="font-bold mb-3"
-                    style="font-size: 28px; color: var(--default-titles)"
+                    class="font-bold mb-3 text-black"
                 >
                     Vous n'avez pas trouvé votre réponse ?
                 </h2>
@@ -289,7 +280,6 @@ onMounted(() => {
                     <div>
                         <p
                             class="font-bold mb-5 text-white"
-                            style="font-size: 24px"
                         >
                             Pages
                         </p>
@@ -315,7 +305,6 @@ onMounted(() => {
                     <div>
                         <p
                             class="font-bold mb-5 text-white"
-                            style="font-size: 24px"
                         >
                             Support
                         </p>
@@ -341,7 +330,6 @@ onMounted(() => {
                     <div>
                         <p
                             class="font-bold mb-5 text-white"
-                            style="font-size: 24px"
                         >
                             Mentions légales
                         </p>

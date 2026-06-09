@@ -45,18 +45,13 @@ onMounted(async () => {
             <div class="relative max-w-7xl mx-auto px-8 w-full z-10">
                 <h1
                     class="font-bold text-white leading-tight mb-5"
-                    style="font-size: 48px; max-width: 640px"
+                    style="max-width: 640px"
                 >
                     Elles s'engagent pour le don du sang
                 </h1>
                 <p
                     class="text-white mb-8"
-                    style="
-                        font-size: 20px;
-                        opacity: 0.9;
-                        line-height: 1.6;
-                        max-width: 620px;
-                    "
+                    style="opacity: 0.9; line-height: 1.6; max-width: 620px"
                 >
                     Grâce à l'engagement de ces entreprises et à la mobilisation
                     de leurs collaborateurs, le Centre de Transfusion Sanguine
@@ -76,8 +71,7 @@ onMounted(async () => {
         <section class="bg-white py-20">
             <div class="max-w-7xl mx-auto px-8">
                 <h2
-                    class="font-bold text-center mb-12"
-                    style="font-size: 24px; color: var(--default-titles)"
+                    class="font-bold text-center mb-12 text-black"
                 >
                     Liste des entreprises partenaires
                 </h2>
@@ -118,13 +112,7 @@ onMounted(async () => {
                                 <div v-else class="text-center p-4">
                                     <div
                                         class="font-black mx-auto mb-2 flex items-center justify-center rounded-full"
-                                        style="
-                                            width: 52px;
-                                            height: 52px;
-                                            background: white;
-                                            font-size: 22px;
-                                            color: var(--default-titles);
-                                        "
+                                        style="width: 52px; height: 52px; background: white; color: var(--default-titles)"
                                     >
                                         {{ e.nom.charAt(0) }}
                                     </div>
@@ -162,13 +150,12 @@ onMounted(async () => {
 
         <!-- CTA gradient -->
         <section
-            class="py-20 text-center"
-            style="background: linear-gradient(135deg, var(--color-default-blue-59), var(--color-default-green))"
+            class="py-20 text-center bg-gradient"
         >
             <div class="max-w-2xl mx-auto px-8">
                 <h2
-                    class="font-bold mb-6"
-                    style="font-size: 32px; color: var(--default-titles); line-height: 1.3"
+                    class="font-bold mb-6 text-black"
+                    style="line-height: 1.3"
                 >
                     Rejoignez les entreprises partenaires
                 </h2>
@@ -210,7 +197,6 @@ onMounted(async () => {
                     <div>
                         <p
                             class="font-bold mb-5 text-white"
-                            style="font-size: 24px"
                         >
                             Pages
                         </p>
@@ -240,7 +226,6 @@ onMounted(async () => {
                     <div>
                         <p
                             class="font-bold mb-5 text-white"
-                            style="font-size: 24px"
                         >
                             Support
                         </p>
@@ -270,7 +255,6 @@ onMounted(async () => {
                     <div>
                         <p
                             class="font-bold mb-5 text-white"
-                            style="font-size: 24px"
                         >
                             Mentions légales
                         </p>

@@ -174,23 +174,23 @@ onMounted(async () => {
             <!-- Vue globale -->
             <section style="background: var(--light-grey); padding: 2.5rem 0 3rem">
                 <div class="max-w-7xl mx-auto px-8">
-                    <h1 class="font-bold text-center mb-8" style="font-size: 36px; color: var(--default-titles)">Vue globale</h1>
+                    <h1 class="font-bold text-center mb-8 text-black">Vue globale</h1>
 
                     <!-- Stats -->
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; max-width: 640px; margin: 0 auto 2rem">
                         <div style="background: white; border-radius: 12px; padding: 1.5rem">
-                            <p class="font-bold" style="font-size: 2rem; color: var(--default-titles); margin: 0 0 0.25rem">{{ totalInscrits }}</p>
-                            <p style="font-size: 0.8rem; color: var(--default-text); margin: 0">Employés ont passé le questionnaire</p>
+                            <p class="font-bold" style="color: var(--default-titles); margin: 0 0 0.25rem">{{ totalInscrits }}</p>
+                            <p style="color: var(--default-text); margin: 0">Employés ont passé le questionnaire</p>
                         </div>
                         <div style="background: white; border-radius: 12px; padding: 1.5rem">
-                            <p class="font-bold" style="font-size: 2rem; color: var(--default-titles); margin: 0 0 0.25rem">{{ collectes.length }}</p>
-                            <p style="font-size: 0.8rem; color: var(--default-text); margin: 0">Nombre total de collectes</p>
+                            <p class="font-bold" style="color: var(--default-titles); margin: 0 0 0.25rem">{{ collectes.length }}</p>
+                            <p style="color: var(--default-text); margin: 0">Nombre total de collectes</p>
                         </div>
                     </div>
 
                     <!-- Chart -->
                     <div style="background: white; border-radius: 12px; padding: 1.5rem; max-width: 640px; margin: 0 auto">
-                        <p class="font-semibold text-center" style="font-size: 1rem; color: var(--default-titles); margin: 0 0 1rem">Nombres d'inscriptions totaux</p>
+                        <p class="font-semibold text-center" style="color: var(--default-titles); margin: 0 0 1rem">Nombres d'inscriptions totaux</p>
                         <div style="background: #f9fafb; border-radius: 8px; padding: 1rem; margin-bottom: 1rem">
                             <svg viewBox="0 0 600 100" style="width: 100%; height: 80px">
                                 <polyline
@@ -202,7 +202,7 @@ onMounted(async () => {
                                     :points="chartData.points"
                                 />
                             </svg>
-                            <div style="display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--default-text); margin-top: 0.5rem">
+                            <div style="display: flex; justify-content: space-between; color: var(--default-text); margin-top: 0.5rem">
                                 <span v-for="label in chartData.labels" :key="label">{{ label }}</span>
                             </div>
                         </div>
@@ -211,7 +211,7 @@ onMounted(async () => {
                                 v-for="m in [{key:'jours',label:'Jours'},{key:'mois',label:'Mois'},{key:'annees',label:'Années'}]"
                                 :key="m.key"
                                 @click="chartMode = m.key"
-                                style="border-radius: 9999px; padding: 0.35rem 1.1rem; font-size: 0.875rem; cursor: pointer; transition: all 0.15s"
+                                style="border-radius: 9999px; padding: 0.35rem 1.1rem; cursor: pointer; transition: all 0.15s"
                                 :style="chartMode === m.key
                                     ? { background: brandColor, color: 'white', border: `1px solid ${brandColor}` }
                                     : { background: 'white', color: 'var(--default-text)', border: '1px solid #e2e8f0' }"
@@ -227,11 +227,11 @@ onMounted(async () => {
 
                     <!-- Header section -->
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem">
-                        <h2 class="font-bold" style="font-size: 28px; color: var(--default-titles); margin: 0">Campagnes de collectes</h2>
+                        <h2 class="font-bold text-black" style="margin: 0">Campagnes de collectes</h2>
                         <RouterLink
                             v-if="auth.isCoordinateur"
                             :to="`/entreprise/${route.params.slug}/nouvelle-collecte`"
-                            style="display: inline-flex; align-items: center; gap: 0.4rem; background: var(--default-titles); color: white; border-radius: 9999px; padding: 0.5rem 1.1rem; font-size: 0.875rem; font-weight: 600; text-decoration: none; transition: opacity 0.15s; white-space: nowrap"
+                            style="display: inline-flex; align-items: center; gap: 0.4rem; background: var(--default-titles); color: white; border-radius: 9999px; padding: 0.5rem 1.1rem; font-weight: 600; text-decoration: none; transition: opacity 0.15s; white-space: nowrap"
                             class="hover:opacity-80"
                         >
                             <span class="material-symbols-outlined" style="font-size: 18px">add</span>
@@ -245,7 +245,7 @@ onMounted(async () => {
                             v-for="f in filters"
                             :key="f.key"
                             @click="filterStatut = f.key"
-                            style="border-radius: 9999px; padding: 0.35rem 1rem; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.15s"
+                            style="border-radius: 9999px; padding: 0.35rem 1rem; font-weight: 600; cursor: pointer; transition: all 0.15s"
                             :style="filterStatut === f.key
                                 ? { background: brandColor, color: 'white', border: `1.5px solid ${brandColor}` }
                                 : { background: 'white', color: 'var(--default-text)', border: '1.5px solid #e2e8f0' }"
@@ -265,25 +265,25 @@ onMounted(async () => {
                         >
                             <div style="display: flex; justify-content: space-between; align-items: flex-start">
                                 <div>
-                                    <p class="font-bold" style="font-size: 1rem; color: var(--default-titles); margin: 0">
+                                    <p class="font-bold" style="color: var(--default-titles); margin: 0">
                                         {{ c.titre || entreprise?.nom }}
                                     </p>
-                                    <p style="font-size: 0.8rem; color: var(--default-text); margin: 0.1rem 0 0">{{ formatDate(c.date_debut) }}</p>
+                                    <p style="color: var(--default-text); margin: 0.1rem 0 0">{{ formatDate(c.date_debut) }}</p>
                                 </div>
                                 <div v-if="auth.isCoordinateur" style="position: relative">
                                     <button
                                         @click.stop="toggleMenu(c.id)"
-                                        style="background: none; border: none; color: var(--default-text); font-size: 1.1rem; cursor: pointer; padding: 2px 6px; letter-spacing: 2px; border-radius: 6px; transition: background 0.15s"
+                                        style="background: none; border: none; color: var(--default-text); cursor: pointer; padding: 2px 6px; letter-spacing: 2px; border-radius: 6px; transition: background 0.15s"
                                         :style="openMenu === c.id ? { background: 'var(--light-grey)' } : {}"
                                     >···</button>
                                     <div
                                         v-if="openMenu === c.id"
                                         style="position: absolute; top: calc(100% + 6px); right: 0; background: white; border-radius: 10px; box-shadow: 0 4px 20px rgba(44,65,64,0.14); border: 1px solid var(--light-grey); min-width: 148px; z-index: 100; overflow: hidden"
                                     >
-                                        <button @click.stop="goModifier(c)" style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 10px 14px; background: none; border: none; font-size: 0.875rem; color: var(--default-titles); cursor: pointer; font-family: inherit; text-align: left; transition: background 0.12s" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='none'">
+                                        <button @click.stop="goModifier(c)" style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 10px 14px; background: none; border: none; color: var(--default-titles); cursor: pointer; font-family: inherit; text-align: left; transition: background 0.12s" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='none'">
                                             <span class="material-symbols-outlined" style="font-size:16px">edit</span> Modifier
                                         </button>
-                                        <button @click.stop="goAnnuler(c)" style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 10px 14px; background: none; border: none; font-size: 0.875rem; color: var(--color-default-red); cursor: pointer; font-family: inherit; text-align: left; transition: background 0.12s" onmouseover="this.style.background='#fff1f4'" onmouseout="this.style.background='none'">
+                                        <button @click.stop="goAnnuler(c)" style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 10px 14px; background: none; border: none; color: var(--color-default-red); cursor: pointer; font-family: inherit; text-align: left; transition: background 0.12s" onmouseover="this.style.background='#fff1f4'" onmouseout="this.style.background='none'">
                                             <span class="material-symbols-outlined" style="font-size:16px">cancel</span> Annuler
                                         </button>
                                     </div>
@@ -296,10 +296,10 @@ onMounted(async () => {
                                       : badgeClass(c) === 'badge-avenir'     ? { background: '#fef3c7', color: '#92400e' }
                                       : { background: 'var(--light-grey)', color: 'var(--default-text)' }"
                             >{{ badgeLabel(c) }}</span>
-                            <p style="font-size: 0.85rem; color: var(--default-text); margin: 0">
+                            <p style="color: var(--default-text); margin: 0">
                                 <span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle">group</span> {{ c.nb_inscrits_estime ?? 0 }} inscrit(s)
                             </p>
-                            <p style="font-size: 0.82rem; color: var(--default-text); margin: 0">{{ c.lieu || "Lieu à définir" }}</p>
+                            <p style="color: var(--default-text); margin: 0">{{ c.lieu || "Lieu à définir" }}</p>
                         </div>
                     </div>
                 </div>
@@ -316,7 +316,7 @@ onMounted(async () => {
                         <div class="captions" style="color: var(--color-default-green); line-height: 1.6">Hôpitaux<br />Universitaires<br />Genève</div>
                     </div>
                     <div>
-                        <p class="font-bold mb-5 text-white" style="font-size: 18px">Pages</p>
+                        <p class="font-bold mb-5 text-white">Pages</p>
                         <ul class="space-y-3">
                             <li><RouterLink :to="`/entreprise/${route.params.slug}/label`" class="text-white hover:opacity-70 transition" style="text-decoration: none">Label CTS</RouterLink></li>
                             <li><RouterLink :to="`/entreprise/${route.params.slug}/trophee`" class="text-white hover:opacity-70 transition" style="text-decoration: none">Trophée de la générosité</RouterLink></li>
@@ -324,14 +324,14 @@ onMounted(async () => {
                         </ul>
                     </div>
                     <div>
-                        <p class="font-bold mb-5 text-white" style="font-size: 18px">Support</p>
+                        <p class="font-bold mb-5 text-white">Support</p>
                         <ul class="space-y-3">
                             <li><RouterLink to="/faq" class="text-white hover:opacity-70 transition" style="text-decoration: none">FAQ</RouterLink></li>
                             <li><RouterLink to="/contact" class="text-white hover:opacity-70 transition" style="text-decoration: none">Contact</RouterLink></li>
                         </ul>
                     </div>
                     <div>
-                        <p class="font-bold mb-5 text-white" style="font-size: 18px">Mentions légales</p>
+                        <p class="font-bold mb-5 text-white">Mentions légales</p>
                         <ul class="space-y-3">
                             <li><a href="#" class="text-white hover:opacity-70 transition" style="text-decoration: none">Politique de confidentialité</a></li>
                             <li><a href="#" class="text-white hover:opacity-70 transition" style="text-decoration: none">Conditions générales</a></li>
@@ -339,7 +339,7 @@ onMounted(async () => {
                     </div>
                 </div>
                 <div class="border-t pt-6" style="border-color: rgba(242,244,243,0.15)">
-                    <p class="text-center" style="font-size: 14px; color: rgba(242,244,243,0.5)">
+                    <p class="text-center" style="color: rgba(242,244,243,0.5)">
                         © {{ new Date().getFullYear() }} Hôpitaux Universitaires Genève. Tous droits réservés.
                     </p>
                 </div>

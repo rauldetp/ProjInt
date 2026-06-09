@@ -317,7 +317,7 @@ function retakeQuiz() {
                         @click="startQuiz"
                     >
                         Commencer le test
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        <span class="material-symbols-outlined">arrow_forward</span>
                     </button>
 
                     <button v-if="resultat" class="btn-retake" @click="viewPreviousResult">
@@ -361,9 +361,9 @@ function retakeQuiz() {
                     <button
                         v-for="opt in questions[currentQ].options"
                         :key="opt"
-                        class="quiz-option"
+                        class="btn"
                         :class="[
-                            opt === 'Oui' ? 'opt-oui' : opt === 'Non' ? 'opt-non' : 'opt-other',
+                            opt === 'Oui' ? 'btn-outlined-green' : opt === 'Non' ? 'btn-outlined-red' : 'btn-outlined-blue',
                             { 'is-selected': selectedAnswer === opt },
                         ]"
                         @click="selectAnswer(opt)"
@@ -383,7 +383,7 @@ function retakeQuiz() {
                     @click="confirm"
                 >
                     Prochaine question
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    <span class="material-symbols-outlined">arrow_forward</span>
                 </button>
 
             </div>
@@ -425,7 +425,7 @@ function retakeQuiz() {
                         @click="continueFromInfo"
                     >
                         J'ai bien compris
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        <span class="material-symbols-outlined">arrow_forward</span>
                     </button>
 
                 </div>
@@ -464,7 +464,7 @@ function retakeQuiz() {
                     <p class="ready-title" :style="{ color: textOnBrand === 'white' ? 'var(--default-titles)' : textOnBrand }">Vous vous sentez prêt ?</p>
                     <button class="btn-ready" :style="{ background: brandColor, color: textOnBrand }" @click="showResult">
                         Voir mon résultat
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        <span class="material-symbols-outlined">arrow_forward</span>
                     </button>
                 </div>
             </div>
@@ -521,7 +521,7 @@ function retakeQuiz() {
                         <p class="result-sub">Malheureusement, sur la base de vos réponses, certains points ne remplissent pas les conditions de don adéquates.</p>
                         <button class="btn-brand" :style="{ background: brandColor, color: textOnBrand }" @click="retakeQuiz">
                             Découvrir pourquoi
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            <span class="material-symbols-outlined">arrow_forward</span>
                         </button>
                     </template>
 
