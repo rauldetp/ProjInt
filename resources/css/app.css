@@ -97,6 +97,13 @@ html {
     padding-right: 4rem; /* gap reproduit à la jointure des 2 groupes */
     flex-shrink: 0;
 }
+
+.img-marquee {
+ max-width: 9rem;
+ height: auto;
+ max-height: 7rem;
+}
+
 .marquee-track:hover .marquee-inner {
     animation-play-state: paused;
 }
@@ -171,11 +178,6 @@ h3 {
     left: 50%;
     transform: translateX(-50%);
     z-index: 40;
-    background: linear-gradient(
-        90deg,
-        var(--color-default-blue-59),
-        var(--color-default-green)
-    );
     color: var(--default-titles);
 }
 
@@ -302,7 +304,7 @@ h3 {
 }
 
 .btn-outlined-blue {
-    background: white;
+    background: transparent;
     color: var(--color-default-blue-39);
     border-color: var(--color-default-blue-39);
 }
@@ -313,22 +315,22 @@ h3 {
 .btn-outlined-blue:active {
     background: var(--color-default-blue);
     border-color: transparent;
-    color: white;
+    color: transparente;
 }
 .btn-outlined-blue:focus-visible {
-    background: white;
+    background: transparent;
     border-color: var(--color-default-blue-39);
     outline: 2px solid var(--color-default-blue-39);
     outline-offset: 2px;
 }
 .btn-outlined-blue:disabled {
-    background: white;
+    background: transparent;
     border-color: var(--color-default-blue-79);
     color: var(--color-default-blue-79);
 }
 
 .btn-outlined-green {
-    background: white;
+    background: transparent;
     color: var(--color-default-green-39);
     border-color: var(--color-default-green-39);
 }
@@ -342,19 +344,19 @@ h3 {
     color: white;
 }
 .btn-outlined-green:focus-visible {
-    background: white;
+    background: transparent;
     border-color: var(--color-default-green-39);
     outline: 2px solid var(--color-default-green-39);
     outline-offset: 2px;
 }
 .btn-outlined-green:disabled {
-    background: white;
+    background: transparent;
     border-color: var(--color-default-green-79);
     color: var(--color-default-green-79);
 }
 
 .btn-outlined-red {
-    background: white;
+    background: transparent;
     color: var(--color-default-red);
     border-color: var(--color-default-red);
 }
@@ -368,13 +370,13 @@ h3 {
     color: white;
 }
 .btn-outlined-red:focus-visible {
-    background: white;
+    background: transparent;
     border-color: var(--color-default-red);
     outline: 2px solid var(--color-default-red);
     outline-offset: 2px;
 }
 .btn-outlined-red:disabled {
-    background: white;
+    background: transparent;
     border-color: var(--color-default-red-88);
     color: var(--color-default-red-88);
 }

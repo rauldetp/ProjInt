@@ -49,10 +49,10 @@ function linkStyle(path) {
         <div class="co-navbar-inner max-w-7xl">
             <!-- Brand -->
             <div class="co-brand">
-                <RouterLink to="/" class="brand-hug"><img :src="'/images/logo_hug_h-quadri.png'" alt="Logo HUG" /> </RouterLink>
-                <span class="brand-sep">|</span>
-                <span class="brand-subtitle">Don du sang</span>
-                <span class="brand-cross">×</span>
+                <RouterLink to="/" class="brand-hug"
+                    ><img :src="'/images/logo_hug_h_quadri.png'" alt="Logo HUG"
+                /></RouterLink>
+                <span class="brand-sep">X</span>
                 <span class="brand-company" :style="{ color: brandColor }">
                     <img
                         v-if="cobrand.logo"
@@ -60,7 +60,6 @@ function linkStyle(path) {
                         :alt="cobrand.nom"
                         class="brand-logo"
                     />
-                    <span v-else>{{ cobrand.nom }}</span>
                 </span>
             </div>
 
@@ -79,7 +78,7 @@ function linkStyle(path) {
                 <RouterLink
                     :to="`/entreprise/${slug}/trophee`"
                     :style="linkStyle(`/entreprise/${slug}/trophee`)"
-                    >Trophée de la générosité</RouterLink
+                    >Trophée de la Générosité</RouterLink
                 >
                 <RouterLink
                     :to="coinEntrepriseLink"
@@ -127,7 +126,6 @@ function linkStyle(path) {
 }
 .hug-navbar-inner {
     margin: 0 auto;
-    padding: 0 5rem;
     height: 100%;
     display: flex;
     align-items: center;
@@ -139,20 +137,28 @@ function linkStyle(path) {
 .co-brand {
     display: flex;
     align-items: center;
-    gap: 0.4rem;
+    gap: 0.5rem;
     flex-shrink: 0;
 }
+
 .brand-hug {
     font-weight: 800;
     font-size: 1.25rem;
     color: var(--default-titles);
     text-decoration: none;
 }
+
+.brand-hug img, .brand-logo {
+    max-height: 2.75rem;
+    width: auto;
+}
+
 .brand-sep {
-    color: rgba(44, 65, 64, 0.3);
+    color: var(--default-text);
     font-size: 1.1rem;
     margin: 0 0.2rem;
 }
+
 .brand-subtitle {
     font-size: 1rem;
     font-weight: 600;
@@ -169,10 +175,6 @@ function linkStyle(path) {
     display: flex;
     align-items: center;
 }
-.brand-logo {
-    max-height: 28px;
-    object-fit: contain;
-}
 
 /* Nav links */
 .co-nav-links {
@@ -183,7 +185,6 @@ function linkStyle(path) {
 }
 .co-nav-links a {
     font-size: 1rem;
-    font-weight: 400;
     white-space: nowrap;
     transition: opacity 0.15s;
 }

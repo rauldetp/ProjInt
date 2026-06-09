@@ -1,26 +1,10 @@
 ﻿<script setup>
-import { ref, computed, onMounted } from "vue";
+import { onMounted } from "vue";
 import HugNavbar from "../components/HugNavbar.vue";
 import Footer from "../components/Footer.vue";
 
-const entreprises = ref([]);
-const loading = ref(true);
-const showAll = ref(false);
-
-const visibles = computed(() =>
-    showAll.value ? entreprises.value : entreprises.value.slice(0, 18),
-);
-
-onMounted(async () => {
+onMounted(() => {
     document.title = "Entreprises partenaires — HUG";
-    try {
-        const res = await fetch("/api/entreprises");
-        if (res.ok) entreprises.value = await res.json();
-    } catch {
-        // silent fail
-    } finally {
-        loading.value = false;
-    }
 });
 </script>
 
@@ -65,87 +49,6 @@ onMounted(async () => {
                 >
                     Inscrire mon entreprise →
                 </RouterLink>
-            </div>
-        </section>
-
-        <!-- Grille des entreprises -->
-        <section class="bg-white py-20">
-            <div class="max-w-7xl mx-auto px-8">
-                <h2
-                    class="font-bold text-center mb-12 text-black"
-                >
-                    Liste des entreprises partenaires
-                </h2>
-
-                <!-- Chargement -->
-                <div
-                    v-if="loading"
-                    class="text-center py-16"
-                    style="color: var(--default-text)"
-                >
-                    Chargement...
-                </div>
-
-                <template v-else>
-                    <!-- Grille -->
-                    <div
-                        class="grid gap-6 mb-10"
-                        style="grid-template-columns: repeat(6, 1fr)"
-                    >
-                        <div v-for="e in visibles" :key="e.id" class="block">
-                            <div
-                                class="relative overflow-hidden"
-                                style="
-                                    border-radius: 12px;
-                                    background: var(--light-grey);
-                                    aspect-ratio: 288 / 210;
-                                    display: flex;
-                                    align-items: center;
-                                    justify-content: center;
-                                "
-                            >
-                                <img
-                                    v-if="e.logo"
-                                    :src="e.logo"
-                                    :alt="e.nom"
-                                    class="w-full h-full object-contain p-4"
-                                />
-                                <div v-else class="text-center p-4">
-                                    <div
-                                        class="font-black mx-auto mb-2 flex items-center justify-center rounded-full"
-                                        style="width: 52px; height: 52px; background: white; color: var(--default-titles)"
-                                    >
-                                        {{ e.nom.charAt(0) }}
-                                    </div>
-                                    <p
-                                        class="captions leading-tight" style="color: var(--default-titles)"
-                                    >
-                                        {{ e.nom }}
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Bouton voir tout -->
-                    <div
-                        v-if="!showAll && entreprises.length > 18"
-                        class="flex justify-center"
-                    >
-                        <button @click="showAll = true" class="btn btn-outlined-red">
-                            Voir toutes les entreprises
-                        </button>
-                    </div>
-
-                    <!-- Aucune entreprise -->
-                    <div
-                        v-if="!loading && entreprises.length === 0"
-                        class="text-center py-16"
-                        style="color: var(--default-text)"
-                    >
-                        Aucune entreprise partenaire pour le moment.
-                    </div>
-                </template>
             </div>
         </section>
 

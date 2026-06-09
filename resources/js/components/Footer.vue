@@ -94,6 +94,14 @@ defineProps({
                                         >Trophée de la générosité</RouterLink
                                     >
                                 </li>
+                                <li>
+                                    <RouterLink
+                                        :to="`/quiz`"
+                                        class="text-white hover:opacity-70 transition"
+                                        style="text-decoration: none"
+                                        >Quiz d'eligibilité</RouterLink
+                                    >
+                                </li>
                             </template>
                         </ul>
                     </div>
@@ -102,6 +110,14 @@ defineProps({
                     <div>
                         <h3 class="mb-4 text-white">Support</h3>
                         <ul class="space-y-3">
+                            <li>
+                                <RouterLink
+                                    :to="`/login`"
+                                    class="text-white hover:opacity-70 transition"
+                                    style="text-decoration: none"
+                                    >Espace entreprise</RouterLink
+                                >
+                            </li>
                             <li>
                                 <RouterLink
                                     to="/faq"
@@ -160,16 +176,11 @@ defineProps({
 </template>
 
 <style scoped>
-.hug-brand {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
 .brand-hug {
     text-decoration: none;
 }
 .brand-hug img {
-    max-height: 2.75rem;
+    max-height: 4rem;
     width: auto;
 }
 .brand-sep {

@@ -85,8 +85,10 @@ onMounted(async () => {
                         Le Trophée de la Générosité
                     </h1>
                     <h3 class="text-white">
-                        La distinction annuelle qui récompense les entreprises
-                        genevoises les plus engagées pour le don du sang.
+                        Chaque année, une entreprise est sélectionnée par notre
+                        comité pour recevoir le Trophée de la Générosité, une
+                        récompense qui met en avant nos valeurs de partage et de
+                        communauté.
                     </h3>
                 </div>
             </div>
@@ -144,13 +146,12 @@ onMounted(async () => {
                     </p>
                 </div>
                 <div
-                    class="relative rounded-2xl overflow-hidden"
-                    style="height: 320px; background: var(--light-grey)"
+                    class="aspect-video w-full rounded-md overflow-hidden rounded-lg"
                 >
                     <img
                         :src="'/images/thumbnail_trophee.webp'"
-                        alt="Trophée de la générosité"
-                        class="absolute inset-0 w-full h-full object-cover"
+                        alt=""
+                        class="object-cover"
                     />
                 </div>
             </div>
@@ -175,244 +176,123 @@ onMounted(async () => {
                     </p>
                 </div>
                 <div
-                    class="relative rounded-2xl overflow-hidden"
-                    style="height: 320px; background: var(--light-grey)"
+                    class="aspect-video w-full rounded-md overflow-hidden rounded-lg"
                 >
                     <img
                         :src="'/images/thumbnail_winner.webp'"
-                        alt="Gagnant du trophée 2026"
-                        class="absolute inset-0 w-full h-full object-cover"
+                        alt="Gagnant 2026 - Groupe Mercier SA"
+                        class="object-cover"
                     />
                 </div>
             </div>
         </section>
 
-<section
-        class="bg-gradient py-20"
-        >
-            <div class="max-w-2xl mx-auto px-8 text-center">
-                <h2
-                    class="font-bold mb-4 text-black"
-                >
-                    Rejoignez les entreprises partenaires
-                </h2>
-                <p
-                    class="mb-8"
-                    style="
-                        color: var(--default-titles);
-                        opacity: 0.75;
-                        line-height: 1.7;
-                    "
-                >
-                    Devenez un acteur majeur de la santé publique genevoise.
-                    Offrez à vos équipes la possibilité de sauver des vies sous
-                    tous les toits du travail, tout en valorisant l'impact et la
-                    solidarité de votre culture d'entreprise.
-                </p>
-        <RouterLink
-            to="/entreprises"
-            class="btn btn-filled-red"
-        >
-            Découvrez nos entreprises partenaires →
-        </RouterLink>            </div>
-        </section>
-
-        <!-- Palmarès -->
-        <section class="bg-white py-20">
-            <div class="max-w-4xl mx-auto px-8">
-                <h2 class="font-bold text-center mb-4 text-black">
-                    Palmarès des lauréats
-                </h2>
-                <p class="text-center mb-12" style="color: var(--default-text)">
-                    Depuis la création du Trophée, ces entreprises se sont
-                    distinguées par leur engagement exceptionnel.
-                </p>
-
-                <div
-                    v-if="palmaresLoading"
-                    class="text-center py-8"
-                    style="color: var(--default-text)"
-                >
-                    Chargement...
-                </div>
-
-                <template v-else>
-                    <div
-                        class="flex items-center gap-6 py-5 border-b"
-                        style="border-color: var(--light-grey)"
-                    >
-                        <span
-                            class="font-black flex-shrink-0"
-                            style="
-                                font-size: 20px;
-                                color: var(--default-titles);
-                                width: 56px;
-                            "
-                            >2026</span
-                        >
-                        <span
-                            class="captions"
-                            style="
-                                background: #fef3c7;
-                                color: #92400e;
-                                padding: 2px 10px;
-                            "
-                            >À venir</span
-                        >
-                        <span
-                            style="font-size: 14px; color: var(--default-text)"
-                            >Cérémonie décembre 2026</span
-                        >
-                    </div>
-
-                    <template v-if="palmares.length > 0">
-                        <div
-                            v-for="annee in palmares"
-                            :key="annee.annee"
-                            class="flex items-center gap-6 py-5 border-b"
-                            style="border-color: var(--light-grey)"
-                        >
-                            <span
-                                class="font-black flex-shrink-0"
-                                style="
-                                    font-size: 20px;
-                                    color: var(--default-titles);
-                                    width: 56px;
-                                "
-                                >{{ annee.annee }}</span
-                            >
-                            <div class="flex flex-wrap gap-2">
-                                <span
-                                    v-for="l in annee.laureats"
-                                    :key="l.entreprise"
-                                    style="
-                                        font-size: 13px;
-                                        font-weight: 600;
-                                        background: var(--light-grey);
-                                        color: var(--default-titles);
-                                        padding: 3px 12px;
-                                    "
-                                    >{{ l.entreprise }}</span
-                                >
-                            </div>
-                        </div>
-                    </template>
-
-                    <template v-else>
-                        <div
-                            v-for="y in [
-                                2025, 2024, 2023, 2022, 2010, 2009, 2008,
-                            ]"
-                            :key="y"
-                            class="flex items-center gap-6 py-5 border-b"
-                            style="border-color: var(--light-grey)"
-                        >
-                            <span
-                                class="font-black flex-shrink-0"
-                                style="
-                                    font-size: 20px;
-                                    color: var(--default-titles);
-                                    width: 56px;
-                                "
-                                >{{ y }}</span
-                            >
-                            <span
-                                style="
-                                    font-size: 14px;
-                                    color: #c0cac9;
-                                    font-style: italic;
-                                "
-                                >Données à compléter avec le CTS</span
-                            >
-                        </div>
-                    </template>
-                </template>
-
-                <p class="mt-8 text-center italic" style="color: #c0cac9">
-                    * Les données historiques seront complétées en collaboration
-                    avec le CTS des HUG.
+        <section class="bg-gradient py-20">
+            <div class="max-w-7xl mx-auto px-8 text-center">
+                <h1 class="font-bold mb-4 text-black">
+                    “Aujourd'hui, le don de sang fait partie de notre culture
+                    d'entreprise, et nous en sommes fiers.”
+                </h1>
+                <p>
+                    Marc-Antoine Favre, Directeur des Ressources Humaines,
+                    Groupe Mercier SA
                 </p>
             </div>
         </section>
 
-        <!-- Process candidature -->
-        <section class="py-20 bg-light-grey">
+        <!-- Valeurs -->
+        <section
+            class="bg-white py-20 border-t"
+            style="border-color: var(--light-grey)"
+        >
             <div class="max-w-7xl mx-auto px-8">
                 <h2 class="font-bold text-center mb-12 text-black">
-                    Comment candidater ?
+                    Les valeurs du Trophée de la Générosité
                 </h2>
-                <div class="grid grid-cols-4 gap-6">
-                    <div
-                        v-for="e in etapes"
-                        :key="e.num"
-                        class="flex flex-col gap-4"
-                        style="
-                            border-top: 2px solid var(--color-default-red);
-                            padding-top: 1.5rem;
-                        "
-                    >
-                        <p
-                            class="font-black"
-                            style="
-                                color: var(--color-default-red);
-                                line-height: 1;
-                            "
+                <div class="grid grid-cols-3 gap-8">
+                    <div class="flex flex-col items-center text-center gap-4">
+                        <div
+                            class="circle-icon rounded-full bg-light-grey flex items-center justify-center"
                         >
-                            {{ e.num }}
+                            <span class="material-symbols-outlined"
+                                >diamond</span
+                            >
+                        </div>
+                        <h3 class="font-bold text-black">L’excellence</h3>
+                        <p>
+                            Le Trophée récompense ceux qui vont plus loin. Ce
+                            n'est pas une récompense de participation. C'est une
+                            distinction pour les entreprises qui ont fait de
+                            leur engagement une véritable priorité.
                         </p>
-                        <h3 class="font-bold text-black">
-                            {{ e.title }}
-                        </h3>
-                        <p
-                            style="
-                                color: var(--default-text);
-                                line-height: 1.65;
-                            "
+                    </div>
+                    <div class="flex flex-col items-center text-center gap-4">
+                        <div
+                            class="circle-icon rounded-full bg-light-grey flex items-center justify-center"
                         >
-                            {{ e.desc }}
+                            <span class="material-symbols-outlined"
+                                >visibility</span
+                            >
+                        </div>
+                        <h3 class="font-bold text-black">La transparence</h3>
+                        <p>
+                            La sélection est assurée par un comité indépendant,
+                            selon des critères clairs. Pas de favoritisme, pas
+                            de politique, c’est simplement la reconnaissance
+                            d'un engagement sincère et mesurable.
+                        </p>
+                    </div>
+                    <div class="flex flex-col items-center text-center gap-4">
+                        <div
+                            class="circle-icon rounded-full bg-light-grey flex items-center justify-center"
+                        >
+                            <span class="material-symbols-outlined"
+                                >all_inclusive</span
+                            >
+                        </div>
+                        <h3 class="font-bold text-black">La continuité</h3>
+                        <p>
+                            Un don, c'est bien. Une culture du don, c'est mieux.
+                            Nous valorisons les entreprises qui inscrivent leur
+                            engagement dans la durée, et qui reviennent année
+                            après année
                         </p>
                     </div>
                 </div>
             </div>
         </section>
-
-        <!-- CTA final -->
-        <section class="py-20 text-center bg-gradient">
-            <div class="max-w-2xl mx-auto px-8">
-                <h2 class="font-bold mb-4 text-black" style="line-height: 1.25">
-                    Votre entreprise mérite<br />d'être reconnue.
-                </h2>
-                <p
-                    class="mb-10"
-                    style="
-                        color: var(--default-titles);
-                        opacity: 0.8;
-                        line-height: 1.6;
-                    "
-                >
-                    Rejoignez les entreprises qui font la différence pour la
-                    santé publique genevoise.
-                </p>
-                <div class="flex items-center justify-center gap-4 flex-wrap">
+        <!-- Comment ça marche ? -->
+        <section class="bg-light-grey py-20">
+            <div
+                class="max-w-7xl mx-auto px-8 grid grid-cols-2 gap-16 items-center"
+            >
+                <div>
+                    <h2 class="font-bold mb-5 text-black">
+                        Comment ça marche ?
+                    </h2>
+                    <p class="mb-5">
+                        Le trophée est ouvert à toutes les entreprises
+                        labellisées CTS. Pas de formulaire complexe, pas de
+                        candidature fastidieuse, une entreprise peut, à chaque
+                        nouvelle collecte, inscrire son entreprise. Chaque
+                        candidature sera prise en compte et nous désignerons un
+                        lauréat lors d’une cérémonie annuelle.
+                    </p>
                     <RouterLink to="/login" class="btn btn-filled-red">
-                        Candidater au Trophée 2026
+                        Inscrire mon entreprise
                     </RouterLink>
-                    <RouterLink
-                        to="/label"
-                        class="inline-block font-semibold rounded-full px-8 py-3 border-2 transition hover:opacity-75"
-                        style="
-                            color: var(--default-titles);
-                            border-color: var(--default-titles);
-                            text-decoration: none;
-                            background: transparent;
-                        "
-                    >
-                        Découvrir le Label CTS
-                    </RouterLink>
+                </div>
+                <div
+                    class="aspect-video w-full rounded-md overflow-hidden rounded-lg"
+                >
+                    <img
+                        :src="'/images/thumbnail_howitworks_trophy.webp'"
+                        alt="Deux personnes discutant devant un écran"
+                        class="object-cover"
+                    />
                 </div>
             </div>
         </section>
-
         <!-- Footer -->
         <Footer />
     </div>

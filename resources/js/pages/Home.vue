@@ -47,7 +47,7 @@ onMounted(() => {
         <HugNavbar />
         <div
             v-if="bannerVisible"
-            class="banner flex items-center justify-between shadow-light"
+            class="banner bg-gradient flex items-center justify-between shadow-light"
          >
             <span class="captions">
                 Ce site est un projet étudiant réalisé dans un cadre
@@ -91,13 +91,6 @@ onMounted(() => {
                     >
                         En savoir plus
                     </RouterLink>
-                    <RouterLink
-                        to="/quiz"
-                        class="inline-block text-white text-sm font-semibold px-6 py-3 rounded-full transition hover:opacity-80"
-                        style="background: transparent; border: 2px solid white"
-                    >
-                        Quiz d'éligibilité →
-                    </RouterLink>
                 </div>
             </div>
         </section>
@@ -126,23 +119,31 @@ onMounted(() => {
         >
             <div class="mx-auto">
                 <h2
-                    class="text-center mb-8"
+                    class="text-center mb-8 text-black"
                 >
                     Nos partenaires
             </h2>
                 <div class="marquee-track">
                     <div class="marquee-inner">
                         <div class="marquee-group">
-                            <span class="font-bold text-lg">ROLEX</span>
-                            <span class="font-bold text-lg">BCGE</span>
-                            <span class="font-bold text-lg">Nestlé</span>
-                            <span class="font-bold text-lg">logitech</span>
+                            <img :src="'/images/marquee/logo_bcge.png'" class="img-marquee" alt="Banque cantonale Genevoise">
+                            <img :src="'/images/marquee/La-Vie-Black-Logo-1.png'" class="img-marquee" alt="La Vie">
+                            <img :src="'/images/marquee/Logo_Nestle.svg.png'" class="img-marquee" alt="Nestlé">
+                            <img :src="'/images/marquee/rolex-logo.png'" class="img-marquee" alt="Rolex">
+                            <img :src="'/images/marquee/logo_bcge.png'" class="img-marquee" alt="Banque cantonale Genevoise">
+                            <img :src="'/images/marquee/La-Vie-Black-Logo-1.png'" class="img-marquee" alt="La Vie">
+                            <img :src="'/images/marquee/Logo_Nestle.svg.png'" class="img-marquee" alt="Nestlé">
+                            <img :src="'/images/marquee/rolex-logo.png'" class="img-marquee" alt="Rolex">
                         </div>
                         <div class="marquee-group" aria-hidden="true">
-                            <span class="font-bold text-lg">ROLEX</span>
-                            <span class="font-bold text-lg">BCGE</span>
-                            <span class="font-bold text-lg">Nestlé</span>
-                            <span class="font-bold text-lg">logitech</span>
+                            <img :src="'/images/marquee/logo_bcge.png'" class="img-marquee" alt="Banque cantonale Genevoise">
+                            <img :src="'/images/marquee/La-Vie-Black-Logo-1.png'" class="img-marquee" alt="La Vie">
+                            <img :src="'/images/marquee/Logo_Nestle.svg.png'" class="img-marquee" alt="Nestlé">
+                            <img :src="'/images/marquee/rolex-logo.png'" class="img-marquee" alt="Rolex">
+                            <img :src="'/images/marquee/logo_bcge.png'" class="img-marquee" alt="Banque cantonale Genevoise">
+                            <img :src="'/images/marquee/La-Vie-Black-Logo-1.png'" class="img-marquee" alt="La Vie">
+                            <img :src="'/images/marquee/Logo_Nestle.svg.png'" class="img-marquee" alt="Nestlé">
+                            <img :src="'/images/marquee/rolex-logo.png'" class="img-marquee" alt="Rolex">
                         </div>
                     </div>
                 </div>

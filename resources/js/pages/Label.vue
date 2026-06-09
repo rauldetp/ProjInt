@@ -1,10 +1,26 @@
 ﻿<script setup>
-import { onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
 import HugNavbar from "../components/HugNavbar.vue";
 import Footer from "../components/Footer.vue";
 
-onMounted(() => {
+const entreprises = ref([]);
+const loading = ref(true);
+const showAll = ref(false);
+
+const visibles = computed(() =>
+    showAll.value ? entreprises.value : entreprises.value.slice(0, 18),
+);
+
+onMounted(async () => {
     document.title = "Label CTS — HUG";
+    try {
+        const res = await fetch("/api/entreprises");
+        if (res.ok) entreprises.value = await res.json();
+    } catch {
+        // silent fail
+    } finally {
+        loading.value = false;
+    }
 });
 </script>
 
@@ -32,10 +48,7 @@ onMounted(() => {
                     <h1 class="font-bold text-white leading-tight mb-4">
                         Notre Label CTS
                     </h1>
-                    <p
-                        class="text-white mb-6 max-w-lg"
-                        style="opacity: 0.9; line-height: 1.6"
-                    >
+                    <p class="text-white mb-6 max-w-lg">
                         Le label CTS des HUG récompense les entreprises qui
                         s'engagent concrètement pour le don du sang et la
                         solidarité.
@@ -53,7 +66,7 @@ onMounted(() => {
                     <h2 class="font-bold mb-5 text-black">
                         Ce qu'il représente
                     </h2>
-                    <p style="color: var(--default-text); line-height: 1.75">
+                    <p>
                         Le Label CTS est une certification honorifique conçue
                         par les Hôpitaux Universitaires de Genève pour valoriser
                         l'engagement citoyen de toutes les organisations
@@ -65,7 +78,7 @@ onMounted(() => {
                     </p>
                 </div>
                 <div
-                    class="bg-white flex flex-col items-center justify-center gap-4 rounded-2xl p-12"
+                    class="aspect-video bg-white flex flex-col items-center justify-center gap-4 rounded-2xl p-12"
                 >
                     <img
                         :src="'/images/logo_labelCTS_red.png'"
@@ -155,10 +168,7 @@ onMounted(() => {
                     <h2 class="font-bold mb-5 text-black">
                         Comment ça marche ?
                     </h2>
-                    <p
-                        class="mb-8"
-                        style="color: var(--default-text); line-height: 1.75"
-                    >
+                    <p class="mb-8">
                         Obtenir le Label CTS est un processus simple,
                         transparent et entièrement accompagné par nos équipes
                         médicales. Après avoir soumis votre demande
@@ -175,13 +185,12 @@ onMounted(() => {
                     </RouterLink>
                 </div>
                 <div
-                    class="relative rounded-2xl overflow-hidden"
-                    style="height: 300px; background: var(--light-grey)"
+                    class="aspect-video w-full rounded-md overflow-hidden rounded-lg"
                 >
                     <img
                         :src="'/images/thumbnail_commentcamarche.webp'"
                         alt=""
-                        class="absolute inset-0 w-full h-full object-cover"
+                        class="object-cover"
                     />
                 </div>
             </div>
@@ -193,23 +202,19 @@ onMounted(() => {
                 class="max-w-7xl mx-auto px-8 grid grid-cols-2 gap-16 items-center"
             >
                 <div
-                    class="relative rounded-2xl overflow-hidden"
-                    style="height: 300px; background: #e2e8e8"
+                    class="aspect-video w-full rounded-md overflow-hidden rounded-lg"
                 >
                     <img
                         :src="'/images/thumbnail_mouvement.webp'"
                         alt=""
-                        class="absolute inset-0 w-full h-full object-cover"
+                        class="object-cover"
                     />
                 </div>
                 <div>
                     <h2 class="font-bold mb-5 text-black">
                         Rejoignez le mouvement
                     </h2>
-                    <p
-                        class="mb-8"
-                        style="color: var(--default-text); line-height: 1.75"
-                    >
+                    <p class="mb-8">
                         De la PME locale aux grands groupes bancaires et
                         horlogers, de nombreuses entreprises du bassin genevois
                         ont déjà intégré le don de sang dans leur culture
@@ -218,10 +223,86 @@ onMounted(() => {
                         historique de participation et mesurer l'impact concret
                         de cette mobilisation collective.
                     </p>
-                    <RouterLink to="/entreprises" class="btn btn-filled-red">
-                        Découvrez nos entreprises partenaires
-                    </RouterLink>
                 </div>
+            </div>
+        </section>
+
+        <!-- Grille des entreprises -->
+        <section class="bg-white py-20">
+            <div class="max-w-7xl mx-auto px-8">
+                <h2 class="font-bold text-center mb-12 text-black">
+                    Liste des entreprises partenaires
+                </h2>
+
+                <!-- Chargement -->
+                <div
+                    v-if="loading"
+                    class="text-center py-16"
+                    style="color: var(--default-text)"
+                >
+                    Chargement...
+                </div>
+
+                <template v-else>
+                    <!-- Grille -->
+                    <div
+                        class="grid gap-6 mb-10"
+                        style="grid-template-columns: repeat(6, 1fr)"
+                    >
+                        <div v-for="e in visibles" :key="e.id" class="block">
+                            <div
+                                class="relative overflow-hidden"
+                                style="
+                                    border-radius: 12px;
+                                    background: var(--light-grey);
+                                    aspect-ratio: 288 / 210;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                "
+                            >
+                                <img
+                                    v-if="e.logo"
+                                    :src="e.logo"
+                                    :alt="e.nom"
+                                    class="w-full h-full object-contain p-4"
+                                />
+                                <div v-else class="text-center p-4">
+                                    <div
+                                        class="font-black mx-auto mb-2 flex items-center justify-center rounded-full"
+                                        style="width: 52px; height: 52px; background: white; color: var(--default-titles)"
+                                    >
+                                        {{ e.nom.charAt(0) }}
+                                    </div>
+                                    <p
+                                        class="captions leading-tight" style="color: var(--default-titles)"
+                                    >
+                                        {{ e.nom }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bouton voir tout -->
+                    <div
+                        v-if="!showAll && entreprises.length > 18"
+                        class="flex justify-center"
+                    >
+                        <button @click="showAll = true" class="btn btn-outlined-red">
+                            Voir toutes les entreprises
+                        </button>
+                    </div>
+
+                    <!-- Aucune entreprise -->
+                    <div
+                        v-if="!loading && entreprises.length === 0"
+                        class="text-center py-16"
+                        style="color: var(--default-text)"
+                    >
+                        Aucune entreprise partenaire pour le moment.
+                    </div>
+                </template>
             </div>
         </section>
 

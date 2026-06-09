@@ -632,7 +632,13 @@ function retakeQuiz() {
             <div class="mascotte-col">
                 <div class="mascotte-circle">
                     <img
-                        :src="'/images/courage/Mascotte_default.png'"
+                        :src="
+                            resultat === 'eligible'
+                                ? '/images/courage/Mascotte_award.png'
+                                : resultat === 'non-eligible'
+                                  ? '/images/courage/Mascotte_failure.png'
+                                  : '/images/courage/Mascotte_default.png'
+                        "
                         alt="Courage"
                         class="mascotte-img"
                     />
