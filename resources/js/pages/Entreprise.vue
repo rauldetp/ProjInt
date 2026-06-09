@@ -3,6 +3,7 @@ import { ref, computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { useCobrandStore } from "../stores/cobrand";
 import CoNavbar from "../components/CoNavbar.vue";
+import Footer from "../components/Footer.vue";
 
 const route = useRoute();
 const cobrand = useCobrandStore();
@@ -290,41 +291,7 @@ const dateRange = computed(() => {
         </section>
 
         <!-- Footer -->
-        <footer class="site-footer">
-            <div class="footer-inner">
-                <div class="footer-grid">
-                    <div>
-                        <span class="footer-hug">HUG</span>
-                        <p class="footer-tagline">Hôpitaux<br />Universitaires<br />Genève</p>
-                    </div>
-                    <div>
-                        <p class="footer-col-title">Pages</p>
-                        <ul>
-                            <li><RouterLink to="/label">Label CTS</RouterLink></li>
-                            <li><RouterLink to="/trophee">Trophée de la générosité</RouterLink></li>
-                            <li><RouterLink :to="`/entreprise/${route.params.slug}`">Accueil collecte</RouterLink></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <p class="footer-col-title">Support</p>
-                        <ul>
-                            <li><RouterLink to="/faq">FAQ</RouterLink></li>
-                            <li><RouterLink to="/contact">Contact</RouterLink></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <p class="footer-col-title">Mentions légales</p>
-                        <ul>
-                            <li><a href="#">Politique de confidentialité</a></li>
-                            <li><a href="#">Conditions générales</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="footer-copy">
-                    <p>© {{ new Date().getFullYear() }} Hôpitaux Universitaires Genève. Tous droits réservés.</p>
-                </div>
-            </div>
-        </footer>
+        <Footer :slug="route.params.slug" />
 
     </div>
 </template>
@@ -732,74 +699,6 @@ const dateRange = computed(() => {
     margin: 0;
 }
 
-/* ── Footer ──────────────────────────────────────────── */
-.site-footer {
-    background: var(--default-titles);
-    padding: 3.5rem 0 2.5rem;
-}
-.footer-inner {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 0 2rem;
-}
-.footer-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 2.5rem;
-    margin-bottom: 3rem;
-}
-.footer-hug {
-    display: block;
-    font-weight: 800;
-    font-size: 1.5rem;
-    color: white;
-    margin-bottom: 0.25rem;
-}
-.footer-tagline {
-    font-size: 0.75rem;
-    color: var(--color-default-green);
-    line-height: 1.6;
-    margin: 0;
-}
-.footer-col-title {
-    font-weight: 700;
-    font-size: 0.9rem;
-    color: white;
-    margin: 0 0 1.25rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-}
-.site-footer ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-}
-.site-footer ul li a,
-.site-footer ul li .router-link-active,
-.site-footer ul li a:visited {
-    font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.75);
-    text-decoration: none;
-    transition: opacity 0.15s;
-}
-.site-footer ul li a:hover {
-    opacity: 1;
-    color: white;
-}
-.footer-copy {
-    border-top: 1px solid rgba(242, 244, 243, 0.15);
-    padding-top: 1.5rem;
-    text-align: center;
-}
-.footer-copy p {
-    font-size: 0.8rem;
-    color: rgba(242, 244, 243, 0.45);
-    margin: 0;
-}
-
 /* ── Moins de 500 salariés ───────────────────────────── */
 .small-co-section {
     background: var(--light-grey);
@@ -897,9 +796,6 @@ const dateRange = computed(() => {
     }
     .hero-title {
         font-size: 2.2rem;
-    }
-    .footer-grid {
-        grid-template-columns: repeat(2, 1fr);
     }
     .small-co-img {
         height: 220px;

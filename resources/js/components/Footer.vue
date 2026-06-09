@@ -142,19 +142,19 @@ defineProps({
                         <h3 class="mb-4 text-white">Mentions légales</h3>
                         <ul class="space-y-3">
                             <li>
-                                <a
-                                    href="#"
+                                <RouterLink
+                                    to="/politique-confidentialite"
                                     class="text-white hover:opacity-70 transition"
                                     style="text-decoration: none"
-                                    >Politique de confidentialité</a
+                                    >Politique de confidentialité</RouterLink
                                 >
                             </li>
                             <li>
-                                <a
-                                    href="#"
+                                <RouterLink
+                                    to="/conditions-generales"
                                     class="text-white hover:opacity-70 transition"
                                     style="text-decoration: none"
-                                    >Conditions générales</a
+                                    >Conditions générales</RouterLink
                                 >
                             </li>
                         </ul>

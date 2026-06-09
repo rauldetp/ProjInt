@@ -11,6 +11,7 @@ use App\Http\Controllers\CoordinateurController;
 use App\Http\Controllers\AdminLabelController;
 use App\Http\Controllers\AdminTropheeController;
 use App\Http\Controllers\AdminEntrepriseController;
+use App\Http\Controllers\ContactController;
 
 // Public
 Route::get('/entreprises', [EntrepriseController::class, 'index']);
@@ -22,6 +23,7 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/collectes/{collecte}/nb_inscrits_estime', [CollecteController::class, 'incrementInscrits']);
 Route::post('/collectes/{collecte}/quiz-result', [CollecteController::class, 'storeQuizResult']);
 Route::get('/palmares', [AdminTropheeController::class, 'palmares']);
+Route::post('/contact', [ContactController::class, 'send']);
 
 // Authentifié (tous rôles)
 Route::middleware('auth:sanctum')->group(function () {

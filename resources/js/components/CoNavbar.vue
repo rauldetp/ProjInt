@@ -25,7 +25,7 @@ const brandColor = computed(
 
 // Depuis le site coobrandé, "Espace entreprise" = espace propre à cette entreprise
 const coinEntrepriseLink = computed(() => {
-    if (auth.isAdmin) return "/entreprises";
+    if (auth.isAdmin) return "/admin";
     if (auth.isCoordinateur) return `/entreprise/${slug.value}/espace`;
     return "/login";
 });
@@ -46,7 +46,7 @@ function linkStyle(path) {
 
 <template>
     <header class="co-navbar">
-        <div class="co-navbar-inner max-w-7xl">
+        <div class="co-navbar-inner max-w-7xl px-8">
             <!-- Brand -->
             <div class="co-brand">
                 <RouterLink to="/" class="brand-hug"
@@ -60,16 +60,12 @@ function linkStyle(path) {
                         :alt="cobrand.nom"
                         class="brand-logo"
                     />
+                    <template v-else>{{ cobrand.nom }}</template>
                 </span>
             </div>
 
             <!-- Links -->
             <nav class="co-nav-links">
-                <RouterLink
-                    :to="`/entreprise/${slug}`"
-                    :style="linkStyle(`/entreprise/${slug}`)"
-                    >Accueil</RouterLink
-                >
                 <RouterLink
                     :to="`/entreprise/${slug}/label`"
                     :style="linkStyle(`/entreprise/${slug}/label`)"
@@ -97,13 +93,13 @@ function linkStyle(path) {
                 <RouterLink
                     v-if="collecte?.active"
                     :to="`/entreprise/${slug}/inscription`"
-                    class="co-navbar-cta"
+                    class="btn"
                     :style="{ color: brandColor, borderColor: brandColor }"
                 >
                     S'inscrire à la collecte
                 </RouterLink>
                 <button
-                    class="co-navbar-cta co-navbar-logout"
+                    class="btn"
                     :style="{ color: brandColor, borderColor: brandColor }"
                     @click="handleLogout"
                 >
@@ -124,7 +120,7 @@ function linkStyle(path) {
     z-index: 50;
     flex-shrink: 0;
 }
-.hug-navbar-inner {
+.co-navbar-inner {
     margin: 0 auto;
     height: 100%;
     display: flex;
@@ -159,16 +155,6 @@ function linkStyle(path) {
     margin: 0 0.2rem;
 }
 
-.brand-subtitle {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--default-text);
-}
-.brand-cross {
-    color: rgba(44, 65, 64, 0.3);
-    font-size: 1.1rem;
-    margin: 0 0.2rem;
-}
 .brand-company {
     font-weight: 700;
     font-size: 1rem;
@@ -199,21 +185,8 @@ function linkStyle(path) {
     gap: 0.65rem;
     flex-shrink: 0;
 }
-.co-navbar-cta {
-    font-size: 1rem;
-    font-weight: 600;
-    border: 2px solid;
-    border-radius: 9999px;
-    padding: 0.4rem 1.1rem;
-    text-decoration: none;
-    transition: opacity 0.15s;
-    white-space: nowrap;
-    background: white;
-    cursor: pointer;
-    font-family: inherit;
-}
-.co-navbar-cta:hover {
-    opacity: 0.75;
+.co-navbar-actions .btn:hover {
+    opacity: 0.85;
 }
 
 @media (max-width: 960px) {

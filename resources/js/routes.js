@@ -1,7 +1,6 @@
 import Home from './pages/Home.vue'
 import Login from './pages/Login.vue'
 import Entreprise from './pages/Entreprise.vue'
-import Entreprises from './pages/Entreprises.vue'
 import Label from './pages/Label.vue'
 import Trophee from './pages/Trophee.vue'
 import AdminLayout from './layouts/AdminLayout.vue'
@@ -17,7 +16,8 @@ const routes = [
     { path: '/trophee', component: Trophee },
     { path: '/contact', component: Contact },
     { path: '/faq', component: FAQ },
-    { path: '/entreprises', component: Entreprises },
+    { path: '/politique-confidentialite', component: () => import('./pages/PolitiqueConfidentalite.vue') },
+    { path: '/conditions-generales', component: () => import('./pages/ConditionsGenerales.vue') },
     { path: '/entreprise/:slug', component: Entreprise },
     { path: '/entreprise/:slug/inscription', component: InscriptionCollecte },
     { path: '/entreprise/:slug/label', component: () => import('./pages/CoLabel.vue') },
@@ -61,6 +61,6 @@ export function setupGuards(router) {
         if (to.meta.requiresAuth && !auth.isLoggedIn) return '/login'
         if (to.meta.role === 'admin' && !auth.isAdmin) return auth.isCoordinateur ? `/entreprise/${auth.entrepriseSlug}/espace` : '/login'
         if (to.meta.role === 'coordinateur' && !auth.isCoordinateur) return auth.isAdmin ? '/admin' : '/login'
-        if (to.path === '/login' && auth.isLoggedIn) return auth.isAdmin ? '/entreprises' : (auth.entrepriseSlug ? `/entreprise/${auth.entrepriseSlug}` : '/coordinateur')
+        if (to.path === '/login' && auth.isLoggedIn) return auth.isAdmin ? '/admin' : (auth.entrepriseSlug ? `/entreprise/${auth.entrepriseSlug}` : '/coordinateur')
     })
 }

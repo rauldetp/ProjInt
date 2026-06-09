@@ -1,22 +1,23 @@
 ﻿<script setup>
-import { computed } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { useAuthStore } from '../stores/auth';
-import { useCoinEntrepriseLink } from '../composables/useCoinEntrepriseLink';
+import { computed } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { useAuthStore } from "../stores/auth";
+import { useCoinEntrepriseLink } from "../composables/useCoinEntrepriseLink";
 
 const props = defineProps({
     showLogout: { type: Boolean, default: false },
 });
 
-const route  = useRoute();
+const route = useRoute();
 const router = useRouter();
-const auth   = useAuthStore();
+const auth = useAuthStore();
 const { coinEntrepriseLink } = useCoinEntrepriseLink();
 
 const participerLink = computed(() => {
-    if (auth.isAdmin) return '/entreprises';
-    if (auth.isCoordinateur && auth.entrepriseSlug) return `/entreprise/${auth.entrepriseSlug}`;
-    return '/login';
+    if (auth.isAdmin) return "/admin";
+    if (auth.isCoordinateur && auth.entrepriseSlug)
+        return `/entreprise/${auth.entrepriseSlug}`;
+    return "/login";
 });
 
 function isActive(path) {
@@ -26,9 +27,9 @@ function isActive(path) {
 function linkStyle(path) {
     const active = isActive(path);
     return {
-        color: active ? 'var(--color-default-red)' : 'var(--default-titles)',
-        fontWeight: '700',
-        textDecoration: 'none',
+        color: active ? "var(--color-default-red)" : "var(--default-titles)",
+        fontWeight: "700",
+        textDecoration: "none",
     };
 }
 
@@ -36,7 +37,7 @@ const coinStyle = computed(() => linkStyle(coinEntrepriseLink.value));
 
 function handleLogout() {
     auth.logout();
-    router.push('/login');
+    router.push("/login");
 }
 </script>
 
@@ -44,23 +45,48 @@ function handleLogout() {
     <header class="hug-navbar">
         <div class="hug-navbar-inner max-w-7xl px-8">
             <!-- Brand -->
-            <div class="hug-brand">
-                <RouterLink to="/" class="brand-hug"><img :src="'/images/logo_hug_h_quadri.png'" alt="Logo HUG" /></RouterLink>
+                         <RouterLink
+                to="/"
+                style="text-decoration: none"
+                class="flex items-center gap-2"
+            >
+                <div class="hug-brand">
+                    <div class="brand-hug">
+                        <img
+                            :src="'/images/logo_hug_h_quadri.png'"
+                            alt="Logo HUG"
+                        />
+                    </div>
+                </div>
                 <div class="brand-sep"></div>
-                <span class="brand-sub">Don du sang</span>
-            </div>
+                <span style="color:var(--color-default-red)">Don du sang</span>
+            </RouterLink>
 
             <!-- Links -->
             <nav class="hug-nav-links">
-                <RouterLink to="/label"   :style="linkStyle('/label')">Label CTS</RouterLink>
-                <RouterLink to="/trophee" :style="linkStyle('/trophee')">Trophée de la Générosité</RouterLink>
-                <RouterLink :to="coinEntrepriseLink" :style="coinStyle">Espace entreprise</RouterLink>
-                <RouterLink to="/quiz"    :style="linkStyle('/quiz')">Quiz d'éligibilité</RouterLink>
-                <RouterLink to="/contact" :style="linkStyle('/contact')">Contact</RouterLink>
+                <RouterLink to="/label" :style="linkStyle('/label')"
+                    >Label CTS</RouterLink
+                >
+                <RouterLink to="/trophee" :style="linkStyle('/trophee')"
+                    >Trophée de la Générosité</RouterLink
+                >
+                <RouterLink :to="coinEntrepriseLink" :style="coinStyle"
+                    >Espace entreprise</RouterLink
+                >
+                <RouterLink to="/quiz" :style="linkStyle('/quiz')"
+                    >Quiz d'éligibilité</RouterLink
+                >
+                <RouterLink to="/contact" :style="linkStyle('/contact')"
+                    >Contact</RouterLink
+                >
             </nav>
 
             <!-- CTA -->
-            <button v-if="showLogout && auth.isLoggedIn" class="btn btn-outlined-red" @click="handleLogout">
+            <button
+                v-if="showLogout && auth.isLoggedIn"
+                class="btn btn-outlined-red"
+                @click="handleLogout"
+            >
                 Déconnexion
             </button>
         </div>
@@ -134,6 +160,8 @@ function handleLogout() {
 /* CTA */
 
 @media (max-width: 960px) {
-    .hug-nav-links { display: none; }
+    .hug-nav-links {
+        display: none;
+    }
 }
 </style>
