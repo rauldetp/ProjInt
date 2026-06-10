@@ -37,7 +37,7 @@ onMounted(async () => {
     <div class="min-h-screen bg-white">
         <!-- Navbar -->
         <header class="bg-white sticky top-0 z-50" style="height: 76px; border-bottom: 1px solid var(--light-grey)">
-            <div class="max-w-7xl mx-auto px-8 h-full flex items-center justify-between">
+            <div class="max-w-7xl mx-auto px-4 md:px-8 h-full flex items-center justify-between">
                 <div class="flex items-center gap-3">
                     <RouterLink to="/" style="text-decoration: none; font-weight: 800; color: var(--default-titles)">HUG</RouterLink>
                     <span style="color: rgba(44,65,64,0.3); font-size: 18px">|</span>
@@ -66,11 +66,11 @@ onMounted(async () => {
 
         <!-- Hero -->
         <section class="py-16 text-center" :style="{ background: heroGradient }">
-            <div class="max-w-2xl mx-auto px-8">
+            <div class="max-w-2xl mx-auto px-4 md:px-8">
                 <p class="font-semibold mb-3 uppercase tracking-widest" :style="{ fontSize: '13px', color: cobrand.textOnBrand, opacity: 0.75 }">
                     {{ entreprise?.nom ?? 'Entreprise' }} × HUG
                 </p>
-                <h1 class="font-bold mb-4 text-black" :style="{ color: cobrand.textOnBrand, fontSize: '42px', lineHeight: '1.2' }">
+                <h1 class="font-bold mb-4 text-black" :style="{ color: cobrand.textOnBrand, lineHeight: '1.2' }">
                     S'inscrire à la collecte de sang
                 </h1>
                 <p :style="{ fontSize: '17px', color: cobrand.textOnBrand, opacity: 0.85, lineHeight: '1.6' }">
@@ -80,8 +80,8 @@ onMounted(async () => {
         </section>
 
         <!-- Contenu -->
-        <section class="py-20" style="background: var(--light-grey)">
-            <div class="max-w-xl mx-auto px-8 text-center">
+        <section class="py-12 md:py-20" style="background: var(--light-grey)">
+            <div class="max-w-xl mx-auto px-4 md:px-8 text-center">
                 <div style="background: white; border-radius: 16px; padding: 3rem 2.5rem">
                     <div
                         class="flex items-center justify-center rounded-full mx-auto mb-6"

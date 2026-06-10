@@ -327,6 +327,14 @@ onMounted(async () => {
     grid-template-columns: 1fr 1fr;
     gap: 1.25rem;
 }
+@media (max-width: 768px) {
+    .form-wrap {
+        padding: 0 1rem;
+    }
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}
 .field {
     display: flex;
     flex-direction: column;

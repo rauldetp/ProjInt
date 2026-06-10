@@ -189,8 +189,8 @@ onMounted(async () => {
         <AppNavbar />
 
         <!-- Hero -->
-        <section class="bg-gradient py-20">
-            <div class="max-w-4xl mx-auto px-8">
+        <section class="bg-gradient py-12 md:py-20">
+            <div class="max-w-4xl mx-auto px-4 md:px-8">
                 <h1 class="font-bold mb-4 text-black" style="line-height: 1.2">
                     Foire aux questions
                 </h1>
@@ -209,8 +209,8 @@ onMounted(async () => {
         </section>
 
         <!-- FAQ contenu -->
-        <section class="py-20 bg-light-grey">
-            <div class="max-w-3xl mx-auto px-8 flex flex-col gap-14">
+        <section class="py-12 md:py-20 bg-light-grey">
+            <div class="max-w-3xl mx-auto px-4 md:px-8 flex flex-col gap-14">
                 <div v-for="cat in categories" :key="cat.id">
                     <!-- Titre catégorie -->
                     <h2 class="font-bold text-black mb-8">
@@ -265,8 +265,8 @@ onMounted(async () => {
         </section>
 
         <!-- CTA contact -->
-        <section class="py-20 text-center bg-gradient">
-            <div class="max-w-xl mx-auto px-8">
+        <section class="py-12 md:py-20 text-center bg-gradient">
+            <div class="max-w-xl mx-auto px-4 md:px-8">
                 <h2 class="font-bold mb-3 text-black">
                     Vous n'avez pas trouvé votre réponse ?
                 </h2>

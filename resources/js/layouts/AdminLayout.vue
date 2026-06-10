@@ -78,4 +78,17 @@ const auth = useAuthStore();
     margin: 0 auto;
     padding: 2.5rem 2rem;
 }
+
+@media (max-width: 768px) {
+    .main-content {
+        padding: 1.5rem 1rem;
+    }
+    .subnav-inner {
+        padding: 0 1rem;
+        overflow-x: auto;
+    }
+    .admin-subnav a {
+        white-space: nowrap;
+    }
+}
 </style>

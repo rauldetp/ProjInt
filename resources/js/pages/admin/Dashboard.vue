@@ -7,7 +7,7 @@
 
         <template v-else>
             <!-- Stats -->
-            <div class="max-w-4xl mx-auto px-8 grid grid-cols-3 gap-4 mb-10">
+            <div class="max-w-4xl mx-auto px-0 md:px-8 grid grid-cols-3 gap-2 md:gap-4 mb-10">
                 <div class="rounded-xl px-5 py-4 bg-light-grey">
                     <h2 class="font-bold mb-1">{{ stats.total_inscrits ?? 0 }}</h2>
                     <p class="captions">Inscriptions aux collectes</p>
@@ -598,4 +598,16 @@ onBeforeUnmount(() => {
 }
 
 .loading, .error { color: var(--default-text); padding: 2rem 0; }
+
+@media (max-width: 768px) {
+    .cards-grid {
+        grid-template-columns: 1fr;
+    }
+    .grey-zone {
+        padding: 1.5rem 0 2rem;
+    }
+    .grey-zone-inner {
+        padding: 0 1rem;
+    }
+}
 </style>

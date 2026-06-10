@@ -776,5 +776,17 @@ const dateRange = computed(() => {
     .small-co-img {
         height: 220px;
     }
+    /* Marges latérales réduites en mobile (16px) */
+    .hero-inner,
+    .small-co-inner {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    .quiz-section {
+        padding: 3rem 1rem 4rem;
+    }
+    .engagement-section {
+        padding: 3rem 1rem;
+    }
 }
 </style>

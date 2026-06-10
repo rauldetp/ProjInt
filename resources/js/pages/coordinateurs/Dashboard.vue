@@ -362,4 +362,10 @@ onMounted(async () => {
     color: var(--default-text);
     padding: 2rem 0;
 }
+
+@media (max-width: 768px) {
+    .cards-grid {
+        grid-template-columns: 1fr;
+    }
+}
 </style>

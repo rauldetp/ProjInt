@@ -106,7 +106,7 @@ onMounted(async () => {
                 class="absolute inset-0"
                 style="background: rgba(44, 65, 64, 0.5)"
             ></div>
-            <div class="relative max-w-7xl mx-auto px-8 w-full z-10">
+            <div class="relative max-w-7xl mx-auto px-4 md:px-8 w-full z-10">
                 <div class="max-w-4xl">
                     <h1 class="font-bold text-white leading-tight mb-4">
                         Le Trophée de la Générosité
@@ -123,7 +123,7 @@ onMounted(async () => {
 
         <!-- Stats -->
         <section class="bg-white py-10">
-            <div class="max-w-4xl mx-auto px-8 grid grid-cols-3 gap-4">
+            <div class="max-w-4xl mx-auto px-4 md:px-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div class="rounded-xl px-5 py-4 bg-light-grey">
                     <h2 class="font-bold mb-1">2008</h2>
                     <p class="captions">
@@ -144,9 +144,9 @@ onMounted(async () => {
         </section>
 
         <!-- Qu'est-ce que c'est ? -->
-        <section class="bg-light-grey py-20">
+        <section class="bg-light-grey py-12 md:py-20">
             <div
-                class="max-w-7xl mx-auto px-8 grid grid-cols-2 gap-16 items-center"
+                class="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center"
             >
                 <div>
                     <h2 class="font-bold mb-5 text-black">
@@ -185,9 +185,9 @@ onMounted(async () => {
         </section>
 
         <!-- Qu'est-ce que c'est ? -->
-        <section class="bg-white py-20">
+        <section class="bg-white py-12 md:py-20">
             <div
-                class="max-w-7xl mx-auto px-8 grid grid-cols-2 gap-16 items-center"
+                class="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center"
             >
                 <div>
                     <h2 class="font-bold mb-5 text-black">
@@ -215,11 +215,11 @@ onMounted(async () => {
         </section>
 
         <section
-            class="py-20"
+            class="py-12 md:py-20"
             :class="isCobrand ? '' : 'bg-gradient'"
             :style="isCobrand ? { background: sectionGradient } : null"
         >
-            <div class="max-w-7xl mx-auto px-8 text-center">
+            <div class="max-w-7xl mx-auto px-4 md:px-8 text-center">
                 <h1
                     class="font-bold mb-4 text-black"
                     :style="isCobrand ? { color: cobrand.textOnBrand } : null"
@@ -236,14 +236,14 @@ onMounted(async () => {
 
         <!-- Valeurs -->
         <section
-            class="bg-white py-20 border-t"
+            class="bg-white py-12 md:py-20 border-t"
             style="border-color: var(--light-grey)"
         >
-            <div class="max-w-7xl mx-auto px-8">
+            <div class="max-w-7xl mx-auto px-4 md:px-8">
                 <h2 class="font-bold text-center mb-12 text-black">
                     Les valeurs du Trophée de la Générosité
                 </h2>
-                <div class="grid grid-cols-3 gap-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div class="flex flex-col items-center text-center gap-4">
                         <div
                             class="circle-icon rounded-full bg-light-grey flex items-center justify-center"
@@ -296,9 +296,9 @@ onMounted(async () => {
             </div>
         </section>
         <!-- Comment ça marche ? -->
-        <section class="bg-light-grey py-20">
+        <section class="bg-light-grey py-12 md:py-20">
             <div
-                class="max-w-7xl mx-auto px-8 grid grid-cols-2 gap-16 items-center"
+                class="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center"
             >
                 <div>
                     <h2 class="font-bold mb-5 text-black">

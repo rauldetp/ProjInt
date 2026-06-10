@@ -170,6 +170,14 @@ function handleLogout() {
             <RouterLink :to="contactLink" :style="linkStyle(contactLink)" @click="closeMobile"
                 >Contact</RouterLink
             >
+            <button
+                v-if="(showLogout || isCobrand) && auth.isLoggedIn"
+                class="btn btn-outlined-red"
+                style="margin-top: 0.75rem"
+                @click="handleLogout"
+            >
+                Déconnexion
+            </button>
         </nav>
     </header>
 </template>
@@ -278,6 +286,10 @@ function handleLogout() {
     }
     .app-burger {
         display: inline-flex;
+    }
+    /* Pas de bouton Déconnexion dans la barre mobile (cf. maquettes) */
+    .app-navbar-actions .btn {
+        display: none;
     }
     .app-mobile-menu {
         display: flex;
