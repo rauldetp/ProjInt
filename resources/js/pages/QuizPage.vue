@@ -1,16 +1,34 @@
 ﻿<script setup>
 import { ref, computed, onMounted } from "vue";
+import { useRoute } from "vue-router";
 import { useAuthStore } from "../stores/auth";
-import HugNavbar from "../components/HugNavbar.vue";
+import { useCobrandStore } from "../stores/cobrand";
+import AppNavbar from "../components/AppNavbar.vue";
 import QuizNavbar from "../components/QuizNavbar.vue";
 
+const route = useRoute();
 const auth = useAuthStore();
+const cobrand = useCobrandStore();
 
-const BRAND = "var(--color-default-red)";
-const TEAL = "var(--color-default-blue-59)";
-const COOKIE_RESULT = "quizResult_hug";
-const COOKIE_ANSWERS = "quizAnswers_hug";
+// Mode cobrandé déterminé par la route ; seules les couleurs d'accent changent.
+const isCobrand = computed(() => !!route.params.slug);
+const brandColor = computed(
+    () => cobrand.couleurPrimaire || "var(--color-default-red)",
+);
+const textOnBrand = computed(() => cobrand.textOnBrand || "white");
+
+// Données entreprise/collecte (uniquement en mode cobrandé).
+const entreprise = ref(null);
+const collecte = ref(null);
+
 const COOKIE_DAYS = 7;
+// Cookies indexés par entreprise en cobrandé, génériques sinon.
+const cookieResult = computed(() =>
+    isCobrand.value ? `quizResult_${route.params.slug}` : "quizResult_hug",
+);
+const cookieAnswers = computed(() =>
+    isCobrand.value ? `quizAnswers_${route.params.slug}` : "quizAnswers_hug",
+);
 
 // ── Cookie helpers ────────────────────────────────────────────────
 function setCookie(name, value, days) {
@@ -32,6 +50,8 @@ const answers = ref([]);
 const selectedAnswer = ref(null);
 const currentInfo = ref(null);
 const resultat = ref(null);
+// Origine de l'écran insight : null (flux quiz) ou "recap" (depuis le récap).
+const infoFrom = ref(null);
 
 const participerLink = computed(() => {
     if (auth.isAdmin) return "/admin";
@@ -40,18 +60,49 @@ const participerLink = computed(() => {
     return "/login";
 });
 
-onMounted(() => {
-    const savedResult = getCookie(COOKIE_RESULT);
+// CTA de fin de quiz : en cobrandé, vers l'inscription si une collecte est
+// active, sinon l'accueil de l'entreprise ; sinon le lien générique.
+const resultCta = computed(() => {
+    if (!isCobrand.value) return participerLink.value;
+    return collecte.value?.active
+        ? `/entreprise/${route.params.slug}/inscription`
+        : `/entreprise/${route.params.slug}`;
+});
+
+onMounted(async () => {
+    // En cobrandé : récupère entreprise + collecte pour couleurs et CTA.
+    if (isCobrand.value) {
+        try {
+            const res = await fetch(`/api/entreprises/${route.params.slug}`);
+            if (res.ok) {
+                const data = await res.json();
+                entreprise.value = data.entreprise;
+                collecte.value = data.collecte ?? null;
+                if (data.entreprise) cobrand.set(data.entreprise);
+            }
+        } catch {
+            // silent fail
+        }
+    }
+
+    const savedResult = getCookie(cookieResult.value);
     if (savedResult) {
         resultat.value = savedResult;
-        const savedAnswers = getCookie(COOKIE_ANSWERS);
+        const savedAnswers = getCookie(cookieAnswers.value);
         if (savedAnswers) {
             try {
                 answers.value = JSON.parse(savedAnswers);
             } catch {}
         }
     }
-    document.title = "Quiz d'éligibilité — HUG Don du sang";
+
+    if (route.query.voir === "resultat") {
+        step.value = resultat.value ? "result" : "intro";
+    }
+
+    document.title = isCobrand.value
+        ? `Quiz d'éligibilité — ${cobrand.nom || "HUG"}`
+        : "Quiz d'éligibilité — HUG Don du sang";
 });
 
 // ── Questions ────────────────────────────────────────────────────
@@ -91,7 +142,7 @@ const questions = [
     },
     {
         icon: "health_and_safety",
-        text: "Vous sentez-vous en bonne santé aujourd'hui ?",
+        text: "Vous sentez-vous en bonne santé en ce moment ?",
         options: ["Oui", "Non"],
         feedback: {
             trigger: "Non",
@@ -157,7 +208,7 @@ const questions = [
     },
     {
         icon: "restaurant",
-        text: "Avez-vous suffisamment mangé et bu aujourd'hui ?",
+        text: "Mangez-vous et buvez-vous suffisament d’eau quotidiennement ?",
         options: ["Oui", "Non"],
         feedback: {
             trigger: "Non",
@@ -217,11 +268,10 @@ function isGoodForDonation(i) {
     return !a || !q.feedback || a !== q.feedback.trigger;
 }
 
-function getAnswerBadgeStyle(answer) {
-    if (!answer) return { background: "var(--light-grey)", color: "#8fa8a6" };
-    if (answer === "Oui") return { background: "#d1fae5", color: "#065f46" };
-    if (answer === "Non") return { background: "#fee2e2", color: "#991b1b" };
-    return { background: "#f0f9f8", color: "var(--default-titles)" };
+function getAnswerBadgeClass(answer) {
+    if (answer === "Oui") return "badge-complete"; // vert
+    if (answer === "Non") return "badge-aconfirmer"; // rouge
+    return "badge-avenir"; // jaune (Je ne sais pas / —)
 }
 
 // ── Actions ──────────────────────────────────────────────────────
@@ -234,7 +284,7 @@ function startQuiz() {
 }
 
 function viewPreviousResult() {
-    if (resultat.value) step.value = "result";
+    if (resultat.value) step.value = "recap";
     else startQuiz();
 }
 
@@ -262,6 +312,12 @@ function confirm() {
 
 function continueFromInfo() {
     currentInfo.value = null;
+    // Insight ouvert depuis le récap : on y retourne.
+    if (infoFrom.value === "recap") {
+        infoFrom.value = null;
+        step.value = "recap";
+        return;
+    }
     advanceQuestion();
 }
 
@@ -271,12 +327,33 @@ function advanceQuestion() {
         currentQ.value++;
         step.value = "quiz";
     } else {
-        step.value = "recap";
+        // Fin du quiz : on va directement au résultat.
+        showResult();
     }
+}
+
+// Récap accessible depuis le résultat ("Découvrir pourquoi").
+function voirRecap() {
+    step.value = "recap";
+}
+
+// Ouvre l'insight d'une question depuis le récap.
+function showInsight(i) {
+    currentQ.value = i;
+    currentInfo.value = questions[i].info;
+    infoFrom.value = "recap";
+    step.value = "info";
 }
 
 function goBack() {
     if (step.value === "info") {
+        // Retour au récap si l'insight a été ouvert depuis le récap.
+        if (infoFrom.value === "recap") {
+            infoFrom.value = null;
+            currentInfo.value = null;
+            step.value = "recap";
+            return;
+        }
         answers.value = answers.value.slice(0, currentQ.value);
         selectedAnswer.value = null;
         currentInfo.value = null;
@@ -289,6 +366,10 @@ function goBack() {
             step.value = "intro";
         }
     } else if (step.value === "recap") {
+        // Le récap est désormais post-résultat.
+        step.value = "result";
+    } else if (step.value === "result") {
+        // Retour à la dernière question pour réviser sa réponse.
         currentQ.value = questions.length - 1;
         selectedAnswer.value = answers.value[currentQ.value] ?? null;
         step.value = "quiz";
@@ -298,8 +379,19 @@ function goBack() {
 function showResult() {
     const r = computeResult();
     resultat.value = r;
-    setCookie(COOKIE_RESULT, r, COOKIE_DAYS);
-    setCookie(COOKIE_ANSWERS, JSON.stringify(answers.value), COOKIE_DAYS);
+    setCookie(cookieResult.value, r, COOKIE_DAYS);
+    setCookie(cookieAnswers.value, JSON.stringify(answers.value), COOKIE_DAYS);
+    // En cobrandé : remonte le résultat à la collecte (stats coordinateur).
+    if (isCobrand.value && collecte.value?.id) {
+        fetch(`/api/collectes/${collecte.value.id}/quiz-result`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
+            body: JSON.stringify({ resultat: r }),
+        }).catch(() => {});
+    }
     step.value = "result";
 }
 
@@ -318,8 +410,8 @@ function computeResult() {
 
 function retakeQuiz() {
     resultat.value = null;
-    deleteCookie(COOKIE_RESULT);
-    deleteCookie(COOKIE_ANSWERS);
+    deleteCookie(cookieResult.value);
+    deleteCookie(cookieAnswers.value);
     startQuiz();
 }
 </script>
@@ -327,245 +419,192 @@ function retakeQuiz() {
 <template>
     <div class="page">
         <!-- Nav standard sur l'intro, nav quiz sur les autres étapes -->
-        <HugNavbar v-if="step === 'intro'" />
-        <QuizNavbar v-else :on-back="goBack" />
+        <AppNavbar v-if="step === 'intro'" />
+        <QuizNavbar
+            v-else
+            :on-back="goBack"
+            :cobrand="isCobrand ? cobrand : null"
+        />
 
         <!-- ══════════════════════════════════════════════════════
              INTRO — split screen
         ═══════════════════════════════════════════════════════ -->
         <Transition name="slide" mode="out-in">
-        <div v-if="step === 'intro'" class="split-screen" key="intro">
-            <div class="mascotte-col">
-                <div class="mascotte-circle">
-                    <img
-                        :src="'/images/courage/Mascotte_default.png'"
-                        alt="Courage"
-                        class="mascotte-img"
-                    />
-                </div>
-            </div>
-
-            <div class="content-col">
-                <div class="intro-content">
-                    <h1 class="text-black">Je suis Courage, votre guide!</h1>
-                    <p>
-                        Je vais vous poser 9 questions rapides et vous donner
-                        des conseils utiles à chaque étape pour vérifier si vous
-                        pouvez donner votre sang.
-                    </p>
-                    <div class="grid grid-cols-3 gap-4">
-                        <div class="rounded-xl px-5 py-4 bg-light-grey">
-                            <span
-                                class="material-symbols-outlined feature-icon mb-2"
-                                >schedule</span
-                            >
-                            <p class="captions">Seulement 5 minutes</p>
-                        </div>
-                        <div class="rounded-xl px-5 py-4 bg-light-grey">
-                            <span class="material-symbols-outlined feature-icon"
-                                >security</span
-                            >
-                            <p class="captions">100 % confidentiel</p>
-                        </div>
-                        <div class="rounded-xl px-5 py-4 bg-light-grey">
-                            <span class="material-symbols-outlined feature-icon"
-                                >favorite</span
-                            >
-                            <p class="captions">Préparer votre don</p>
-                        </div>
+            <div v-if="step === 'intro'" class="split-screen" key="intro">
+                <div
+                    class="mascotte-col"
+                >
+                    <div class="mascotte-circle">
+                        <img
+                            :src="'/images/courage/Mascotte_default.png'"
+                            alt="Courage"
+                            class="mascotte-img"
+                        />
                     </div>
-                    <button class="btn btn-filled-blue" @click="startQuiz">
-                        Commencer le test
-                        <span class="material-symbols-outlined"
-                            >arrow_forward</span
-                        >
-                    </button>
+                </div>
 
-                    <button
-                        v-if="resultat"
-                        class="btn-retake"
-                        @click="viewPreviousResult"
-                    >
-                        Voir mon résultat précédent
-                    </button>
+                <div class="content-col">
+                    <div class="intro-content">
+                        <h1 class="text-black">
+                            Je suis Courage, votre guide!
+                        </h1>
+                        <p>
+                            Je vais vous poser 9 questions rapides et vous
+                            donner des conseils utiles à chaque étape pour
+                            vérifier si vous pouvez donner votre sang.
+                        </p>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div class="rounded-xl px-5 py-4 bg-light-grey">
+                                <span
+                                    class="material-symbols-outlined feature-icon mb-2"
+                                    >schedule</span
+                                >
+                                <p class="captions">Seulement 5 minutes</p>
+                            </div>
+                            <div class="rounded-xl px-5 py-4 bg-light-grey">
+                                <span
+                                    class="material-symbols-outlined feature-icon"
+                                    >security</span
+                                >
+                                <p class="captions">100 % confidentiel</p>
+                            </div>
+                            <div class="rounded-xl px-5 py-4 bg-light-grey">
+                                <span
+                                    class="material-symbols-outlined feature-icon"
+                                    >favorite</span
+                                >
+                                <p class="captions">Préparer votre don</p>
+                            </div>
+                        </div>
+                        <div
+                            v-if="isCobrand && collecte?.nb_inscrits_estime"
+                            class="social-proof-chip"
+                        >
+                            <span
+                                class="material-symbols-outlined"
+                                style="font-size: 18px"
+                                >group</span
+                            >
+                            <span
+                                >Déjà
+                                <strong>{{
+                                    collecte.nb_inscrits_estime
+                                }}</strong>
+                                collègues ont passé le test !</span
+                            >
+                        </div>
+
+                        <button
+                            class="btn btn-filled-blue"
+                            :style="
+                                isCobrand
+                                    ? {
+                                          background: brandColor,
+                                          color: textOnBrand,
+                                      }
+                                    : null
+                            "
+                            @click="startQuiz"
+                        >
+                            Commencer le test
+                            <span class="material-symbols-outlined"
+                                >arrow_forward</span
+                            >
+                        </button>
+
+                        <button
+                            v-if="resultat"
+                            class="btn btn-outlined-blue"
+                            @click="viewPreviousResult"
+                        >
+                            Voir mon résultat précédent
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- ══════════════════════════════════════════════════════
+            <!-- ══════════════════════════════════════════════════════
              QUESTION
         ═══════════════════════════════════════════════════════ -->
-        <div v-else-if="step === 'quiz'" class="quiz-screen" :key="'quiz-' + currentQ">
-            <!-- Progress steps -->
-            <div class="progress-steps">
-                <template v-for="(_, i) in questions" :key="i">
-                    <div
-                        class="step"
-                        :class="{
-                            'step-done': i < currentQ,
-                            'step-active': i === currentQ,
-                        }"
-                    >
-                        {{ i + 1 }}
-                    </div>
-                    <div
-                        v-if="i < questions.length - 1"
-                        class="step-line"
-                        :class="{ 'step-line-done': i < currentQ }"
-                    ></div>
-                </template>
-            </div>
-
-            <div class="quiz-inner">
-                <!-- Icon -->
-                <div
-                    class="circle-icon rounded-full bg-light-grey flex items-center justify-center mb-8"
-                >
-                    <span class="material-symbols-outlined">{{
-                        questions[currentQ].icon
-                    }}</span>
-                </div>
-                <h2 class="quiz-question">{{ questions[currentQ].text }}</h2>
-
-                <div class="quiz-options">
-                    <button
-                        v-for="opt in questions[currentQ].options"
-                        :key="opt"
-                        class="btn"
-                        :class="[
-                            opt === 'Oui'
-                                ? 'btn-outlined-green'
-                                : opt === 'Non'
-                                  ? 'btn-outlined-red'
-                                  : 'btn-outlined-blue',
-                            { 'is-selected': selectedAnswer === opt },
-                        ]"
-                        @click="selectAnswer(opt)"
-                    >
-                        <span class="opt-icon">
-                            <svg
-                                v-if="opt === 'Oui'"
-                                width="16"
-                                height="16"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2.5"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            >
-                                <polyline points="20 6 9 17 4 12" />
-                            </svg>
-                            <svg
-                                v-else-if="opt === 'Non'"
-                                width="16"
-                                height="16"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2.5"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            >
-                                <line x1="18" y1="6" x2="6" y2="18" />
-                                <line x1="6" y1="6" x2="18" y2="18" />
-                            </svg>
-                        </span>
-                        {{ opt }}
-                    </button>
-                </div>
-
-                <button
-                    class="btn btn-filled-blue mb-6"
-                    style="width: 100%; max-width: 440px"
-                    :disabled="!selectedAnswer"
-                    @click="confirm"
-                >
-                    Prochaine question
-                    <span class="material-symbols-outlined">arrow_forward</span>
-                </button>
-            </div>
-        </div>
-
-        <!-- ══════════════════════════════════════════════════════
-             SLIDE INFO — split screen
-        ═══════════════════════════════════════════════════════ -->
-        <div v-else-if="step === 'info'" class="split-screen" key="info">
-            <div class="mascotte-col mascotte-col-full">
-                <img
-                    :src="'/images/courage/Mascotte_insight.png'"
-                    alt="Courage"
-                    class="mascotte-img-full"
-                />
-            </div>
-
-            <div class="content-col">
-                <div class="intro-content">
-                    <h2 class="text-black">Courage vous informe !</h2>
-
-                    <h3
-                        v-for="(line, i) in currentInfo.message.split('\n\n')"
-                        :key="i"
-                    >
-                        {{ line }}
-                    </h3>
-
-                    <p v-if="currentInfo.reassurance">
-                        {{ currentInfo.reassurance }}
-                    </p>
-
-                    <div
-                        v-if="currentInfo.tip"
-                        class="tip-card rounded-xl p-4 gap-6 flex items-center"
-                    >
-                        <div class="tip-icon-wrap">
-                            <span class="material-symbols-outlined tip-icon"
-                                >lightbulb</span
-                            >
-                        </div>
-                        <p class="text-black">{{ currentInfo.tip }}</p>
-                    </div>
-
-                    <button
-                        class="btn btn-filled-blue"
-                        style="margin-top: 0.5rem"
-                        @click="continueFromInfo"
-                    >
-                        J'ai bien compris
-                        <span class="material-symbols-outlined"
-                            >arrow_forward</span
+            <div
+                v-else-if="step === 'quiz'"
+                class="quiz-screen"
+                :key="'quiz-' + currentQ"
+            >
+                <!-- Progress steps -->
+                <div class="progress-steps">
+                    <template v-for="(_, i) in questions" :key="i">
+                        <div
+                            class="step"
+                            :class="{
+                                'step-done': i < currentQ,
+                                'step-active': i === currentQ,
+                            }"
+                            :style="
+                                !isCobrand
+                                    ? null
+                                    : i < currentQ
+                                      ? {
+                                            background: brandColor,
+                                            borderColor: brandColor,
+                                            color: textOnBrand,
+                                        }
+                                      : i === currentQ
+                                        ? {
+                                              borderColor: brandColor,
+                                              color: brandColor,
+                                          }
+                                        : null
+                            "
                         >
-                    </button>
+                            {{ i + 1 }}
+                        </div>
+                        <div
+                            v-if="i < questions.length - 1"
+                            class="step-line"
+                            :class="{ 'step-line-done': i < currentQ }"
+                            :style="
+                                isCobrand && i < currentQ
+                                    ? { background: brandColor }
+                                    : null
+                            "
+                        ></div>
+                    </template>
                 </div>
-            </div>
-        </div>
 
-        <!-- ══════════════════════════════════════════════════════
-             RECAP DES RÉPONSES
-        ═══════════════════════════════════════════════════════ -->
-        <div v-else-if="step === 'recap'" class="recap-screen" key="recap">
-            <div class="recap-inner">
-                <h2 class="recap-title">Réponses données</h2>
-
-                <div class="answers-grid">
+                <div class="quiz-inner">
+                    <!-- Icon -->
                     <div
-                        v-for="(q, i) in questions"
-                        :key="i"
-                        class="answer-card"
+                        class="circle-icon rounded-full bg-light-grey flex items-center justify-center mb-8"
                     >
-                        <div class="card-top">
-                            <div
-                                class="card-check"
-                                :class="
-                                    isGoodForDonation(i)
-                                        ? 'check-good'
-                                        : 'check-bad'
-                                "
-                            >
+                        <span class="material-symbols-outlined">{{
+                            questions[currentQ].icon
+                        }}</span>
+                    </div>
+                    <h2 class="quiz-question">
+                        {{ questions[currentQ].text }}
+                    </h2>
+
+                    <div class="quiz-options">
+                        <button
+                            v-for="opt in questions[currentQ].options"
+                            :key="opt"
+                            class="btn"
+                            :class="[
+                                opt === 'Oui'
+                                    ? 'btn-outlined-green'
+                                    : opt === 'Non'
+                                      ? 'btn-outlined-red'
+                                      : 'btn-outlined-blue',
+                                { 'is-selected': selectedAnswer === opt },
+                            ]"
+                            @click="selectAnswer(opt)"
+                        >
+                            <span class="opt-icon">
                                 <svg
-                                    v-if="isGoodForDonation(i)"
-                                    width="14"
-                                    height="14"
+                                    v-if="opt === 'Oui'"
+                                    width="16"
+                                    height="16"
                                     viewBox="0 0 24 24"
                                     fill="none"
                                     stroke="currentColor"
@@ -576,9 +615,9 @@ function retakeQuiz() {
                                     <polyline points="20 6 9 17 4 12" />
                                 </svg>
                                 <svg
-                                    v-else
-                                    width="14"
-                                    height="14"
+                                    v-else-if="opt === 'Non'"
+                                    width="16"
+                                    height="16"
                                     viewBox="0 0 24 24"
                                     fill="none"
                                     stroke="currentColor"
@@ -589,159 +628,380 @@ function retakeQuiz() {
                                     <line x1="18" y1="6" x2="6" y2="18" />
                                     <line x1="6" y1="6" x2="18" y2="18" />
                                 </svg>
-                            </div>
-                            <p class="card-question">{{ q.text }}</p>
-                            <div class="card-info-btn">
-                                <span
-                                    class="material-symbols-outlined"
-                                    style="font-size: 18px; color: #000"
-                                    >info</span
-                                >
-                            </div>
-                        </div>
-                        <div class="card-bottom">
-                            <span class="card-answer-label"
-                                >Vous avez répondu :</span
-                            >
-                            <span
-                                class="answer-badge"
-                                :style="getAnswerBadgeStyle(answers[i])"
-                            >
-                                {{ answers[i] ?? "—" }}
                             </span>
-                        </div>
+                            {{ opt }}
+                        </button>
                     </div>
-                </div>
 
-                <div class="ready-section">
-                    <p class="ready-title">Vous vous sentez prêt ?</p>
-                    <button class="btn-ready" @click="showResult">
-                        Voir mon résultat
+                    <button
+                        class="btn btn-filled-blue mb-6"
+                        style="width: 100%; max-width: 440px"
+                        :style="
+                            isCobrand && selectedAnswer
+                                ? { background: brandColor, color: textOnBrand }
+                                : null
+                        "
+                        :disabled="!selectedAnswer"
+                        @click="confirm"
+                    >
+                        Prochaine question
                         <span class="material-symbols-outlined"
                             >arrow_forward</span
                         >
                     </button>
                 </div>
             </div>
-        </div>
 
-        <!-- ══════════════════════════════════════════════════════
-             RÉSULTAT — split screen
+            <!-- ══════════════════════════════════════════════════════
+             SLIDE INFO — split screen
         ═══════════════════════════════════════════════════════ -->
-        <div v-else-if="step === 'result'" class="split-screen" key="result">
-            <div class="mascotte-col">
-                <div class="mascotte-circle">
+            <div v-else-if="step === 'info'" class="split-screen" key="info">
+                <div class="mascotte-col mascotte-col-full">
                     <img
-                        :src="
-                            resultat === 'eligible'
-                                ? '/images/courage/Mascotte_award.png'
-                                : resultat === 'non-eligible'
-                                  ? '/images/courage/Mascotte_failure.png'
-                                  : '/images/courage/Mascotte_default.png'
-                        "
+                        :src="'/images/courage/Mascotte_insight.png'"
                         alt="Courage"
-                        class="mascotte-img"
+                        class="mascotte-img-full"
                     />
                 </div>
-            </div>
 
-            <div class="content-col">
-                <div class="result-content">
-                    <!-- ÉLIGIBLE -->
-                    <template v-if="resultat === 'eligible'">
-                        <h2 class="result-title">
-                            Bravo ! Vous êtes la star du don.
-                        </h2>
-                        <p class="result-sub">
-                            Sur la base de vos réponses, vous remplissez les
-                            principales conditions de don.
-                        </p>
-                        <div class="result-tip-card">
-                            <span
-                                class="material-symbols-outlined"
-                                style="font-size: 18px; color: #000"
-                                >info</span
-                            >
-                            <p>
-                                La validation finale sera effectuée sur place
-                                par l'équipe médicale.
-                            </p>
-                        </div>
-                        <RouterLink
-                            :to="participerLink"
-                            class="btn btn-filled-blue"
+                <div class="content-col">
+                    <div class="intro-content">
+                        <h2 class="text-black">Courage vous informe !</h2>
+
+                        <h3
+                            v-for="(line, i) in currentInfo.message.split(
+                                '\n\n',
+                            )"
+                            :key="i"
                         >
-                            Prendre rendez-vous
-                            <span
-                                class="material-symbols-outlined"
-                                style="font-size: 18px; color: #000"
-                                >calendar_month</span
-                            >
-                        </RouterLink>
-                    </template>
+                            {{ line }}
+                        </h3>
 
-                    <!-- NON ÉLIGIBLE -->
-                    <template v-else-if="resultat === 'non-eligible'">
-                        <h2 class="result-title">
-                            Certains points ne sont pas éligibles.
-                        </h2>
-                        <p class="result-sub">
-                            Malheureusement, sur la base de vos réponses,
-                            certains points ne remplissent pas les conditions de
-                            don adéquates.
+                        <p v-if="currentInfo.reassurance">
+                            {{ currentInfo.reassurance }}
                         </p>
-                        <button class="btn btn-filled-blue" @click="retakeQuiz">
-                            Découvrir pourquoi
+
+                        <div
+                            v-if="currentInfo.tip"
+                            class="tip-card rounded-xl p-4 gap-6 flex items-center"
+                        >
+                            <div class="tip-icon-wrap">
+                                <span class="material-symbols-outlined tip-icon"
+                                    >lightbulb</span
+                                >
+                            </div>
+                            <p class="text-black">{{ currentInfo.tip }}</p>
+                        </div>
+
+                        <button
+                            class="btn btn-filled-blue"
+                            style="margin-top: 0.5rem"
+                            :style="
+                                isCobrand
+                                    ? {
+                                          background: brandColor,
+                                          color: textOnBrand,
+                                      }
+                                    : null
+                            "
+                            @click="continueFromInfo"
+                        >
+                            J'ai bien compris
                             <span class="material-symbols-outlined"
                                 >arrow_forward</span
                             >
                         </button>
-                    </template>
-
-                    <!-- INCERTAIN -->
-                    <template v-else>
-                        <h2 class="result-title">
-                            Certaines situations nécessitent une validation
-                            médicale.
-                        </h2>
-                        <p class="result-sub">
-                            Le personnel du CTS pourra vous renseigner lors de
-                            votre rendez-vous.
-                        </p>
-                        <div class="result-tip-card">
-                            <span
-                                class="material-symbols-outlined"
-                                style="font-size: 18px; color: #000"
-                                >info</span
-                            >
-                            <p>
-                                Vous pouvez tout de même vous inscrire et venir
-                                rencontrer notre équipe médicale.
-                            </p>
-                        </div>
-                        <RouterLink
-                            :to="participerLink"
-                            class="btn btn-filled-blue"
-                        >
-                            Prendre rendez-vous
-                            <span
-                                class="material-symbols-outlined"
-                                style="font-size: 18px; color: #000"
-                                >calendar_month</span
-                            >
-                        </RouterLink>
-                    </template>
-
-                    <button
-                        class="btn-retake"
-                        @click="retakeQuiz"
-                        style="margin-top: 1.5rem"
-                    >
-                        ↺ Refaire le quiz
-                    </button>
+                    </div>
                 </div>
             </div>
-        </div>
+
+            <!-- ══════════════════════════════════════════════════════
+             RECAP DES RÉPONSES
+        ═══════════════════════════════════════════════════════ -->
+            <div v-else-if="step === 'recap'" class="recap-screen" key="recap">
+                <div class="recap-inner">
+                    <h2 class="recap-title">Réponses données</h2>
+
+                    <div class="answers-grid">
+                        <div
+                            v-for="(q, i) in questions"
+                            :key="i"
+                            class="card shadow-light"
+                        >
+                            <div class="card-top">
+                                <div
+                                    class="card-check"
+                                    :class="
+                                        isGoodForDonation(i)
+                                            ? 'check-good'
+                                            : 'check-bad'
+                                    "
+                                >
+                                    <svg
+                                        v-if="isGoodForDonation(i)"
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2.5"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    >
+                                        <polyline points="20 6 9 17 4 12" />
+                                    </svg>
+                                    <svg
+                                        v-else
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2.5"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    >
+                                        <line x1="18" y1="6" x2="6" y2="18" />
+                                        <line x1="6" y1="6" x2="18" y2="18" />
+                                    </svg>
+                                </div>
+                                <p class="card-question">{{ q.text }}</p>
+                                <button
+                                    type="button"
+                                    class="btn-circle btn-circle-cyan"
+                                    aria-label="Voir l'information"
+                                    @click="showInsight(i)"
+                                >
+                                    <span class="material-symbols-outlined btn-circle-icon">info</span>
+                                </button>
+                            </div>
+                            <div class="card-bottom">
+                                <span class="card-answer-label"
+                                    >Vous avez répondu :</span
+                                >
+                                <span
+                                    class="captions badge"
+                                    :class="getAnswerBadgeClass(answers[i])"
+                                >
+                                    {{ answers[i] ?? "—" }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="ready-section"
+                        :style="
+                            isCobrand
+                                ? {
+                                      background: `linear-gradient(135deg, ${brandColor}, var(--color-default-green))`,
+                                  }
+                                : null
+                        "
+                    >
+                        <div class="ready-actions">
+                            <RouterLink
+                                v-if="resultat !== 'non-eligible'"
+                                :to="resultCta"
+                                class="btn btn-filled-red"
+                            >
+                                S'inscrire
+                                <span class="material-symbols-outlined"
+                                    >arrow_forward</span
+                                >
+                            </RouterLink>
+                            <button
+                                class="btn btn-filled-red"
+                                @click="step = 'result'"
+                            >
+                                Revenir aux résultats
+                            </button>
+                        </div>
+                    </div>
+            </div>
+
+            <!-- ══════════════════════════════════════════════════════
+             RÉSULTAT — split screen
+        ═══════════════════════════════════════════════════════ -->
+            <div
+                v-else-if="step === 'result'"
+                class="split-screen"
+                key="result"
+            >
+                <div class="mascotte-col">
+                    <div class="mascotte-circle">
+                        <img
+                            :src="
+                                resultat === 'eligible'
+                                    ? '/images/courage/Mascotte_award.png'
+                                    : resultat === 'non-eligible'
+                                      ? '/images/courage/Mascotte_failure.png'
+                                      : '/images/courage/Mascotte_default.png'
+                            "
+                            alt="Courage"
+                            class="mascotte-img"
+                        />
+                    </div>
+                </div>
+
+                <div class="content-col">
+                    <div class="result-content">
+                        <!-- ÉLIGIBLE -->
+                        <template v-if="resultat === 'eligible'">
+                            <h2 class="result-title">
+                                Bravo ! Vous êtes la star du don.
+                            </h2>
+                            <p class="result-sub">
+                                Sur la base de vos réponses, vous remplissez les
+                                principales conditions de don.
+                            </p>
+                            <div class="result-tip-card">
+                                <span
+                                    class="material-symbols-outlined"
+                                    style="font-size: 18px; color: #000"
+                                    >info</span
+                                >
+                                <p>
+                                    La validation finale sera effectuée sur
+                                    place par l'équipe médicale.
+                                </p>
+                            </div>
+                            <div
+                                v-if="
+                                    isCobrand &&
+                                    collecte?.nb_inscrits_estime &&
+                                    collecte?.active
+                                "
+                                class="social-proof-chip social-proof-result"
+                            >
+                                <span
+                                    class="material-symbols-outlined"
+                                    style="font-size: 18px"
+                                    >group</span
+                                >
+                                <span
+                                    >Rejoignez les
+                                    <strong>{{
+                                        collecte.nb_inscrits_estime
+                                    }}</strong>
+                                    collègues qui participent !</span
+                                >
+                            </div>
+                            <RouterLink
+                                :to="resultCta"
+                                class="btn btn-filled-blue"
+                                :style="
+                                    isCobrand
+                                        ? {
+                                              background: brandColor,
+                                              color: textOnBrand,
+                                          }
+                                        : null
+                                "
+                            >
+                                Prendre rendez-vous
+                                <span
+                                    class="material-symbols-outlined"
+                                    style="font-size: 18px; color: #000"
+                                    >calendar_month</span
+                                >
+                            </RouterLink>
+                            <button
+                                class="btn btn-outlined-blue"
+                                @click="voirRecap"
+                            >
+                                Voir mes réponses
+                            </button>
+                        </template>
+
+                        <!-- NON ÉLIGIBLE -->
+                        <template v-else-if="resultat === 'non-eligible'">
+                            <h2 class="result-title">
+                                Certains points ne sont pas éligibles.
+                            </h2>
+                            <p class="result-sub">
+                                Malheureusement, sur la base de vos réponses,
+                                certains points ne remplissent pas les
+                                conditions de don adéquates.
+                            </p>
+                            <button
+                                class="btn btn-filled-blue"
+                                :style="
+                                    isCobrand
+                                        ? {
+                                              background: brandColor,
+                                              color: textOnBrand,
+                                          }
+                                        : null
+                                "
+                                @click="voirRecap"
+                            >
+                                Découvrir pourquoi
+                                <span class="material-symbols-outlined"
+                                    >arrow_forward</span
+                                >
+                            </button>
+                        </template>
+
+                        <!-- INCERTAIN -->
+                        <template v-else>
+                            <h2 class="result-title">
+                                Certaines situations nécessitent une validation
+                                médicale.
+                            </h2>
+                            <p class="result-sub">
+                                Le personnel du CTS pourra vous renseigner lors
+                                de votre rendez-vous.
+                            </p>
+                            <div class="result-tip-card">
+                                <span
+                                    class="material-symbols-outlined"
+                                    style="font-size: 18px; color: #000"
+                                    >info</span
+                                >
+                                <p>
+                                    Vous pouvez tout de même vous inscrire et
+                                    venir rencontrer notre équipe médicale.
+                                </p>
+                            </div>
+                            <RouterLink
+                                :to="resultCta"
+                                class="btn btn-filled-blue"
+                                :style="
+                                    isCobrand
+                                        ? {
+                                              background: brandColor,
+                                              color: textOnBrand,
+                                          }
+                                        : null
+                                "
+                            >
+                                Prendre rendez-vous
+                                <span
+                                    class="material-symbols-outlined"
+                                    style="font-size: 18px; color: #000"
+                                    >calendar_month</span
+                                >
+                            </RouterLink>
+                            <button
+                                class="btn btn-outlined-blue"
+                                @click="voirRecap"
+                            >
+                                Voir mes réponses
+                            </button>
+                        </template>
+
+                        <button
+                            class="btn btn-outlined-blue"
+                            style="margin-top: 1.5rem"
+                            @click="retakeQuiz"
+                        >
+                            ↺ Refaire le quiz
+                        </button>
+                    </div>
+                </div>
+            </div>
         </Transition>
     </div>
 </template>
@@ -834,20 +1094,23 @@ function retakeQuiz() {
     text-decoration: none;
     display: inline-flex;
 }
-.btn-retake {
-    background: none;
-    border: none;
+
+/* ── Social proof (cobrandé) ─────────────────────────── */
+.social-proof-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #f0f9f8;
+    border-radius: 9999px;
+    padding: 0.55rem 1.1rem;
     font-size: 0.88rem;
-    font-weight: 600;
-    color: #8fa8a6;
-    cursor: pointer;
-    padding: 0;
-    font-family: inherit;
-    transition: opacity 0.15s;
-    display: block;
+    color: var(--default-titles);
+    font-weight: 500;
+    margin-bottom: 1.25rem;
 }
-.btn-retake:hover {
-    opacity: 0.7;
+.social-proof-result {
+    background: #d1fae5;
+    color: #065f46;
 }
 
 /* ── QUIZ screen ─────────────────────────────────────── */
@@ -1005,12 +1268,15 @@ function retakeQuiz() {
 /* ── RECAP screen ────────────────────────────────────── */
 .recap-screen {
     flex: 1;
+    display: flex;
+    flex-direction: column;
     background: white;
-    padding: 3rem 1.5rem 0;
+    padding: 3rem 0 0;
 }
 .recap-inner {
     max-width: 1000px;
     margin: 0 auto;
+    padding: 0 1.5rem;
 }
 .recap-title {
     font-size: 1.75rem;
@@ -1024,23 +1290,14 @@ function retakeQuiz() {
     gap: 1rem;
     margin-bottom: 0;
 }
-.answer-card {
-    background: white;
-    border: 1.5px solid #f0f4f4;
-    border-radius: 14px;
-    padding: 1.1rem 1.25rem 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.85rem;
-}
 .card-top {
     display: flex;
     align-items: flex-start;
     gap: 0.7rem;
 }
 .card-check {
-    width: 28px;
-    height: 28px;
+    width: 56px;
+    height: 56px;
     border-radius: 50%;
     background: var(--light-grey);
     display: flex;
@@ -1063,12 +1320,6 @@ function retakeQuiz() {
     flex: 1;
     line-height: 1.45;
 }
-.card-info-btn {
-    flex-shrink: 0;
-    cursor: default;
-    display: flex;
-    align-items: center;
-}
 .card-bottom {
     display: flex;
     align-items: center;
@@ -1080,16 +1331,9 @@ function retakeQuiz() {
     color: #8fa8a6;
     font-weight: 500;
 }
-.answer-badge {
-    font-size: 0.78rem;
-    font-weight: 700;
-    border-radius: 9999px;
-    padding: 0.2rem 0.75rem;
-    white-space: nowrap;
-}
 
 .ready-section {
-    margin-top: 3rem;
+    margin-top: auto;
     padding: 3.5rem 2rem;
     text-align: center;
     background: linear-gradient(
@@ -1104,23 +1348,12 @@ function retakeQuiz() {
     color: var(--default-titles);
     margin: 0 0 1.75rem;
 }
-.btn-ready {
-    display: inline-flex;
+.ready-actions {
+    display: flex;
     align-items: center;
-    gap: 0.5rem;
-    font-size: 1rem;
-    font-weight: 700;
-    background: var(--color-default-red);
-    color: white;
-    border: none;
-    border-radius: 9999px;
-    padding: 0.9rem 2rem;
-    cursor: pointer;
-    transition: opacity 0.15s;
-    font-family: inherit;
-}
-.btn-ready:hover {
-    opacity: 0.9;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
 }
 
 /* ── RESULT content ──────────────────────────────────── */

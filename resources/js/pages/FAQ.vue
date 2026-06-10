@@ -1,7 +1,13 @@
 ﻿<script setup>
-import { ref, onMounted } from "vue";
-import HugNavbar from "../components/HugNavbar.vue";
+import { ref, computed, onMounted } from "vue";
+import { useRoute } from "vue-router";
+import { useCobrandStore } from "../stores/cobrand";
+import AppNavbar from "../components/AppNavbar.vue";
 import Footer from "../components/Footer.vue";
+
+const route = useRoute();
+const cobrand = useCobrandStore();
+const isCobrand = computed(() => !!route.params.slug);
 const openFaq = ref(null);
 
 function toggle(id) {
@@ -74,7 +80,8 @@ const categories = [
     {
         id: "apres",
         title: "Après le don",
-        insight: "La majorité des donneurs reprennent leur journée normalement après le don.",
+        insight:
+            "La majorité des donneurs reprennent leur journée normalement après le don.",
         items: [
             {
                 q: "Puis-je retourner travailler après le don ?",
@@ -158,32 +165,42 @@ const categories = [
     },
 ];
 
-onMounted(() => {
-    document.title = "FAQ — HUG Don du sang";
+onMounted(async () => {
+    // En cobrandé : récupère l'entreprise pour la navbar/footer de marque.
+    if (isCobrand.value) {
+        try {
+            const res = await fetch(`/api/entreprises/${route.params.slug}`);
+            if (res.ok) {
+                const data = await res.json();
+                if (data.entreprise) cobrand.set(data.entreprise);
+            }
+        } catch {
+            // silent fail
+        }
+    }
+    document.title = isCobrand.value
+        ? `FAQ — ${cobrand.nom || "HUG"}`
+        : "FAQ — HUG Don du sang";
 });
 </script>
 
 <template>
     <div class="min-h-screen bg-white">
-        <HugNavbar />
+        <AppNavbar />
 
         <!-- Hero -->
         <section class="bg-gradient py-20">
             <div class="max-w-4xl mx-auto px-8">
-                <p
-                    class="font-semibold mb-3 uppercase tracking-widest"
-                    style="color: var(--default-titles); opacity: 0.65"
-                >
-                    Aide & support
-                </p>
-                <h1
-                    class="font-bold mb-4 text-black"
-                    style="line-height: 1.2"
-                >
+                <h1 class="font-bold mb-4 text-black" style="line-height: 1.2">
                     Foire aux questions
                 </h1>
                 <p
-                    style="color: var(--default-titles); opacity: 0.75; line-height: 1.6; max-width: 520px"
+                    style="
+                        color: var(--default-titles);
+                        opacity: 0.75;
+                        line-height: 1.6;
+                        max-width: 520px;
+                    "
                 >
                     Tout ce que vous devez savoir sur le don du sang et sur
                     l'organisation de collectes en entreprise.
@@ -196,19 +213,9 @@ onMounted(() => {
             <div class="max-w-3xl mx-auto px-8 flex flex-col gap-14">
                 <div v-for="cat in categories" :key="cat.id">
                     <!-- Titre catégorie -->
-                    <div
-                        class="mb-6"
-                        style="
-                            border-top: 2px solid var(--color-default-red);
-                            padding-top: 1.25rem;
-                        "
-                    >
-                        <h2
-                            class="font-bold text-black"
-                        >
-                            {{ cat.title }}
-                        </h2>
-                    </div>
+                    <h2 class="font-bold text-black mb-8">
+                        {{ cat.title }}
+                    </h2>
 
                     <!-- Items -->
                     <div class="space-y-3">
@@ -220,17 +227,37 @@ onMounted(() => {
                             <button class="faq-btn" @click="toggle(cat.id + i)">
                                 {{ item.q }}
                                 <div class="faq-btn-circle">
-                                    <span class="faq-btn-icon material-symbols-outlined">
-                                        {{ openFaq === cat.id + i ? 'expand_less' : 'expand_more' }}
+                                    <span
+                                        class="faq-btn-icon material-symbols-outlined"
+                                    >
+                                        {{
+                                            openFaq === cat.id + i
+                                                ? "expand_less"
+                                                : "expand_more"
+                                        }}
                                     </span>
                                 </div>
                             </button>
-                            <template v-if="openFaq === cat.id + i">
-                                <div class="mx-6" style="height: 1px; background: var(--light-grey)"></div>
-                                <div class="px-6 py-5" style="color: var(--default-text)">
-                                    {{ item.a }}
+                            <div
+                                class="faq-answer"
+                                :class="{ open: openFaq === cat.id + i }"
+                            >
+                                <div class="faq-answer-inner">
+                                    <div
+                                        class="mx-6"
+                                        style="
+                                            height: 1px;
+                                            background: var(--light-grey);
+                                        "
+                                    ></div>
+                                    <div
+                                        class="px-6 py-5"
+                                        style="color: var(--default-text)"
+                                    >
+                                        {{ item.a }}
+                                    </div>
                                 </div>
-                            </template>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -238,13 +265,9 @@ onMounted(() => {
         </section>
 
         <!-- CTA contact -->
-        <section
-            class="py-20 text-center bg-gradient"
-        >
+        <section class="py-20 text-center bg-gradient">
             <div class="max-w-xl mx-auto px-8">
-                <h2
-                    class="font-bold mb-3 text-black"
-                >
+                <h2 class="font-bold mb-3 text-black">
                     Vous n'avez pas trouvé votre réponse ?
                 </h2>
                 <p
@@ -267,6 +290,6 @@ onMounted(() => {
         </section>
 
         <!-- Footer -->
-        <Footer />
+        <Footer :slug="route.params.slug" />
     </div>
 </template>

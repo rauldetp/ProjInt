@@ -2,7 +2,7 @@
 import { ref, computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { useCobrandStore } from "../stores/cobrand";
-import CoNavbar from "../components/CoNavbar.vue";
+import AppNavbar from "../components/AppNavbar.vue";
 import Footer from "../components/Footer.vue";
 
 const route = useRoute();
@@ -27,7 +27,7 @@ onMounted(async () => {
         if (data.entreprise) {
             cobrand.set(data.entreprise);
         }
-        document.title = `${data.entreprise?.nom ?? 'Entreprise'} × HUG — Don du sang`;
+        document.title = `${data.entreprise?.nom ?? "Entreprise"} × HUG — Don du sang`;
     } catch (e) {
         error.value = e.message;
     } finally {
@@ -35,10 +35,13 @@ onMounted(async () => {
     }
 });
 
-const brandColor = computed(() => entreprise.value.couleur_primaire || "var(--color-default-red)");
+const brandColor = computed(
+    () => entreprise.value.couleur_primaire || "var(--color-default-red)",
+);
 const textOnBrand = computed(() => cobrand.textOnBrand);
-const sectionGradient = computed(() => `linear-gradient(135deg, ${brandColor.value}, #ffffff)`);
-
+const sectionGradient = computed(
+    () => `linear-gradient(135deg, ${brandColor.value}, #ffffff)`,
+);
 
 const dateRange = computed(() => {
     if (!collecte.value?.date_debut) return "Dates à définir";
@@ -52,17 +55,21 @@ const dateRange = computed(() => {
     const end = collecte.value.date_fin ? fmt(collecte.value.date_fin) : null;
     return end && end !== start ? `${start} – ${end}` : start;
 });
-
 </script>
 
 <template>
     <div v-if="loading" class="state-center">Chargement...</div>
-    <div v-else-if="error" class="state-center" style="color: var(--color-default-red)">{{ error }}</div>
+    <div
+        v-else-if="error"
+        class="state-center"
+        style="color: var(--color-default-red)"
+    >
+        {{ error }}
+    </div>
 
     <div v-else class="page">
-
         <!-- Navbar -->
-        <CoNavbar :collecte="collecte" />
+        <AppNavbar />
 
         <!-- Hero -->
         <section class="hero">
@@ -70,17 +77,43 @@ const dateRange = computed(() => {
             <div class="hero-inner">
                 <!-- Left: text -->
                 <div class="hero-text">
-                    <p class="hero-eyebrow">Collecte de don du sang</p>
                     <h1 class="hero-title">
-                        {{ entreprise.nom }}<br />× HUG
+                        Collecte de don du sang<br />
+                        {{ entreprise.nom }} × HUG
                     </h1>
-                    <p class="hero-date" v-if="collecte"><span class="material-symbols-outlined" style="vertical-align:middle">calendar_month</span> {{ dateRange }}</p>
+                    <h3 class="mb-8" v-if="collecte">
+                        Faites un geste citoyen directement sur votre lieu de
+                        travail les 25 et 26 mai 2026. Testez votre éligibilité
+                        en 2 minutes et réservez votre créneau pour soutenir le
+                        Centre de Transfusion Sanguine.
+                    </h3>
+                    <h3 class="mb-8" v-else>
+                        Notre entreprise est fière de soutenir le don du sang et
+                        de contribuer à cette démarche solidaire essentielle. En
+                        quelques minutes, vérifiez votre éligibilité et réservez
+                        votre créneau pour participer à cet élan de générosité
+                        au profit du Centre de Transfusion Sanguine. Chaque don
+                        peut faire la différence.
+                    </h3>
+                    <!--
+                    <p class="hero-date" v-if="collecte">
+                        <span
+                            class="material-symbols-outlined"
+                            style="vertical-align: middle"
+                            >calendar_month</span
+                        >
+                        {{ dateRange }}
+                    </p>
+                    -->
                     <div class="hero-actions">
                         <RouterLink
                             v-if="collecte && collecte.active"
                             :to="`/entreprise/${route.params.slug}/inscription`"
                             class="hero-btn-primary"
-                            :style="{ background: brandColor, color: textOnBrand }"
+                            :style="{
+                                background: brandColor,
+                                color: textOnBrand,
+                            }"
                         >
                             S'inscrire →
                         </RouterLink>
@@ -92,41 +125,49 @@ const dateRange = computed(() => {
                     <p class="hero-card-title">Informations pratiques</p>
                     <ul class="hero-card-list">
                         <li>
-                            <span class="info-icon material-symbols-outlined" style="font-size:18px">location_on</span>
+                            <span
+                                class="info-icon material-symbols-outlined"
+                                style="font-size: 18px"
+                                >location_on</span
+                            >
                             <span>{{
                                 collecte.sur_site
-                                    ? (entreprise.adresse ?? entreprise.ville ?? entreprise.nom)
+                                    ? (entreprise.adresse ??
+                                      entreprise.ville ??
+                                      entreprise.nom)
                                     : "Centre de transfusion sanguine"
                             }}</span>
                         </li>
                         <li>
-                            <span class="info-icon material-symbols-outlined" style="font-size:18px">schedule</span>
-                            <span>{{ collecte.horaires ?? "Horaires à confirmer" }}</span>
+                            <span
+                                class="info-icon material-symbols-outlined"
+                                style="font-size: 18px"
+                                >schedule</span
+                            >
+                            <span>{{
+                                collecte.horaires ?? "Horaires à confirmer"
+                            }}</span>
                         </li>
                         <li>
-                            <span class="info-icon material-symbols-outlined" style="font-size:18px">calendar_month</span>
+                            <span class="info-icon material-symbols-outlined"
+                                >calendar_month</span
+                            >
                             <span>{{ dateRange }}</span>
                         </li>
                         <li v-if="collecte.nb_inscrits_estime">
-                            <span class="info-icon material-symbols-outlined" style="font-size:18px">group</span>
-                            <span>{{ collecte.nb_inscrits_estime }} inscrits</span>
+                            <span
+                                class="info-icon material-symbols-outlined"
+                                style="font-size: 18px"
+                                >group</span
+                            >
+                            <span
+                                >{{
+                                    collecte.nb_inscrits_estime
+                                }}
+                                inscrits</span
+                            >
                         </li>
                     </ul>
-                    <div class="hero-card-actions">
-                        <RouterLink
-                            :to="`/entreprise/${route.params.slug}/inscription`"
-                            class="hero-card-cta"
-                            :style="{ background: brandColor, color: textOnBrand }"
-                        >
-                            Réserver mon créneau →
-                        </RouterLink>
-                        <RouterLink
-                            :to="`/entreprise/${route.params.slug}/collecte/${collecte.id}`"
-                            class="hero-card-details"
-                        >
-                            Voir les détails
-                        </RouterLink>
-                    </div>
                 </div>
 
                 <!-- Fallback card if no collecte -->
@@ -150,15 +191,31 @@ const dateRange = computed(() => {
         <section class="quiz-section" :style="{ background: sectionGradient }">
             <div class="quiz-section-inner">
                 <div class="quiz-insight">
-                    <div class="quiz-insight-icon"><span class="material-symbols-outlined" style="font-size:24px">assignment</span></div>
+                    <div class="quiz-insight-icon">
+                        <span
+                            class="material-symbols-outlined"
+                            style="font-size: 24px"
+                            >assignment</span
+                        >
+                    </div>
                     <p class="quiz-insight-text">
-                        <template v-if="collecte?.nb_inscrits_estime">Déjà <strong>{{ collecte.nb_inscrits_estime }}</strong> autres employés ont passé le test !</template>
-                        <template v-else>Rejoignez vos collègues et passez le test d'éligibilité !</template>
+                        <template v-if="collecte?.nb_inscrits_estime"
+                            >Déjà
+                            <strong>{{ collecte.nb_inscrits_estime }}</strong>
+                            autres employés ont passé le test !</template
+                        >
+                        <template v-else
+                            >Rejoignez vos collègues et passez le test
+                            d'éligibilité !</template
+                        >
                     </p>
                 </div>
-                <h2 class="quiz-section-title" :style="{ color: textOnBrand }">Suis-je éligible ?</h2>
+                <h2 class="quiz-section-title" :style="{ color: textOnBrand }">
+                    Suis-je éligible ?
+                </h2>
                 <p class="quiz-section-sub" :style="{ color: textOnBrand }">
-                    Testez votre éligibilité en 2 minutes et réservez votre créneau pour soutenir le Centre de Transfusion Sanguine.
+                    Testez votre éligibilité en 2 minutes et réservez votre
+                    créneau pour soutenir le Centre de Transfusion Sanguine.
                 </p>
                 <div class="quiz-section-actions">
                     <RouterLink
@@ -171,7 +228,10 @@ const dateRange = computed(() => {
                     <RouterLink
                         :to="`/entreprise/${route.params.slug}/quiz?voir=resultat`"
                         class="btn-outlined btn-link"
-                        :style="{ color: textOnBrand, borderColor: textOnBrand }"
+                        :style="{
+                            color: textOnBrand,
+                            borderColor: textOnBrand,
+                        }"
                     >
                         Voir mon résultat →
                     </RouterLink>
@@ -180,67 +240,57 @@ const dateRange = computed(() => {
         </section>
 
         <!-- 3 steps -->
-        <section class="steps-section">
-            <h2 class="steps-title">La démarche en trois étapes</h2>
-            <div class="steps-grid">
-                <div class="step-card">
-                    <div class="step-num" :style="{ color: brandColor, background: brandColor + '18' }">1</div>
-                    <h3 class="step-heading">Accueil & quiz</h3>
-                    <p class="step-body">
-                        Passez notre quiz d'éligibilité rapide en 9 questions conçu avec le CTS
-                        pour lever vos doutes en toute confidentialité avant de vous inscrire.
-                    </p>
-                </div>
-                <div class="step-card">
-                    <div class="step-num" :style="{ color: brandColor, background: brandColor + '18' }">2</div>
-                    <h3 class="step-heading">Questionnaire médical</h3>
-                    <p class="step-body">
-                        Une fois votre créneau réservé, vous remplirez le questionnaire officiel
-                        des HUG qui sera validé sur place par l'équipe médicale.
-                    </p>
-                </div>
-                <div class="step-card">
-                    <div class="step-num" :style="{ color: brandColor, background: brandColor + '18' }">3</div>
-                    <h3 class="step-heading">Le don</h3>
-                    <p class="step-body">
-                        Le jour J, vous êtes pris en charge dans vos locaux. Le prélèvement
-                        dure moins de 10 minutes et se termine par une collation conviviale.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Moins de 500 salariés -->
-        <section class="small-co-section">
-            <div class="small-co-inner">
-                <div class="small-co-text">
-                    <p class="small-co-eyebrow" :style="{ color: brandColor }">Toutes les entreprises peuvent agir</p>
-                    <h2 class="small-co-title">Votre entreprise compte<br />moins de 500 salariés ?</h2>
-                    <p class="small-co-body">
-                        Découvrez nos solutions adaptées pour organiser le don du sang, même sans espace dédié dans vos locaux.
-                    </p>
-                    <ul class="small-co-list">
-                        <li class="small-co-item">
-                            <span class="material-symbols-outlined small-co-icon" :style="{ color: brandColor }">local_hospital</span>
-                            <div>
-                                <p class="small-co-item-title">Aux HUG</p>
-                                <p class="small-co-item-body">Vos collaborateurs se rendent directement au Centre de Transfusion Sanguine des HUG. Simple, encadré et sans organisation logistique.</p>
-                            </div>
-                        </li>
-                        <li class="small-co-item">
-                            <span class="material-symbols-outlined small-co-icon" :style="{ color: brandColor }">location_city</span>
-                            <div>
-                                <p class="small-co-item-title">Dans votre commune</p>
-                                <p class="small-co-item-body">Rejoignez une collecte mobile organisée dans votre région. Nous vous informons des prochaines dates à proximité.</p>
-                            </div>
-                        </li>
-                    </ul>
-                    <a href="#" class="small-co-btn" :style="{ borderColor: brandColor, color: brandColor }">
-                        Découvrir les aspects réglementaires
-                    </a>
-                </div>
-                <div class="small-co-img">
-                    <img :src="'/images/thumbnail_mouvement.webp'" alt="" />
+        <section class="bg-light-grey py-20">
+            <div class="max-w-7xl mx-auto px-8">
+                <h2 class="text-center font-bold mb-12 text-black">
+                    La démarche en trois étapes
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-white rounded-xl p-8 shadow-light">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div
+                                class="w-11 h-11 rounded-full flex items-center justify-center font-bold flex-shrink-0"
+                                :style="{ border: '1px solid ' + brandColor, color: brandColor, background: 'white' }"
+                            >1</div>
+                            <div class="flex-1 h-px" style="background: var(--light-grey)"></div>
+                        </div>
+                        <h3 class="font-bold mb-3 text-black">Accueil & quiz</h3>
+                        <p>
+                            Passez notre quiz d'éligibilité rapide en 9 questions
+                            conçu avec le CTS pour lever vos doutes en toute
+                            confidentialité avant de vous inscrire.
+                        </p>
+                    </div>
+                    <div class="bg-white rounded-xl p-8 shadow-light">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div
+                                class="w-11 h-11 rounded-full flex items-center justify-center font-bold flex-shrink-0"
+                                :style="{ border: '1px solid ' + brandColor, color: brandColor, background: 'white' }"
+                            >2</div>
+                            <div class="flex-1 h-px" style="background: var(--light-grey)"></div>
+                        </div>
+                        <h3 class="font-bold mb-3 text-black">Questionnaire médical</h3>
+                        <p>
+                            Une fois votre créneau réservé, vous remplirez le
+                            questionnaire officiel des HUG qui sera validé sur place
+                            par l'équipe médicale.
+                        </p>
+                    </div>
+                    <div class="bg-white rounded-xl p-8 shadow-light">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div
+                                class="w-11 h-11 rounded-full flex items-center justify-center font-bold flex-shrink-0"
+                                :style="{ border: '1px solid ' + brandColor, color: brandColor, background: 'white' }"
+                            >3</div>
+                            <div class="flex-1 h-px" style="background: var(--light-grey)"></div>
+                        </div>
+                        <h3 class="font-bold mb-3 text-black">Le don</h3>
+                        <p>
+                            Le jour J, vous êtes pris en charge dans vos locaux. Le
+                            prélèvement dure moins de 10 minutes et se termine par
+                            une collation conviviale.
+                        </p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -249,13 +299,17 @@ const dateRange = computed(() => {
         <section class="engagement-section">
             <div class="engagement-inner">
                 <div class="engagement-text">
-                    <p class="engagement-eyebrow" :style="{ color: brandColor }">Notre engagement RSE</p>
-                    <h2 class="engagement-title">{{ entreprise.nom }} s'engage</h2>
+                    <h2 class="engagement-title">
+                        {{ entreprise.nom }} s'engage
+                    </h2>
                     <p class="engagement-body">
-                        Dans le cadre de sa politique de Responsabilité Sociale d'Entreprise (RSE),
-                        {{ entreprise.nom }} est fière de s'associer aux Hôpitaux Universitaires de Genève.
-                        Parce que votre temps est précieux, la direction libère chaque collaborateur
-                        volontaire sur son temps de travail pour accomplir ce geste solidaire essentiel.
+                        Dans le cadre de sa politique de Responsabilité Sociale
+                        d'Entreprise (RSE),
+                        {{ entreprise.nom }} est fière de s'associer aux
+                        Hôpitaux Universitaires de Genève. Parce que votre temps
+                        est précieux, la direction libère chaque collaborateur
+                        volontaire sur son temps de travail pour accomplir ce
+                        geste solidaire essentiel.
                     </p>
                     <RouterLink
                         v-if="collecte && collecte.active"
@@ -266,33 +320,24 @@ const dateRange = computed(() => {
                         S'inscrire à la collecte →
                     </RouterLink>
                 </div>
-                <div class="engagement-logo-card">
-                    <div class="engagement-logo-hug">
-                        <span style="font-weight: 800; font-size: 28px; color: var(--default-titles)">HUG</span>
-                        <span style="font-size: 24px; color: #c0cac9; margin: 0 12px">×</span>
-                        <img
-                            v-if="entreprise.logo"
-                            :src="entreprise.logo"
-                            :alt="entreprise.nom"
-                            class="engagement-logo"
-                        />
-                        <span
-                            v-else
-                            class="engagement-logo-text"
-                            :style="{ color: brandColor }"
-                        >{{ entreprise.nom }}</span>
-                    </div>
-                    <p class="engagement-label" v-if="label">
-                        <span class="material-symbols-outlined" style="vertical-align: middle">emoji_events</span>
-                        Label CTS {{ label.date_attribution ? new Date(label.date_attribution).getFullYear() : '' }}
-                    </p>
+                <div
+                    class="aspect-video bg-white flex flex-col items-center justify-center gap-4 rounded-2xl p-12 shadow-light"
+                >
+                    <img
+                        v-if="entreprise.logo"
+                        :src="entreprise.logo"
+                        :alt="entreprise.nom"
+                        class="engagement-logo"
+                    />
+                    <h3 v-else class="font-bold" :style="{ color: brandColor }">
+                        {{ entreprise.nom }}
+                    </h3>
                 </div>
             </div>
         </section>
 
         <!-- Footer -->
         <Footer :slug="route.params.slug" />
-
     </div>
 </template>
 
@@ -319,7 +364,7 @@ const dateRange = computed(() => {
     height: 512px;
     display: flex;
     align-items: center;
-    background-image: url('/images/Hero_Cobrand.webp');
+    background-image: url("/images/Hero_Cobrand.webp");
     background-size: cover;
     background-position: center;
 }
@@ -444,12 +489,12 @@ const dateRange = computed(() => {
     text-decoration: none;
     border-radius: 9999px;
     padding: 0.65rem 1.5rem;
-    border: 1.5px solid rgba(255,255,255,0.5);
+    border: 1.5px solid rgba(255, 255, 255, 0.5);
     color: white;
     transition: background 0.15s;
 }
 .hero-card-details:hover {
-    background: rgba(255,255,255,0.12);
+    background: rgba(255, 255, 255, 0.12);
 }
 
 /* ── Quiz overlay ─────────────────────────────────────── */
@@ -584,54 +629,6 @@ const dateRange = computed(() => {
     opacity: 0.75;
 }
 
-/* ── Steps ───────────────────────────────────────────── */
-.steps-section {
-    background: var(--light-grey);
-    padding: 5rem 2rem;
-}
-.steps-title {
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--default-titles);
-    text-align: center;
-    margin: 0 0 2.5rem;
-}
-.steps-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem;
-    max-width: 1100px;
-    margin: 0 auto;
-}
-.step-card {
-    background: white;
-    border-radius: 1rem;
-    padding: 2rem;
-}
-.step-num {
-    width: 2.25rem;
-    height: 2.25rem;
-    border-radius: 9999px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    font-size: 1rem;
-    margin-bottom: 1rem;
-}
-.step-heading {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--default-titles);
-    margin: 0 0 0.75rem;
-}
-.step-body {
-    font-size: 0.9rem;
-    color: var(--default-text);
-    line-height: 1.65;
-    margin: 0;
-}
-
 /* ── Engagement ──────────────────────────────────────── */
 .engagement-section {
     background: white;
@@ -664,30 +661,10 @@ const dateRange = computed(() => {
     line-height: 1.7;
     margin: 0 0 2rem;
 }
-.engagement-logo-card {
-    background: var(--light-grey);
-    border-radius: 1rem;
-    padding: 3rem 2.5rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 1.5rem;
-    min-height: 220px;
-}
-.engagement-logo-hug {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
 .engagement-logo {
-    max-width: 160px;
-    max-height: 64px;
+    max-width: 220px;
+    max-height: 110px;
     object-fit: contain;
-}
-.engagement-logo-text {
-    font-size: 1.75rem;
-    font-weight: 800;
 }
 .engagement-label {
     font-size: 0.85rem;
@@ -771,7 +748,9 @@ const dateRange = computed(() => {
     text-decoration: none;
     transition: opacity 0.15s;
 }
-.small-co-btn:hover { opacity: 0.7; }
+.small-co-btn:hover {
+    opacity: 0.7;
+}
 .small-co-img {
     border-radius: 1rem;
     overflow: hidden;
@@ -789,9 +768,6 @@ const dateRange = computed(() => {
     .quiz-section-inner,
     .engagement-inner,
     .small-co-inner {
-        grid-template-columns: 1fr;
-    }
-    .steps-grid {
         grid-template-columns: 1fr;
     }
     .hero-title {

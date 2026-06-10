@@ -211,7 +211,9 @@ label.captions{
     font-family: inherit;
     font-size: 1rem;
 }
-.faq-btn-circle {
+/* Bouton circulaire réutilisable (structure partagée FAQ / actions) */
+.faq-btn-circle,
+.btn-circle {
     width: 2.75rem;
     height: 2.75rem;
     border-radius: 9999px;
@@ -219,12 +221,17 @@ label.captions{
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    margin-left: 1rem;
     background: white;
-    border: 1px solid var(--color-default-red);
+    cursor: pointer;
     transition:
         background 0.15s,
         border-color 0.15s;
+}
+
+/* FAQ : accent rouge */
+.faq-btn-circle {
+    margin-left: 1rem;
+    border: 1px solid var(--color-default-red);
 }
 .faq-btn:hover .faq-btn-circle {
     background: var(--color-default-red-88);
@@ -240,6 +247,64 @@ label.captions{
     transition: color 0.15s;
 }
 .faq-btn:active .faq-btn-icon {
+    color: white;
+}
+
+/* Réponse FAQ : ouverture/fermeture animée (hauteur auto via grid) */
+.faq-answer {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.28s ease;
+}
+.faq-answer.open {
+    grid-template-rows: 1fr;
+}
+.faq-answer-inner {
+    overflow: hidden;
+}
+
+/* Boutons d'action : accent turquoise */
+.btn-circle {
+    border: 1px solid var(--color-default-blue);
+}
+.btn-circle:hover {
+    background: var(--color-default-blue);
+    border-color: transparent;
+}
+.btn-circle:hover .btn-circle-icon {
+    color: white;
+}
+.btn-circle-icon {
+    color: var(--color-default-blue);
+    font-size: 20px;
+    transition: color 0.15s;
+}
+
+/* Variante rouge (menus de cartes) */
+.btn-circle-red {
+    border-color: var(--color-default-red);
+}
+.btn-circle-red:hover {
+    background: var(--color-default-red);
+}
+.btn-circle-red .btn-circle-icon {
+    color: var(--color-default-red);
+}
+.btn-circle-red:hover .btn-circle-icon {
+    color: white;
+}
+
+/* Variante turquoise (= accent par défaut, nommée explicitement) */
+.btn-circle-cyan {
+    border-color: var(--color-default-blue);
+}
+.btn-circle-cyan:hover {
+    background: var(--color-default-blue);
+}
+.btn-circle-cyan .btn-circle-icon {
+    color: var(--color-default-blue);
+}
+.btn-circle-cyan:hover .btn-circle-icon {
     color: white;
 }
 
@@ -406,6 +471,77 @@ label.captions{
 /* Options du quiz : contenu aligné à gauche */
 .quiz-options .btn {
     justify-content: flex-start;
+}
+
+/* ── Badges / tags (pills pleins, texte blanc — couleurs des boutons) ── */
+.badge {
+    display: inline-block;
+    padding: 0.2rem 0.65rem;
+    border-radius: 9999px;
+    color: white;
+}
+.badge-aconfirmer {
+    background: var(--color-default-red);
+}
+.badge-encours {
+    background: var(--color-default-blue);
+}
+.badge-avenir {
+    background: var(--color-default-yellow);
+}
+.badge-complete {
+    background: var(--color-default-green);
+}
+
+/* ── Cards (dashboards, récap quiz…) ──────────────────── */
+.card {
+    background: white;
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+/* Menu déroulant d'une carte */
+.card-menu-wrap {
+    position: relative;
+}
+.card-dropdown {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    background: white;
+    border-radius: 0.6rem;
+    box-shadow: 0 4px 20px rgba(44, 65, 64, 0.14);
+    border: 1px solid var(--light-grey);
+    min-width: 170px;
+    z-index: 100;
+    overflow: hidden;
+}
+.card-dropdown a,
+.card-dropdown button {
+    display: block;
+    width: 100%;
+    padding: 10px 14px;
+    background: none;
+    border: none;
+    color: var(--default-titles);
+    cursor: pointer;
+    font-family: inherit;
+    text-align: left;
+    text-decoration: none;
+    transition: background 0.12s;
+}
+.card-dropdown a:hover,
+.card-dropdown button:hover {
+    background: var(--light-grey);
+}
+.card-dropdown button.danger {
+    color: var(--color-default-red);
+}
+.card-dropdown button.danger:hover {
+    background: var(--color-default-red-98);
 }
 
 /* ── Forms ────────────────────────────────────────────── */

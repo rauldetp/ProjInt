@@ -1,6 +1,6 @@
 ﻿<script setup>
 import { ref, onMounted } from "vue";
-import HugNavbar from "../components/HugNavbar.vue";
+import AppNavbar from "../components/AppNavbar.vue";
 import Footer from "../components/Footer.vue";
 
 const bannerVisible = ref(true);
@@ -44,7 +44,7 @@ onMounted(() => {
 
 <template>
     <div class="min-h-screen bg-white">
-        <HugNavbar />
+        <AppNavbar />
         <div
             v-if="bannerVisible"
             class="banner bg-gradient flex items-center justify-between shadow-light"
@@ -351,12 +351,14 @@ onMounted(() => {
                                 </span>
                             </div>
                         </button>
-                        <template v-if="openFaq === i">
-                            <div class="mx-6" style="height: 1px; background: var(--light-grey)"></div>
-                            <div class="px-6 py-5" style="color: var(--default-text)">
-                                {{ item.a }}
+                        <div class="faq-answer" :class="{ open: openFaq === i }">
+                            <div class="faq-answer-inner">
+                                <div class="mx-6" style="height: 1px; background: var(--light-grey)"></div>
+                                <div class="px-6 py-5" style="color: var(--default-text)">
+                                    {{ item.a }}
+                                </div>
                             </div>
-                        </template>
+                        </div>
                     </div>
                 </div>
                 <div class="text-center">

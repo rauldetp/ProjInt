@@ -3,7 +3,7 @@ import { ref, computed, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useCobrandStore } from "../stores/cobrand";
 import { useAuthStore } from "../stores/auth";
-import CoNavbar from "../components/CoNavbar.vue";
+import AppNavbar from "../components/AppNavbar.vue";
 import Footer from "../components/Footer.vue";
 
 const route  = useRoute();
@@ -133,161 +133,118 @@ onMounted(async () => {
 <template>
     <div class="min-h-screen bg-white">
 
-        <CoNavbar :collecte="collecte" />
+        <AppNavbar />
 
         <!-- Form content -->
-        <section style="background: var(--light-grey); min-height: calc(100vh - 76px - 180px); padding: 3rem 0 5rem">
-            <div class="max-w-3xl mx-auto px-8">
-                <h1 class="font-bold mb-8 text-black">{{ isEdit ? "Modifier la collecte" : "Créer une nouvelle collecte" }}</h1>
+        <section class="form-section">
+            <div class="form-wrap">
+                <h1 class="form-title text-black">{{ isEdit ? "Modifier la collecte" : "Créer une nouvelle collecte" }}</h1>
 
-                <form @submit.prevent="submitForm" style="display: flex; flex-direction: column; gap: 1.5rem">
+                <form @submit.prevent="submitForm" class="form">
 
                     <!-- Ligne 1: Nom entreprise + Titre -->
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem">
-                        <div>
-                            <label class="captions" style="color: var(--default-text); display: block; margin-bottom: 0.4rem">Nom de l'entreprise</label>
-                            <div style="background: #e8edec; border-radius: 8px; padding: 0.75rem 1rem; color: var(--default-text); border: 1px solid #dce5e4">
-                                {{ cobrand.nom || entreprise?.nom || "—" }}
-                            </div>
+                    <div class="form-row">
+                        <div class="field">
+                            <label class="captions field-label">Nom de l'entreprise</label>
+                            <div class="form-input field-readonly">{{ cobrand.nom || entreprise?.nom || "—" }}</div>
                         </div>
-                        <div>
-                            <label for="titre" class="captions" style="color: var(--default-text); display: block; margin-bottom: 0.4rem">Titre de la collecte</label>
+                        <div class="field">
+                            <label for="titre" class="captions field-label">Titre de la collecte</label>
                             <input
                                 id="titre"
                                 v-model="form.titre"
                                 type="text"
+                                class="form-input"
                                 placeholder="ex : Collecte de printemps"
-                                style="width: 100%; border-radius: 8px; padding: 0.75rem 1rem; color: var(--default-titles); border: 1px solid #dce5e4; background: white; outline: none; box-sizing: border-box"
                             />
                         </div>
                     </div>
 
                     <!-- Ligne 2: Dates -->
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem">
-                        <div>
-                            <label for="date_debut" class="captions" style="color: var(--default-text); display: block; margin-bottom: 0.4rem">Date de début</label>
-                            <input
-                                id="date_debut"
-                                v-model="form.date_debut"
-                                type="date"
-                                required
-                                style="width: 100%; border-radius: 8px; padding: 0.75rem 1rem; color: var(--default-titles); border: 1px solid #dce5e4; background: white; outline: none; box-sizing: border-box"
-                            />
+                    <div class="form-row">
+                        <div class="field">
+                            <label for="date_debut" class="captions field-label">Date de début</label>
+                            <input id="date_debut" v-model="form.date_debut" type="date" required class="form-input" />
                         </div>
-                        <div>
-                            <label for="date_fin" class="captions" style="color: var(--default-text); display: block; margin-bottom: 0.4rem">Date de fin</label>
-                            <input
-                                id="date_fin"
-                                v-model="form.date_fin"
-                                type="date"
-                                style="width: 100%; border-radius: 8px; padding: 0.75rem 1rem; color: var(--default-titles); border: 1px solid #dce5e4; background: white; outline: none; box-sizing: border-box"
-                            />
+                        <div class="field">
+                            <label for="date_fin" class="captions field-label">Date de fin</label>
+                            <input id="date_fin" v-model="form.date_fin" type="date" class="form-input" />
                         </div>
                     </div>
 
                     <!-- Lieu de la campagne -->
-                    <div>
-                        <p class="captions" style="color: var(--default-text); margin: 0 0 0.75rem">Lieu de la campagne</p>
-                        <div style="display: flex; flex-direction: column; gap: 0.6rem">
-                            <label style="display: flex; align-items: center; gap: 0.6rem; cursor: pointer; color: var(--default-titles)">
-                                <input
-                                    type="radio"
-                                    v-model="form.sur_site"
-                                    :value="true"
-                                    style="width: 18px; height: 18px; accent-color: v-bind(brandColor)"
-                                />
+                    <div class="field">
+                        <p class="captions field-label">Lieu de la campagne</p>
+                        <div class="radio-group">
+                            <label class="radio-row">
+                                <input type="radio" v-model="form.sur_site" :value="true" class="choice-input" />
                                 En entreprise
                             </label>
-                            <label style="display: flex; align-items: center; gap: 0.6rem; cursor: pointer; color: var(--default-titles)">
-                                <input
-                                    type="radio"
-                                    v-model="form.sur_site"
-                                    :value="false"
-                                    style="width: 18px; height: 18px; accent-color: v-bind(brandColor)"
-                                />
+                            <label class="radio-row">
+                                <input type="radio" v-model="form.sur_site" :value="false" class="choice-input" />
                                 Au Centre de transfusion sanguine
                             </label>
                         </div>
                     </div>
 
                     <!-- Adresse (si en entreprise) -->
-                    <div v-if="form.sur_site">
-                        <label for="lieu" class="captions" style="color: var(--default-text); display: block; margin-bottom: 0.4rem">Adresse de la collecte</label>
+                    <div v-if="form.sur_site" class="field">
+                        <label for="lieu" class="captions field-label">Adresse de la collecte</label>
                         <input
                             id="lieu"
                             v-model="form.lieu"
                             type="text"
+                            class="form-input"
                             placeholder="ex : Salle A, Rue de la Paix 1, 1211 Genève"
-                            style="width: 100%; border-radius: 8px; padding: 0.75rem 1rem; color: var(--default-titles); border: 1px solid #dce5e4; background: white; outline: none; box-sizing: border-box"
                         />
                     </div>
 
                     <!-- Horaires + Objectif -->
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem">
-                        <div>
-                            <label for="horaires" class="captions" style="color: var(--default-text); display: block; margin-bottom: 0.4rem">Horaires</label>
-                            <input
-                                id="horaires"
-                                v-model="form.horaires"
-                                type="text"
-                                placeholder="ex : 09:00 – 17:00"
-                                style="width: 100%; border-radius: 8px; padding: 0.75rem 1rem; color: var(--default-titles); border: 1px solid #dce5e4; background: white; outline: none; box-sizing: border-box"
-                            />
+                    <div class="form-row">
+                        <div class="field">
+                            <label for="horaires" class="captions field-label">Horaires</label>
+                            <input id="horaires" v-model="form.horaires" type="text" class="form-input" placeholder="ex : 09:00 – 17:00" />
                         </div>
-                        <div>
-                            <label for="objectif" class="captions" style="color: var(--default-text); display: block; margin-bottom: 0.4rem">Objectif de dons</label>
-                            <input
-                                id="objectif"
-                                v-model="form.objectif_dons"
-                                type="number"
-                                min="1"
-                                placeholder="ex : 40"
-                                style="width: 100%; border-radius: 8px; padding: 0.75rem 1rem; color: var(--default-titles); border: 1px solid #dce5e4; background: white; outline: none; box-sizing: border-box"
-                            />
+                        <div class="field">
+                            <label for="objectif" class="captions field-label">Objectif de dons</label>
+                            <input id="objectif" v-model="form.objectif_dons" type="number" min="1" class="form-input" placeholder="ex : 40" />
                         </div>
                     </div>
 
                     <!-- Nombre d'employés -->
-                    <div>
-                        <label for="nb_employes" class="captions" style="color: var(--default-text); display: block; margin-bottom: 0.4rem">
+                    <div class="field">
+                        <label for="nb_employes" class="captions field-label">
                             Nombre d'employés dans l'entreprise
                         </label>
-                        <input
-                            id="nb_employes"
-                            v-model="form.nb_employes"
-                            type="number"
-                            min="1"
-                            placeholder="ex : 250"
-                            style="width: 100%; max-width: 200px; border-radius: 8px; padding: 0.75rem 1rem; color: var(--default-titles); border: 1px solid #dce5e4; background: white; outline: none; box-sizing: border-box"
-                        />
+                        <input id="nb_employes" v-model="form.nb_employes" type="number" min="1" class="form-input field-narrow" placeholder="ex : 250" />
                     </div>
 
                     <!-- Participation et confidentialité -->
-                    <div>
-                        <p class="captions" style="color: var(--default-text); margin: 0 0 0.75rem">Participation et confidentialité</p>
-                        <div style="display: flex; flex-direction: column; gap: 0.75rem">
-                            <label style="display: flex; align-items: flex-start; gap: 0.6rem; cursor: pointer; color: var(--default-titles); line-height: 1.5">
-                                <input type="checkbox" v-model="acceptPublication" style="width: 16px; height: 16px; margin-top: 2px; flex-shrink: 0" />
-                                J'accepte que ma collecte puisse être publiée en tant qu'exemple sur le site web.
+                    <div class="field">
+                        <p class="captions field-label">Participation et confidentialité</p>
+                        <div class="check-group">
+                            <label class="check-row">
+                                <input type="checkbox" v-model="acceptPublication" class="choice-input" />
+                                <span>J'accepte que ma collecte puisse être publiée en tant qu'exemple sur le site web.</span>
                             </label>
-                            <label style="display: flex; align-items: flex-start; gap: 0.6rem; cursor: pointer; color: var(--default-titles); line-height: 1.5">
-                                <input type="checkbox" v-model="acceptTrophee" style="width: 16px; height: 16px; margin-top: 2px; flex-shrink: 0" />
-                                J'accepte de participer au
-                                <RouterLink :to="`/entreprise/${route.params.slug}/trophee`" :style="{ color: brandColor }" style="text-decoration: underline">Trophée de la Générosité</RouterLink>.
+                            <label class="check-row">
+                                <input type="checkbox" v-model="acceptTrophee" class="choice-input" />
+                                <span>J'accepte de participer au
+                                <RouterLink :to="`/entreprise/${route.params.slug}/trophee`" class="link-brand" :style="{ color: brandColor }">Trophée de la Générosité</RouterLink>.</span>
                             </label>
                         </div>
                     </div>
 
                     <!-- Error -->
-                    <p v-if="submitError" style="color: var(--color-default-red); margin: 0">{{ submitError }}</p>
+                    <p v-if="submitError" class="form-error">{{ submitError }}</p>
 
                     <!-- Submit -->
                     <div>
                         <button
                             type="submit"
+                            class="btn"
                             :disabled="submitting || !form.date_debut"
-                            style="border-radius: 9999px; padding: 0.75rem 2rem; font-weight: 600; color: white; border: none; cursor: pointer; transition: opacity 0.15s"
-                            :style="{ background: brandColor, opacity: (submitting || !form.date_debut) ? 0.6 : 1 }"
+                            :style="{ background: brandColor, color: cobrand.textOnBrand, opacity: (submitting || !form.date_debut) ? 0.6 : 1 }"
                         >{{ submitting ? "Enregistrement…" : isEdit ? "Enregistrer les modifications" : "Envoyer la demande" }}</button>
                     </div>
 
@@ -346,6 +303,82 @@ onMounted(async () => {
 </template>
 
 <style scoped>
+/* ── Formulaire ────────────────────────────────────────────── */
+.form-section {
+    background: var(--light-grey);
+    min-height: calc(100vh - 76px - 180px);
+    padding: 3rem 0 5rem;
+}
+.form-wrap {
+    max-width: 48rem;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+.form-title {
+    margin: 0 0 2rem;
+}
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+}
+.field {
+    display: flex;
+    flex-direction: column;
+}
+.field-label {
+    color: var(--default-text);
+    margin: 0 0 0.4rem;
+}
+.field-readonly {
+    color: var(--default-text);
+    cursor: default;
+}
+.field-narrow {
+    max-width: 200px;
+}
+.radio-group,
+.check-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+.radio-row,
+.check-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    cursor: pointer;
+    color: var(--default-titles);
+}
+.check-row {
+    align-items: flex-start;
+    line-height: 1.5;
+}
+.choice-input {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    accent-color: var(--color-default-green-39);
+}
+.check-row .choice-input {
+    width: 16px;
+    height: 16px;
+    margin-top: 2px;
+}
+.link-brand {
+    text-decoration: underline;
+}
+.form-error {
+    color: var(--color-default-red);
+    margin: 0;
+}
+
 /* ── Overlay backdrop ──────────────────────────────────────── */
 .overlay-backdrop {
     position: fixed;

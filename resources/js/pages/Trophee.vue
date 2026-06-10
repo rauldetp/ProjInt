@@ -1,10 +1,24 @@
 ﻿<script setup>
-import { ref, onMounted } from "vue";
-import HugNavbar from "../components/HugNavbar.vue";
+import { ref, computed, onMounted } from "vue";
+import { useRoute } from "vue-router";
+import { useCobrandStore } from "../stores/cobrand";
+import AppNavbar from "../components/AppNavbar.vue";
 import Footer from "../components/Footer.vue";
+
+const route = useRoute();
+const cobrand = useCobrandStore();
 
 const palmares = ref([]);
 const palmaresLoading = ref(true);
+
+// Mode cobrandé déterminé par la route ; seules les couleurs d'accent changent.
+const isCobrand = computed(() => !!route.params.slug);
+const brandColor = computed(
+    () => cobrand.couleurPrimaire || "var(--color-default-red)",
+);
+const sectionGradient = computed(
+    () => `linear-gradient(135deg, ${brandColor.value}, #ffffff)`,
+);
 
 const criteres = [
     {
@@ -48,7 +62,20 @@ const etapes = [
 ];
 
 onMounted(async () => {
-    document.title = "Trophée de la générosité — HUG";
+    // En cobrandé : récupère l'entreprise pour appliquer ses couleurs.
+    if (isCobrand.value) {
+        try {
+            const res = await fetch(`/api/entreprises/${route.params.slug}`);
+            if (res.ok) {
+                const data = await res.json();
+                if (data.entreprise) cobrand.set(data.entreprise);
+            }
+        } catch {
+            // silent fail
+        }
+    }
+    document.title = `Trophée de la générosité — ${isCobrand.value ? cobrand.nom || "HUG" : "HUG"}`;
+
     try {
         const res = await fetch("/api/palmares");
         if (res.ok) palmares.value = await res.json();
@@ -62,7 +89,7 @@ onMounted(async () => {
 
 <template>
     <div class="min-h-screen bg-white">
-        <HugNavbar />
+        <AppNavbar />
 
         <!-- Hero -->
         <section
@@ -187,13 +214,20 @@ onMounted(async () => {
             </div>
         </section>
 
-        <section class="bg-gradient py-20">
+        <section
+            class="py-20"
+            :class="isCobrand ? '' : 'bg-gradient'"
+            :style="isCobrand ? { background: sectionGradient } : null"
+        >
             <div class="max-w-7xl mx-auto px-8 text-center">
-                <h1 class="font-bold mb-4 text-black">
+                <h1
+                    class="font-bold mb-4 text-black"
+                    :style="isCobrand ? { color: cobrand.textOnBrand } : null"
+                >
                     “Aujourd'hui, le don de sang fait partie de notre culture
                     d'entreprise, et nous en sommes fiers.”
                 </h1>
-                <p>
+                <p :style="isCobrand ? { color: cobrand.textOnBrand } : null">
                     Marc-Antoine Favre, Directeur des Ressources Humaines,
                     Groupe Mercier SA
                 </p>
@@ -278,7 +312,19 @@ onMounted(async () => {
                         candidature sera prise en compte et nous désignerons un
                         lauréat lors d’une cérémonie annuelle.
                     </p>
-                    <RouterLink to="/login" class="btn btn-filled-red">
+                    <RouterLink
+                        to="/login"
+                        class="btn btn-filled-red"
+                        :style="
+                            isCobrand
+                                ? {
+                                      background: brandColor,
+                                      borderColor: brandColor,
+                                      color: cobrand.textOnBrand,
+                                  }
+                                : null
+                        "
+                    >
                         Inscrire mon entreprise
                     </RouterLink>
                 </div>
@@ -294,6 +340,6 @@ onMounted(async () => {
             </div>
         </section>
         <!-- Footer -->
-        <Footer />
+        <Footer :slug="route.params.slug" />
     </div>
 </template>

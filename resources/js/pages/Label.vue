@@ -1,18 +1,47 @@
 ﻿<script setup>
 import { ref, computed, onMounted } from "vue";
-import HugNavbar from "../components/HugNavbar.vue";
+import { useRoute } from "vue-router";
+import { useCobrandStore } from "../stores/cobrand";
+import AppNavbar from "../components/AppNavbar.vue";
 import Footer from "../components/Footer.vue";
+
+const route = useRoute();
+const cobrand = useCobrandStore();
 
 const entreprises = ref([]);
 const loading = ref(true);
 const showAll = ref(false);
+
+// Mode cobrandé déterminé par la route. Le contenu reste identique ;
+// seules les couleurs d'accent changent.
+const isCobrand = computed(() => !!route.params.slug);
+const brandColor = computed(
+    () => cobrand.couleurPrimaire || "var(--color-default-red)",
+);
+const sectionGradient = computed(
+    () => `linear-gradient(135deg, ${brandColor.value}, #ffffff)`,
+);
 
 const visibles = computed(() =>
     showAll.value ? entreprises.value : entreprises.value.slice(0, 18),
 );
 
 onMounted(async () => {
-    document.title = "Label CTS — HUG";
+    // En cobrandé : récupère l'entreprise pour appliquer ses couleurs.
+    if (isCobrand.value) {
+        try {
+            const res = await fetch(`/api/entreprises/${route.params.slug}`);
+            if (res.ok) {
+                const data = await res.json();
+                if (data.entreprise) cobrand.set(data.entreprise);
+            }
+        } catch {
+            // silent fail
+        }
+    }
+    document.title = `Label CTS — ${isCobrand.value ? cobrand.nom || "HUG" : "HUG"}`;
+
+    // Grille des entreprises partenaires (commune aux deux modes).
     try {
         const res = await fetch("/api/entreprises");
         if (res.ok) entreprises.value = await res.json();
@@ -26,7 +55,7 @@ onMounted(async () => {
 
 <template>
     <div class="min-h-screen bg-white">
-        <HugNavbar />
+        <AppNavbar />
 
         <!-- Hero -->
         <section
@@ -148,14 +177,23 @@ onMounted(async () => {
             </div>
         </section>
 
-        <!-- Quote gradient -->
-        <section class="py-20 text-center bg-gradient">
+        <!-- Quote gradient (cobrandé : dégradé de la marque) -->
+        <section
+            class="py-20 text-center"
+            :class="isCobrand ? '' : 'bg-gradient'"
+            :style="isCobrand ? { background: sectionGradient } : null"
+        >
             <div class="max-w-7xl mx-auto px-8">
-                <blockquote class="font-bold mb-4 text-black">
+                <blockquote
+                    class="font-bold mb-4 text-black"
+                    :style="isCobrand ? { color: cobrand.textOnBrand } : null"
+                >
                     « Une initiative simple, qui a fédéré toute notre équipe
                     autour d'une cause qui compte vraiment. »
                 </blockquote>
-                <p>Sophie M., Responsable RH, Nestlé SA</p>
+                <p :style="isCobrand ? { color: cobrand.textOnBrand } : null">
+                    Sophie M., Responsable RH, Nestlé SA
+                </p>
             </div>
         </section>
 
@@ -180,7 +218,19 @@ onMounted(async () => {
                         finalisation de votre événement pour une validité d'un
                         an.
                     </p>
-                    <RouterLink to="/login" class="btn btn-filled-red">
+                    <RouterLink
+                        to="/login"
+                        class="btn btn-filled-red"
+                        :style="
+                            isCobrand
+                                ? {
+                                      background: brandColor,
+                                      borderColor: brandColor,
+                                      color: cobrand.textOnBrand,
+                                  }
+                                : null
+                        "
+                    >
                         Inscrire mon entreprise
                     </RouterLink>
                 </div>
@@ -289,7 +339,15 @@ onMounted(async () => {
                         v-if="!showAll && entreprises.length > 18"
                         class="flex justify-center"
                     >
-                        <button @click="showAll = true" class="btn btn-outlined-red">
+                        <button
+                            @click="showAll = true"
+                            class="btn btn-outlined-red"
+                            :style="
+                                isCobrand
+                                    ? { color: brandColor, borderColor: brandColor }
+                                    : null
+                            "
+                        >
                             Voir toutes les entreprises
                         </button>
                     </div>
@@ -307,6 +365,6 @@ onMounted(async () => {
         </section>
 
         <!-- Footer -->
-        <Footer />
+        <Footer :slug="route.params.slug" />
     </div>
 </template>

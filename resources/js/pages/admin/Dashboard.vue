@@ -7,26 +7,26 @@
 
         <template v-else>
             <!-- Stats -->
-            <div class="stats-row">
-                <div class="stat-card">
-                    <p class="stat-value">{{ stats.total_inscrits ?? 0 }}</p>
-                    <p class="stat-label">Inscriptions aux collectes</p>
+            <div class="max-w-4xl mx-auto px-8 grid grid-cols-3 gap-4 mb-10">
+                <div class="rounded-xl px-5 py-4 bg-light-grey">
+                    <h2 class="font-bold mb-1">{{ stats.total_inscrits ?? 0 }}</h2>
+                    <p class="captions">Inscriptions aux collectes</p>
                 </div>
-                <div class="stat-card">
-                    <p class="stat-value">{{ stats.collectes_actives ?? 0 }}</p>
-                    <p class="stat-label">Campagnes en cours</p>
+                <div class="rounded-xl px-5 py-4 bg-light-grey">
+                    <h2 class="font-bold mb-1">{{ stats.collectes_actives ?? 0 }}</h2>
+                    <p class="captions">Campagnes en cours</p>
                 </div>
-                <div class="stat-card stat-card--alert" v-bind:class="{ 'stat-card--alert-active': (stats.collectes_en_attente ?? 0) > 0 }">
-                    <p class="stat-value" :style="(stats.collectes_en_attente ?? 0) > 0 ? { color: 'var(--color-default-red)' } : {}">
+                <div class="rounded-xl px-5 py-4 bg-light-grey">
+                    <h2 class="font-bold mb-1" :style="(stats.collectes_en_attente ?? 0) > 0 ? { color: 'var(--color-default-red)' } : null">
                         {{ stats.collectes_en_attente ?? 0 }}
-                    </p>
-                    <p class="stat-label">En attente de validation</p>
+                    </h2>
+                    <p class="captions">En attente de validation</p>
                 </div>
             </div>
 
             <!-- Chart -->
-            <div class="chart-card">
-                <p class="chart-title">Évolution des inscriptions aux collectes</p>
+            <div class="chart-card shadow-light">
+                <h3 class="chart-title">Évolution des inscriptions aux collectes</h3>
                 <div class="chart-placeholder">
                     <svg viewBox="0 0 600 100" class="chart-svg">
                         <polyline
@@ -39,18 +39,23 @@
                         />
                     </svg>
                     <div class="chart-labels">
-                        <span v-for="label in chartData.labels" :key="label">{{ label }}</span>
+                        <span v-for="label in chartData.labels" :key="label" class="captions">{{ label }}</span>
                     </div>
                 </div>
                 <div class="chart-toggles">
                     <button
                         v-for="m in [{key:'jours',label:'Jours'},{key:'mois',label:'Mois'},{key:'annees',label:'Années'}]"
                         :key="m.key"
-                        :class="['toggle-btn', chartMode === m.key && 'active']"
+                        class="btn btn-outlined-blue"
+                        :class="{ 'is-selected': chartMode === m.key }"
                         @click="chartMode = m.key"
                     >{{ m.label }}</button>
                 </div>
             </div>
+
+            <!-- Zone grise pleine largeur : tout à partir de « À valider » -->
+            <div class="grey-zone">
+            <div class="grey-zone-inner">
 
             <!-- Collectes en attente de validation -->
             <div class="section-header">
@@ -60,12 +65,12 @@
                 </h2>
             </div>
 
-            <div v-if="collectesEnAttente.length === 0" class="attente-empty">
+            <div v-if="collectesEnAttente.length === 0" class="attente-empty shadow-light">
                 <span class="material-symbols-outlined" style="font-size: 32px; color: #c0cac9">task_alt</span>
-                <p>Aucune collecte en attente de validation.</p>
+                <p class="captions">Aucune collecte en attente de validation.</p>
             </div>
 
-            <div v-else class="attente-list">
+            <div v-else class="attente-list shadow-light">
                 <div
                     v-for="collecte in collectesEnAttente"
                     :key="'att-' + collecte.id"
@@ -77,7 +82,7 @@
                     </div>
                     <div class="attente-info">
                         <p class="attente-company">{{ collecte.entreprise?.nom }}</p>
-                        <p class="attente-meta">{{ collecte.titre || 'Collecte sans titre' }} · {{ formatDate(collecte.date_debut) }}{{ collecte.lieu ? ' · ' + collecte.lieu : '' }}</p>
+                        <p class="captions attente-meta">{{ collecte.titre || 'Collecte sans titre' }} · {{ formatDate(collecte.date_debut) }}{{ collecte.lieu ? ' · ' + collecte.lieu : '' }}</p>
                     </div>
                     <div class="attente-actions">
                         <RouterLink :to="`/admin/collectes/${collecte.id}/edit`" class="btn-edit">
@@ -98,38 +103,52 @@
             <!-- Dernières campagnes -->
             <div class="section-header">
                 <h2 class="section-title">Dernières campagnes</h2>
-                <RouterLink to="/admin/collectes" class="section-link">↗</RouterLink>
+                <RouterLink to="/admin/collectes" class="btn-circle" aria-label="Voir toutes les collectes">
+                    <span class="material-symbols-outlined btn-circle-icon">arrow_outward</span>
+                </RouterLink>
             </div>
             <div class="cards-grid">
                 <div
                     v-for="collecte in collectesRecentes"
                     :key="collecte.id"
-                    class="collecte-card"
+                    class="card shadow-light"
                 >
                     <div class="card-top">
                         <div>
-                            <p class="card-company">{{ collecte.entreprise?.nom }}</p>
-                            <p class="card-subtitle">{{ collecte.titre || '—' }}</p>
-                            <p class="card-date">{{ formatDate(collecte.date_debut) }}</p>
+                            <h3 class="card-company">{{ collecte.entreprise?.nom }}</h3>
+                            <p class="captions card-subtitle">{{ collecte.titre || '—' }}</p>
+                            <p class="captions card-muted">{{ formatDate(collecte.date_debut) }}</p>
                         </div>
-                        <button class="card-menu">···</button>
+                        <div class="card-menu-wrap">
+                            <button class="btn-circle btn-circle-red" aria-label="Options" @click.stop="toggleMenu(collecte.id)">
+                                <span class="material-symbols-outlined btn-circle-icon">more_horiz</span>
+                            </button>
+                            <div v-if="openMenu === collecte.id" class="card-dropdown" @click.stop>
+                                <RouterLink :to="`/entreprise/${collecte.entreprise?.slug}/collecte/${collecte.id}`">Voir la page</RouterLink>
+                                <RouterLink :to="`/admin/collectes/${collecte.id}/edit`">Modifier</RouterLink>
+                                <button @click="copierLien(collecte)">{{ copied === collecte.id ? 'Lien copié !' : 'Copier le lien' }}</button>
+                                <button class="danger" @click="supprimerCollecte(collecte)">Supprimer</button>
+                            </div>
+                        </div>
                     </div>
-                    <span :class="['badge', badgeClass(collecte)]">{{ badgeLabel(collecte) }}</span>
-                    <p class="card-inscrits"><span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle">group</span> {{ collecte.nb_inscrits_estime ?? 0 }} inscrit(s)</p>
-                    <p class="card-lieu">{{ collecte.lieu ?? "—" }}</p>
+                    <span class="captions badge" :class="badgeClass(collecte)">{{ badgeLabel(collecte) }}</span>
+                    <p class="captions card-muted"><span class="material-symbols-outlined card-icon">group</span> {{ collecte.nb_inscrits_estime ?? 0 }} inscrit(s)</p>
+                    <p class="captions card-muted">{{ collecte.lieu ?? "—" }}</p>
                 </div>
             </div>
 
             <!-- Dernières inscriptions -->
-            <div class="section-header" style="margin-top: 2.5rem">
+            <div class="section-header">
                 <h2 class="section-title">Dernières inscriptions</h2>
-                <RouterLink to="/admin/collectes" class="section-link">↗</RouterLink>
+                <RouterLink to="/admin/collectes" class="btn-circle" aria-label="Voir toutes les collectes">
+                    <span class="material-symbols-outlined btn-circle-icon">arrow_outward</span>
+                </RouterLink>
             </div>
             <div class="cards-grid">
                 <div
                     v-for="collecte in collectesInscrits"
                     :key="'ins-' + collecte.id"
-                    class="insc-card"
+                    class="insc-card shadow-light"
                 >
                     <div class="insc-logo">
                         <img
@@ -140,20 +159,22 @@
                         <span v-else class="insc-logo-placeholder">{{ collecte.entreprise?.nom?.charAt(0) }}</span>
                     </div>
                     <div class="insc-info">
-                        <p class="card-company">{{ collecte.entreprise?.nom }}</p>
-                        <p class="card-subtitle">{{ collecte.titre || '—' }}</p>
-                        <p class="card-date">{{ formatDate(collecte.date_debut) }}</p>
-                        <span :class="['badge', badgeClass(collecte)]">{{ badgeLabel(collecte) }}</span>
-                        <p class="card-lieu" style="margin-top: 0.5rem">{{ collecte.lieu ?? "—" }}</p>
+                        <h3 class="card-company">{{ collecte.entreprise?.nom }}</h3>
+                        <p class="captions card-subtitle">{{ collecte.titre || '—' }}</p>
+                        <p class="captions card-muted">{{ formatDate(collecte.date_debut) }}</p>
+                        <span class="captions badge" :class="badgeClass(collecte)">{{ badgeLabel(collecte) }}</span>
+                        <p class="captions card-muted" style="margin-top: 0.5rem">{{ collecte.lieu ?? "—" }}</p>
                     </div>
                 </div>
+            </div>
+            </div>
             </div>
         </template>
     </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, onBeforeUnmount } from "vue";
 import { useAuthStore } from "../../stores/auth";
 
 const auth     = useAuthStore();
@@ -163,6 +184,32 @@ const loading  = ref(true);
 const error    = ref(null);
 const chartMode = ref("jours");
 const validating = ref(null);
+const openMenu = ref(null);
+const copied = ref(null);
+
+function toggleMenu(id) {
+    openMenu.value = openMenu.value === id ? null : id;
+}
+function closeMenu() {
+    openMenu.value = null;
+}
+function copierLien(c) {
+    const url = `${window.location.origin}/entreprise/${c.entreprise?.slug}/collecte/${c.id}`;
+    navigator.clipboard?.writeText(url);
+    copied.value = c.id;
+    setTimeout(() => { copied.value = null; closeMenu(); }, 1200);
+}
+async function supprimerCollecte(c) {
+    closeMenu();
+    if (!confirm(`Supprimer la collecte de ${c.entreprise?.nom} ?`)) return;
+    try {
+        await fetch(`/api/admin/collectes/${c.id}`, {
+            method: "DELETE",
+            headers: { Authorization: `Bearer ${auth.token}`, Accept: "application/json" },
+        });
+        collectes.value = collectes.value.filter(x => x.id !== c.id);
+    } catch {}
+}
 
 /* ── Computed lists ─────────────────────────────────────────── */
 const collectesEnAttente = computed(() =>
@@ -171,9 +218,11 @@ const collectesEnAttente = computed(() =>
 const collectesRecentes = computed(() =>
     collectes.value.filter(c => c.statut !== "en_attente").slice(0, 6)
 );
+// Les plus récemment créées (par id décroissant) — une nouvelle entreprise
+// apparaît immédiatement, quel que soit son nombre d'inscrits.
 const collectesInscrits = computed(() =>
-    collectes.value
-        .filter(c => c.statut !== "en_attente" && (c.nb_inscrits_estime ?? 0) > 0)
+    [...collectes.value]
+        .sort((a, b) => (b.id ?? 0) - (a.id ?? 0))
         .slice(0, 6)
 );
 
@@ -223,12 +272,12 @@ function formatDate(date) {
 }
 
 function badgeLabel(c) {
-    if (c.statut === "terminee")   return "Terminée";
+    if (c.statut === "terminee")   return "Complétée";
     if (c.statut === "en_attente") return "À confirmer";
     if (c.active) return "En cours";
     const today = new Date().toISOString().split("T")[0];
     const debut = c.date_debut ? String(c.date_debut).split("T")[0] : null;
-    return debut && debut >= today ? "À venir" : "Terminée";
+    return debut && debut >= today ? "À venir" : "Complétée";
 }
 
 function badgeClass(c) {
@@ -289,47 +338,22 @@ async function fetchData() {
     }
 }
 
-onMounted(fetchData);
+onMounted(() => {
+    document.addEventListener("click", closeMenu);
+    fetchData();
+});
+onBeforeUnmount(() => {
+    document.removeEventListener("click", closeMenu);
+});
 </script>
 
 <style scoped>
 .dashboard { width: 100%; }
 
 .page-title {
-    font-size: 2rem;
-    font-weight: 700;
     color: var(--default-titles);
     text-align: center;
     margin: 0 0 2rem;
-}
-
-/* Stats */
-.stats-row {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.25rem;
-    margin-bottom: 2rem;
-}
-.stat-card {
-    background: white;
-    border-radius: 0.75rem;
-    padding: 1.5rem;
-    border: 1px solid transparent;
-}
-.stat-card--alert-active {
-    border-color: #fee2e2;
-    background: #fff8f8;
-}
-.stat-value {
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--default-titles);
-    margin: 0 0 0.25rem;
-}
-.stat-label {
-    font-size: 0.8rem;
-    color: var(--default-text);
-    margin: 0;
 }
 
 /* Chart */
@@ -340,14 +364,12 @@ onMounted(fetchData);
     margin-bottom: 2.5rem;
 }
 .chart-title {
-    font-size: 1rem;
-    font-weight: 600;
     color: var(--default-titles);
     text-align: center;
     margin: 0 0 1rem;
 }
 .chart-placeholder {
-    background: #f9fafb;
+    background: var(--light-grey);
     border-radius: 0.5rem;
     padding: 1rem;
     margin-bottom: 1rem;
@@ -356,7 +378,6 @@ onMounted(fetchData);
 .chart-labels {
     display: flex;
     justify-content: space-between;
-    font-size: 0.75rem;
     color: var(--default-text);
     margin-top: 0.5rem;
 }
@@ -364,21 +385,6 @@ onMounted(fetchData);
     display: flex;
     justify-content: center;
     gap: 0.75rem;
-}
-.toggle-btn {
-    border: 1px solid #e2e8f0;
-    border-radius: 9999px;
-    padding: 0.35rem 1.1rem;
-    font-size: 0.875rem;
-    background: white;
-    color: var(--default-text);
-    cursor: pointer;
-    transition: all 0.15s;
-}
-.toggle-btn.active {
-    background: var(--default-titles);
-    color: white;
-    border-color: var(--default-titles);
 }
 
 /* Section headers */
@@ -390,8 +396,6 @@ onMounted(fetchData);
     margin-bottom: 1.25rem;
 }
 .section-title {
-    font-size: 1.5rem;
-    font-weight: 700;
     color: var(--default-titles);
     margin: 0;
     display: flex;
@@ -410,34 +414,29 @@ onMounted(fetchData);
     padding: 0.15rem 0.55rem;
     min-width: 22px;
 }
-.section-link {
-    width: 32px;
-    height: 32px;
-    border: 1px solid #e2e8f0;
-    border-radius: 9999px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--default-text);
-    text-decoration: none;
-    font-size: 0.9rem;
-    transition: border-color 0.15s;
+
+/* Zone grise pleine largeur : déborde du conteneur centré (full-bleed) */
+.grey-zone {
+    width: 100vw;
+    margin-left: 50%;
+    transform: translateX(-50%);
+    background: var(--light-grey);
+    margin-top: 2.5rem;
+    /* annule le padding-bas du main-content pour rejoindre le footer */
+    margin-bottom: -2.5rem;
+    padding: 2.5rem 0 3rem;
 }
-.section-link:hover { border-color: var(--default-titles); color: var(--default-titles); }
+.grey-zone-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
 
 /* Cards grid */
 .cards-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1.25rem;
-}
-.collecte-card {
-    background: white;
-    border-radius: 0.75rem;
-    padding: 1.25rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
 }
 /* ── Attente list ─────────────────────────────────────────── */
 .attente-empty {
@@ -450,7 +449,6 @@ onMounted(fetchData);
     border-radius: 0.75rem;
     margin-bottom: 2.5rem;
     color: #8fa8a6;
-    font-size: 0.9rem;
 }
 .attente-list {
     display: flex;
@@ -494,7 +492,6 @@ onMounted(fetchData);
 }
 .attente-company {
     font-weight: 700;
-    font-size: 0.95rem;
     color: var(--default-titles);
     margin: 0;
     white-space: nowrap;
@@ -502,7 +499,6 @@ onMounted(fetchData);
     text-overflow: ellipsis;
 }
 .attente-meta {
-    font-size: 0.8rem;
     color: #8fa8a6;
     margin: 0.15rem 0 0;
     white-space: nowrap;
@@ -550,74 +546,56 @@ onMounted(fetchData);
     align-items: flex-start;
 }
 .card-company {
-    font-weight: 700;
-    font-size: 1rem;
     color: var(--default-titles);
     margin: 0;
 }
 .card-subtitle {
-    font-size: 0.82rem;
     color: var(--default-titles);
     opacity: 0.7;
     margin: 0.05rem 0 0;
     font-style: italic;
 }
-.card-date {
-    font-size: 0.8rem;
+.card-muted {
     color: var(--default-text);
     margin: 0.1rem 0 0;
 }
-.card-inscrits, .card-lieu {
-    font-size: 0.85rem;
-    color: var(--default-text);
-    margin: 0;
-}
-.card-menu {
-    background: none;
-    border: none;
-    color: var(--default-text);
-    font-size: 1.25rem;
-    cursor: pointer;
-    padding: 0;
-    line-height: 1;
-    letter-spacing: 2px;
+.card-icon {
+    font-size: 14px;
+    vertical-align: middle;
 }
 
-/* Inscriptions cards */
+/* Inscriptions cards : logo pleine hauteur à gauche (cf. maquette) */
 .insc-card {
     background: white;
-    border-radius: 0.75rem;
-    padding: 1.25rem;
+    border-radius: 0.9rem;
     display: flex;
-    gap: 1rem;
-    align-items: flex-start;
+    align-items: stretch;
+    overflow: hidden;
 }
 .insc-logo {
-    width: 56px; height: 56px;
-    background: var(--light-grey);
-    border-radius: 0.5rem;
+    width: 110px;
     flex-shrink: 0;
+    background: var(--light-grey);
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
+    padding: 1rem;
 }
 .insc-logo img { width: 100%; height: 100%; object-fit: contain; }
-.insc-logo-placeholder { font-weight: 700; font-size: 1.25rem; color: var(--default-text); }
-.insc-info { flex: 1; }
-
-/* Badges */
-.badge {
-    display: inline-block;
-    padding: 0.2rem 0.65rem;
-    border-radius: 9999px;
-    font-size: 0.75rem;
-    font-weight: 600;
+.insc-logo-placeholder { font-weight: 700; color: var(--default-text); }
+.insc-info {
+    flex: 1;
+    min-width: 0;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
 }
-.badge-encours    { background: #d1fae5; color: #065f46; }
-.badge-aconfirmer { background: #fee2e2; color: #991b1b; }
-.badge-avenir     { background: #fef3c7; color: #92400e; }
-.badge-complete   { background: var(--light-grey); color: var(--default-text); }
+
+/* Badge : couleurs dans app.css, alignement spécifique à la carte */
+.badge {
+    align-self: flex-start;
+}
 
 .loading, .error { color: var(--default-text); padding: 2rem 0; }
 </style>

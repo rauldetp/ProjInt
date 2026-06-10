@@ -54,14 +54,6 @@ defineProps({
                             <template v-if="slug">
                                 <li>
                                     <RouterLink
-                                        :to="`/entreprise/${slug}`"
-                                        class="text-white hover:opacity-70 transition"
-                                        style="text-decoration: none"
-                                        >Accueil collecte</RouterLink
-                                    >
-                                </li>
-                                <li>
-                                    <RouterLink
                                         :to="`/entreprise/${slug}/label`"
                                         class="text-white hover:opacity-70 transition"
                                         style="text-decoration: none"
@@ -74,6 +66,14 @@ defineProps({
                                         class="text-white hover:opacity-70 transition"
                                         style="text-decoration: none"
                                         >Trophée de la générosité</RouterLink
+                                    >
+                                </li>
+                                <li>
+                                    <RouterLink
+                                        :to="`/entreprise/${slug}/quiz`"
+                                        class="text-white hover:opacity-70 transition"
+                                        style="text-decoration: none"
+                                        >Quiz d'eligibilité</RouterLink
                                     >
                                 </li>
                             </template>
@@ -120,7 +120,11 @@ defineProps({
                             </li>
                             <li>
                                 <RouterLink
-                                    to="/faq"
+                                    :to="
+                                        slug
+                                            ? `/entreprise/${slug}/faq`
+                                            : '/faq'
+                                    "
                                     class="text-white hover:opacity-70 transition"
                                     style="text-decoration: none"
                                     >FAQ</RouterLink
@@ -128,7 +132,11 @@ defineProps({
                             </li>
                             <li>
                                 <RouterLink
-                                    to="/contact"
+                                    :to="
+                                        slug
+                                            ? `/entreprise/${slug}/contact`
+                                            : '/contact'
+                                    "
                                     class="text-white hover:opacity-70 transition"
                                     style="text-decoration: none"
                                     >Contact</RouterLink

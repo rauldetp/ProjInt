@@ -2,8 +2,13 @@
   <div class="collectes-index">
     <div class="page-header">
       <h1 class="page-title">Collectes</h1>
-      <RouterLink to="/admin/collectes/create" class="btn-primary">
-        + Nouvelle collecte
+      <RouterLink
+        to="/admin/collectes/create"
+        class="btn-circle"
+        title="Nouvelle collecte"
+        aria-label="Nouvelle collecte"
+      >
+        <span class="material-symbols-outlined btn-circle-icon">add</span>
       </RouterLink>
     </div>
 
@@ -15,7 +20,8 @@
         <button
           v-for="f in filtres"
           :key="f.value"
-          :class="['filter-btn', { active: filtre === f.value }]"
+          class="btn btn-outlined-blue"
+          :class="{ 'is-selected': filtre === f.value }"
           @click="filtre = f.value"
         >
           {{ f.label }}
@@ -26,51 +32,48 @@
         Aucune collecte pour ce filtre.
       </div>
 
-      <table v-else class="collectes-table">
-        <thead>
-          <tr>
-            <th>Entreprise</th>
-            <th>Date</th>
-            <th>Lieu</th>
-            <th>Inscrits / Objectif</th>
-            <th>Statut</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="collecte in collectesFiltrees" :key="collecte.id">
-            <td>{{ collecte.entreprise?.nom }}</td>
-            <td>{{ formatDate(collecte.date_debut) }}</td>
-            <td>{{ collecte.lieu ?? '—' }}</td>
-            <td>{{ collecte.nb_inscrits_estime }} / {{ collecte.objectif_dons ?? '—' }}</td>
-            <td>
-              <select
-                :value="collecte.statut"
-                @change="changerStatut(collecte, $event.target.value)"
-                :class="['statut-select', collecte.statut]"
-              >
-                <option value="en_attente">En attente</option>
-                <option value="validee">Validée</option>
-                <option value="terminee">Terminée</option>
-              </select>
-            </td>
-            <td class="actions">
-              <RouterLink :to="`/admin/collectes/${collecte.id}/edit`" class="btn-edit">
-                Modifier
-              </RouterLink>
-              <button class="btn-delete" @click="supprimer(collecte)">
-                Supprimer
+      <div v-else class="cards-grid">
+        <div
+          v-for="collecte in collectesFiltrees"
+          :key="collecte.id"
+          class="card shadow-light card-clickable"
+        >
+          <div class="card-top">
+            <div class="card-head">
+              <h3 class="card-company">{{ collecte.entreprise?.nom }}</h3>
+              <p v-if="collecte.titre" class="captions card-subtitle">{{ collecte.titre }}</p>
+              <p class="captions card-muted">{{ formatDate(collecte.date_debut) }}</p>
+            </div>
+            <div class="card-menu-wrap">
+              <button class="btn-circle btn-circle-red" aria-label="Options" @click.stop="toggleMenu(collecte.id)">
+                <span class="material-symbols-outlined btn-circle-icon">more_horiz</span>
               </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+              <div v-if="openMenu === collecte.id" class="card-dropdown" @click.stop>
+                <RouterLink :to="`/entreprise/${collecte.entreprise?.slug}/collecte/${collecte.id}`">Voir la page</RouterLink>
+                <RouterLink :to="`/admin/collectes/${collecte.id}/edit`">Modifier</RouterLink>
+                <button @click="copierLien(collecte)">
+                  {{ copied === collecte.id ? 'Lien copié !' : 'Copier le lien' }}
+                </button>
+                <button class="danger" @click="supprimer(collecte)">Supprimer</button>
+              </div>
+            </div>
+          </div>
+
+          <span class="captions badge" :class="badgeClass(collecte)">{{ badgeLabel(collecte) }}</span>
+
+          <p class="captions card-muted">
+            <span class="material-symbols-outlined card-icon">group</span>
+            {{ collecte.nb_inscrits_estime }} / {{ collecte.objectif_dons ?? '—' }} inscrit(s)
+          </p>
+          <p class="captions card-muted">{{ collecte.lieu ?? 'Lieu à définir' }}</p>
+        </div>
+      </div>
     </template>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useAuthStore } from '../../../stores/auth'
 
 const auth = useAuthStore()
@@ -78,12 +81,14 @@ const collectes = ref([])
 const loading = ref(true)
 const error = ref(null)
 const filtre = ref('tous')
+const openMenu = ref(null)
+const copied = ref(null)
 
 const filtres = [
   { value: 'tous', label: 'Toutes' },
-  { value: 'en_attente', label: 'En attente' },
-  { value: 'validee', label: 'Validées' },
-  { value: 'terminee', label: 'Terminées' },
+  { value: 'en_attente', label: 'À confirmer' },
+  { value: 'validee', label: 'En cours' },
+  { value: 'terminee', label: 'Complétées' },
 ]
 
 const collectesFiltrees = computed(() => {
@@ -91,10 +96,34 @@ const collectesFiltrees = computed(() => {
   return collectes.value.filter(c => c.statut === filtre.value)
 })
 
+function toggleMenu(id) {
+  openMenu.value = openMenu.value === id ? null : id
+}
+function closeMenu() {
+  openMenu.value = null
+}
+
 function formatDate(date) {
   return new Date(date).toLocaleDateString('fr-FR', {
     day: '2-digit', month: '2-digit', year: 'numeric'
   })
+}
+
+function badgeLabel(c) {
+  if (c.statut === 'terminee') return 'Complétée'
+  if (c.statut === 'en_attente') return 'À confirmer'
+  if (c.active) return 'En cours'
+  const today = new Date().toISOString().split('T')[0]
+  const debut = c.date_debut ? String(c.date_debut).split('T')[0] : null
+  return debut && debut >= today ? 'À venir' : 'Complétée'
+}
+
+function badgeClass(c) {
+  const l = badgeLabel(c)
+  if (l === 'En cours') return 'badge-encours'
+  if (l === 'À confirmer') return 'badge-aconfirmer'
+  if (l === 'À venir') return 'badge-avenir'
+  return 'badge-complete'
 }
 
 function headers() {
@@ -118,6 +147,7 @@ async function fetchCollectes() {
 }
 
 async function changerStatut(collecte, statut) {
+  closeMenu()
   await fetch(`/api/admin/collectes/${collecte.id}/statut`, {
     method: 'PATCH',
     headers: headers(),
@@ -127,7 +157,16 @@ async function changerStatut(collecte, statut) {
   collecte.active = statut === 'validee'
 }
 
+function copierLien(collecte) {
+  const slug = collecte.entreprise?.slug
+  const url = `${window.location.origin}/entreprise/${slug}/collecte/${collecte.id}`
+  navigator.clipboard?.writeText(url)
+  copied.value = collecte.id
+  setTimeout(() => { copied.value = null; closeMenu() }, 1200)
+}
+
 async function supprimer(collecte) {
+  closeMenu()
   if (!confirm(`Supprimer la collecte de ${collecte.entreprise?.nom} ?`)) return
   await fetch(`/api/admin/collectes/${collecte.id}`, {
     method: 'DELETE',
@@ -136,13 +175,18 @@ async function supprimer(collecte) {
   collectes.value = collectes.value.filter(c => c.id !== collecte.id)
 }
 
-onMounted(fetchCollectes)
+onMounted(() => {
+  document.addEventListener('click', closeMenu)
+  fetchCollectes()
+})
+onBeforeUnmount(() => {
+  document.removeEventListener('click', closeMenu)
+})
 </script>
 
 <style scoped>
 .collectes-index {
-  max-width: 1100px;
-  margin: 0 auto;
+  width: 100%;
 }
 
 .page-header {
@@ -153,112 +197,64 @@ onMounted(fetchCollectes)
 }
 
 .page-title {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: #0f172a;
+  color: var(--default-titles);
   margin: 0;
 }
 
-.btn-primary {
-  background: #0f172a;
-  color: white;
-  border-radius: 0.5rem;
-  padding: 0.6rem 1.25rem;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 0.9rem;
-  transition: background 0.15s;
-}
-
-.btn-primary:hover { background: #1e293b; }
-
+/* Filtres pills */
 .filters {
   display: flex;
   gap: 0.5rem;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
 }
 
-.filter-btn {
-  padding: 0.4rem 1rem;
-  border-radius: 9999px;
-  border: 1px solid #e2e8f0;
-  background: white;
-  color: #64748b;
-  font-size: 0.85rem;
-  cursor: pointer;
-  transition: all 0.15s;
+/* Grille de cartes */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+.card-clickable {
+  transition: transform 0.15s;
+}
+.card-clickable:hover {
+  transform: translateY(-2px);
+}
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.card-head {
+  min-width: 0;
+}
+.card-company {
+  color: var(--default-titles);
+  margin: 0;
+}
+.card-subtitle {
+  color: var(--default-titles);
+  opacity: 0.7;
+  margin: 0.05rem 0 0;
+  font-style: italic;
+}
+.card-muted {
+  color: var(--default-text);
+  margin: 0.1rem 0 0;
+}
+.card-icon {
+  font-size: 14px;
+  vertical-align: middle;
 }
 
-.filter-btn.active {
-  background: #0f172a;
-  color: white;
-  border-color: #0f172a;
+/* Badge : couleurs dans app.css, alignement spécifique à la carte */
+.badge {
+  align-self: flex-start;
 }
 
-.collectes-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: white;
-  border-radius: 1rem;
-  overflow: hidden;
-  font-size: 0.9rem;
+.empty, .loading, .error {
+  color: var(--default-text);
+  padding: 2rem 0;
 }
-
-.collectes-table th {
-  text-align: left;
-  padding: 0.75rem 1rem;
-  color: #64748b;
-  font-weight: 600;
-  border-bottom: 1px solid #e2e8f0;
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  background: #f8fafc;
-}
-
-.collectes-table td {
-  padding: 0.9rem 1rem;
-  color: #334155;
-  border-bottom: 1px solid #f1f5f9;
-}
-
-.collectes-table tr:last-child td { border-bottom: none; }
-
-.statut-select {
-  border: none;
-  border-radius: 9999px;
-  padding: 0.25rem 0.65rem;
-  font-size: 0.8rem;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.statut-select.validee   { background: #dcfce7; color: #166534; }
-.statut-select.en_attente { background: #fef9c3; color: #854d0e; }
-.statut-select.terminee  { background: #f1f5f9; color: #475569; }
-
-.actions { display: flex; gap: 0.75rem; align-items: center; }
-
-.btn-edit {
-  color: #0ea5e9;
-  text-decoration: none;
-  font-weight: 500;
-  font-size: 0.875rem;
-}
-
-.btn-edit:hover { text-decoration: underline; }
-
-.btn-delete {
-  background: none;
-  border: none;
-  color: #ef4444;
-  font-size: 0.875rem;
-  cursor: pointer;
-  font-weight: 500;
-  padding: 0;
-}
-
-.btn-delete:hover { text-decoration: underline; }
-
-.empty, .loading, .error { color: #94a3b8; padding: 2rem 0; }
 </style>

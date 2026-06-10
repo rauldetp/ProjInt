@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted } from "vue";
-import HugNavbar from "../components/HugNavbar.vue";
+import AppNavbar from "../components/AppNavbar.vue";
 import Footer from "../components/Footer.vue";
 
 onMounted(() => {
@@ -10,7 +10,7 @@ onMounted(() => {
 
 <template>
     <div class="min-h-screen bg-white">
-        <HugNavbar />
+        <AppNavbar />
 
         <section class="max-w-3xl mx-auto px-6 py-16">
             <h1 class="mb-4">Conditions générales d'utilisation</h1>
