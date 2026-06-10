@@ -2,7 +2,7 @@
 import { ref, computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { useCobrandStore } from "../stores/cobrand";
-import CoNavbar from "../components/CoNavbar.vue";
+import AppNavbar from "../components/AppNavbar.vue";
 import Footer from "../components/Footer.vue";
 
 const route = useRoute();
@@ -62,7 +62,7 @@ const dateRange = computed(() => {
     <div v-else class="page">
 
         <!-- Navbar -->
-        <CoNavbar :collecte="collecte" />
+        <AppNavbar />
 
         <!-- Hero -->
         <section class="hero">

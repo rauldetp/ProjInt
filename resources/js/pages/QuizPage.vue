@@ -1,16 +1,34 @@
 ﻿<script setup>
 import { ref, computed, onMounted } from "vue";
+import { useRoute } from "vue-router";
 import { useAuthStore } from "../stores/auth";
-import HugNavbar from "../components/HugNavbar.vue";
+import { useCobrandStore } from "../stores/cobrand";
+import AppNavbar from "../components/AppNavbar.vue";
 import QuizNavbar from "../components/QuizNavbar.vue";
 
+const route = useRoute();
 const auth = useAuthStore();
+const cobrand = useCobrandStore();
 
-const BRAND = "var(--color-default-red)";
-const TEAL = "var(--color-default-blue-59)";
-const COOKIE_RESULT = "quizResult_hug";
-const COOKIE_ANSWERS = "quizAnswers_hug";
+// Mode cobrandé déterminé par la route ; seules les couleurs d'accent changent.
+const isCobrand = computed(() => !!route.params.slug);
+const brandColor = computed(
+    () => cobrand.couleurPrimaire || "var(--color-default-red)",
+);
+const textOnBrand = computed(() => cobrand.textOnBrand || "white");
+
+// Données entreprise/collecte (uniquement en mode cobrandé).
+const entreprise = ref(null);
+const collecte = ref(null);
+
 const COOKIE_DAYS = 7;
+// Cookies indexés par entreprise en cobrandé, génériques sinon.
+const cookieResult = computed(() =>
+    isCobrand.value ? `quizResult_${route.params.slug}` : "quizResult_hug",
+);
+const cookieAnswers = computed(() =>
+    isCobrand.value ? `quizAnswers_${route.params.slug}` : "quizAnswers_hug",
+);
 
 // ── Cookie helpers ────────────────────────────────────────────────
 function setCookie(name, value, days) {
@@ -40,18 +58,49 @@ const participerLink = computed(() => {
     return "/login";
 });
 
-onMounted(() => {
-    const savedResult = getCookie(COOKIE_RESULT);
+// CTA de fin de quiz : en cobrandé, vers l'inscription si une collecte est
+// active, sinon l'accueil de l'entreprise ; sinon le lien générique.
+const resultCta = computed(() => {
+    if (!isCobrand.value) return participerLink.value;
+    return collecte.value?.active
+        ? `/entreprise/${route.params.slug}/inscription`
+        : `/entreprise/${route.params.slug}`;
+});
+
+onMounted(async () => {
+    // En cobrandé : récupère entreprise + collecte pour couleurs et CTA.
+    if (isCobrand.value) {
+        try {
+            const res = await fetch(`/api/entreprises/${route.params.slug}`);
+            if (res.ok) {
+                const data = await res.json();
+                entreprise.value = data.entreprise;
+                collecte.value = data.collecte ?? null;
+                if (data.entreprise) cobrand.set(data.entreprise);
+            }
+        } catch {
+            // silent fail
+        }
+    }
+
+    const savedResult = getCookie(cookieResult.value);
     if (savedResult) {
         resultat.value = savedResult;
-        const savedAnswers = getCookie(COOKIE_ANSWERS);
+        const savedAnswers = getCookie(cookieAnswers.value);
         if (savedAnswers) {
             try {
                 answers.value = JSON.parse(savedAnswers);
             } catch {}
         }
     }
-    document.title = "Quiz d'éligibilité — HUG Don du sang";
+
+    if (route.query.voir === "resultat") {
+        step.value = resultat.value ? "result" : "intro";
+    }
+
+    document.title = isCobrand.value
+        ? `Quiz d'éligibilité — ${cobrand.nom || "HUG"}`
+        : "Quiz d'éligibilité — HUG Don du sang";
 });
 
 // ── Questions ────────────────────────────────────────────────────
@@ -298,8 +347,19 @@ function goBack() {
 function showResult() {
     const r = computeResult();
     resultat.value = r;
-    setCookie(COOKIE_RESULT, r, COOKIE_DAYS);
-    setCookie(COOKIE_ANSWERS, JSON.stringify(answers.value), COOKIE_DAYS);
+    setCookie(cookieResult.value, r, COOKIE_DAYS);
+    setCookie(cookieAnswers.value, JSON.stringify(answers.value), COOKIE_DAYS);
+    // En cobrandé : remonte le résultat à la collecte (stats coordinateur).
+    if (isCobrand.value && collecte.value?.id) {
+        fetch(`/api/collectes/${collecte.value.id}/quiz-result`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+            },
+            body: JSON.stringify({ resultat: r }),
+        }).catch(() => {});
+    }
     step.value = "result";
 }
 
@@ -318,8 +378,8 @@ function computeResult() {
 
 function retakeQuiz() {
     resultat.value = null;
-    deleteCookie(COOKIE_RESULT);
-    deleteCookie(COOKIE_ANSWERS);
+    deleteCookie(cookieResult.value);
+    deleteCookie(cookieAnswers.value);
     startQuiz();
 }
 </script>
@@ -327,15 +387,22 @@ function retakeQuiz() {
 <template>
     <div class="page">
         <!-- Nav standard sur l'intro, nav quiz sur les autres étapes -->
-        <HugNavbar v-if="step === 'intro'" />
-        <QuizNavbar v-else :on-back="goBack" />
+        <AppNavbar v-if="step === 'intro'" />
+        <QuizNavbar
+            v-else
+            :on-back="goBack"
+            :cobrand="isCobrand ? cobrand : null"
+        />
 
         <!-- ══════════════════════════════════════════════════════
              INTRO — split screen
         ═══════════════════════════════════════════════════════ -->
         <Transition name="slide" mode="out-in">
         <div v-if="step === 'intro'" class="split-screen" key="intro">
-            <div class="mascotte-col">
+            <div
+                class="mascotte-col"
+                :style="isCobrand ? { background: brandColor + '08' } : null"
+            >
                 <div class="mascotte-circle">
                     <img
                         :src="'/images/courage/Mascotte_default.png'"
@@ -374,7 +441,31 @@ function retakeQuiz() {
                             <p class="captions">Préparer votre don</p>
                         </div>
                     </div>
-                    <button class="btn btn-filled-blue" @click="startQuiz">
+                    <div
+                        v-if="isCobrand && collecte?.nb_inscrits_estime"
+                        class="social-proof-chip"
+                    >
+                        <span
+                            class="material-symbols-outlined"
+                            style="font-size: 18px"
+                            >group</span
+                        >
+                        <span
+                            >Déjà
+                            <strong>{{ collecte.nb_inscrits_estime }}</strong>
+                            collègues ont passé le test !</span
+                        >
+                    </div>
+
+                    <button
+                        class="btn btn-filled-blue"
+                        :style="
+                            isCobrand
+                                ? { background: brandColor, color: textOnBrand }
+                                : null
+                        "
+                        @click="startQuiz"
+                    >
                         Commencer le test
                         <span class="material-symbols-outlined"
                             >arrow_forward</span
@@ -405,6 +496,22 @@ function retakeQuiz() {
                             'step-done': i < currentQ,
                             'step-active': i === currentQ,
                         }"
+                        :style="
+                            !isCobrand
+                                ? null
+                                : i < currentQ
+                                  ? {
+                                        background: brandColor,
+                                        borderColor: brandColor,
+                                        color: textOnBrand,
+                                    }
+                                  : i === currentQ
+                                    ? {
+                                          borderColor: brandColor,
+                                          color: brandColor,
+                                      }
+                                    : null
+                        "
                     >
                         {{ i + 1 }}
                     </div>
@@ -412,6 +519,11 @@ function retakeQuiz() {
                         v-if="i < questions.length - 1"
                         class="step-line"
                         :class="{ 'step-line-done': i < currentQ }"
+                        :style="
+                            isCobrand && i < currentQ
+                                ? { background: brandColor }
+                                : null
+                        "
                     ></div>
                 </template>
             </div>
@@ -478,6 +590,11 @@ function retakeQuiz() {
                 <button
                     class="btn btn-filled-blue mb-6"
                     style="width: 100%; max-width: 440px"
+                    :style="
+                        isCobrand && selectedAnswer
+                            ? { background: brandColor, color: textOnBrand }
+                            : null
+                    "
                     :disabled="!selectedAnswer"
                     @click="confirm"
                 >
@@ -518,7 +635,12 @@ function retakeQuiz() {
                         v-if="currentInfo.tip"
                         class="tip-card rounded-xl p-4 gap-6 flex items-center"
                     >
-                        <div class="tip-icon-wrap">
+                        <div
+                            class="tip-icon-wrap"
+                            :style="
+                                isCobrand ? { background: brandColor + '18' } : null
+                            "
+                        >
                             <span class="material-symbols-outlined tip-icon"
                                 >lightbulb</span
                             >
@@ -529,6 +651,11 @@ function retakeQuiz() {
                     <button
                         class="btn btn-filled-blue"
                         style="margin-top: 0.5rem"
+                        :style="
+                            isCobrand
+                                ? { background: brandColor, color: textOnBrand }
+                                : null
+                        "
                         @click="continueFromInfo"
                     >
                         J'ai bien compris
@@ -613,9 +740,35 @@ function retakeQuiz() {
                     </div>
                 </div>
 
-                <div class="ready-section">
-                    <p class="ready-title">Vous vous sentez prêt ?</p>
-                    <button class="btn-ready" @click="showResult">
+                <div
+                    class="ready-section"
+                    :style="
+                        isCobrand
+                            ? {
+                                  background: `linear-gradient(135deg, ${brandColor}, var(--color-default-green))`,
+                              }
+                            : null
+                    "
+                >
+                    <p
+                        class="ready-title"
+                        :style="
+                            isCobrand && cobrand.textOnBrand !== '#1a1a1a'
+                                ? { color: textOnBrand }
+                                : null
+                        "
+                    >
+                        Vous vous sentez prêt ?
+                    </p>
+                    <button
+                        class="btn-ready"
+                        :style="
+                            isCobrand
+                                ? { background: brandColor, color: textOnBrand }
+                                : null
+                        "
+                        @click="showResult"
+                    >
                         Voir mon résultat
                         <span class="material-symbols-outlined"
                             >arrow_forward</span
@@ -629,7 +782,10 @@ function retakeQuiz() {
              RÉSULTAT — split screen
         ═══════════════════════════════════════════════════════ -->
         <div v-else-if="step === 'result'" class="split-screen" key="result">
-            <div class="mascotte-col">
+            <div
+                class="mascotte-col"
+                :style="isCobrand ? { background: brandColor + '08' } : null"
+            >
                 <div class="mascotte-circle">
                     <img
                         :src="
@@ -667,9 +823,36 @@ function retakeQuiz() {
                                 par l'équipe médicale.
                             </p>
                         </div>
+                        <div
+                            v-if="
+                                isCobrand &&
+                                collecte?.nb_inscrits_estime &&
+                                collecte?.active
+                            "
+                            class="social-proof-chip social-proof-result"
+                        >
+                            <span
+                                class="material-symbols-outlined"
+                                style="font-size: 18px"
+                                >group</span
+                            >
+                            <span
+                                >Rejoignez les
+                                <strong>{{ collecte.nb_inscrits_estime }}</strong>
+                                collègues qui participent !</span
+                            >
+                        </div>
                         <RouterLink
-                            :to="participerLink"
+                            :to="resultCta"
                             class="btn btn-filled-blue"
+                            :style="
+                                isCobrand
+                                    ? {
+                                          background: brandColor,
+                                          color: textOnBrand,
+                                      }
+                                    : null
+                            "
                         >
                             Prendre rendez-vous
                             <span
@@ -690,7 +873,18 @@ function retakeQuiz() {
                             certains points ne remplissent pas les conditions de
                             don adéquates.
                         </p>
-                        <button class="btn btn-filled-blue" @click="retakeQuiz">
+                        <button
+                            class="btn btn-filled-blue"
+                            :style="
+                                isCobrand
+                                    ? {
+                                          background: brandColor,
+                                          color: textOnBrand,
+                                      }
+                                    : null
+                            "
+                            @click="retakeQuiz"
+                        >
                             Découvrir pourquoi
                             <span class="material-symbols-outlined"
                                 >arrow_forward</span
@@ -720,8 +914,16 @@ function retakeQuiz() {
                             </p>
                         </div>
                         <RouterLink
-                            :to="participerLink"
+                            :to="resultCta"
                             class="btn btn-filled-blue"
+                            :style="
+                                isCobrand
+                                    ? {
+                                          background: brandColor,
+                                          color: textOnBrand,
+                                      }
+                                    : null
+                            "
                         >
                             Prendre rendez-vous
                             <span
@@ -734,8 +936,9 @@ function retakeQuiz() {
 
                     <button
                         class="btn-retake"
-                        @click="retakeQuiz"
                         style="margin-top: 1.5rem"
+                        :style="isCobrand ? { color: brandColor } : null"
+                        @click="retakeQuiz"
                     >
                         ↺ Refaire le quiz
                     </button>
@@ -848,6 +1051,24 @@ function retakeQuiz() {
 }
 .btn-retake:hover {
     opacity: 0.7;
+}
+
+/* ── Social proof (cobrandé) ─────────────────────────── */
+.social-proof-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #f0f9f8;
+    border-radius: 9999px;
+    padding: 0.55rem 1.1rem;
+    font-size: 0.88rem;
+    color: var(--default-titles);
+    font-weight: 500;
+    margin-bottom: 1.25rem;
+}
+.social-proof-result {
+    background: #d1fae5;
+    color: #065f46;
 }
 
 /* ── QUIZ screen ─────────────────────────────────────── */

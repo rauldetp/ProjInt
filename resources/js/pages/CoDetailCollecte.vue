@@ -3,7 +3,7 @@ import { ref, computed, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useCobrandStore } from "../stores/cobrand";
 import { useAuthStore } from "../stores/auth";
-import CoNavbar from "../components/CoNavbar.vue";
+import AppNavbar from "../components/AppNavbar.vue";
 import Footer from "../components/Footer.vue";
 
 const route  = useRoute();
@@ -70,7 +70,7 @@ onMounted(async () => {
 <template>
     <div class="min-h-screen bg-white">
 
-        <CoNavbar :collecte="collecte?.active ? collecte : null" />
+        <AppNavbar />
 
         <div v-if="loading" class="flex items-center justify-center py-20" style="color: var(--default-text)">Chargement…</div>
         <div v-else-if="error" class="flex items-center justify-center py-20" style="color: var(--color-default-red)">{{ error }}</div>

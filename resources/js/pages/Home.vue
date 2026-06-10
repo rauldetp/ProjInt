@@ -1,6 +1,6 @@
 ﻿<script setup>
 import { ref, onMounted } from "vue";
-import HugNavbar from "../components/HugNavbar.vue";
+import AppNavbar from "../components/AppNavbar.vue";
 import Footer from "../components/Footer.vue";
 
 const bannerVisible = ref(true);
@@ -44,7 +44,7 @@ onMounted(() => {
 
 <template>
     <div class="min-h-screen bg-white">
-        <HugNavbar />
+        <AppNavbar />
         <div
             v-if="bannerVisible"
             class="banner bg-gradient flex items-center justify-between shadow-light"

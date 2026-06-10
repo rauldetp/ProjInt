@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from "vue";
-import HugNavbar from "../components/HugNavbar.vue";
+import AppNavbar from "../components/AppNavbar.vue";
 import Footer from "../components/Footer.vue";
 
 const form = ref({
@@ -53,7 +53,7 @@ onMounted(() => {
 
 <template>
     <div class="min-h-screen bg-white">
-        <HugNavbar />
+        <AppNavbar />
 
         <!-- Hero -->
         <section

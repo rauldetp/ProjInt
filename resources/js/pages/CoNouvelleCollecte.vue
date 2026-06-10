@@ -3,7 +3,7 @@ import { ref, computed, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useCobrandStore } from "../stores/cobrand";
 import { useAuthStore } from "../stores/auth";
-import CoNavbar from "../components/CoNavbar.vue";
+import AppNavbar from "../components/AppNavbar.vue";
 import Footer from "../components/Footer.vue";
 
 const route  = useRoute();
@@ -133,7 +133,7 @@ onMounted(async () => {
 <template>
     <div class="min-h-screen bg-white">
 
-        <CoNavbar :collecte="collecte" />
+        <AppNavbar />
 
         <!-- Form content -->
         <section style="background: var(--light-grey); min-height: calc(100vh - 76px - 180px); padding: 3rem 0 5rem">

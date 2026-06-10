@@ -2,7 +2,7 @@
 import { onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { useCobrandStore } from "../stores/cobrand";
-import CoNavbar from "../components/CoNavbar.vue";
+import AppNavbar from "../components/AppNavbar.vue";
 import Footer from "../components/Footer.vue";
 
 const route = useRoute();
@@ -23,7 +23,7 @@ onMounted(async () => {
 
 <template>
     <div class="co-layout">
-        <CoNavbar />
+        <AppNavbar />
         <main class="co-main">
             <RouterView />
         </main>

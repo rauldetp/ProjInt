@@ -1,7 +1,7 @@
 ﻿<template>
     <div class="layout">
         <!-- Top Nav -->
-        <HugNavbar :show-logout="true" />
+        <AppNavbar :show-logout="true" />
 
         <!-- Admin sub-nav -->
         <div v-if="auth.isAdmin" class="admin-subnav">
@@ -75,7 +75,7 @@
 
 <script setup>
 import { useAuthStore } from "../stores/auth";
-import HugNavbar from "../components/HugNavbar.vue";
+import AppNavbar from "../components/AppNavbar.vue";
 
 const auth = useAuthStore();
 </script>
