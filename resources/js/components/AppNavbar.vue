@@ -68,10 +68,13 @@ function handleLogout() {
     <header class="app-navbar">
         <div class="app-navbar-inner max-w-7xl px-8">
             <!-- Brand -->
-            <div class="app-brand">
-                <RouterLink to="/" class="brand-hug">
+            <RouterLink
+                :to="isCobrand ? `/entreprise/${slug}` : '/'"
+                class="app-brand"
+            >
+                <span class="brand-hug">
                     <img :src="'/images/logo_hug_h_quadri.png'" alt="Logo HUG" />
-                </RouterLink>
+                </span>
 
                 <!-- Cobrandé : séparateur "X" + entreprise -->
                 <template v-if="isCobrand">
@@ -89,10 +92,10 @@ function handleLogout() {
 
                 <!-- Générique : séparateur + "Don du sang" -->
                 <template v-else>
-                    <div class="brand-sep"></div>
+                    <span class="brand-sep"></span>
                     <span style="color: var(--color-default-red)">Don du sang</span>
                 </template>
-            </div>
+            </RouterLink>
 
             <!-- Links -->
             <nav class="app-nav-links">
@@ -156,6 +159,7 @@ function handleLogout() {
     align-items: center;
     gap: 0.5rem;
     flex-shrink: 0;
+    text-decoration: none;
 }
 .brand-hug {
     font-weight: 800;
