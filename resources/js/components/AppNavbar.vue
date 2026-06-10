@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useCobrandStore } from "../stores/cobrand";
 import { useAuthStore } from "../stores/auth";
@@ -61,7 +61,14 @@ function linkStyle(path) {
     };
 }
 
+// Menu mobile (hamburger)
+const mobileOpen = ref(false);
+function closeMobile() {
+    mobileOpen.value = false;
+}
+
 function handleLogout() {
+    closeMobile();
     auth.logout();
     router.push(isCobrand.value ? "/" : "/login");
 }
@@ -134,8 +141,36 @@ function handleLogout() {
                 >
                     Déconnexion
                 </button>
+                <button
+                    class="app-burger"
+                    aria-label="Menu"
+                    @click="mobileOpen = !mobileOpen"
+                >
+                    <span class="material-symbols-outlined">{{
+                        mobileOpen ? "close" : "menu"
+                    }}</span>
+                </button>
             </div>
         </div>
+
+        <!-- Menu mobile -->
+        <nav v-if="mobileOpen" class="app-mobile-menu">
+            <RouterLink :to="labelLink" :style="linkStyle(labelLink)" @click="closeMobile"
+                >Label CTS</RouterLink
+            >
+            <RouterLink :to="tropheeLink" :style="linkStyle(tropheeLink)" @click="closeMobile"
+                >Trophée de la Générosité</RouterLink
+            >
+            <RouterLink :to="quizLink" :style="linkStyle(quizLink)" @click="closeMobile"
+                >Quiz d'éligibilité</RouterLink
+            >
+            <RouterLink :to="espaceLink" :style="linkStyle(espaceLink)" @click="closeMobile"
+                >Espace entreprise</RouterLink
+            >
+            <RouterLink :to="contactLink" :style="linkStyle(contactLink)" @click="closeMobile"
+                >Contact</RouterLink
+            >
+        </nav>
     </header>
 </template>
 
@@ -222,9 +257,47 @@ function handleLogout() {
     opacity: 0.85;
 }
 
+/* Hamburger (visible en mobile uniquement) */
+.app-burger {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--default-titles);
+    padding: 0.25rem;
+}
+.app-mobile-menu {
+    display: none;
+}
+
 @media (max-width: 960px) {
     .app-nav-links {
         display: none;
+    }
+    .app-burger {
+        display: inline-flex;
+    }
+    .app-mobile-menu {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        border-bottom: 1px solid var(--light-grey);
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+        padding: 0.5rem 2rem 1rem;
+    }
+    .app-mobile-menu a {
+        padding: 0.7rem 0;
+        font-size: 1rem;
+        border-top: 1px solid var(--light-grey);
+    }
+    .app-mobile-menu a:first-child {
+        border-top: none;
     }
 }
 </style>

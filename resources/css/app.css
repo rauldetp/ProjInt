@@ -176,7 +176,6 @@ label.captions{
     position: fixed;
     width: calc(100% - 4rem);
     max-width: calc(80rem - 4rem);
-    padding: 0.5rem 1.5rem;
     border-bottom-left-radius: 6px;
     border-bottom-right-radius: 6px;
     top: 76px;
