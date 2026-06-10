@@ -351,12 +351,14 @@ onMounted(() => {
                                 </span>
                             </div>
                         </button>
-                        <template v-if="openFaq === i">
-                            <div class="mx-6" style="height: 1px; background: var(--light-grey)"></div>
-                            <div class="px-6 py-5" style="color: var(--default-text)">
-                                {{ item.a }}
+                        <div class="faq-answer" :class="{ open: openFaq === i }">
+                            <div class="faq-answer-inner">
+                                <div class="mx-6" style="height: 1px; background: var(--light-grey)"></div>
+                                <div class="px-6 py-5" style="color: var(--default-text)">
+                                    {{ item.a }}
+                                </div>
                             </div>
-                        </template>
+                        </div>
                     </div>
                 </div>
                 <div class="text-center">

@@ -250,6 +250,19 @@ label.captions{
     color: white;
 }
 
+/* Réponse FAQ : ouverture/fermeture animée (hauteur auto via grid) */
+.faq-answer {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.28s ease;
+}
+.faq-answer.open {
+    grid-template-rows: 1fr;
+}
+.faq-answer-inner {
+    overflow: hidden;
+}
+
 /* Boutons d'action : accent turquoise */
 .btn-circle {
     border: 1px solid var(--color-default-blue);
@@ -278,6 +291,20 @@ label.captions{
     color: var(--color-default-red);
 }
 .btn-circle-red:hover .btn-circle-icon {
+    color: white;
+}
+
+/* Variante turquoise (= accent par défaut, nommée explicitement) */
+.btn-circle-cyan {
+    border-color: var(--color-default-blue);
+}
+.btn-circle-cyan:hover {
+    background: var(--color-default-blue);
+}
+.btn-circle-cyan .btn-circle-icon {
+    color: var(--color-default-blue);
+}
+.btn-circle-cyan:hover .btn-circle-icon {
     color: white;
 }
 

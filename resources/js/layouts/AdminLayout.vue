@@ -38,6 +38,7 @@ const auth = useAuthStore();
     flex-direction: column;
     background: white;
     font-family: inherit;
+    overflow-x: hidden;
 }
 
 .admin-subnav {

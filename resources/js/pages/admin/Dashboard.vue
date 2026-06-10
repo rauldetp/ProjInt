@@ -53,6 +53,10 @@
                 </div>
             </div>
 
+            <!-- Zone grise pleine largeur : tout à partir de « À valider » -->
+            <div class="grey-zone">
+            <div class="grey-zone-inner">
+
             <!-- Collectes en attente de validation -->
             <div class="section-header">
                 <h2 class="section-title">
@@ -97,7 +101,6 @@
             </div>
 
             <!-- Dernières campagnes -->
-            <div class="section-band">
             <div class="section-header">
                 <h2 class="section-title">Dernières campagnes</h2>
                 <RouterLink to="/admin/collectes" class="btn-circle" aria-label="Voir toutes les collectes">
@@ -133,10 +136,8 @@
                     <p class="captions card-muted">{{ collecte.lieu ?? "—" }}</p>
                 </div>
             </div>
-            </div>
 
             <!-- Dernières inscriptions -->
-            <div class="section-band">
             <div class="section-header">
                 <h2 class="section-title">Dernières inscriptions</h2>
                 <RouterLink to="/admin/collectes" class="btn-circle" aria-label="Voir toutes les collectes">
@@ -165,6 +166,7 @@
                         <p class="captions card-muted" style="margin-top: 0.5rem">{{ collecte.lieu ?? "—" }}</p>
                     </div>
                 </div>
+            </div>
             </div>
             </div>
         </template>
@@ -413,12 +415,21 @@ onBeforeUnmount(() => {
     min-width: 22px;
 }
 
-/* Bande de section grisée (cf. maquette) */
-.section-band {
+/* Zone grise pleine largeur : déborde du conteneur centré (full-bleed) */
+.grey-zone {
+    width: 100vw;
+    margin-left: 50%;
+    transform: translateX(-50%);
     background: var(--light-grey);
-    border-radius: 1rem;
-    padding: 1.5rem;
-    margin-bottom: 2rem;
+    margin-top: 2.5rem;
+    /* annule le padding-bas du main-content pour rejoindre le footer */
+    margin-bottom: -2.5rem;
+    padding: 2.5rem 0 3rem;
+}
+.grey-zone-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 2rem;
 }
 
 /* Cards grid */

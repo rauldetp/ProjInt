@@ -50,6 +50,8 @@ const answers = ref([]);
 const selectedAnswer = ref(null);
 const currentInfo = ref(null);
 const resultat = ref(null);
+// Origine de l'écran insight : null (flux quiz) ou "recap" (depuis le récap).
+const infoFrom = ref(null);
 
 const participerLink = computed(() => {
     if (auth.isAdmin) return "/admin";
@@ -266,11 +268,10 @@ function isGoodForDonation(i) {
     return !a || !q.feedback || a !== q.feedback.trigger;
 }
 
-function getAnswerBadgeStyle(answer) {
-    if (!answer) return { background: "var(--light-grey)", color: "#8fa8a6" };
-    if (answer === "Oui") return { background: "#d1fae5", color: "#065f46" };
-    if (answer === "Non") return { background: "#fee2e2", color: "#991b1b" };
-    return { background: "#f0f9f8", color: "var(--default-titles)" };
+function getAnswerBadgeClass(answer) {
+    if (answer === "Oui") return "badge-complete"; // vert
+    if (answer === "Non") return "badge-aconfirmer"; // rouge
+    return "badge-avenir"; // jaune (Je ne sais pas / —)
 }
 
 // ── Actions ──────────────────────────────────────────────────────
@@ -283,7 +284,7 @@ function startQuiz() {
 }
 
 function viewPreviousResult() {
-    if (resultat.value) step.value = "result";
+    if (resultat.value) step.value = "recap";
     else startQuiz();
 }
 
@@ -311,6 +312,12 @@ function confirm() {
 
 function continueFromInfo() {
     currentInfo.value = null;
+    // Insight ouvert depuis le récap : on y retourne.
+    if (infoFrom.value === "recap") {
+        infoFrom.value = null;
+        step.value = "recap";
+        return;
+    }
     advanceQuestion();
 }
 
@@ -320,12 +327,33 @@ function advanceQuestion() {
         currentQ.value++;
         step.value = "quiz";
     } else {
-        step.value = "recap";
+        // Fin du quiz : on va directement au résultat.
+        showResult();
     }
+}
+
+// Récap accessible depuis le résultat ("Découvrir pourquoi").
+function voirRecap() {
+    step.value = "recap";
+}
+
+// Ouvre l'insight d'une question depuis le récap.
+function showInsight(i) {
+    currentQ.value = i;
+    currentInfo.value = questions[i].info;
+    infoFrom.value = "recap";
+    step.value = "info";
 }
 
 function goBack() {
     if (step.value === "info") {
+        // Retour au récap si l'insight a été ouvert depuis le récap.
+        if (infoFrom.value === "recap") {
+            infoFrom.value = null;
+            currentInfo.value = null;
+            step.value = "recap";
+            return;
+        }
         answers.value = answers.value.slice(0, currentQ.value);
         selectedAnswer.value = null;
         currentInfo.value = null;
@@ -338,6 +366,10 @@ function goBack() {
             step.value = "intro";
         }
     } else if (step.value === "recap") {
+        // Le récap est désormais post-résultat.
+        step.value = "result";
+    } else if (step.value === "result") {
+        // Retour à la dernière question pour réviser sa réponse.
         currentQ.value = questions.length - 1;
         selectedAnswer.value = answers.value[currentQ.value] ?? null;
         step.value = "quiz";
@@ -482,7 +514,7 @@ function retakeQuiz() {
 
                         <button
                             v-if="resultat"
-                            class="btn-retake"
+                            class="btn btn-outlined-blue"
                             @click="viewPreviousResult"
                         >
                             Voir mon résultat précédent
@@ -707,8 +739,8 @@ function retakeQuiz() {
                                 >
                                     <svg
                                         v-if="isGoodForDonation(i)"
-                                        width="14"
-                                        height="14"
+                                        width="24"
+                                        height="24"
                                         viewBox="0 0 24 24"
                                         fill="none"
                                         stroke="currentColor"
@@ -720,8 +752,8 @@ function retakeQuiz() {
                                     </svg>
                                     <svg
                                         v-else
-                                        width="14"
-                                        height="14"
+                                        width="24"
+                                        height="24"
                                         viewBox="0 0 24 24"
                                         fill="none"
                                         stroke="currentColor"
@@ -734,30 +766,32 @@ function retakeQuiz() {
                                     </svg>
                                 </div>
                                 <p class="card-question">{{ q.text }}</p>
-                                <div class="card-info-btn">
-                                    <span
-                                        class="material-symbols-outlined"
-                                        style="font-size: 18px; color: #000"
-                                        >info</span
-                                    >
-                                </div>
+                                <button
+                                    type="button"
+                                    class="btn-circle btn-circle-cyan"
+                                    aria-label="Voir l'information"
+                                    @click="showInsight(i)"
+                                >
+                                    <span class="material-symbols-outlined btn-circle-icon">info</span>
+                                </button>
                             </div>
                             <div class="card-bottom">
                                 <span class="card-answer-label"
                                     >Vous avez répondu :</span
                                 >
                                 <span
-                                    class="answer-badge"
-                                    :style="getAnswerBadgeStyle(answers[i])"
+                                    class="captions badge"
+                                    :class="getAnswerBadgeClass(answers[i])"
                                 >
                                     {{ answers[i] ?? "—" }}
                                 </span>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div
-                        class="ready-section"
+                <div
+                    class="ready-section"
                         :style="
                             isCobrand
                                 ? {
@@ -766,35 +800,25 @@ function retakeQuiz() {
                                 : null
                         "
                     >
-                        <p
-                            class="ready-title"
-                            :style="
-                                isCobrand && cobrand.textOnBrand !== '#1a1a1a'
-                                    ? { color: textOnBrand }
-                                    : null
-                            "
-                        >
-                            Vous vous sentez prêt ?
-                        </p>
-                        <button
-                            class="btn-ready"
-                            :style="
-                                isCobrand
-                                    ? {
-                                          background: brandColor,
-                                          color: textOnBrand,
-                                      }
-                                    : null
-                            "
-                            @click="showResult"
-                        >
-                            Voir mon résultat
-                            <span class="material-symbols-outlined"
-                                >arrow_forward</span
+                        <div class="ready-actions">
+                            <RouterLink
+                                v-if="resultat !== 'non-eligible'"
+                                :to="resultCta"
+                                class="btn btn-filled-red"
                             >
-                        </button>
+                                S'inscrire
+                                <span class="material-symbols-outlined"
+                                    >arrow_forward</span
+                                >
+                            </RouterLink>
+                            <button
+                                class="btn btn-filled-red"
+                                @click="step = 'result'"
+                            >
+                                Revenir aux résultats
+                            </button>
+                        </div>
                     </div>
-                </div>
             </div>
 
             <!-- ══════════════════════════════════════════════════════
@@ -883,6 +907,12 @@ function retakeQuiz() {
                                     >calendar_month</span
                                 >
                             </RouterLink>
+                            <button
+                                class="btn btn-outlined-blue"
+                                @click="voirRecap"
+                            >
+                                Voir mes réponses
+                            </button>
                         </template>
 
                         <!-- NON ÉLIGIBLE -->
@@ -905,7 +935,7 @@ function retakeQuiz() {
                                           }
                                         : null
                                 "
-                                @click="retakeQuiz"
+                                @click="voirRecap"
                             >
                                 Découvrir pourquoi
                                 <span class="material-symbols-outlined"
@@ -954,12 +984,17 @@ function retakeQuiz() {
                                     >calendar_month</span
                                 >
                             </RouterLink>
+                            <button
+                                class="btn btn-outlined-blue"
+                                @click="voirRecap"
+                            >
+                                Voir mes réponses
+                            </button>
                         </template>
 
                         <button
-                            class="btn-retake"
+                            class="btn btn-outlined-blue"
                             style="margin-top: 1.5rem"
-                            :style="isCobrand ? { color: brandColor } : null"
                             @click="retakeQuiz"
                         >
                             ↺ Refaire le quiz
@@ -1058,21 +1093,6 @@ function retakeQuiz() {
 .btn-link {
     text-decoration: none;
     display: inline-flex;
-}
-.btn-retake {
-    background: none;
-    border: none;
-    font-size: 0.88rem;
-    font-weight: 600;
-    color: #8fa8a6;
-    cursor: pointer;
-    padding: 0;
-    font-family: inherit;
-    transition: opacity 0.15s;
-    display: block;
-}
-.btn-retake:hover {
-    opacity: 0.7;
 }
 
 /* ── Social proof (cobrandé) ─────────────────────────── */
@@ -1248,12 +1268,15 @@ function retakeQuiz() {
 /* ── RECAP screen ────────────────────────────────────── */
 .recap-screen {
     flex: 1;
+    display: flex;
+    flex-direction: column;
     background: white;
-    padding: 3rem 1.5rem 0;
+    padding: 3rem 0 0;
 }
 .recap-inner {
     max-width: 1000px;
     margin: 0 auto;
+    padding: 0 1.5rem;
 }
 .recap-title {
     font-size: 1.75rem;
@@ -1273,8 +1296,8 @@ function retakeQuiz() {
     gap: 0.7rem;
 }
 .card-check {
-    width: 28px;
-    height: 28px;
+    width: 56px;
+    height: 56px;
     border-radius: 50%;
     background: var(--light-grey);
     display: flex;
@@ -1297,12 +1320,6 @@ function retakeQuiz() {
     flex: 1;
     line-height: 1.45;
 }
-.card-info-btn {
-    flex-shrink: 0;
-    cursor: default;
-    display: flex;
-    align-items: center;
-}
 .card-bottom {
     display: flex;
     align-items: center;
@@ -1314,16 +1331,9 @@ function retakeQuiz() {
     color: #8fa8a6;
     font-weight: 500;
 }
-.answer-badge {
-    font-size: 0.78rem;
-    font-weight: 700;
-    border-radius: 9999px;
-    padding: 0.2rem 0.75rem;
-    white-space: nowrap;
-}
 
 .ready-section {
-    margin-top: 3rem;
+    margin-top: auto;
     padding: 3.5rem 2rem;
     text-align: center;
     background: linear-gradient(
@@ -1338,23 +1348,12 @@ function retakeQuiz() {
     color: var(--default-titles);
     margin: 0 0 1.75rem;
 }
-.btn-ready {
-    display: inline-flex;
+.ready-actions {
+    display: flex;
     align-items: center;
-    gap: 0.5rem;
-    font-size: 1rem;
-    font-weight: 700;
-    background: var(--color-default-red);
-    color: white;
-    border: none;
-    border-radius: 9999px;
-    padding: 0.9rem 2rem;
-    cursor: pointer;
-    transition: opacity 0.15s;
-    font-family: inherit;
-}
-.btn-ready:hover {
-    opacity: 0.9;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
 }
 
 /* ── RESULT content ──────────────────────────────────── */

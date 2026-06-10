@@ -299,12 +299,6 @@ const dateRange = computed(() => {
         <section class="engagement-section">
             <div class="engagement-inner">
                 <div class="engagement-text">
-                    <p
-                        class="engagement-eyebrow"
-                        :style="{ color: brandColor }"
-                    >
-                        Notre engagement RSE
-                    </p>
                     <h2 class="engagement-title">
                         {{ entreprise.nom }} s'engage
                     </h2>

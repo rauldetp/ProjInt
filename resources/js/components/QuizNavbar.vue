@@ -1,8 +1,17 @@
 <script setup>
+import { computed } from "vue";
+import { useRoute } from "vue-router";
+
 defineProps({
     onBack: { type: Function, required: true },
     cobrand: { type: Object, default: null },
 });
+
+const route = useRoute();
+// Accueil : cobrandé si on est dans l'espace d'une entreprise, général sinon.
+const homeLink = computed(() =>
+    route.params.slug ? `/entreprise/${route.params.slug}` : "/",
+);
 </script>
 
 <template>
@@ -19,7 +28,11 @@ defineProps({
             </div>
 
             <!-- Logos : HUG + Don du sang ou HUG × Entreprise -->
-            <div class="quiz-nav-logos">
+            <RouterLink
+                :to="homeLink"
+                class="quiz-nav-logos"
+                aria-label="Retour à l'accueil"
+            >
                 <img :src="'/images/logo_hug_h_quadri.png'" alt="Logo HUG" class="quiz-nav-logo" />
                 <template v-if="cobrand">
                     <span class="quiz-nav-sep">×</span>
@@ -30,7 +43,7 @@ defineProps({
                     <div class="brand-sep"></div>
                     <span class="brand-sub">Don du sang</span>
                 </template>
-            </div>
+            </RouterLink>
         </div>
     </header>
 </template>
@@ -97,6 +110,7 @@ defineProps({
     align-items: center;
     gap: 0.4rem;
     flex-shrink: 0;
+    text-decoration: none;
 }
 .quiz-nav-logo {
     max-height: 2.75rem;
