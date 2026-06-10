@@ -211,7 +211,9 @@ label.captions{
     font-family: inherit;
     font-size: 1rem;
 }
-.faq-btn-circle {
+/* Bouton circulaire réutilisable (structure partagée FAQ / actions) */
+.faq-btn-circle,
+.btn-circle {
     width: 2.75rem;
     height: 2.75rem;
     border-radius: 9999px;
@@ -219,12 +221,17 @@ label.captions{
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    margin-left: 1rem;
     background: white;
-    border: 1px solid var(--color-default-red);
+    cursor: pointer;
     transition:
         background 0.15s,
         border-color 0.15s;
+}
+
+/* FAQ : accent rouge */
+.faq-btn-circle {
+    margin-left: 1rem;
+    border: 1px solid var(--color-default-red);
 }
 .faq-btn:hover .faq-btn-circle {
     background: var(--color-default-red-88);
@@ -240,6 +247,37 @@ label.captions{
     transition: color 0.15s;
 }
 .faq-btn:active .faq-btn-icon {
+    color: white;
+}
+
+/* Boutons d'action : accent turquoise */
+.btn-circle {
+    border: 1px solid var(--color-default-blue);
+}
+.btn-circle:hover {
+    background: var(--color-default-blue);
+    border-color: transparent;
+}
+.btn-circle:hover .btn-circle-icon {
+    color: white;
+}
+.btn-circle-icon {
+    color: var(--color-default-blue);
+    font-size: 20px;
+    transition: color 0.15s;
+}
+
+/* Variante rouge (menus de cartes) */
+.btn-circle-red {
+    border-color: var(--color-default-red);
+}
+.btn-circle-red:hover {
+    background: var(--color-default-red);
+}
+.btn-circle-red .btn-circle-icon {
+    color: var(--color-default-red);
+}
+.btn-circle-red:hover .btn-circle-icon {
     color: white;
 }
 
@@ -406,6 +444,26 @@ label.captions{
 /* Options du quiz : contenu aligné à gauche */
 .quiz-options .btn {
     justify-content: flex-start;
+}
+
+/* ── Badges / tags (pills pleins, texte blanc — couleurs des boutons) ── */
+.badge {
+    display: inline-block;
+    padding: 0.2rem 0.65rem;
+    border-radius: 9999px;
+    color: white;
+}
+.badge-aconfirmer {
+    background: var(--color-default-red);
+}
+.badge-encours {
+    background: var(--color-default-blue);
+}
+.badge-avenir {
+    background: var(--color-default-yellow);
+}
+.badge-complete {
+    background: var(--color-default-green);
 }
 
 /* ── Forms ────────────────────────────────────────────── */

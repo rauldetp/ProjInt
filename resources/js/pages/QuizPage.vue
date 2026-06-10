@@ -140,7 +140,7 @@ const questions = [
     },
     {
         icon: "health_and_safety",
-        text: "Vous sentez-vous en bonne santé aujourd'hui ?",
+        text: "Vous sentez-vous en bonne santé en ce moment ?",
         options: ["Oui", "Non"],
         feedback: {
             trigger: "Non",
@@ -206,7 +206,7 @@ const questions = [
     },
     {
         icon: "restaurant",
-        text: "Avez-vous suffisamment mangé et bu aujourd'hui ?",
+        text: "Mangez-vous et buvez-vous suffisament d’eau quotidiennement ?",
         options: ["Oui", "Non"],
         feedback: {
             trigger: "Non",

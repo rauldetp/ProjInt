@@ -1,28 +1,28 @@
-﻿<template>
+<template>
     <div class="dashboard">
         <h1 class="page-title">Vue globale</h1>
 
-        <div v-if="loading" class="loading">Chargement...</div>
-        <div v-else-if="error" class="error">{{ error }}</div>
+        <div v-if="loading" class="state">Chargement...</div>
+        <div v-else-if="error" class="state">{{ error }}</div>
 
         <template v-else>
             <!-- Stats -->
             <div class="stats-row">
-                <div class="stat-card">
-                    <p class="stat-value">{{ totalInscrits }}</p>
-                    <p class="stat-label">
+                <div class="stat-card shadow-light">
+                    <h2 class="stat-value">{{ totalInscrits }}</h2>
+                    <p class="captions stat-label">
                         Employées ont passé le questionnaire
                     </p>
                 </div>
-                <div class="stat-card">
-                    <p class="stat-value">{{ collectes.length }}</p>
-                    <p class="stat-label">Nombre total de collectes</p>
+                <div class="stat-card shadow-light">
+                    <h2 class="stat-value">{{ collectes.length }}</h2>
+                    <p class="captions stat-label">Nombre total de collectes</p>
                 </div>
             </div>
 
             <!-- Chart placeholder -->
-            <div class="chart-card">
-                <p class="chart-title">Nombres d'inscriptions totaux</p>
+            <div class="chart-card shadow-light">
+                <h3 class="chart-title">Nombres d'inscriptions totaux</h3>
                 <div class="chart-placeholder">
                     <svg viewBox="0 0 600 100" class="chart-svg">
                         <polyline
@@ -33,34 +33,31 @@
                         />
                     </svg>
                     <div class="chart-labels">
-                        <span>Lun</span><span>Mar</span><span>Mer</span
-                        ><span>Jeu</span><span>Ven</span>
+                        <span class="captions">Lun</span
+                        ><span class="captions">Mar</span
+                        ><span class="captions">Mer</span
+                        ><span class="captions">Jeu</span
+                        ><span class="captions">Ven</span>
                     </div>
                 </div>
                 <div class="chart-toggles">
                     <button
-                        :class="[
-                            'toggle-btn',
-                            chartMode === 'jours' && 'active',
-                        ]"
+                        class="btn btn-outlined-blue"
+                        :class="{ 'is-selected': chartMode === 'jours' }"
                         @click="chartMode = 'jours'"
                     >
                         Jours
                     </button>
                     <button
-                        :class="[
-                            'toggle-btn',
-                            chartMode === 'mois' && 'active',
-                        ]"
+                        class="btn btn-outlined-blue"
+                        :class="{ 'is-selected': chartMode === 'mois' }"
                         @click="chartMode = 'mois'"
                     >
                         Mois
                     </button>
                     <button
-                        :class="[
-                            'toggle-btn',
-                            chartMode === 'annees' && 'active',
-                        ]"
+                        class="btn btn-outlined-blue"
+                        :class="{ 'is-selected': chartMode === 'annees' }"
                         @click="chartMode = 'annees'"
                     >
                         Années
@@ -71,13 +68,17 @@
             <!-- Campagnes -->
             <div class="section-header">
                 <h2 class="section-title">Campagnes de collectes</h2>
-                <button class="btn-nouvelle-collecte" @click="router.push(`/entreprise/${auth.entrepriseSlug}/nouvelle-collecte`)">
-                    <span class="material-symbols-outlined" style="font-size: 18px">add</span>
-                    Nouvelle collecte
+                <button
+                    class="btn-circle"
+                    title="Nouvelle collecte"
+                    aria-label="Nouvelle collecte"
+                    @click="router.push(`/entreprise/${auth.entrepriseSlug}/nouvelle-collecte`)"
+                >
+                    <span class="material-symbols-outlined btn-circle-icon">add</span>
                 </button>
             </div>
 
-            <div v-if="collectes.length === 0" class="empty">
+            <div v-if="collectes.length === 0" class="state">
                 Aucune collecte pour votre entreprise.
             </div>
 
@@ -85,44 +86,46 @@
                 <div
                     v-for="collecte in collectes"
                     :key="collecte.id"
-                    class="collecte-card"
-                    style="cursor: pointer"
+                    class="collecte-card shadow-light"
                     @click="goVoir(collecte)"
                 >
                     <div class="card-top">
                         <div>
-                            <p class="card-company">{{ entreprise?.nom }}</p>
-                            <p class="card-date">
+                            <h3 class="card-company">{{ entreprise?.nom }}</h3>
+                            <p class="captions card-muted">
                                 {{ formatDate(collecte.date_debut) }}
                             </p>
                         </div>
                         <div class="card-menu-wrap">
                             <button
-                                class="card-menu"
+                                class="btn-circle btn-circle-red"
+                                aria-label="Options"
                                 @click.stop="toggleMenu(collecte.id)"
-                            >···</button>
+                            >
+                                <span class="material-symbols-outlined btn-circle-icon">more_horiz</span>
+                            </button>
                             <div
                                 v-if="openMenu === collecte.id"
                                 class="card-dropdown"
+                                @click.stop
                             >
-                                <button @click.stop="goModifier(collecte)">
-                                    <span class="material-symbols-outlined" style="font-size:16px">edit</span>
-                                    Modifier
+                                <button @click="goVoir(collecte)">Voir la page</button>
+                                <button @click="goModifier(collecte)">Modifier</button>
+                                <button @click="copierLien(collecte)">
+                                    {{ copied === collecte.id ? "Lien copié !" : "Copier le lien" }}
                                 </button>
-                                <button class="danger" @click.stop="goAnnuler(collecte)">
-                                    <span class="material-symbols-outlined" style="font-size:16px">cancel</span>
-                                    Annuler
-                                </button>
+                                <button class="danger" @click="goAnnuler(collecte)">Annuler</button>
                             </div>
                         </div>
                     </div>
-                    <span :class="['badge', badgeClass(collecte)]">{{
+                    <span class="captions badge" :class="badgeClass(collecte)">{{
                         badgeLabel(collecte)
                     }}</span>
-                    <p class="card-inscrits">
-                        <span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle">group</span> {{ collecte.nb_inscrits_estime }} inscrit(s)
+                    <p class="captions card-muted">
+                        <span class="material-symbols-outlined card-icon">group</span>
+                        {{ collecte.nb_inscrits_estime }} inscrit(s)
                     </p>
-                    <p class="card-lieu">
+                    <p class="captions card-muted">
                         {{ collecte.lieu ?? "Lieu à définir" }}
                     </p>
                 </div>
@@ -144,9 +147,17 @@ const loading = ref(true);
 const error = ref(null);
 const chartMode = ref("jours");
 const openMenu = ref(null);
+const copied = ref(null);
 
 function toggleMenu(id) {
     openMenu.value = openMenu.value === id ? null : id;
+}
+
+function copierLien(collecte) {
+    const url = `${window.location.origin}/entreprise/${auth.entrepriseSlug}/collecte/${collecte.id}`;
+    navigator.clipboard?.writeText(url);
+    copied.value = collecte.id;
+    setTimeout(() => { copied.value = null; closeMenu(); }, 1200);
 }
 
 function closeMenu() {
@@ -238,21 +249,18 @@ onMounted(async () => {
 }
 
 .page-title {
-    font-size: 2rem;
-    font-weight: 700;
     color: var(--default-titles);
     text-align: center;
     margin: 0 0 2rem;
 }
 
+/* ── Stats ─────────────────────────────────────────────── */
 .stats-row {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1.25rem;
-    margin-bottom: 2rem;
+    margin: 0 auto 2rem;
     max-width: 700px;
-    margin-left: auto;
-    margin-right: auto;
 }
 .stat-card {
     background: white;
@@ -260,35 +268,29 @@ onMounted(async () => {
     padding: 1.5rem;
 }
 .stat-value {
-    font-size: 2rem;
-    font-weight: 700;
     color: var(--default-titles);
     margin: 0 0 0.25rem;
 }
 .stat-label {
-    font-size: 0.8rem;
     color: var(--default-text);
     margin: 0;
 }
 
+/* ── Chart ─────────────────────────────────────────────── */
 .chart-card {
     background: white;
     border-radius: 0.75rem;
     padding: 1.5rem;
-    margin-bottom: 2.5rem;
+    margin: 0 auto 2.5rem;
     max-width: 700px;
-    margin-left: auto;
-    margin-right: auto;
 }
 .chart-title {
-    font-size: 1rem;
-    font-weight: 600;
     color: var(--default-titles);
     text-align: center;
     margin: 0 0 1rem;
 }
 .chart-placeholder {
-    background: #f9fafb;
+    background: var(--light-grey);
     border-radius: 0.5rem;
     padding: 1rem;
     margin-bottom: 1rem;
@@ -300,7 +302,6 @@ onMounted(async () => {
 .chart-labels {
     display: flex;
     justify-content: space-between;
-    font-size: 0.75rem;
     color: var(--default-text);
     margin-top: 0.5rem;
 }
@@ -309,22 +310,8 @@ onMounted(async () => {
     justify-content: center;
     gap: 0.75rem;
 }
-.toggle-btn {
-    border: 1px solid #e2e8f0;
-    border-radius: 9999px;
-    padding: 0.35rem 1.1rem;
-    font-size: 0.875rem;
-    background: white;
-    color: var(--default-text);
-    cursor: pointer;
-    transition: all 0.15s;
-}
-.toggle-btn.active {
-    background: var(--default-titles);
-    color: white;
-    border-color: var(--default-titles);
-}
 
+/* ── Section header ────────────────────────────────────── */
 .section-header {
     display: flex;
     align-items: center;
@@ -332,29 +319,10 @@ onMounted(async () => {
     margin-bottom: 1.25rem;
 }
 .section-title {
-    font-size: 1.5rem;
-    font-weight: 700;
     color: var(--default-titles);
     margin: 0;
 }
-.btn-nouvelle-collecte {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    background: var(--default-titles);
-    color: white;
-    border: none;
-    border-radius: 9999px;
-    padding: 0.5rem 1.1rem;
-    font-size: 0.875rem;
-    font-weight: 600;
-    cursor: pointer;
-    font-family: inherit;
-    transition: opacity 0.15s;
-    white-space: nowrap;
-}
-.btn-nouvelle-collecte:hover { opacity: 0.8; }
-
+/* ── Cards ─────────────────────────────────────────────── */
 .cards-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -367,6 +335,11 @@ onMounted(async () => {
     display: flex;
     flex-direction: column;
     gap: 0.6rem;
+    cursor: pointer;
+    transition: transform 0.15s;
+}
+.collecte-card:hover {
+    transform: translateY(-2px);
 }
 .card-top {
     display: flex;
@@ -374,39 +347,21 @@ onMounted(async () => {
     align-items: flex-start;
 }
 .card-company {
-    font-weight: 700;
-    font-size: 1rem;
     color: var(--default-titles);
     margin: 0;
 }
-.card-date {
-    font-size: 0.8rem;
+.card-muted {
     color: var(--default-text);
     margin: 0.1rem 0 0;
 }
-.card-inscrits,
-.card-lieu {
-    font-size: 0.85rem;
-    color: var(--default-text);
-    margin: 0;
+.card-icon {
+    font-size: 14px;
+    vertical-align: middle;
 }
+
+/* Menu circulaire + dropdown */
 .card-menu-wrap {
     position: relative;
-}
-.card-menu {
-    background: none;
-    border: none;
-    color: var(--default-text);
-    font-size: 1.25rem;
-    cursor: pointer;
-    padding: 0 4px;
-    line-height: 1;
-    letter-spacing: 2px;
-    border-radius: 6px;
-    transition: background 0.15s;
-}
-.card-menu:hover {
-    background: var(--light-grey);
 }
 .card-dropdown {
     position: absolute;
@@ -428,50 +383,29 @@ onMounted(async () => {
     padding: 10px 14px;
     background: none;
     border: none;
-    font-size: 0.875rem;
     color: var(--default-titles);
     cursor: pointer;
     font-family: inherit;
+    font-size: 0.875rem;
     text-align: left;
     transition: background 0.12s;
 }
 .card-dropdown button:hover {
-    background: #f9fafb;
+    background: var(--light-grey);
 }
 .card-dropdown button.danger {
     color: var(--color-default-red);
 }
 .card-dropdown button.danger:hover {
-    background: #fff1f4;
+    background: var(--color-default-red-98);
 }
 
+/* Badge : couleurs dans app.css, alignement spécifique à la carte */
 .badge {
-    display: inline-block;
-    padding: 0.2rem 0.65rem;
-    border-radius: 9999px;
-    font-size: 0.75rem;
-    font-weight: 600;
-}
-.badge-encours {
-    background: #d1fae5;
-    color: #065f46;
-}
-.badge-aconfirmer {
-    background: #fee2e2;
-    color: #991b1b;
-}
-.badge-avenir {
-    background: #fef3c7;
-    color: #92400e;
-}
-.badge-complete {
-    background: var(--light-grey);
-    color: var(--default-text);
+    align-self: flex-start;
 }
 
-.empty,
-.loading,
-.error {
+.state {
     color: var(--default-text);
     padding: 2rem 0;
 }
