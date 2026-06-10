@@ -36,7 +36,7 @@ const auth = useAuthStore();
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background: var(--light-grey);
+    background: white;
     font-family: inherit;
 }
 

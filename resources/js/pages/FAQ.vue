@@ -1,7 +1,13 @@
 ﻿<script setup>
-import { ref, onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
+import { useRoute } from "vue-router";
+import { useCobrandStore } from "../stores/cobrand";
 import AppNavbar from "../components/AppNavbar.vue";
 import Footer from "../components/Footer.vue";
+
+const route = useRoute();
+const cobrand = useCobrandStore();
+const isCobrand = computed(() => !!route.params.slug);
 const openFaq = ref(null);
 
 function toggle(id) {
@@ -158,8 +164,22 @@ const categories = [
     },
 ];
 
-onMounted(() => {
-    document.title = "FAQ — HUG Don du sang";
+onMounted(async () => {
+    // En cobrandé : récupère l'entreprise pour la navbar/footer de marque.
+    if (isCobrand.value) {
+        try {
+            const res = await fetch(`/api/entreprises/${route.params.slug}`);
+            if (res.ok) {
+                const data = await res.json();
+                if (data.entreprise) cobrand.set(data.entreprise);
+            }
+        } catch {
+            // silent fail
+        }
+    }
+    document.title = isCobrand.value
+        ? `FAQ — ${cobrand.nom || "HUG"}`
+        : "FAQ — HUG Don du sang";
 });
 </script>
 
@@ -170,12 +190,6 @@ onMounted(() => {
         <!-- Hero -->
         <section class="bg-gradient py-20">
             <div class="max-w-4xl mx-auto px-8">
-                <p
-                    class="font-semibold mb-3 uppercase tracking-widest"
-                    style="color: var(--default-titles); opacity: 0.65"
-                >
-                    Aide & support
-                </p>
                 <h1
                     class="font-bold mb-4 text-black"
                     style="line-height: 1.2"
@@ -267,6 +281,6 @@ onMounted(() => {
         </section>
 
         <!-- Footer -->
-        <Footer />
+        <Footer :slug="route.params.slug" />
     </div>
 </template>

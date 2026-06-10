@@ -398,438 +398,55 @@ function retakeQuiz() {
              INTRO — split screen
         ═══════════════════════════════════════════════════════ -->
         <Transition name="slide" mode="out-in">
-        <div v-if="step === 'intro'" class="split-screen" key="intro">
-            <div
-                class="mascotte-col"
-                :style="isCobrand ? { background: brandColor + '08' } : null"
-            >
-                <div class="mascotte-circle">
-                    <img
-                        :src="'/images/courage/Mascotte_default.png'"
-                        alt="Courage"
-                        class="mascotte-img"
-                    />
-                </div>
-            </div>
-
-            <div class="content-col">
-                <div class="intro-content">
-                    <h1 class="text-black">Je suis Courage, votre guide!</h1>
-                    <p>
-                        Je vais vous poser 9 questions rapides et vous donner
-                        des conseils utiles à chaque étape pour vérifier si vous
-                        pouvez donner votre sang.
-                    </p>
-                    <div class="grid grid-cols-3 gap-4">
-                        <div class="rounded-xl px-5 py-4 bg-light-grey">
-                            <span
-                                class="material-symbols-outlined feature-icon mb-2"
-                                >schedule</span
-                            >
-                            <p class="captions">Seulement 5 minutes</p>
-                        </div>
-                        <div class="rounded-xl px-5 py-4 bg-light-grey">
-                            <span class="material-symbols-outlined feature-icon"
-                                >security</span
-                            >
-                            <p class="captions">100 % confidentiel</p>
-                        </div>
-                        <div class="rounded-xl px-5 py-4 bg-light-grey">
-                            <span class="material-symbols-outlined feature-icon"
-                                >favorite</span
-                            >
-                            <p class="captions">Préparer votre don</p>
-                        </div>
-                    </div>
-                    <div
-                        v-if="isCobrand && collecte?.nb_inscrits_estime"
-                        class="social-proof-chip"
-                    >
-                        <span
-                            class="material-symbols-outlined"
-                            style="font-size: 18px"
-                            >group</span
-                        >
-                        <span
-                            >Déjà
-                            <strong>{{ collecte.nb_inscrits_estime }}</strong>
-                            collègues ont passé le test !</span
-                        >
-                    </div>
-
-                    <button
-                        class="btn btn-filled-blue"
-                        :style="
-                            isCobrand
-                                ? { background: brandColor, color: textOnBrand }
-                                : null
-                        "
-                        @click="startQuiz"
-                    >
-                        Commencer le test
-                        <span class="material-symbols-outlined"
-                            >arrow_forward</span
-                        >
-                    </button>
-
-                    <button
-                        v-if="resultat"
-                        class="btn-retake"
-                        @click="viewPreviousResult"
-                    >
-                        Voir mon résultat précédent
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- ══════════════════════════════════════════════════════
-             QUESTION
-        ═══════════════════════════════════════════════════════ -->
-        <div v-else-if="step === 'quiz'" class="quiz-screen" :key="'quiz-' + currentQ">
-            <!-- Progress steps -->
-            <div class="progress-steps">
-                <template v-for="(_, i) in questions" :key="i">
-                    <div
-                        class="step"
-                        :class="{
-                            'step-done': i < currentQ,
-                            'step-active': i === currentQ,
-                        }"
-                        :style="
-                            !isCobrand
-                                ? null
-                                : i < currentQ
-                                  ? {
-                                        background: brandColor,
-                                        borderColor: brandColor,
-                                        color: textOnBrand,
-                                    }
-                                  : i === currentQ
-                                    ? {
-                                          borderColor: brandColor,
-                                          color: brandColor,
-                                      }
-                                    : null
-                        "
-                    >
-                        {{ i + 1 }}
-                    </div>
-                    <div
-                        v-if="i < questions.length - 1"
-                        class="step-line"
-                        :class="{ 'step-line-done': i < currentQ }"
-                        :style="
-                            isCobrand && i < currentQ
-                                ? { background: brandColor }
-                                : null
-                        "
-                    ></div>
-                </template>
-            </div>
-
-            <div class="quiz-inner">
-                <!-- Icon -->
+            <div v-if="step === 'intro'" class="split-screen" key="intro">
                 <div
-                    class="circle-icon rounded-full bg-light-grey flex items-center justify-center mb-8"
+                    class="mascotte-col"
                 >
-                    <span class="material-symbols-outlined">{{
-                        questions[currentQ].icon
-                    }}</span>
-                </div>
-                <h2 class="quiz-question">{{ questions[currentQ].text }}</h2>
-
-                <div class="quiz-options">
-                    <button
-                        v-for="opt in questions[currentQ].options"
-                        :key="opt"
-                        class="btn"
-                        :class="[
-                            opt === 'Oui'
-                                ? 'btn-outlined-green'
-                                : opt === 'Non'
-                                  ? 'btn-outlined-red'
-                                  : 'btn-outlined-blue',
-                            { 'is-selected': selectedAnswer === opt },
-                        ]"
-                        @click="selectAnswer(opt)"
-                    >
-                        <span class="opt-icon">
-                            <svg
-                                v-if="opt === 'Oui'"
-                                width="16"
-                                height="16"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2.5"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            >
-                                <polyline points="20 6 9 17 4 12" />
-                            </svg>
-                            <svg
-                                v-else-if="opt === 'Non'"
-                                width="16"
-                                height="16"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2.5"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            >
-                                <line x1="18" y1="6" x2="6" y2="18" />
-                                <line x1="6" y1="6" x2="18" y2="18" />
-                            </svg>
-                        </span>
-                        {{ opt }}
-                    </button>
-                </div>
-
-                <button
-                    class="btn btn-filled-blue mb-6"
-                    style="width: 100%; max-width: 440px"
-                    :style="
-                        isCobrand && selectedAnswer
-                            ? { background: brandColor, color: textOnBrand }
-                            : null
-                    "
-                    :disabled="!selectedAnswer"
-                    @click="confirm"
-                >
-                    Prochaine question
-                    <span class="material-symbols-outlined">arrow_forward</span>
-                </button>
-            </div>
-        </div>
-
-        <!-- ══════════════════════════════════════════════════════
-             SLIDE INFO — split screen
-        ═══════════════════════════════════════════════════════ -->
-        <div v-else-if="step === 'info'" class="split-screen" key="info">
-            <div class="mascotte-col mascotte-col-full">
-                <img
-                    :src="'/images/courage/Mascotte_insight.png'"
-                    alt="Courage"
-                    class="mascotte-img-full"
-                />
-            </div>
-
-            <div class="content-col">
-                <div class="intro-content">
-                    <h2 class="text-black">Courage vous informe !</h2>
-
-                    <h3
-                        v-for="(line, i) in currentInfo.message.split('\n\n')"
-                        :key="i"
-                    >
-                        {{ line }}
-                    </h3>
-
-                    <p v-if="currentInfo.reassurance">
-                        {{ currentInfo.reassurance }}
-                    </p>
-
-                    <div
-                        v-if="currentInfo.tip"
-                        class="tip-card rounded-xl p-4 gap-6 flex items-center"
-                    >
-                        <div
-                            class="tip-icon-wrap"
-                            :style="
-                                isCobrand ? { background: brandColor + '18' } : null
-                            "
-                        >
-                            <span class="material-symbols-outlined tip-icon"
-                                >lightbulb</span
-                            >
-                        </div>
-                        <p class="text-black">{{ currentInfo.tip }}</p>
-                    </div>
-
-                    <button
-                        class="btn btn-filled-blue"
-                        style="margin-top: 0.5rem"
-                        :style="
-                            isCobrand
-                                ? { background: brandColor, color: textOnBrand }
-                                : null
-                        "
-                        @click="continueFromInfo"
-                    >
-                        J'ai bien compris
-                        <span class="material-symbols-outlined"
-                            >arrow_forward</span
-                        >
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- ══════════════════════════════════════════════════════
-             RECAP DES RÉPONSES
-        ═══════════════════════════════════════════════════════ -->
-        <div v-else-if="step === 'recap'" class="recap-screen" key="recap">
-            <div class="recap-inner">
-                <h2 class="recap-title">Réponses données</h2>
-
-                <div class="answers-grid">
-                    <div
-                        v-for="(q, i) in questions"
-                        :key="i"
-                        class="answer-card"
-                    >
-                        <div class="card-top">
-                            <div
-                                class="card-check"
-                                :class="
-                                    isGoodForDonation(i)
-                                        ? 'check-good'
-                                        : 'check-bad'
-                                "
-                            >
-                                <svg
-                                    v-if="isGoodForDonation(i)"
-                                    width="14"
-                                    height="14"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="2.5"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                >
-                                    <polyline points="20 6 9 17 4 12" />
-                                </svg>
-                                <svg
-                                    v-else
-                                    width="14"
-                                    height="14"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="2.5"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                >
-                                    <line x1="18" y1="6" x2="6" y2="18" />
-                                    <line x1="6" y1="6" x2="18" y2="18" />
-                                </svg>
-                            </div>
-                            <p class="card-question">{{ q.text }}</p>
-                            <div class="card-info-btn">
-                                <span
-                                    class="material-symbols-outlined"
-                                    style="font-size: 18px; color: #000"
-                                    >info</span
-                                >
-                            </div>
-                        </div>
-                        <div class="card-bottom">
-                            <span class="card-answer-label"
-                                >Vous avez répondu :</span
-                            >
-                            <span
-                                class="answer-badge"
-                                :style="getAnswerBadgeStyle(answers[i])"
-                            >
-                                {{ answers[i] ?? "—" }}
-                            </span>
-                        </div>
+                    <div class="mascotte-circle">
+                        <img
+                            :src="'/images/courage/Mascotte_default.png'"
+                            alt="Courage"
+                            class="mascotte-img"
+                        />
                     </div>
                 </div>
 
-                <div
-                    class="ready-section"
-                    :style="
-                        isCobrand
-                            ? {
-                                  background: `linear-gradient(135deg, ${brandColor}, var(--color-default-green))`,
-                              }
-                            : null
-                    "
-                >
-                    <p
-                        class="ready-title"
-                        :style="
-                            isCobrand && cobrand.textOnBrand !== '#1a1a1a'
-                                ? { color: textOnBrand }
-                                : null
-                        "
-                    >
-                        Vous vous sentez prêt ?
-                    </p>
-                    <button
-                        class="btn-ready"
-                        :style="
-                            isCobrand
-                                ? { background: brandColor, color: textOnBrand }
-                                : null
-                        "
-                        @click="showResult"
-                    >
-                        Voir mon résultat
-                        <span class="material-symbols-outlined"
-                            >arrow_forward</span
-                        >
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- ══════════════════════════════════════════════════════
-             RÉSULTAT — split screen
-        ═══════════════════════════════════════════════════════ -->
-        <div v-else-if="step === 'result'" class="split-screen" key="result">
-            <div
-                class="mascotte-col"
-                :style="isCobrand ? { background: brandColor + '08' } : null"
-            >
-                <div class="mascotte-circle">
-                    <img
-                        :src="
-                            resultat === 'eligible'
-                                ? '/images/courage/Mascotte_award.png'
-                                : resultat === 'non-eligible'
-                                  ? '/images/courage/Mascotte_failure.png'
-                                  : '/images/courage/Mascotte_default.png'
-                        "
-                        alt="Courage"
-                        class="mascotte-img"
-                    />
-                </div>
-            </div>
-
-            <div class="content-col">
-                <div class="result-content">
-                    <!-- ÉLIGIBLE -->
-                    <template v-if="resultat === 'eligible'">
-                        <h2 class="result-title">
-                            Bravo ! Vous êtes la star du don.
-                        </h2>
-                        <p class="result-sub">
-                            Sur la base de vos réponses, vous remplissez les
-                            principales conditions de don.
+                <div class="content-col">
+                    <div class="intro-content">
+                        <h1 class="text-black">
+                            Je suis Courage, votre guide!
+                        </h1>
+                        <p>
+                            Je vais vous poser 9 questions rapides et vous
+                            donner des conseils utiles à chaque étape pour
+                            vérifier si vous pouvez donner votre sang.
                         </p>
-                        <div class="result-tip-card">
-                            <span
-                                class="material-symbols-outlined"
-                                style="font-size: 18px; color: #000"
-                                >info</span
-                            >
-                            <p>
-                                La validation finale sera effectuée sur place
-                                par l'équipe médicale.
-                            </p>
+                        <div class="grid grid-cols-3 gap-4">
+                            <div class="rounded-xl px-5 py-4 bg-light-grey">
+                                <span
+                                    class="material-symbols-outlined feature-icon mb-2"
+                                    >schedule</span
+                                >
+                                <p class="captions">Seulement 5 minutes</p>
+                            </div>
+                            <div class="rounded-xl px-5 py-4 bg-light-grey">
+                                <span
+                                    class="material-symbols-outlined feature-icon"
+                                    >security</span
+                                >
+                                <p class="captions">100 % confidentiel</p>
+                            </div>
+                            <div class="rounded-xl px-5 py-4 bg-light-grey">
+                                <span
+                                    class="material-symbols-outlined feature-icon"
+                                    >favorite</span
+                                >
+                                <p class="captions">Préparer votre don</p>
+                            </div>
                         </div>
                         <div
-                            v-if="
-                                isCobrand &&
-                                collecte?.nb_inscrits_estime &&
-                                collecte?.active
-                            "
-                            class="social-proof-chip social-proof-result"
+                            v-if="isCobrand && collecte?.nb_inscrits_estime"
+                            class="social-proof-chip"
                         >
                             <span
                                 class="material-symbols-outlined"
@@ -837,42 +454,14 @@ function retakeQuiz() {
                                 >group</span
                             >
                             <span
-                                >Rejoignez les
-                                <strong>{{ collecte.nb_inscrits_estime }}</strong>
-                                collègues qui participent !</span
+                                >Déjà
+                                <strong>{{
+                                    collecte.nb_inscrits_estime
+                                }}</strong>
+                                collègues ont passé le test !</span
                             >
                         </div>
-                        <RouterLink
-                            :to="resultCta"
-                            class="btn btn-filled-blue"
-                            :style="
-                                isCobrand
-                                    ? {
-                                          background: brandColor,
-                                          color: textOnBrand,
-                                      }
-                                    : null
-                            "
-                        >
-                            Prendre rendez-vous
-                            <span
-                                class="material-symbols-outlined"
-                                style="font-size: 18px; color: #000"
-                                >calendar_month</span
-                            >
-                        </RouterLink>
-                    </template>
 
-                    <!-- NON ÉLIGIBLE -->
-                    <template v-else-if="resultat === 'non-eligible'">
-                        <h2 class="result-title">
-                            Certains points ne sont pas éligibles.
-                        </h2>
-                        <p class="result-sub">
-                            Malheureusement, sur la base de vos réponses,
-                            certains points ne remplissent pas les conditions de
-                            don adéquates.
-                        </p>
                         <button
                             class="btn btn-filled-blue"
                             :style="
@@ -883,39 +472,198 @@ function retakeQuiz() {
                                       }
                                     : null
                             "
-                            @click="retakeQuiz"
+                            @click="startQuiz"
                         >
-                            Découvrir pourquoi
+                            Commencer le test
                             <span class="material-symbols-outlined"
                                 >arrow_forward</span
                             >
                         </button>
-                    </template>
 
-                    <!-- INCERTAIN -->
-                    <template v-else>
-                        <h2 class="result-title">
-                            Certaines situations nécessitent une validation
-                            médicale.
-                        </h2>
-                        <p class="result-sub">
-                            Le personnel du CTS pourra vous renseigner lors de
-                            votre rendez-vous.
-                        </p>
-                        <div class="result-tip-card">
-                            <span
-                                class="material-symbols-outlined"
-                                style="font-size: 18px; color: #000"
-                                >info</span
-                            >
-                            <p>
-                                Vous pouvez tout de même vous inscrire et venir
-                                rencontrer notre équipe médicale.
-                            </p>
+                        <button
+                            v-if="resultat"
+                            class="btn-retake"
+                            @click="viewPreviousResult"
+                        >
+                            Voir mon résultat précédent
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ══════════════════════════════════════════════════════
+             QUESTION
+        ═══════════════════════════════════════════════════════ -->
+            <div
+                v-else-if="step === 'quiz'"
+                class="quiz-screen"
+                :key="'quiz-' + currentQ"
+            >
+                <!-- Progress steps -->
+                <div class="progress-steps">
+                    <template v-for="(_, i) in questions" :key="i">
+                        <div
+                            class="step"
+                            :class="{
+                                'step-done': i < currentQ,
+                                'step-active': i === currentQ,
+                            }"
+                            :style="
+                                !isCobrand
+                                    ? null
+                                    : i < currentQ
+                                      ? {
+                                            background: brandColor,
+                                            borderColor: brandColor,
+                                            color: textOnBrand,
+                                        }
+                                      : i === currentQ
+                                        ? {
+                                              borderColor: brandColor,
+                                              color: brandColor,
+                                          }
+                                        : null
+                            "
+                        >
+                            {{ i + 1 }}
                         </div>
-                        <RouterLink
-                            :to="resultCta"
+                        <div
+                            v-if="i < questions.length - 1"
+                            class="step-line"
+                            :class="{ 'step-line-done': i < currentQ }"
+                            :style="
+                                isCobrand && i < currentQ
+                                    ? { background: brandColor }
+                                    : null
+                            "
+                        ></div>
+                    </template>
+                </div>
+
+                <div class="quiz-inner">
+                    <!-- Icon -->
+                    <div
+                        class="circle-icon rounded-full bg-light-grey flex items-center justify-center mb-8"
+                    >
+                        <span class="material-symbols-outlined">{{
+                            questions[currentQ].icon
+                        }}</span>
+                    </div>
+                    <h2 class="quiz-question">
+                        {{ questions[currentQ].text }}
+                    </h2>
+
+                    <div class="quiz-options">
+                        <button
+                            v-for="opt in questions[currentQ].options"
+                            :key="opt"
+                            class="btn"
+                            :class="[
+                                opt === 'Oui'
+                                    ? 'btn-outlined-green'
+                                    : opt === 'Non'
+                                      ? 'btn-outlined-red'
+                                      : 'btn-outlined-blue',
+                                { 'is-selected': selectedAnswer === opt },
+                            ]"
+                            @click="selectAnswer(opt)"
+                        >
+                            <span class="opt-icon">
+                                <svg
+                                    v-if="opt === 'Oui'"
+                                    width="16"
+                                    height="16"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2.5"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>
+                                <svg
+                                    v-else-if="opt === 'Non'"
+                                    width="16"
+                                    height="16"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2.5"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <line x1="18" y1="6" x2="6" y2="18" />
+                                    <line x1="6" y1="6" x2="18" y2="18" />
+                                </svg>
+                            </span>
+                            {{ opt }}
+                        </button>
+                    </div>
+
+                    <button
+                        class="btn btn-filled-blue mb-6"
+                        style="width: 100%; max-width: 440px"
+                        :style="
+                            isCobrand && selectedAnswer
+                                ? { background: brandColor, color: textOnBrand }
+                                : null
+                        "
+                        :disabled="!selectedAnswer"
+                        @click="confirm"
+                    >
+                        Prochaine question
+                        <span class="material-symbols-outlined"
+                            >arrow_forward</span
+                        >
+                    </button>
+                </div>
+            </div>
+
+            <!-- ══════════════════════════════════════════════════════
+             SLIDE INFO — split screen
+        ═══════════════════════════════════════════════════════ -->
+            <div v-else-if="step === 'info'" class="split-screen" key="info">
+                <div class="mascotte-col mascotte-col-full">
+                    <img
+                        :src="'/images/courage/Mascotte_insight.png'"
+                        alt="Courage"
+                        class="mascotte-img-full"
+                    />
+                </div>
+
+                <div class="content-col">
+                    <div class="intro-content">
+                        <h2 class="text-black">Courage vous informe !</h2>
+
+                        <h3
+                            v-for="(line, i) in currentInfo.message.split(
+                                '\n\n',
+                            )"
+                            :key="i"
+                        >
+                            {{ line }}
+                        </h3>
+
+                        <p v-if="currentInfo.reassurance">
+                            {{ currentInfo.reassurance }}
+                        </p>
+
+                        <div
+                            v-if="currentInfo.tip"
+                            class="tip-card rounded-xl p-4 gap-6 flex items-center"
+                        >
+                            <div class="tip-icon-wrap">
+                                <span class="material-symbols-outlined tip-icon"
+                                    >lightbulb</span
+                                >
+                            </div>
+                            <p class="text-black">{{ currentInfo.tip }}</p>
+                        </div>
+
+                        <button
                             class="btn btn-filled-blue"
+                            style="margin-top: 0.5rem"
                             :style="
                                 isCobrand
                                     ? {
@@ -924,27 +672,301 @@ function retakeQuiz() {
                                       }
                                     : null
                             "
+                            @click="continueFromInfo"
                         >
-                            Prendre rendez-vous
-                            <span
-                                class="material-symbols-outlined"
-                                style="font-size: 18px; color: #000"
-                                >calendar_month</span
+                            J'ai bien compris
+                            <span class="material-symbols-outlined"
+                                >arrow_forward</span
                             >
-                        </RouterLink>
-                    </template>
-
-                    <button
-                        class="btn-retake"
-                        style="margin-top: 1.5rem"
-                        :style="isCobrand ? { color: brandColor } : null"
-                        @click="retakeQuiz"
-                    >
-                        ↺ Refaire le quiz
-                    </button>
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
+
+            <!-- ══════════════════════════════════════════════════════
+             RECAP DES RÉPONSES
+        ═══════════════════════════════════════════════════════ -->
+            <div v-else-if="step === 'recap'" class="recap-screen" key="recap">
+                <div class="recap-inner">
+                    <h2 class="recap-title">Réponses données</h2>
+
+                    <div class="answers-grid">
+                        <div
+                            v-for="(q, i) in questions"
+                            :key="i"
+                            class="card shadow-light"
+                        >
+                            <div class="card-top">
+                                <div
+                                    class="card-check"
+                                    :class="
+                                        isGoodForDonation(i)
+                                            ? 'check-good'
+                                            : 'check-bad'
+                                    "
+                                >
+                                    <svg
+                                        v-if="isGoodForDonation(i)"
+                                        width="14"
+                                        height="14"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2.5"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    >
+                                        <polyline points="20 6 9 17 4 12" />
+                                    </svg>
+                                    <svg
+                                        v-else
+                                        width="14"
+                                        height="14"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2.5"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    >
+                                        <line x1="18" y1="6" x2="6" y2="18" />
+                                        <line x1="6" y1="6" x2="18" y2="18" />
+                                    </svg>
+                                </div>
+                                <p class="card-question">{{ q.text }}</p>
+                                <div class="card-info-btn">
+                                    <span
+                                        class="material-symbols-outlined"
+                                        style="font-size: 18px; color: #000"
+                                        >info</span
+                                    >
+                                </div>
+                            </div>
+                            <div class="card-bottom">
+                                <span class="card-answer-label"
+                                    >Vous avez répondu :</span
+                                >
+                                <span
+                                    class="answer-badge"
+                                    :style="getAnswerBadgeStyle(answers[i])"
+                                >
+                                    {{ answers[i] ?? "—" }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="ready-section"
+                        :style="
+                            isCobrand
+                                ? {
+                                      background: `linear-gradient(135deg, ${brandColor}, var(--color-default-green))`,
+                                  }
+                                : null
+                        "
+                    >
+                        <p
+                            class="ready-title"
+                            :style="
+                                isCobrand && cobrand.textOnBrand !== '#1a1a1a'
+                                    ? { color: textOnBrand }
+                                    : null
+                            "
+                        >
+                            Vous vous sentez prêt ?
+                        </p>
+                        <button
+                            class="btn-ready"
+                            :style="
+                                isCobrand
+                                    ? {
+                                          background: brandColor,
+                                          color: textOnBrand,
+                                      }
+                                    : null
+                            "
+                            @click="showResult"
+                        >
+                            Voir mon résultat
+                            <span class="material-symbols-outlined"
+                                >arrow_forward</span
+                            >
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ══════════════════════════════════════════════════════
+             RÉSULTAT — split screen
+        ═══════════════════════════════════════════════════════ -->
+            <div
+                v-else-if="step === 'result'"
+                class="split-screen"
+                key="result"
+            >
+                <div class="mascotte-col">
+                    <div class="mascotte-circle">
+                        <img
+                            :src="
+                                resultat === 'eligible'
+                                    ? '/images/courage/Mascotte_award.png'
+                                    : resultat === 'non-eligible'
+                                      ? '/images/courage/Mascotte_failure.png'
+                                      : '/images/courage/Mascotte_default.png'
+                            "
+                            alt="Courage"
+                            class="mascotte-img"
+                        />
+                    </div>
+                </div>
+
+                <div class="content-col">
+                    <div class="result-content">
+                        <!-- ÉLIGIBLE -->
+                        <template v-if="resultat === 'eligible'">
+                            <h2 class="result-title">
+                                Bravo ! Vous êtes la star du don.
+                            </h2>
+                            <p class="result-sub">
+                                Sur la base de vos réponses, vous remplissez les
+                                principales conditions de don.
+                            </p>
+                            <div class="result-tip-card">
+                                <span
+                                    class="material-symbols-outlined"
+                                    style="font-size: 18px; color: #000"
+                                    >info</span
+                                >
+                                <p>
+                                    La validation finale sera effectuée sur
+                                    place par l'équipe médicale.
+                                </p>
+                            </div>
+                            <div
+                                v-if="
+                                    isCobrand &&
+                                    collecte?.nb_inscrits_estime &&
+                                    collecte?.active
+                                "
+                                class="social-proof-chip social-proof-result"
+                            >
+                                <span
+                                    class="material-symbols-outlined"
+                                    style="font-size: 18px"
+                                    >group</span
+                                >
+                                <span
+                                    >Rejoignez les
+                                    <strong>{{
+                                        collecte.nb_inscrits_estime
+                                    }}</strong>
+                                    collègues qui participent !</span
+                                >
+                            </div>
+                            <RouterLink
+                                :to="resultCta"
+                                class="btn btn-filled-blue"
+                                :style="
+                                    isCobrand
+                                        ? {
+                                              background: brandColor,
+                                              color: textOnBrand,
+                                          }
+                                        : null
+                                "
+                            >
+                                Prendre rendez-vous
+                                <span
+                                    class="material-symbols-outlined"
+                                    style="font-size: 18px; color: #000"
+                                    >calendar_month</span
+                                >
+                            </RouterLink>
+                        </template>
+
+                        <!-- NON ÉLIGIBLE -->
+                        <template v-else-if="resultat === 'non-eligible'">
+                            <h2 class="result-title">
+                                Certains points ne sont pas éligibles.
+                            </h2>
+                            <p class="result-sub">
+                                Malheureusement, sur la base de vos réponses,
+                                certains points ne remplissent pas les
+                                conditions de don adéquates.
+                            </p>
+                            <button
+                                class="btn btn-filled-blue"
+                                :style="
+                                    isCobrand
+                                        ? {
+                                              background: brandColor,
+                                              color: textOnBrand,
+                                          }
+                                        : null
+                                "
+                                @click="retakeQuiz"
+                            >
+                                Découvrir pourquoi
+                                <span class="material-symbols-outlined"
+                                    >arrow_forward</span
+                                >
+                            </button>
+                        </template>
+
+                        <!-- INCERTAIN -->
+                        <template v-else>
+                            <h2 class="result-title">
+                                Certaines situations nécessitent une validation
+                                médicale.
+                            </h2>
+                            <p class="result-sub">
+                                Le personnel du CTS pourra vous renseigner lors
+                                de votre rendez-vous.
+                            </p>
+                            <div class="result-tip-card">
+                                <span
+                                    class="material-symbols-outlined"
+                                    style="font-size: 18px; color: #000"
+                                    >info</span
+                                >
+                                <p>
+                                    Vous pouvez tout de même vous inscrire et
+                                    venir rencontrer notre équipe médicale.
+                                </p>
+                            </div>
+                            <RouterLink
+                                :to="resultCta"
+                                class="btn btn-filled-blue"
+                                :style="
+                                    isCobrand
+                                        ? {
+                                              background: brandColor,
+                                              color: textOnBrand,
+                                          }
+                                        : null
+                                "
+                            >
+                                Prendre rendez-vous
+                                <span
+                                    class="material-symbols-outlined"
+                                    style="font-size: 18px; color: #000"
+                                    >calendar_month</span
+                                >
+                            </RouterLink>
+                        </template>
+
+                        <button
+                            class="btn-retake"
+                            style="margin-top: 1.5rem"
+                            :style="isCobrand ? { color: brandColor } : null"
+                            @click="retakeQuiz"
+                        >
+                            ↺ Refaire le quiz
+                        </button>
+                    </div>
+                </div>
+            </div>
         </Transition>
     </div>
 </template>
@@ -1244,15 +1266,6 @@ function retakeQuiz() {
     grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
     margin-bottom: 0;
-}
-.answer-card {
-    background: white;
-    border: 1.5px solid #f0f4f4;
-    border-radius: 14px;
-    padding: 1.1rem 1.25rem 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.85rem;
 }
 .card-top {
     display: flex;

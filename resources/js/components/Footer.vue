@@ -120,7 +120,7 @@ defineProps({
                             </li>
                             <li>
                                 <RouterLink
-                                    to="/faq"
+                                    :to="slug ? `/entreprise/${slug}/faq` : '/faq'"
                                     class="text-white hover:opacity-70 transition"
                                     style="text-decoration: none"
                                     >FAQ</RouterLink
@@ -128,7 +128,7 @@ defineProps({
                             </li>
                             <li>
                                 <RouterLink
-                                    to="/contact"
+                                    :to="slug ? `/entreprise/${slug}/contact` : '/contact'"
                                     class="text-white hover:opacity-70 transition"
                                     style="text-decoration: none"
                                     >Contact</RouterLink

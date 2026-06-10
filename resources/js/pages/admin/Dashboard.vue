@@ -7,20 +7,20 @@
 
         <template v-else>
             <!-- Stats -->
-            <div class="stats-row">
-                <div class="stat-card shadow-light">
-                    <h2 class="stat-value">{{ stats.total_inscrits ?? 0 }}</h2>
-                    <p class="captions stat-label">Inscriptions aux collectes</p>
+            <div class="max-w-4xl mx-auto px-8 grid grid-cols-3 gap-4 mb-10">
+                <div class="rounded-xl px-5 py-4 bg-light-grey">
+                    <h2 class="font-bold mb-1">{{ stats.total_inscrits ?? 0 }}</h2>
+                    <p class="captions">Inscriptions aux collectes</p>
                 </div>
-                <div class="stat-card shadow-light">
-                    <h2 class="stat-value">{{ stats.collectes_actives ?? 0 }}</h2>
-                    <p class="captions stat-label">Campagnes en cours</p>
+                <div class="rounded-xl px-5 py-4 bg-light-grey">
+                    <h2 class="font-bold mb-1">{{ stats.collectes_actives ?? 0 }}</h2>
+                    <p class="captions">Campagnes en cours</p>
                 </div>
-                <div class="stat-card stat-card--alert shadow-light" v-bind:class="{ 'stat-card--alert-active': (stats.collectes_en_attente ?? 0) > 0 }">
-                    <h2 class="stat-value" :style="(stats.collectes_en_attente ?? 0) > 0 ? { color: 'var(--color-default-red)' } : {}">
+                <div class="rounded-xl px-5 py-4 bg-light-grey">
+                    <h2 class="font-bold mb-1" :style="(stats.collectes_en_attente ?? 0) > 0 ? { color: 'var(--color-default-red)' } : null">
                         {{ stats.collectes_en_attente ?? 0 }}
                     </h2>
-                    <p class="captions stat-label">En attente de validation</p>
+                    <p class="captions">En attente de validation</p>
                 </div>
             </div>
 
@@ -97,6 +97,7 @@
             </div>
 
             <!-- Dernières campagnes -->
+            <div class="section-band">
             <div class="section-header">
                 <h2 class="section-title">Dernières campagnes</h2>
                 <RouterLink to="/admin/collectes" class="btn-circle" aria-label="Voir toutes les collectes">
@@ -107,7 +108,7 @@
                 <div
                     v-for="collecte in collectesRecentes"
                     :key="collecte.id"
-                    class="collecte-card shadow-light"
+                    class="card shadow-light"
                 >
                     <div class="card-top">
                         <div>
@@ -132,9 +133,11 @@
                     <p class="captions card-muted">{{ collecte.lieu ?? "—" }}</p>
                 </div>
             </div>
+            </div>
 
             <!-- Dernières inscriptions -->
-            <div class="section-header" style="margin-top: 2.5rem">
+            <div class="section-band">
+            <div class="section-header">
                 <h2 class="section-title">Dernières inscriptions</h2>
                 <RouterLink to="/admin/collectes" class="btn-circle" aria-label="Voir toutes les collectes">
                     <span class="material-symbols-outlined btn-circle-icon">arrow_outward</span>
@@ -162,6 +165,7 @@
                         <p class="captions card-muted" style="margin-top: 0.5rem">{{ collecte.lieu ?? "—" }}</p>
                     </div>
                 </div>
+            </div>
             </div>
         </template>
     </div>
@@ -350,32 +354,6 @@ onBeforeUnmount(() => {
     margin: 0 0 2rem;
 }
 
-/* Stats */
-.stats-row {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.25rem;
-    margin-bottom: 2rem;
-}
-.stat-card {
-    background: white;
-    border-radius: 0.75rem;
-    padding: 1.5rem;
-    border: 1px solid transparent;
-}
-.stat-card--alert-active {
-    border-color: #fee2e2;
-    background: #fff8f8;
-}
-.stat-value {
-    color: var(--default-titles);
-    margin: 0 0 0.25rem;
-}
-.stat-label {
-    color: var(--default-text);
-    margin: 0;
-}
-
 /* Chart */
 .chart-card {
     background: white;
@@ -435,19 +413,19 @@ onBeforeUnmount(() => {
     min-width: 22px;
 }
 
+/* Bande de section grisée (cf. maquette) */
+.section-band {
+    background: var(--light-grey);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
 /* Cards grid */
 .cards-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1.25rem;
-}
-.collecte-card {
-    background: white;
-    border-radius: 0.75rem;
-    padding: 1.25rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
 }
 /* ── Attente list ─────────────────────────────────────────── */
 .attente-empty {
@@ -573,48 +551,6 @@ onBeforeUnmount(() => {
 .card-icon {
     font-size: 14px;
     vertical-align: middle;
-}
-
-/* Menu déroulant des cartes */
-.card-menu-wrap {
-    position: relative;
-}
-.card-dropdown {
-    position: absolute;
-    top: calc(100% + 6px);
-    right: 0;
-    background: white;
-    border-radius: 0.6rem;
-    box-shadow: 0 4px 20px rgba(44, 65, 64, 0.14);
-    border: 1px solid var(--light-grey);
-    min-width: 170px;
-    z-index: 100;
-    overflow: hidden;
-}
-.card-dropdown a,
-.card-dropdown button {
-    display: block;
-    width: 100%;
-    padding: 10px 14px;
-    background: none;
-    border: none;
-    color: var(--default-titles);
-    cursor: pointer;
-    font-family: inherit;
-    font-size: 0.875rem;
-    text-align: left;
-    text-decoration: none;
-    transition: background 0.12s;
-}
-.card-dropdown a:hover,
-.card-dropdown button:hover {
-    background: var(--light-grey);
-}
-.card-dropdown button.danger {
-    color: var(--color-default-red);
-}
-.card-dropdown button.danger:hover {
-    background: var(--color-default-red-98);
 }
 
 /* Inscriptions cards : logo pleine hauteur à gauche (cf. maquette) */

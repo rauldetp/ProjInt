@@ -34,6 +34,9 @@ const tropheeLink = computed(() =>
 const quizLink = computed(() =>
     isCobrand.value ? `/entreprise/${slug.value}/quiz` : "/quiz",
 );
+const contactLink = computed(() =>
+    isCobrand.value ? `/entreprise/${slug.value}/contact` : "/contact",
+);
 
 const espaceLink = computed(() => {
     if (auth.isAdmin) return "/admin";
@@ -73,7 +76,10 @@ function handleLogout() {
                 class="app-brand"
             >
                 <span class="brand-hug">
-                    <img :src="'/images/logo_hug_h_quadri.png'" alt="Logo HUG" />
+                    <img
+                        :src="'/images/logo_hug_h_quadri.png'"
+                        alt="Logo HUG"
+                    />
                 </span>
 
                 <!-- Cobrandé : séparateur "X" + entreprise -->
@@ -93,7 +99,9 @@ function handleLogout() {
                 <!-- Générique : séparateur + "Don du sang" -->
                 <template v-else>
                     <span class="brand-sep"></span>
-                    <span style="color: var(--color-default-red)">Don du sang</span>
+                    <span style="color: var(--color-default-red)"
+                        >Don du sang</span
+                    >
                 </template>
             </RouterLink>
 
@@ -105,16 +113,13 @@ function handleLogout() {
                 <RouterLink :to="tropheeLink" :style="linkStyle(tropheeLink)"
                     >Trophée de la Générosité</RouterLink
                 >
-                <RouterLink :to="espaceLink" :style="linkStyle(espaceLink)"
-                    >Espace entreprise</RouterLink
-                >
                 <RouterLink :to="quizLink" :style="linkStyle(quizLink)"
                     >Quiz d'éligibilité</RouterLink
                 >
-                <RouterLink
-                    v-if="!isCobrand"
-                    to="/contact"
-                    :style="linkStyle('/contact')"
+                <RouterLink :to="espaceLink" :style="linkStyle(espaceLink)"
+                    >Espace entreprise</RouterLink
+                >
+                <RouterLink :to="contactLink" :style="linkStyle(contactLink)"
                     >Contact</RouterLink
                 >
             </nav>

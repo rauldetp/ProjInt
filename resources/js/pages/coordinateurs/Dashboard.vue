@@ -86,7 +86,7 @@
                 <div
                     v-for="collecte in collectes"
                     :key="collecte.id"
-                    class="collecte-card shadow-light"
+                    class="card shadow-light card-clickable"
                     @click="goVoir(collecte)"
                 >
                     <div class="card-top">
@@ -328,17 +328,11 @@ onMounted(async () => {
     grid-template-columns: repeat(3, 1fr);
     gap: 1.25rem;
 }
-.collecte-card {
-    background: white;
-    border-radius: 0.75rem;
-    padding: 1.25rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
+.card-clickable {
     cursor: pointer;
     transition: transform 0.15s;
 }
-.collecte-card:hover {
+.card-clickable:hover {
     transform: translateY(-2px);
 }
 .card-top {
@@ -357,47 +351,6 @@ onMounted(async () => {
 .card-icon {
     font-size: 14px;
     vertical-align: middle;
-}
-
-/* Menu circulaire + dropdown */
-.card-menu-wrap {
-    position: relative;
-}
-.card-dropdown {
-    position: absolute;
-    top: calc(100% + 6px);
-    right: 0;
-    background: white;
-    border-radius: 0.6rem;
-    box-shadow: 0 4px 20px rgba(44, 65, 64, 0.14);
-    border: 1px solid var(--light-grey);
-    min-width: 148px;
-    z-index: 100;
-    overflow: hidden;
-}
-.card-dropdown button {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    width: 100%;
-    padding: 10px 14px;
-    background: none;
-    border: none;
-    color: var(--default-titles);
-    cursor: pointer;
-    font-family: inherit;
-    font-size: 0.875rem;
-    text-align: left;
-    transition: background 0.12s;
-}
-.card-dropdown button:hover {
-    background: var(--light-grey);
-}
-.card-dropdown button.danger {
-    color: var(--color-default-red);
-}
-.card-dropdown button.danger:hover {
-    background: var(--color-default-red-98);
 }
 
 /* Badge : couleurs dans app.css, alignement spécifique à la carte */

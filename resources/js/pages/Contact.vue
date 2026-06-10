@@ -1,7 +1,13 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
+import { useRoute } from "vue-router";
+import { useCobrandStore } from "../stores/cobrand";
 import AppNavbar from "../components/AppNavbar.vue";
 import Footer from "../components/Footer.vue";
+
+const route = useRoute();
+const cobrand = useCobrandStore();
+const isCobrand = computed(() => !!route.params.slug);
 
 const form = ref({
     nom: "",
@@ -46,8 +52,22 @@ function scrollToForm() {
     document.getElementById("form")?.scrollIntoView({ behavior: "smooth" });
 }
 
-onMounted(() => {
-    document.title = "Contact — HUG Don du sang";
+onMounted(async () => {
+    // En cobrandé : récupère l'entreprise pour la navbar/footer de marque.
+    if (isCobrand.value) {
+        try {
+            const res = await fetch(`/api/entreprises/${route.params.slug}`);
+            if (res.ok) {
+                const data = await res.json();
+                if (data.entreprise) cobrand.set(data.entreprise);
+            }
+        } catch {
+            // silent fail
+        }
+    }
+    document.title = isCobrand.value
+        ? `Contact — ${cobrand.nom || "HUG"}`
+        : "Contact — HUG Don du sang";
 });
 </script>
 
@@ -72,19 +92,8 @@ onMounted(() => {
                 <h1 class="font-bold text-white mb-4">Contactez-nous</h1>
                 <p class="text-white mb-2 max-w-xl">
                     Une question sur le Label CTS, le trophée de la Générosité ou
-                    l'organisation d'une collecte ?
+                    l'organisation d'une collecte ? Notre équipe est là pour vous accompagner.
                 </p>
-                <p class="text-white mb-8 max-w-xl">
-                    Notre équipe est là pour vous accompagner.
-                </p>
-                <button
-                    type="button"
-                    class="btn btn-filled-red"
-                    @click="scrollToForm"
-                >
-                    Nous écrire
-                    <span class="material-symbols-outlined">arrow_forward</span>
-                </button>
             </div>
         </section>
 
@@ -212,6 +221,6 @@ onMounted(() => {
             </div>
         </section>
 
-        <Footer />
+        <Footer :slug="route.params.slug" />
     </div>
 </template>

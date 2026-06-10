@@ -466,6 +466,57 @@ label.captions{
     background: var(--color-default-green);
 }
 
+/* ── Cards (dashboards, récap quiz…) ──────────────────── */
+.card {
+    background: white;
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+/* Menu déroulant d'une carte */
+.card-menu-wrap {
+    position: relative;
+}
+.card-dropdown {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    background: white;
+    border-radius: 0.6rem;
+    box-shadow: 0 4px 20px rgba(44, 65, 64, 0.14);
+    border: 1px solid var(--light-grey);
+    min-width: 170px;
+    z-index: 100;
+    overflow: hidden;
+}
+.card-dropdown a,
+.card-dropdown button {
+    display: block;
+    width: 100%;
+    padding: 10px 14px;
+    background: none;
+    border: none;
+    color: var(--default-titles);
+    cursor: pointer;
+    font-family: inherit;
+    text-align: left;
+    text-decoration: none;
+    transition: background 0.12s;
+}
+.card-dropdown a:hover,
+.card-dropdown button:hover {
+    background: var(--light-grey);
+}
+.card-dropdown button.danger {
+    color: var(--color-default-red);
+}
+.card-dropdown button.danger:hover {
+    background: var(--color-default-red-98);
+}
+
 /* ── Forms ────────────────────────────────────────────── */
 .form-input {
     width: 100%;
