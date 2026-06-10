@@ -1088,13 +1088,6 @@ function retakeQuiz() {
     gap: 2rem;
 }
 
-/* ── Shared buttons ──────────────────────────────────── */
-
-.btn-link {
-    text-decoration: none;
-    display: inline-flex;
-}
-
 /* ── Social proof (cobrandé) ─────────────────────────── */
 .social-proof-chip {
     display: inline-flex;
@@ -1255,16 +1248,6 @@ function retakeQuiz() {
     justify-content: center;
 }
 
-.slide-up-enter-active {
-    transition:
-        opacity 0.25s,
-        transform 0.25s;
-}
-.slide-up-enter-from {
-    opacity: 0;
-    transform: translateY(10px);
-}
-
 /* ── RECAP screen ────────────────────────────────────── */
 .recap-screen {
     flex: 1;
@@ -1341,12 +1324,6 @@ function retakeQuiz() {
         var(--color-default-blue-59),
         var(--color-default-green)
     );
-}
-.ready-title {
-    font-size: 2rem;
-    font-weight: 800;
-    color: var(--default-titles);
-    margin: 0 0 1.75rem;
 }
 .ready-actions {
     display: flex;
