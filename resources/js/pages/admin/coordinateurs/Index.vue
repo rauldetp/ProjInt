@@ -160,4 +160,12 @@ onMounted(fetchCoordinateurs)
 .btn-delete:hover { text-decoration: underline; }
 
 .loading, .error { color: #94a3b8; padding: 2rem 0; }
+
+@media (max-width: 768px) {
+  .table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}
 </style>

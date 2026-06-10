@@ -210,7 +210,7 @@ async function handleRegister() {
         </div>
 
         <!-- Panneau droit -->
-        <div class="flex-1 flex items-center justify-center px-6 py-12">
+        <div class="flex-1 flex items-center justify-center px-4 sm:px-6 py-12">
             <div class="w-full" style="max-width: 480px">
                 <!-- Logo mobile -->
                 <RouterLink
@@ -449,8 +449,8 @@ async function handleRegister() {
 
                         <div class="flex flex-col gap-4">
                             <!-- Nom + Taille -->
-                            <div class="grid grid-cols-2 gap-3">
-                                <div class="col-span-2">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div class="sm:col-span-2">
                                     <label
                                         class="captions mb-3"
                                     >
@@ -522,7 +522,7 @@ async function handleRegister() {
                             </div>
 
                             <!-- Ville + NPA -->
-                            <div class="grid grid-cols-2 gap-3">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 <div>
                                     <label
                                         class="captions mb-3"
@@ -575,8 +575,8 @@ async function handleRegister() {
                         </p>
 
                         <div class="flex flex-col gap-4">
-                            <div class="grid grid-cols-2 gap-3">
-                                <div class="col-span-2">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div class="sm:col-span-2">
                                     <label
                                         class="captions mb-3"
                                     >
@@ -622,7 +622,7 @@ async function handleRegister() {
                                         class="form-input"
                                     />
                                 </div>
-                                <div class="col-span-2">
+                                <div class="sm:col-span-2">
                                     <label
                                         class="captions mb-3"
                                     >
@@ -642,7 +642,7 @@ async function handleRegister() {
                                         class="form-input"
                                     />
                                 </div>
-                                <div class="col-span-2">
+                                <div class="sm:col-span-2">
                                     <label
                                         class="captions mb-3"
                                     >

@@ -191,5 +191,5 @@ onMounted(fetchData)
 .btn-secondary:hover { background: #e2e8f0; }
 .loading { color: #64748b; padding: 2rem 0; }
 .error { color: #ef4444; font-size: 0.875rem; margin-bottom: 1rem; }
-@media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } }
+@media (max-width: 768px) { .form-grid { grid-template-columns: 1fr; } }
 </style>
