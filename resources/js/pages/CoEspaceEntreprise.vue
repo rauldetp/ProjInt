@@ -117,8 +117,8 @@ function closeMenu() {
     openMenu.value = null;
 }
 
-function goVoir(c) {
-    router.push(`/entreprise/${route.params.slug}/collecte/${c.id}`);
+function goVoir() {
+    router.push(`/entreprise/${route.params.slug}`);
 }
 function goModifier(c) {
     closeMenu();

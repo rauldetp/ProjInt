@@ -49,7 +49,7 @@
                 <span class="material-symbols-outlined btn-circle-icon">more_horiz</span>
               </button>
               <div v-if="openMenu === collecte.id" class="card-dropdown" @click.stop>
-                <RouterLink :to="`/entreprise/${collecte.entreprise?.slug}/collecte/${collecte.id}`">Voir la page</RouterLink>
+                <RouterLink :to="`/entreprise/${collecte.entreprise?.slug}`">Voir la page</RouterLink>
                 <RouterLink :to="`/admin/collectes/${collecte.id}/edit`">Modifier</RouterLink>
                 <button @click="copierLien(collecte)">
                   {{ copied === collecte.id ? 'Lien copié !' : 'Copier le lien' }}
@@ -159,7 +159,7 @@ async function changerStatut(collecte, statut) {
 
 function copierLien(collecte) {
   const slug = collecte.entreprise?.slug
-  const url = `${window.location.origin}/entreprise/${slug}/collecte/${collecte.id}`
+  const url = `${window.location.origin}/entreprise/${slug}`
   navigator.clipboard?.writeText(url)
   copied.value = collecte.id
   setTimeout(() => { copied.value = null; closeMenu() }, 1200)

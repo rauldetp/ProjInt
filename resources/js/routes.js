@@ -29,7 +29,6 @@ const routes = [
     { path: '/quiz', component: () => import('./pages/QuizPage.vue') },
     { path: '/entreprise/:slug/espace', component: () => import('./pages/CoEspaceEntreprise.vue') },
     { path: '/entreprise/:slug/nouvelle-collecte', component: () => import('./pages/CoNouvelleCollecte.vue'), meta: { requiresAuth: true, role: 'coordinateur' } },
-    { path: '/entreprise/:slug/collecte/:id', component: () => import('./pages/CoDetailCollecte.vue') },
     {
         path: '/entreprise/:slug/coordinateur',
         component: CoordLayout,

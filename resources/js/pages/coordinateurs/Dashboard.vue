@@ -154,7 +154,7 @@ function toggleMenu(id) {
 }
 
 function copierLien(collecte) {
-    const url = `${window.location.origin}/entreprise/${auth.entrepriseSlug}/collecte/${collecte.id}`;
+    const url = `${window.location.origin}/entreprise/${auth.entrepriseSlug}`;
     navigator.clipboard?.writeText(url);
     copied.value = collecte.id;
     setTimeout(() => { copied.value = null; closeMenu(); }, 1200);
@@ -164,8 +164,8 @@ function closeMenu() {
     openMenu.value = null;
 }
 
-function goVoir(collecte) {
-    router.push(`/entreprise/${auth.entrepriseSlug}/collecte/${collecte.id}`);
+function goVoir() {
+    router.push(`/entreprise/${auth.entrepriseSlug}`);
 }
 
 function goModifier(collecte) {
