@@ -2,6 +2,10 @@
 
 Application web de gestion des collectes de don du sang en entreprise pour les **Hôpitaux Universitaires de Genève (HUG) / Centre de Transfusion Sanguine (CTS)**.
 
+Site web de démonstration disponible à ces adresses :
+https://dondusang.loannjuillerat.ch
+https://dondusang.loannjuillerat.ch/entreprise/ubs (espace cobrandé)
+
 > ProjInt — HEIG-VD, juin 2026
 
 ---
