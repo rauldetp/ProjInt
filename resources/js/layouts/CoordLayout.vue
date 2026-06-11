@@ -46,4 +46,10 @@ onMounted(async () => {
     margin: 0 auto;
     padding: 2.5rem 2rem;
 }
+
+@media (max-width: 768px) {
+    .co-main {
+        padding: 1.5rem 1rem;
+    }
+}
 </style>

@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useCobrandStore } from "../stores/cobrand";
 import { useAuthStore } from "../stores/auth";
@@ -61,7 +61,14 @@ function linkStyle(path) {
     };
 }
 
+// Menu mobile (hamburger)
+const mobileOpen = ref(false);
+function closeMobile() {
+    mobileOpen.value = false;
+}
+
 function handleLogout() {
+    closeMobile();
     auth.logout();
     router.push(isCobrand.value ? "/" : "/login");
 }
@@ -69,7 +76,7 @@ function handleLogout() {
 
 <template>
     <header class="app-navbar">
-        <div class="app-navbar-inner max-w-7xl px-8">
+        <div class="app-navbar-inner max-w-7xl px-4 md:px-8">
             <!-- Brand -->
             <RouterLink
                 :to="isCobrand ? `/entreprise/${slug}` : '/'"
@@ -134,8 +141,44 @@ function handleLogout() {
                 >
                     Déconnexion
                 </button>
+                <button
+                    class="app-burger"
+                    aria-label="Menu"
+                    @click="mobileOpen = !mobileOpen"
+                >
+                    <span class="material-symbols-outlined">{{
+                        mobileOpen ? "close" : "menu"
+                    }}</span>
+                </button>
             </div>
         </div>
+
+        <!-- Menu mobile -->
+        <nav v-if="mobileOpen" class="app-mobile-menu">
+            <RouterLink :to="labelLink" :style="linkStyle(labelLink)" @click="closeMobile"
+                >Label CTS</RouterLink
+            >
+            <RouterLink :to="tropheeLink" :style="linkStyle(tropheeLink)" @click="closeMobile"
+                >Trophée de la Générosité</RouterLink
+            >
+            <RouterLink :to="quizLink" :style="linkStyle(quizLink)" @click="closeMobile"
+                >Quiz d'éligibilité</RouterLink
+            >
+            <RouterLink :to="espaceLink" :style="linkStyle(espaceLink)" @click="closeMobile"
+                >Espace entreprise</RouterLink
+            >
+            <RouterLink :to="contactLink" :style="linkStyle(contactLink)" @click="closeMobile"
+                >Contact</RouterLink
+            >
+            <button
+                v-if="(showLogout || isCobrand) && auth.isLoggedIn"
+                class="btn btn-outlined-red"
+                style="margin-top: 0.75rem"
+                @click="handleLogout"
+            >
+                Déconnexion
+            </button>
+        </nav>
     </header>
 </template>
 
@@ -222,9 +265,51 @@ function handleLogout() {
     opacity: 0.85;
 }
 
+/* Hamburger (visible en mobile uniquement) */
+.app-burger {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--default-titles);
+    padding: 0.25rem;
+}
+.app-mobile-menu {
+    display: none;
+}
+
 @media (max-width: 960px) {
     .app-nav-links {
         display: none;
+    }
+    .app-burger {
+        display: inline-flex;
+    }
+    /* Pas de bouton Déconnexion dans la barre mobile (cf. maquettes) */
+    .app-navbar-actions .btn {
+        display: none;
+    }
+    .app-mobile-menu {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        border-bottom: 1px solid var(--light-grey);
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+        padding: 0.5rem 2rem 1rem;
+    }
+    .app-mobile-menu a {
+        padding: 0.7rem 0;
+        font-size: 1rem;
+        border-top: 1px solid var(--light-grey);
+    }
+    .app-mobile-menu a:first-child {
+        border-top: none;
     }
 }
 </style>

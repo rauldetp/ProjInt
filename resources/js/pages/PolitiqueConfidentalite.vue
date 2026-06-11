@@ -12,7 +12,7 @@ onMounted(() => {
     <div class="min-h-screen bg-white">
         <AppNavbar />
 
-        <section class="max-w-3xl mx-auto px-6 py-16">
+        <section class="max-w-3xl mx-auto px-4 md:px-8 py-16">
             <h1 class="mb-4">Politique de confidentialité</h1>
             <p class="mb-8">Dernière mise à jour : Mai 2026</p>
 

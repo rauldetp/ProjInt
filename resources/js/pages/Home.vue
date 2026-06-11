@@ -44,10 +44,10 @@ onMounted(() => {
 
 <template>
     <div class="min-h-screen bg-white">
-        <AppNavbar />
+        <AppNavbar />  
         <div
             v-if="bannerVisible"
-            class="banner bg-gradient flex items-center justify-between shadow-light"
+            class="banner bg-gradient px-3 md:px-6 py-2 flex items-center justify-between shadow-light"
          >
             <span class="captions">
                 Ce site est un projet étudiant réalisé dans un cadre
@@ -78,7 +78,7 @@ onMounted(() => {
                 class="absolute inset-0"
                 style="background: rgba(44, 65, 64, 0.4)"
             ></div>
-            <div class="relative max-w-7xl mx-auto px-8 w-full z-10">
+            <div class="relative max-w-7xl mx-auto px-4 md:px-8 w-full z-10">
                 <h1
                     class="font-bold text-white leading-tight max-w-xl mb-6"
                 >
@@ -97,7 +97,7 @@ onMounted(() => {
 
         <!-- Stats -->
         <section class="bg-white py-10">
-            <div class="max-w-4xl mx-auto px-8 grid grid-cols-3 gap-4">
+            <div class="max-w-4xl mx-auto px-4 md:px-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div class="rounded-xl px-5 py-4 bg-light-grey">
                     <h2 class="font-bold mb-1">100+</h2>
                     <p class="captions">Entreprises partenaires</p>
@@ -115,7 +115,7 @@ onMounted(() => {
 
         <!-- Partners strip (gradient) -->
         <section
-        class="bg-gradient py-20"
+        class="bg-gradient py-12 md:py-20"
         >
             <div class="mx-auto">
                 <h2
@@ -151,14 +151,14 @@ onMounted(() => {
         </section>
 
         <!-- 3 steps -->
-        <section class="bg-light-grey py-20">
-            <div class="max-w-7xl mx-auto px-8">
+        <section class="bg-light-grey py-12 md:py-20">
+            <div class="max-w-7xl mx-auto px-4 md:px-8">
                 <h2
                     class="text-center font-bold mb-12 text-black"
                 >
                     La démarche en trois étapes
                 </h2>
-                <div class="grid grid-cols-3 gap-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div class="bg-white rounded-xl p-8 shadow-light">
                         <div class="flex items-center gap-4 mb-6">
                             <div
@@ -197,9 +197,9 @@ onMounted(() => {
         </section>
 
         <!-- Label CTS -->
-        <section id="label" class="bg-white py-20" >
+        <section id="label" class="bg-white py-12 md:py-20" >
             <div
-                class="max-w-7xl mx-auto px-8 grid grid-cols-2 gap-16 items-center"
+                class="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center"
             >
                 <div>
                     <h2
@@ -236,9 +236,9 @@ onMounted(() => {
         </section>
 
         <!-- Trophy -->
-        <section id="trophee" class="bg-light-grey py-20">
+        <section id="trophee" class="bg-light-grey py-12 md:py-20">
             <div
-                class="max-w-7xl mx-auto px-8 grid grid-cols-2 gap-16 items-center"
+                class="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center"
             >
                 <div
                     class="media-block relative rounded-2xl overflow-hidden"
@@ -290,9 +290,9 @@ onMounted(() => {
         </section>
 
         <!-- Témoignages -->
-        <section id="temoignages" class="bg-white py-20">
+        <section id="temoignages" class="bg-white py-12 md:py-20">
             <div
-                class="max-w-7xl mx-auto px-8 grid grid-cols-2 gap-16 items-center"
+                class="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center"
             >
                 <div>
                     <h2
@@ -330,8 +330,8 @@ onMounted(() => {
         </section>
 
         <!-- FAQ -->
-        <section id="faq" class="bg-light-grey py-20">
-            <div class="max-w-3xl mx-auto px-8">
+        <section id="faq" class="bg-light-grey py-12 md:py-20">
+            <div class="max-w-3xl mx-auto px-4 md:px-8">
                 <h2
                     class="text-center font-bold mb-10 text-black"
                 >
@@ -374,9 +374,9 @@ onMounted(() => {
 
         <!-- CTA bottom (gradient) -->
         <section
-        class="bg-gradient py-20"
+        class="bg-gradient py-12 md:py-20"
         >
-            <div class="max-w-2xl mx-auto px-8 text-center">
+            <div class="max-w-2xl mx-auto px-4 md:px-8 text-center">
                 <h2
                     class="font-bold mb-4 text-black"
                 >

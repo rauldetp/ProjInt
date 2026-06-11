@@ -10,8 +10,8 @@ defineProps({
 
 <template>
     <footer id="contact" style="background: var(--default-titles)">
-        <div class="max-w-7xl mx-auto py-30">
-            <div v-if="compact" class="flex items-center justify-between">
+        <div class="max-w-7xl mx-auto py-30 px-4 md:px-8">
+            <div v-if="compact" class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                     <div class="hug-brand">
                         <RouterLink to="/" class="brand-hug"
@@ -37,7 +37,7 @@ defineProps({
 
             <!-- ── Version complète : 4 colonnes ── -->
             <template v-else>
-                <div class="grid grid-cols-4 gap-10 mb-12">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
                     <!-- Branding -->
                     <div class="hug-brand">
                         <RouterLink to="/" class="brand-hug"

@@ -88,7 +88,7 @@ onMounted(async () => {
                 class="absolute inset-0"
                 style="background: rgba(44, 65, 64, 0.55)"
             ></div>
-            <div class="relative max-w-7xl mx-auto px-8 w-full z-10">
+            <div class="relative max-w-7xl mx-auto px-4 md:px-8 w-full z-10">
                 <h1 class="font-bold text-white mb-4">Contactez-nous</h1>
                 <p class="text-white mb-2 max-w-xl">
                     Une question sur le Label CTS, le trophée de la Générosité ou
@@ -98,8 +98,8 @@ onMounted(async () => {
         </section>
 
         <!-- Formulaire -->
-        <section id="form" class="bg-light-grey py-20">
-            <div class="max-w-3xl mx-auto px-8">
+        <section id="form" class="bg-light-grey py-12 md:py-20">
+            <div class="max-w-3xl mx-auto px-4 md:px-8">
                 <h2 class="font-bold mb-10 text-black">
                     Envoyez-nous un message
                 </h2>
@@ -131,7 +131,7 @@ onMounted(async () => {
                         {{ errorMsg }}
                     </div>
 
-                    <div class="grid grid-cols-2 gap-x-6 gap-y-5 mb-5">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-5 mb-5">
                         <div>
                             <label class="captions block mb-2">Nom</label>
                             <input

@@ -72,7 +72,7 @@ onMounted(async () => {
                 class="absolute inset-0"
                 style="background: rgba(44, 65, 64, 0.45)"
             ></div>
-            <div class="relative max-w-7xl mx-auto px-8 w-full z-10">
+            <div class="relative max-w-7xl mx-auto px-4 md:px-8 w-full z-10">
                 <div class="max-w-4xl">
                     <h1 class="font-bold text-white leading-tight mb-4">
                         Notre Label CTS
@@ -87,9 +87,9 @@ onMounted(async () => {
         </section>
 
         <!-- Ce qu'il représente -->
-        <section id="ce-quil-represente" class="bg-light-grey py-20">
+        <section id="ce-quil-represente" class="bg-light-grey py-12 md:py-20">
             <div
-                class="max-w-7xl mx-auto px-8 grid grid-cols-2 gap-16 items-center"
+                class="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center"
             >
                 <div>
                     <h2 class="font-bold mb-5 text-black">
@@ -119,14 +119,14 @@ onMounted(async () => {
 
         <!-- Les bénéfices -->
         <section
-            class="bg-white py-20 border-t"
+            class="bg-white py-12 md:py-20 border-t"
             style="border-color: var(--light-grey)"
         >
-            <div class="max-w-7xl mx-auto px-8">
+            <div class="max-w-7xl mx-auto px-4 md:px-8">
                 <h2 class="font-bold text-center mb-12 text-black">
                     Les bénéfices du label
                 </h2>
-                <div class="grid grid-cols-3 gap-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div class="flex flex-col items-center text-center gap-4">
                         <div
                             class="circle-icon rounded-full bg-light-grey flex items-center justify-center"
@@ -179,11 +179,11 @@ onMounted(async () => {
 
         <!-- Quote gradient (cobrandé : dégradé de la marque) -->
         <section
-            class="py-20 text-center"
+            class="py-12 md:py-20 text-center"
             :class="isCobrand ? '' : 'bg-gradient'"
             :style="isCobrand ? { background: sectionGradient } : null"
         >
-            <div class="max-w-7xl mx-auto px-8">
+            <div class="max-w-7xl mx-auto px-4 md:px-8">
                 <blockquote
                     class="font-bold mb-4 text-black"
                     :style="isCobrand ? { color: cobrand.textOnBrand } : null"
@@ -198,9 +198,9 @@ onMounted(async () => {
         </section>
 
         <!-- Comment ça marche -->
-        <section class="bg-white py-20">
+        <section class="bg-white py-12 md:py-20">
             <div
-                class="max-w-7xl mx-auto px-8 grid grid-cols-2 gap-16 items-center"
+                class="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center"
             >
                 <div>
                     <h2 class="font-bold mb-5 text-black">
@@ -247,9 +247,9 @@ onMounted(async () => {
         </section>
 
         <!-- Rejoignez le mouvement -->
-        <section class="py-20 bg-light-grey">
+        <section class="py-12 md:py-20 bg-light-grey">
             <div
-                class="max-w-7xl mx-auto px-8 grid grid-cols-2 gap-16 items-center"
+                class="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center"
             >
                 <div
                     class="aspect-video w-full rounded-md overflow-hidden rounded-lg"
@@ -278,8 +278,8 @@ onMounted(async () => {
         </section>
 
         <!-- Grille des entreprises -->
-        <section class="bg-white py-20">
-            <div class="max-w-7xl mx-auto px-8">
+        <section class="bg-white py-12 md:py-20">
+            <div class="max-w-7xl mx-auto px-4 md:px-8">
                 <h2 class="font-bold text-center mb-12 text-black">
                     Liste des entreprises partenaires
                 </h2>
@@ -296,8 +296,7 @@ onMounted(async () => {
                 <template v-else>
                     <!-- Grille -->
                     <div
-                        class="grid gap-6 mb-10"
-                        style="grid-template-columns: repeat(6, 1fr)"
+                        class="grid gap-3 sm:gap-6 mb-10 grid-cols-3 sm:grid-cols-4 md:grid-cols-6"
                     >
                         <div v-for="e in visibles" :key="e.id" class="block">
                             <div

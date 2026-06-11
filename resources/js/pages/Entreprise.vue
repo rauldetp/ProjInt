@@ -666,16 +666,6 @@ const dateRange = computed(() => {
     max-height: 110px;
     object-fit: contain;
 }
-.engagement-label {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--default-text);
-    background: white;
-    border-radius: 9999px;
-    padding: 0.4rem 1rem;
-    margin: 0;
-}
-
 /* ── Moins de 500 salariés ───────────────────────────── */
 .small-co-section {
     background: var(--light-grey);
@@ -775,6 +765,18 @@ const dateRange = computed(() => {
     }
     .small-co-img {
         height: 220px;
+    }
+    /* Marges latérales réduites en mobile (16px) */
+    .hero-inner,
+    .small-co-inner {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    .quiz-section {
+        padding: 3rem 1rem 4rem;
+    }
+    .engagement-section {
+        padding: 3rem 1rem;
     }
 }
 </style>

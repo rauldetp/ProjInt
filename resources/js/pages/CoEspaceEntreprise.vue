@@ -174,7 +174,7 @@ onMounted(async () => {
 
             <!-- Vue globale -->
             <section style="background: var(--light-grey); padding: 2.5rem 0 3rem">
-                <div class="max-w-7xl mx-auto px-8">
+                <div class="max-w-7xl mx-auto px-4 md:px-8">
                     <h1 class="font-bold text-center mb-8 text-black">Vue globale</h1>
 
                     <!-- Stats -->
@@ -224,7 +224,7 @@ onMounted(async () => {
 
             <!-- Campagnes de collectes -->
             <section style="background: white; padding: 3rem 0 4rem">
-                <div class="max-w-7xl mx-auto px-8">
+                <div class="max-w-7xl mx-auto px-4 md:px-8">
 
                     <!-- Header section -->
                     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem">
@@ -257,7 +257,7 @@ onMounted(async () => {
                     <div v-if="collectesFiltrees.length === 0" style="text-align: center; padding: 3rem; color: var(--default-text)">
                         Aucune collecte pour ce filtre.
                     </div>
-                    <div v-else style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem">
+                    <div v-else class="grid grid-cols-1 md:grid-cols-3 gap-5">
                         <div
                             v-for="c in collectesFiltrees"
                             :key="c.id"

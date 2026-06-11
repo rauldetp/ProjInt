@@ -135,4 +135,14 @@ const homeLink = computed(() =>
     font-weight: 700;
     font-size: 1rem;
 }
+
+/* Mobile : on cache les logos à droite (cf. maquettes) */
+@media (max-width: 768px) {
+    .quiz-navbar-inner {
+        padding: 0 1rem;
+    }
+    .quiz-nav-logos {
+        display: none;
+    }
+}
 </style>

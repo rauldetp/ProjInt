@@ -1088,13 +1088,6 @@ function retakeQuiz() {
     gap: 2rem;
 }
 
-/* ── Shared buttons ──────────────────────────────────── */
-
-.btn-link {
-    text-decoration: none;
-    display: inline-flex;
-}
-
 /* ── Social proof (cobrandé) ─────────────────────────── */
 .social-proof-chip {
     display: inline-flex;
@@ -1130,45 +1123,11 @@ function retakeQuiz() {
     padding: 2.5rem 2rem 0;
     gap: 0;
 }
-.step {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    border: 1.5px solid #afbfbf;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.82rem;
-    font-weight: 700;
-    color: #afbfbf;
-    background: white;
-    flex-shrink: 0;
-    transition:
-        background 0.3s,
-        border-color 0.3s,
-        color 0.3s;
-}
-.step-active {
-    border-color: var(--color-default-red);
-    color: var(--color-default-red);
-    background: white;
-}
-.step-done {
-    background: var(--color-default-red);
-    border-color: var(--color-default-red);
-    color: white;
-}
+/* Styles de base des steps centralisés dans app.css.
+   Spécifique au quiz : lignes plafonnées (nombreuses questions). */
 .step-line {
-    flex: 1;
-    height: 2px;
-    background: #afbfbf;
     min-width: 8px;
     max-width: 32px;
-    margin: 0 5px;
-    transition: background 0.3s;
-}
-.step-line-done {
-    background: var(--color-default-red);
 }
 
 .quiz-inner {
@@ -1255,16 +1214,6 @@ function retakeQuiz() {
     justify-content: center;
 }
 
-.slide-up-enter-active {
-    transition:
-        opacity 0.25s,
-        transform 0.25s;
-}
-.slide-up-enter-from {
-    opacity: 0;
-    transform: translateY(10px);
-}
-
 /* ── RECAP screen ────────────────────────────────────── */
 .recap-screen {
     flex: 1;
@@ -1342,12 +1291,6 @@ function retakeQuiz() {
         var(--color-default-green)
     );
 }
-.ready-title {
-    font-size: 2rem;
-    font-weight: 800;
-    color: var(--default-titles);
-    margin: 0 0 1.75rem;
-}
 .ready-actions {
     display: flex;
     align-items: center;
@@ -1422,16 +1365,20 @@ function retakeQuiz() {
     }
 }
 @media (max-width: 600px) {
+    .content-col {
+        padding: 1rem;
+    }
     .quiz-inner {
-        padding: 1.5rem 1.25rem 3rem;
+        padding: 1.5rem 1rem 3rem;
     }
     .progress-steps {
         padding: 1.5rem 1rem 0;
     }
-    .step {
-        width: 28px;
-        height: 28px;
-        font-size: 0.7rem;
+    .split-screen {
+        padding-bottom: 4rem;
+    }
+    .recap-inner {
+        padding-bottom: 4rem;
     }
     .answers-grid {
         grid-template-columns: 1fr 1fr;

@@ -305,6 +305,13 @@ onMounted(fetchData);
 .table tr:last-child td {
     border-bottom: none;
 }
+@media (max-width: 768px) {
+    .table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
 
 .badge-annee {
     display: inline-block;

@@ -77,7 +77,7 @@ onMounted(async () => {
 
         <template v-else>
             <section style="background: var(--light-grey); min-height: calc(100vh - 76px - 160px); padding: 3rem 0 5rem">
-                <div class="max-w-3xl mx-auto px-8">
+                <div class="max-w-3xl mx-auto px-4 md:px-8">
 
                     <!-- Back -->
                     <button
@@ -113,7 +113,7 @@ onMounted(async () => {
                             <span class="material-symbols-outlined" style="font-size: 18px; vertical-align: middle; margin-right: 6px">info</span>
                             Informations pratiques
                         </p>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                             <div class="info-row">
                                 <span class="material-symbols-outlined info-icon" :style="{ color: brandColor }">location_on</span>
                                 <div>
