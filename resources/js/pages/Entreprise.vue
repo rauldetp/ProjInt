@@ -119,70 +119,59 @@ const dateRange = computed(() => {
                         </RouterLink>
                     </div>
                 </div>
+            </div>
+        </section>
 
-                <!-- Right: info card -->
-                <div class="hero-card" v-if="collecte">
-                    <p class="hero-card-title">Informations pratiques</p>
-                    <ul class="hero-card-list">
-                        <li>
-                            <span
-                                class="info-icon material-symbols-outlined"
-                                style="font-size: 18px"
-                                >location_on</span
-                            >
-                            <span>{{
+        <!-- Stats : infos dynamiques de la collecte en cours -->
+        <section class="bg-white py-10">
+            <div
+                class="max-w-4xl mx-auto px-4 md:px-8 grid grid-cols-1 gap-4"
+            >
+                <template v-if="collecte">
+                    <div class="rounded-xl px-5 py-4 bg-light-grey">
+                        <span
+                            class="material-symbols-outlined feature-icon mb-2"
+                            :style="{ color: brandColor }"
+                            >location_on</span
+                        >
+                        <p class="captions">
+                            {{
                                 collecte.sur_site
                                     ? (entreprise.adresse ??
                                       entreprise.ville ??
                                       entreprise.nom)
                                     : "Centre de transfusion sanguine"
-                            }}</span>
-                        </li>
-                        <li>
-                            <span
-                                class="info-icon material-symbols-outlined"
-                                style="font-size: 18px"
-                                >schedule</span
-                            >
-                            <span>{{
-                                collecte.horaires ?? "Horaires à confirmer"
-                            }}</span>
-                        </li>
-                        <li>
-                            <span class="info-icon material-symbols-outlined"
-                                >calendar_month</span
-                            >
-                            <span>{{ dateRange }}</span>
-                        </li>
-                        <li v-if="collecte.nb_inscrits_estime">
-                            <span
-                                class="info-icon material-symbols-outlined"
-                                style="font-size: 18px"
-                                >group</span
-                            >
-                            <span
-                                >{{
-                                    collecte.nb_inscrits_estime
-                                }}
-                                inscrits</span
-                            >
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Fallback card if no collecte -->
-                <div class="hero-card" v-else>
-                    <p class="hero-card-title">Prochaine collecte</p>
-                    <p style="color: var(--default-text); margin: 0 0 1rem">
-                        Aucune collecte active pour le moment. Revenez bientôt !
-                    </p>
-                    <RouterLink
-                        :to="`/entreprise/${route.params.slug}/espace`"
-                        class="hero-card-details"
-                        style="display: inline-block"
+                            }}
+                        </p>
+                    </div>
+                    <div class="rounded-xl px-5 py-4 bg-light-grey">
+                        <span
+                            class="material-symbols-outlined feature-icon mb-2"
+                            :style="{ color: brandColor }"
+                            >schedule</span
+                        >
+                        <p class="captions">
+                            {{ collecte.horaires ?? "Horaires à confirmer" }}
+                        </p>
+                    </div>
+                    <div class="rounded-xl px-5 py-4 bg-light-grey">
+                        <span
+                            class="material-symbols-outlined feature-icon mb-2"
+                            :style="{ color: brandColor }"
+                            >calendar_month</span
+                        >
+                        <p class="captions">{{ dateRange }}</p>
+                    </div>
+                </template>
+                <div v-else class="rounded-xl px-5 py-4 bg-light-grey">
+                    <span
+                        class="material-symbols-outlined feature-icon mb-2"
+                        :style="{ color: brandColor }"
+                        >event_busy</span
                     >
-                        Voir toutes les collectes →
-                    </RouterLink>
+                    <p class="captions">
+                        Aucune collecte en cours en ce moment
+                    </p>
                 </div>
             </div>
         </section>
@@ -241,54 +230,85 @@ const dateRange = computed(() => {
 
         <!-- 3 steps -->
         <section class="bg-light-grey py-20">
-            <div class="max-w-7xl mx-auto px-8">
+            <div class="max-w-7xl mx-auto px-4 md:px-8">
                 <h2 class="text-center font-bold mb-12 text-black">
                     La démarche en trois étapes
                 </h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
                     <div class="bg-white rounded-xl p-8 shadow-light">
                         <div class="flex items-center gap-4 mb-6">
                             <div
                                 class="w-11 h-11 rounded-full flex items-center justify-center font-bold flex-shrink-0"
-                                :style="{ border: '1px solid ' + brandColor, color: brandColor, background: 'white' }"
-                            >1</div>
-                            <div class="flex-1 h-px" style="background: var(--light-grey)"></div>
+                                :style="{
+                                    border: '1px solid ' + brandColor,
+                                    color: brandColor,
+                                    background: 'white',
+                                }"
+                            >
+                                1
+                            </div>
+                            <div
+                                class="flex-1 h-px"
+                                style="background: var(--light-grey)"
+                            ></div>
                         </div>
-                        <h3 class="font-bold mb-3 text-black">Accueil & quiz</h3>
+                        <h3 class="font-bold mb-3 text-black">
+                            Accueil & quiz
+                        </h3>
                         <p>
-                            Passez notre quiz d'éligibilité rapide en 9 questions
-                            conçu avec le CTS pour lever vos doutes en toute
-                            confidentialité avant de vous inscrire.
+                            Passez notre quiz d'éligibilité rapide en 9
+                            questions conçu avec le CTS pour lever vos doutes en
+                            toute confidentialité avant de vous inscrire.
                         </p>
                     </div>
                     <div class="bg-white rounded-xl p-8 shadow-light">
                         <div class="flex items-center gap-4 mb-6">
                             <div
                                 class="w-11 h-11 rounded-full flex items-center justify-center font-bold flex-shrink-0"
-                                :style="{ border: '1px solid ' + brandColor, color: brandColor, background: 'white' }"
-                            >2</div>
-                            <div class="flex-1 h-px" style="background: var(--light-grey)"></div>
+                                :style="{
+                                    border: '1px solid ' + brandColor,
+                                    color: brandColor,
+                                    background: 'white',
+                                }"
+                            >
+                                2
+                            </div>
+                            <div
+                                class="flex-1 h-px"
+                                style="background: var(--light-grey)"
+                            ></div>
                         </div>
-                        <h3 class="font-bold mb-3 text-black">Questionnaire médical</h3>
+                        <h3 class="font-bold mb-3 text-black">
+                            Questionnaire médical
+                        </h3>
                         <p>
                             Une fois votre créneau réservé, vous remplirez le
-                            questionnaire officiel des HUG qui sera validé sur place
-                            par l'équipe médicale.
+                            questionnaire officiel des HUG qui sera validé sur
+                            place par l'équipe médicale.
                         </p>
                     </div>
                     <div class="bg-white rounded-xl p-8 shadow-light">
                         <div class="flex items-center gap-4 mb-6">
                             <div
                                 class="w-11 h-11 rounded-full flex items-center justify-center font-bold flex-shrink-0"
-                                :style="{ border: '1px solid ' + brandColor, color: brandColor, background: 'white' }"
-                            >3</div>
-                            <div class="flex-1 h-px" style="background: var(--light-grey)"></div>
+                                :style="{
+                                    border: '1px solid ' + brandColor,
+                                    color: brandColor,
+                                    background: 'white',
+                                }"
+                            >
+                                3
+                            </div>
+                            <div
+                                class="flex-1 h-px"
+                                style="background: var(--light-grey)"
+                            ></div>
                         </div>
                         <h3 class="font-bold mb-3 text-black">Le don</h3>
                         <p>
-                            Le jour J, vous êtes pris en charge dans vos locaux. Le
-                            prélèvement dure moins de 10 minutes et se termine par
-                            une collation conviviale.
+                            Le jour J, vous êtes pris en charge dans vos locaux.
+                            Le prélèvement dure moins de 10 minutes et se
+                            termine par une collation conviviale.
                         </p>
                     </div>
                 </div>
@@ -382,12 +402,13 @@ const dateRange = computed(() => {
     margin: 0 auto;
     padding: 0 2rem;
     display: grid;
-    grid-template-columns: 1fr 380px;
+    grid-template-columns: 1fr;
     gap: 3rem;
     align-items: center;
 }
 .hero-text {
     color: white;
+    max-width: 720px;
 }
 .hero-eyebrow {
     font-size: 0.8rem;
@@ -428,73 +449,6 @@ const dateRange = computed(() => {
 }
 .hero-btn-primary:hover {
     opacity: 0.85;
-}
-
-/* Hero info card */
-.hero-card {
-    background: white;
-    border-radius: 16px;
-    padding: 2rem;
-    box-shadow: none;
-}
-.hero-card-title {
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--default-titles);
-    margin: 0 0 1.25rem;
-}
-.hero-card-list {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.85rem;
-}
-.hero-card-list li {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.6rem;
-    font-size: 0.9rem;
-    color: var(--default-text);
-    line-height: 1.5;
-}
-.info-icon {
-    flex-shrink: 0;
-    font-size: 1rem;
-}
-.hero-card-cta {
-    display: block;
-    text-align: center;
-    font-weight: 700;
-    font-size: 0.95rem;
-    text-decoration: none;
-    border-radius: 9999px;
-    padding: 0.75rem 1.5rem;
-    transition: opacity 0.15s;
-}
-.hero-card-cta:hover {
-    opacity: 0.85;
-}
-.hero-card-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-}
-.hero-card-details {
-    display: block;
-    text-align: center;
-    font-weight: 600;
-    font-size: 0.9rem;
-    text-decoration: none;
-    border-radius: 9999px;
-    padding: 0.65rem 1.5rem;
-    border: 1.5px solid rgba(255, 255, 255, 0.5);
-    color: white;
-    transition: background 0.15s;
-}
-.hero-card-details:hover {
-    background: rgba(255, 255, 255, 0.12);
 }
 
 /* ── Quiz overlay ─────────────────────────────────────── */
@@ -666,109 +620,23 @@ const dateRange = computed(() => {
     max-height: 110px;
     object-fit: contain;
 }
-/* ── Moins de 500 salariés ───────────────────────────── */
-.small-co-section {
-    background: var(--light-grey);
-    padding: 72px 0;
-}
-.small-co-inner {
-    max-width: 1152px;
-    margin: 0 auto;
-    padding: 0 2rem;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    align-items: center;
-}
-.small-co-eyebrow {
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin: 0 0 12px;
-}
-.small-co-title {
-    font-size: 32px;
-    font-weight: 700;
-    color: var(--default-titles);
-    line-height: 1.2;
-    margin: 0 0 16px;
-}
-.small-co-body {
-    color: var(--default-text);
-    line-height: 1.7;
-    margin: 0 0 24px;
-}
-.small-co-list {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 32px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-.small-co-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-}
-.small-co-icon {
-    font-size: 22px;
-    flex-shrink: 0;
-    margin-top: 2px;
-}
-.small-co-item-title {
-    font-weight: 600;
-    color: var(--default-titles);
-    margin: 0 0 4px;
-}
-.small-co-item-body {
-    font-size: 14px;
-    color: var(--default-text);
-    line-height: 1.6;
-    margin: 0;
-}
-.small-co-btn {
-    display: inline-block;
-    border: 2px solid;
-    border-radius: 9999px;
-    padding: 12px 24px;
-    font-weight: 600;
-    background: transparent;
-    text-decoration: none;
-    transition: opacity 0.15s;
-}
-.small-co-btn:hover {
-    opacity: 0.7;
-}
-.small-co-img {
-    border-radius: 1rem;
-    overflow: hidden;
-    height: 380px;
-}
-.small-co-img img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
 /* ── Responsive ──────────────────────────────────────── */
 @media (max-width: 900px) {
+    /* Hauteur adaptée au contenu empilé (sinon coupé par height fixe) */
+    .hero {
+        height: auto;
+        padding: 2.5rem 0;
+    }
     .hero-inner,
     .quiz-section-inner,
-    .engagement-inner,
-    .small-co-inner {
+    .engagement-inner {
         grid-template-columns: 1fr;
     }
     .hero-title {
         font-size: 2.2rem;
     }
-    .small-co-img {
-        height: 220px;
-    }
     /* Marges latérales réduites en mobile (16px) */
-    .hero-inner,
-    .small-co-inner {
+    .hero-inner {
         padding-left: 1rem;
         padding-right: 1rem;
     }
@@ -777,6 +645,10 @@ const dateRange = computed(() => {
     }
     .engagement-section {
         padding: 3rem 1rem;
+    }
+    /* Gap vertical réduit une fois les colonnes empilées */
+    .engagement-inner {
+        gap: 1.5rem;
     }
 }
 </style>
