@@ -76,7 +76,7 @@ function handleLogout() {
 
 <template>
     <header class="app-navbar">
-        <div class="app-navbar-inner max-w-7xl px-8">
+        <div class="app-navbar-inner max-w-7xl px-4 md:px-8">
             <!-- Brand -->
             <RouterLink
                 :to="isCobrand ? `/entreprise/${slug}` : '/'"

@@ -218,7 +218,7 @@ const subtitle = computed(() => {
 
 @media (max-width: 640px) {
   .content-column {
-    padding: 1.5rem;
+    padding: 1rem;
   }
 
   .mascotte-circle {

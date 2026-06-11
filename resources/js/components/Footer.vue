@@ -37,7 +37,7 @@ defineProps({
 
             <!-- ── Version complète : 4 colonnes ── -->
             <template v-else>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-10 mb-12">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
                     <!-- Branding -->
                     <div class="hug-brand">
                         <RouterLink to="/" class="brand-hug"

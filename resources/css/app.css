@@ -572,6 +572,64 @@ textarea.form-input{
     cursor: pointer;
 }
 
+/* ── Progress steps (quiz, inscription entreprise…) ───── */
+.progress-steps {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+}
+.step {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1.5px solid var(--grey);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--grey);
+    background: white;
+    flex-shrink: 0;
+    transition:
+        background 0.3s,
+        border-color 0.3s,
+        color 0.3s;
+}
+.step-active {
+    border-color: var(--color-default-red);
+    color: var(--color-default-red);
+    background: white;
+}
+.step-done {
+    background: var(--color-default-red);
+    border-color: var(--color-default-red);
+    color: white;
+}
+.step-line {
+    flex: 1;
+    height: 2px;
+    background: var(--grey);
+    margin: 0 8px;
+    transition: background 0.3s;
+}
+.step-line-done {
+    background: var(--color-default-red);
+}
+
+/* Smartphone : steps plus compactes, sans marge sur les lignes */
+@media (max-width: 600px) {
+    .step {
+        width: 24px;
+        height: 24px;
+        font-size: 0.7rem;
+    }
+    .step-line {
+        margin: 0;
+    }
+}
+
 @font-face {
     font-family: "CooperHewitt";
     src: url("../fonts/CooperHewitt-Book.woff") format("woff");

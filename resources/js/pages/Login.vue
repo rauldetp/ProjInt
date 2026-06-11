@@ -218,11 +218,12 @@ async function handleRegister() {
                     class="lg:hidden flex items-center gap-2 mb-10"
                     style="text-decoration: none"
                 >
-                    <span
-                        class="font-extrabold text-xl"
-                        style="color: var(--default-titles)"
-                        >HUG</span
-                    >
+                    <span class="brand-hug">
+                        <img
+                            :src="'/images/logo_hug_h_quadri.png'"
+                            alt="Logo HUG"
+                        />
+                    </span>
                     <div
                         class="w-px h-5 mx-1"
                         style="background: rgba(44, 65, 64, 0.3)"
@@ -997,50 +998,7 @@ async function handleRegister() {
 }
 
 /* Barre de progression (style quiz) */
-.progress-steps {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0;
-}
-.step {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    border: 1.5px solid #afbfbf;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.82rem;
-    font-weight: 700;
-    color: #afbfbf;
-    background: white;
-    flex-shrink: 0;
-    transition:
-        background 0.3s,
-        border-color 0.3s,
-        color 0.3s;
-}
-.step-active {
-    border-color: var(--color-default-red);
-    color: var(--color-default-red);
-    background: white;
-}
-.step-done {
-    background: var(--color-default-red);
-    border-color: var(--color-default-red);
-    color: white;
-}
-.step-line {
-    flex: 1;
-    height: 2px;
-    background: #afbfbf;
-    margin: 0 8px;
-    transition: background 0.3s;
-}
-.step-line-done {
-    background: var(--color-default-red);
-}
+/* Styles des steps centralisés dans app.css (.progress-steps, .step, .step-line…) */
 
 /* Transition slide entre étapes (comme le quiz) */
 .slide-enter-active,
