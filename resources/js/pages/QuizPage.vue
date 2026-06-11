@@ -1096,13 +1096,16 @@ function retakeQuiz() {
     transform: translateY(50px);
 }
 .mascotte-col-full {
-    margin: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
 }
 .mascotte-img-full {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
+    width: auto;
+    max-width: 260px;
+    max-height: 320px;
+    object-fit: contain;
 }
 .content-col {
     display: flex;
