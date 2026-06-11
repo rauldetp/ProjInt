@@ -1099,12 +1099,12 @@ function retakeQuiz() {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2rem;
+    padding: 1rem 2rem;
 }
 .mascotte-img-full {
-    width: auto;
-    max-width: 260px;
-    max-height: 320px;
+    width: 100%;
+    max-width: 420px;
+    max-height: calc(100vh - 120px);
     object-fit: contain;
 }
 .content-col {
