@@ -1,8 +1,8 @@
 <template>
   <div class="coordinateurs-index">
     <div class="page-header">
-      <h1 class="page-title">Coordinateurs</h1>
-      <RouterLink to="/admin/coordinateurs/create" class="btn-primary">
+      <h1 class="page-title">Coordinateurs & entrprises</h1>
+      <RouterLink to="/admin/coordinateurs/create" class="btn btn-filled-blue">
         + Nouveau coordinateur
       </RouterLink>
     </div>
@@ -95,18 +95,6 @@ onMounted(fetchCoordinateurs)
 
 .page-title { font-size: 1.75rem; font-weight: 700; color: #0f172a; margin: 0; }
 
-.btn-primary {
-  background: #0f172a;
-  color: white;
-  border-radius: 0.5rem;
-  padding: 0.6rem 1.25rem;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 0.9rem;
-}
-
-.btn-primary:hover { background: #1e293b; }
-
 .table {
   width: 100%;
   border-collapse: collapse;
@@ -162,6 +150,12 @@ onMounted(fetchCoordinateurs)
 .loading, .error { color: #94a3b8; padding: 2rem 0; }
 
 @media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
   .table {
     display: block;
     overflow-x: auto;
