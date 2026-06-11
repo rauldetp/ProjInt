@@ -846,7 +846,7 @@ function retakeQuiz() {
                                     ? '/images/courage/Mascotte_award.png'
                                     : resultat === 'non-eligible'
                                       ? '/images/courage/Mascotte_failure.png'
-                                      : '/images/courage/Mascotte_default.png'
+                                      : '/images/courage/Mascotte_wait 1.png'
                             "
                             alt="Courage"
                             class="mascotte-img"
