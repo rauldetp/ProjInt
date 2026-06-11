@@ -126,24 +126,30 @@ onMounted(() => {
                 <div class="marquee-track">
                     <div class="marquee-inner">
                         <div class="marquee-group">
-                            <img :src="'/images/marquee/logo_bcge.png'" class="img-marquee" alt="Banque cantonale Genevoise">
-                            <img :src="'/images/marquee/La-Vie-Black-Logo-1.png'" class="img-marquee" alt="La Vie">
-                            <img :src="'/images/marquee/Logo_Nestle.svg.png'" class="img-marquee" alt="Nestlé">
-                            <img :src="'/images/marquee/rolex-logo.png'" class="img-marquee" alt="Rolex">
-                            <img :src="'/images/marquee/logo_bcge.png'" class="img-marquee" alt="Banque cantonale Genevoise">
-                            <img :src="'/images/marquee/La-Vie-Black-Logo-1.png'" class="img-marquee" alt="La Vie">
-                            <img :src="'/images/marquee/Logo_Nestle.svg.png'" class="img-marquee" alt="Nestlé">
-                            <img :src="'/images/marquee/rolex-logo.png'" class="img-marquee" alt="Rolex">
+                            <img src="/images/marquee/logo_bcge.png" class="img-marquee" alt="BCGE">
+                            <img src="/images/marquee/rolex-logo.png" class="img-marquee" alt="Rolex">
+                            <img src="/images/marquee/logo_UBS.png" class="img-marquee" alt="UBS">
+                            <img src="/images/marquee/logo_Pictet.png" class="img-marquee" alt="Banque Pictet">
+                            <img src="/images/marquee/logo_Lombard.png" class="img-marquee" alt="Lombard Odier">
+                            <img src="/images/marquee/logo_Logitech.png" class="img-marquee" alt="Logitech">
+                            <img src="/images/marquee/logo_Patek.png" class="img-marquee" alt="Patek Philippe">
+                            <img src="/images/marquee/logo_Genevatrading.png" class="img-marquee" alt="Geneva Trading">
+                            <img src="/images/marquee/logo_SIG.png" class="img-marquee" alt="SIG">
+                            <img src="/images/marquee/La-Vie-Black-Logo-1.png" class="img-marquee" alt="La Vie">
+                            <img src="/images/marquee/Logo_Nestle.svg.png" class="img-marquee" alt="Nestlé">
                         </div>
                         <div class="marquee-group" aria-hidden="true">
-                            <img :src="'/images/marquee/logo_bcge.png'" class="img-marquee" alt="Banque cantonale Genevoise">
-                            <img :src="'/images/marquee/La-Vie-Black-Logo-1.png'" class="img-marquee" alt="La Vie">
-                            <img :src="'/images/marquee/Logo_Nestle.svg.png'" class="img-marquee" alt="Nestlé">
-                            <img :src="'/images/marquee/rolex-logo.png'" class="img-marquee" alt="Rolex">
-                            <img :src="'/images/marquee/logo_bcge.png'" class="img-marquee" alt="Banque cantonale Genevoise">
-                            <img :src="'/images/marquee/La-Vie-Black-Logo-1.png'" class="img-marquee" alt="La Vie">
-                            <img :src="'/images/marquee/Logo_Nestle.svg.png'" class="img-marquee" alt="Nestlé">
-                            <img :src="'/images/marquee/rolex-logo.png'" class="img-marquee" alt="Rolex">
+                            <img src="/images/marquee/logo_bcge.png" class="img-marquee" alt="BCGE">
+                            <img src="/images/marquee/rolex-logo.png" class="img-marquee" alt="Rolex">
+                            <img src="/images/marquee/logo_UBS.png" class="img-marquee" alt="UBS">
+                            <img src="/images/marquee/logo_Pictet.png" class="img-marquee" alt="Banque Pictet">
+                            <img src="/images/marquee/logo_Lombard.png" class="img-marquee" alt="Lombard Odier">
+                            <img src="/images/marquee/logo_Logitech.png" class="img-marquee" alt="Logitech">
+                            <img src="/images/marquee/logo_Patek.png" class="img-marquee" alt="Patek Philippe">
+                            <img src="/images/marquee/logo_Genevatrading.png" class="img-marquee" alt="Geneva Trading">
+                            <img src="/images/marquee/logo_SIG.png" class="img-marquee" alt="SIG">
+                            <img src="/images/marquee/La-Vie-Black-Logo-1.png" class="img-marquee" alt="La Vie">
+                            <img src="/images/marquee/Logo_Nestle.svg.png" class="img-marquee" alt="Nestlé">
                         </div>
                     </div>
                 </div>
