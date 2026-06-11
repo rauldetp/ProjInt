@@ -53,6 +53,15 @@ const resultat = ref(null);
 // Origine de l'écran insight : null (flux quiz) ou "recap" (depuis le récap).
 const infoFrom = ref(null);
 
+const insightMascottes = [
+    '/images/courage/Mascotte_insight.png',
+    '/images/courage/Mascotte_glass 1.png',
+    '/images/courage/Mascotte_think 2.png',
+];
+const insightMascotte = computed(() =>
+    insightMascottes[currentQ.value % insightMascottes.length]
+);
+
 const participerLink = computed(() => {
     if (auth.isAdmin) return "/admin";
     if (auth.isCoordinateur && auth.entrepriseSlug)
@@ -658,7 +667,7 @@ function retakeQuiz() {
             <div v-else-if="step === 'info'" class="split-screen" key="info">
                 <div class="mascotte-col mascotte-col-full">
                     <img
-                        :src="'/images/courage/Mascotte_insight.png'"
+                        :src="insightMascotte"
                         alt="Courage"
                         class="mascotte-img-full"
                     />
@@ -850,22 +859,17 @@ function retakeQuiz() {
                         <!-- ÉLIGIBLE -->
                         <template v-if="resultat === 'eligible'">
                             <h2 class="result-title">
-                                Bravo ! Vous êtes la star du don.
+                                Courage vous remercie !
                             </h2>
                             <p class="result-sub">
                                 Sur la base de vos réponses, vous remplissez les
                                 principales conditions de don.
                             </p>
-                            <div class="result-tip-card">
-                                <span
-                                    class="material-symbols-outlined"
-                                    style="font-size: 18px; color: #000"
-                                    >info</span
-                                >
-                                <p>
-                                    La validation finale sera effectuée sur
-                                    place par l'équipe médicale.
-                                </p>
+                            <div class="tip-card rounded-xl p-4 gap-4 flex items-start">
+                                <div class="tip-icon-wrap">
+                                    <span class="material-symbols-outlined tip-icon">lightbulb</span>
+                                </div>
+                                <p class="text-black">La validation finale sera effectuée sur place par l'équipe médicale.</p>
                             </div>
                             <div
                                 v-if="
@@ -918,13 +922,31 @@ function retakeQuiz() {
                         <!-- NON ÉLIGIBLE -->
                         <template v-else-if="resultat === 'non-eligible'">
                             <h2 class="result-title">
-                                Certains points ne sont pas éligibles.
+                                Courage vous soutient !
                             </h2>
                             <p class="result-sub">
                                 Malheureusement, sur la base de vos réponses,
-                                certains points ne remplissent pas les
-                                conditions de don adéquates.
+                                certains points ne permettent pas le don
+                                de sang dans votre situation.
                             </p>
+                            <div class="tip-card rounded-xl p-4 gap-4 flex items-start">
+                                <div class="tip-icon-wrap">
+                                    <span class="material-symbols-outlined tip-icon">lightbulb</span>
+                                </div>
+                                <div class="tip-text-block">
+                                    <p class="text-black">
+                                        Votre situation ne permet pas de donner votre sang — et c'est tout à fait normal.
+                                        Certains critères médicaux existent pour protéger à la fois les donneurs et les patients.
+                                        Mais vous pouvez agir autrement :
+                                    </p>
+                                    <ul class="result-tip-list">
+                                        <li>Parlez-en autour de vous.</li>
+                                        <li>Encouragez vos proches.</li>
+                                        <li>Participez à l'organisation.</li>
+                                    </ul>
+                                    <p class="text-black">Le don de sang est un acte collectif. Vous en faites partie, même sans donner.</p>
+                                </div>
+                            </div>
                             <button
                                 class="btn btn-filled-blue"
                                 :style="
@@ -947,23 +969,30 @@ function retakeQuiz() {
                         <!-- INCERTAIN -->
                         <template v-else>
                             <h2 class="result-title">
-                                Certaines situations nécessitent une validation
-                                médicale.
+                                Courage reviendra vous voir !
                             </h2>
                             <p class="result-sub">
-                                Le personnel du CTS pourra vous renseigner lors
-                                de votre rendez-vous.
+                                Sur la base de vos réponses, un délai
+                                temporaire est nécessaire avant votre
+                                prochain don. Ce n'est que partie remise !
                             </p>
-                            <div class="result-tip-card">
-                                <span
-                                    class="material-symbols-outlined"
-                                    style="font-size: 18px; color: #000"
-                                    >info</span
-                                >
-                                <p>
-                                    Vous pouvez tout de même vous inscrire et
-                                    venir rencontrer notre équipe médicale.
-                                </p>
+                            <div class="tip-card rounded-xl p-4 gap-4 flex items-start">
+                                <div class="tip-icon-wrap">
+                                    <span class="material-symbols-outlined tip-icon">lightbulb</span>
+                                </div>
+                                <div class="tip-text-block">
+                                    <p class="text-black">
+                                        Vos réponses indiquent un délai temporaire avant de pouvoir donner.
+                                        Ce n'est pas définitif — c'est juste une question de moment.
+                                        Pour être prêt·e la prochaine fois :
+                                    </p>
+                                    <ul class="result-tip-list">
+                                        <li>Mangez normalement et hydratez-vous bien la veille et le matin du don.</li>
+                                        <li>Attendez la fin du délai lié à votre situation (tatouage, médicament, voyage, opération).</li>
+                                        <li>Vérifiez votre éligibilité à nouveau prochainement — ce quiz est disponible à tout moment.</li>
+                                    </ul>
+                                    <p class="text-black">La prochaine collecte vous attend.</p>
+                                </div>
                             </div>
                             <RouterLink
                                 :to="resultCta"
@@ -1320,20 +1349,23 @@ function retakeQuiz() {
     line-height: 1.65;
     margin: 0;
 }
-.result-tip-card {
+.tip-text-block {
     display: flex;
-    align-items: flex-start;
-    gap: 0.75rem;
-    background: #f0f9f8;
-    border-radius: 12px;
-    padding: 1rem 1.25rem;
+    flex-direction: column;
+    gap: 0.25rem;
 }
-.result-tip-card p {
-    font-size: 0.9rem;
-    color: var(--default-titles);
-    line-height: 1.6;
+.tip-text-block p {
     margin: 0;
-    font-style: italic;
+    line-height: 1.6;
+}
+.result-tip-list {
+    margin: 0.25rem 0 0.25rem 1.1rem;
+    padding: 0;
+    line-height: 1.6;
+}
+.result-tip-list li {
+    list-style: disc;
+    margin-bottom: 0.1rem;
 }
 
 /* ── Responsive ─────────────────────────────────────── */
