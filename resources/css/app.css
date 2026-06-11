@@ -103,6 +103,13 @@ html {
  max-width: 9rem;
  height: auto;
  max-height: 7rem;
+ filter: grayscale(100%);
+ opacity: 0.7;
+ transition: filter 0.2s ease, opacity 0.2s ease;
+}
+.img-marquee:hover {
+ filter: grayscale(0%);
+ opacity: 1;
 }
 
 .marquee-track:hover .marquee-inner {
